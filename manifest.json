@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Eventuate",
+  "version": "1.0",
+
+  "description": "Extracts information from parkrun results pages for inclusion in reports.",
+
+  "icons": {
+    "24": "icons/eventuate-24.svg"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.parkrun.com.au/*/results/*/"],
+      "js": ["eventuate.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
