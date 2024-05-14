@@ -9,32 +9,28 @@ export class ResultsPageExtractor {
       '.Results-header > h3 > span:last-child'
     ).textContent
 
-    this.finishers = Array.from(document.querySelectorAll('.Results-table-row'))
+    const data = Array.from(document.querySelectorAll('.Results-table-row'))
+    const times = Array.from(document.querySelectorAll('.Results-table-row > .Results-table-td--time .compact'))
+    this.finishers = data.map((d, i) => { return { time: times[i].innerText, ...d.dataset } })
 
     this.unknowns = this.finishers
-      .filter((p) => Number(p.dataset.runs) === 0)
-      .map((p) => p.dataset.name)
+      .filter((p) => Number(p.runs) === 0)
+      .map((p) => p.name)
 
     this.newestParkrunners = this.finishers
-      .filter((p) => Number(p.dataset.runs) === 1)
-      .map((p) => p.dataset.name)
+      .filter((p) => Number(p.runs) === 1)
+      .map((p) => p.name)
 
     this.firstTimers = this.finishers
-      .filter((p) => p.dataset.achievement === 'First Timer!' && p.dataset.runs > 1)
-      .map((p) => p.dataset.name)
+      .filter((p) => p.achievement === 'First Timer!' && p.runs > 1)
+      .map((p) => p.name)
 
     this.finishersWithNewPBs = this.finishers
-      .filter((p) => p.dataset.achievement === 'New PB!')
-      .map((p) => {
-        const name = p.dataset.name
-        const timeElement = p.querySelector(
-          '.Results-table-td--pb .compact'
-        ).textContent
-        return `${name} (${timeElement})`
-      })
+      .filter((p) => p.achievement === 'New PB!')
+      .map((p) => `${p.name} (${p.time})`)
 
     this.runningWalkingGroups = Array.from(
-      new Set(this.finishers.map((p) => p.dataset.club).filter(Boolean))
+      new Set(this.finishers.map((p) => p.club).filter(Boolean))
     )
 
     this.volunteersExtract = this.document

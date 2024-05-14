@@ -105,10 +105,10 @@ upsertParagraph(
   'facts',
   `Since ${rpe.eventName} started ` +
   `${rpe.facts.finishers.toLocaleString()} brilliant parkrunners have had their barcodes scanned, ` +
-  `and a grand total of ${rpe.facts.finishes.toLocaleString()} finishers` +
+  `and a grand total of ${rpe.facts.finishes.toLocaleString()} finishers ` +
   `have covered a total distance of ${(
     rpe.facts.finishes * rpe.courseLength
-  ).toLocaleString()}km,` +
+  ).toLocaleString()}km, ` +
   `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
   `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`
 )
