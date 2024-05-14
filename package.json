@@ -13,5 +13,13 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0"
+  },
+  "dependencies": {
+    "rollup": "^4.17.2"
+  },
+  "scripts": {
+    "bundle": "rollup -o bundle.js -i eventuate.js",
+    "lint": "eslint"
+
   }
 }

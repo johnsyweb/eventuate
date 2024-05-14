@@ -13,7 +13,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.parkrun.com.au/*/results/*/"],
-      "js": ["eventuate.js"],
+      "js": ["bundle.js"],
       "run_at": "document_end"
     }
   ]
