@@ -7,9 +7,14 @@ type FactType = {
 
 type FinisherType = {
   name: string;
-  runs?: string;
+  agegroup: string;
+  club: string;
+  gender?: string;
+  position: string;
+  runs: string;
+  vols?: string;
+  agegrade: string;
   achievement?: string;
-  club?: string;
   time?: string;
 };
 
@@ -35,7 +40,8 @@ class ResultsPageExtractor {
 
     this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
     this.eventDate =
-      resultsPageDocument.querySelector(".format-date")?.textContent || undefined;
+      resultsPageDocument.querySelector(".format-date")?.textContent ||
+      undefined;
     this.eventNumber =
       resultsPageDocument.querySelector(
         ".Results-header > h3 > span:last-child"
@@ -49,7 +55,16 @@ class ResultsPageExtractor {
       resultsPageDocument.querySelectorAll(".Results-table-row");
     const times = Array.from(timeElements);
     this.finishers = Array.from(rowElements).map((d, i) => {
-      return { time: times[i]?.innerText, name: "a parkrunner", ...d.dataset };
+      return {
+        time: times[i]?.innerText,
+        name: "a parkrunner",
+        agegroup: "",
+        club: "",
+        position: "0",
+        runs: "0",
+        agegrade: "0",
+        ...d.dataset,
+      };
     });
 
     this.unknowns = this.finishers

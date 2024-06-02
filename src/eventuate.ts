@@ -1,6 +1,6 @@
 function upsertParagraph(div: HTMLElement, id: string, content: string) {
   const existingParagraph = Array.from(div.children).find(
-    (element) => element.id === id,
+    (element) => element.id === id
   );
 
   if (existingParagraph) {
@@ -26,7 +26,46 @@ const pluralize = (noun: string, nouns: string, collection: any[]) =>
 
 const rpe = new ResultsPageExtractor(document);
 
+type MilestoneDefinition = {
+  restricted_age: string;
+  p_icon: string;
+  v_icon: string;
+};
+
+const milestones: Record<number, MilestoneDefinition> = {
+  10: { restricted_age: "J", p_icon: "⚪︎", v_icon: "🤍" },
+  25: { restricted_age: "", p_icon: "🟣", v_icon: "💜" },
+  50: { restricted_age: "", p_icon: "🔴", v_icon: "❤️" },
+  100: { restricted_age: "", p_icon: "⚫", v_icon: "🖤" },
+  250: { restricted_age: "", p_icon: "🟢", v_icon: "💚" },
+  500: { restricted_age: "", p_icon: "🔵", v_icon: "💙" },
+  1000: { restricted_age: "", p_icon: "🟡", v_icon: "💛" },
+};
+
+let milestoneCelebrations: string[] = [];
+
+for (const n in milestones) {
+  const milestone: MilestoneDefinition = milestones[n];
+  const names: string[] = rpe.finishers
+    .filter(
+      (f) =>
+        Number(f.runs) === Number(n) &&
+        f.agegroup.startsWith(milestone.restricted_age)
+    )
+    .map((f) => f.name);
+
+  if (names.length > 0) {
+    milestoneCelebrations.push(
+      `${sortAndConjoin(names)} joined the ${milestone.p_icon} ${n} Club`
+    );
+  }
+}
+
 const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
+
+const milestoneCelebrationsTitle =
+  "Three cheers to the following parkrunners who earned themselves a new parkrun club shirt this weekend";
+
 const newestParkrunnersTitle = `Congratulations to our ${
   rpe.newestParkrunners.length
 } newest ${pluralize("parkrunner", "parkrunners", rpe.newestParkrunners)}`;
@@ -34,7 +73,7 @@ const newestParkrunnersTitle = `Congratulations to our ${
 const firstTimersTitle = `Welcome to the ${rpe.firstTimers.length} ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.firstTimers,
+  rpe.firstTimers
 )} who joined us at ${rpe.eventName} for the first time`;
 
 const finishersWithNewPBsTitle = `Very well done to the ${
@@ -42,7 +81,7 @@ const finishersWithNewPBsTitle = `Very well done to the ${
 } ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.finishersWithNewPBs,
+  rpe.finishersWithNewPBs
 )} who improved their personal best this week`;
 
 const runningWalkingGroupsTitle = `We were pleased to see ${
@@ -50,15 +89,19 @@ const runningWalkingGroupsTitle = `We were pleased to see ${
 } ${pluralize(
   "active group",
   "walking and running groups",
-  rpe.runningWalkingGroups,
+  rpe.runningWalkingGroups
 )} represented at this event`;
 
 const volunteersTitle = `${rpe.eventName} are very grateful to the ${rpe.volunteersList.length} amazing volunteers who made this event happen`;
 
 const reportDetails = {
+  milestoneCelebrations: {
+    title: milestoneCelebrationsTitle,
+    details: milestoneCelebrations,
+  },
   newestParkrunners: {
     title: newestParkrunnersTitle,
-    details: sortAndConjoin(rpe.newestParkrunners),
+    details: conjoin(rpe.newestParkrunners),
   },
   firstTimers: {
     title: firstTimersTitle,
@@ -100,7 +143,7 @@ if (insertionPoint) {
     upsertParagraph(
       eventuateDiv,
       "unknowns",
-      `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`,
+      `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`
     );
   }
 
@@ -114,6 +157,6 @@ if (insertionPoint) {
         rpe.facts.finishes * rpe.courseLength
       ).toLocaleString()}km, ` +
       `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
-      `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`,
+      `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`
   );
 }
