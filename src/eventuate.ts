@@ -42,7 +42,12 @@ const milestones: Record<number, MilestoneDefinition> = {
   1000: { restricted_age: "", p_icon: "🟡", v_icon: "💛" },
 };
 
-let milestoneCelebrations: string[] = [];
+type MilestoneCelebrations = {
+  finished: number;
+  icon: string;
+  names: string[];
+};
+let milestoneCelebrations: MilestoneCelebrations[] = [];
 
 for (const n in milestones) {
   const milestone: MilestoneDefinition = milestones[n];
@@ -55,26 +60,43 @@ for (const n in milestones) {
     .map((f) => f.name);
 
   if (names.length > 0) {
-    milestoneCelebrations.push(
-      `${sortAndConjoin(names)} joined the ${milestone.p_icon} ${n} Club`
-    );
+    milestoneCelebrations.push({
+      finished: Number(n),
+      icon: milestone.p_icon,
+      names,
+    });
   }
 }
 
-const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
+const milestoneCelebrationsAll = milestoneCelebrations.flatMap(
+  (mc) => mc.names
+);
 
-const milestoneCelebrationsTitle =
-  "Three cheers to the following parkrunners who earned themselves a new parkrun club shirt this weekend";
+const milestoneCelebrationsTitle = `Three cheers to the ${
+  milestoneCelebrationsAll.length
+} ${pluralize(
+  "parkrunner",
+  "parkrunners",
+  milestoneCelebrationsAll
+)} who earned themselves a new parkrun club shirt this weekend:\n`;
+const milestoneCelebrationsPresenter = milestoneCelebrations
+  .map(
+    (mc) =>
+      `${mc.icon} ${sortAndConjoin(mc.names)} joined the ${mc.finished}-club.`
+  )
+  .join("\n");
+
+const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
 
 const newestParkrunnersTitle = `Congratulations to our ${
   rpe.newestParkrunners.length
-} newest ${pluralize("parkrunner", "parkrunners", rpe.newestParkrunners)}`;
+} newest ${pluralize("parkrunner", "parkrunners", rpe.newestParkrunners)}: `;
 
 const firstTimersTitle = `Welcome to the ${rpe.firstTimers.length} ${pluralize(
   "parkrunner",
   "parkrunners",
   rpe.firstTimers
-)} who joined us at ${rpe.eventName} for the first time`;
+)} who joined us at ${rpe.eventName} for the first time: `;
 
 const finishersWithNewPBsTitle = `Very well done to the ${
   rpe.finishersWithNewPBs.length
@@ -82,7 +104,7 @@ const finishersWithNewPBsTitle = `Very well done to the ${
   "parkrunner",
   "parkrunners",
   rpe.finishersWithNewPBs
-)} who improved their personal best this week`;
+)} who improved their personal best this week: `;
 
 const runningWalkingGroupsTitle = `We were pleased to see ${
   rpe.runningWalkingGroups.length
@@ -90,14 +112,14 @@ const runningWalkingGroupsTitle = `We were pleased to see ${
   "active group",
   "walking and running groups",
   rpe.runningWalkingGroups
-)} represented at this event`;
+)} represented at this event: `;
 
-const volunteersTitle = `${rpe.eventName} are very grateful to the ${rpe.volunteersList.length} amazing volunteers who made this event happen`;
+const volunteersTitle = `${rpe.eventName} are very grateful to the ${rpe.volunteersList.length} amazing volunteers who made this event happen: `;
 
 const reportDetails = {
   milestoneCelebrations: {
     title: milestoneCelebrationsTitle,
-    details: milestoneCelebrations,
+    details: milestoneCelebrationsPresenter,
   },
   newestParkrunners: {
     title: newestParkrunnersTitle,
@@ -134,7 +156,7 @@ if (insertionPoint) {
 
   for (const [section, content] of Object.entries(reportDetails)) {
     if (content.details) {
-      const paragraphText = `${content.title}: ${content.details}.`;
+      const paragraphText = `${content.title} ${content.details}.`;
       upsertParagraph(eventuateDiv, section, paragraphText);
     }
   }
