@@ -36,11 +36,11 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
-    "package": "crackle package",
     "build": "web-ext build",
+    "lint": "web-ext lint",
+    "package": "crackle package",
     "serve": "web-ext run",
-    "lint": "web-ext lint"
+    "test": "jest"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.4",
