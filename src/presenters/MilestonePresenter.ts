@@ -1,5 +1,5 @@
 
-import { pluralize, sortAndConjoin } from "./stringFunctions";
+import { pluralize, sortAndConjoin } from "../stringFunctions";
 
 export type MilestoneCelebrations = {
   finished: number;
