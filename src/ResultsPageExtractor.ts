@@ -5,7 +5,7 @@ type FactType = {
   volunteers: number;
 };
 
-type FinisherType = {
+export type FinisherType = {
   name: string;
   agegroup: string;
   club: string;
@@ -18,7 +18,7 @@ type FinisherType = {
   time?: string;
 };
 
-class ResultsPageExtractor {
+export class ResultsPageExtractor {
   eventName?: string;
   courseLength: number;
   eventDate?: string;

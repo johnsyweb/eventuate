@@ -16,7 +16,7 @@
         "https://www.parkrun.com.au/*/results/latestresults/",
         "https://www.parkrun.org.uk/*/results/latestresults/"
       ],
-      "js": ["./dist/eventuate.js"],
+      "js": ["./dist/index.cjs"],
       "run_at": "document_end"
     }
   ]

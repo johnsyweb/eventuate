@@ -1,5 +1,12 @@
-import { MilestoneCelebrations } from "./MilestoneCelebrations";
+
 import { pluralize, sortAndConjoin } from "./stringFunctions";
+
+export type MilestoneCelebrations = {
+  finished: number;
+  icon: string;
+  names: string[];
+};
+
 
 export class MilestonePresenter {
   _milestoneCelebrations: MilestoneCelebrations[];

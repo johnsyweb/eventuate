@@ -1,3 +1,10 @@
+import { FinisherType, ResultsPageExtractor } from "./ResultsPageExtractor";
+import {
+  MilestoneCelebrations,
+  MilestonePresenter,
+} from "./MilestonePresenter";
+import { pluralize, conjoin, sortAndConjoin } from "./stringFunctions";
+
 function upsertParagraph(div: HTMLElement, id: string, content: string) {
   const existingParagraph = Array.from(div.children).find(
     (element) => element.id === id
@@ -15,14 +22,9 @@ function upsertParagraph(div: HTMLElement, id: string, content: string) {
 
 const rpe = new ResultsPageExtractor(document);
 
-import { MilestoneCelebrations } from "./MilestoneCelebrations";
-
 let milestoneCelebrations: MilestoneCelebrations[] = transformMilestones(
   rpe.finishers
 );
-
-import { MilestonePresenter } from "./MilestonePresenter";
-import { pluralize, conjoin, sortAndConjoin } from "./stringFunctions";
 
 const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 

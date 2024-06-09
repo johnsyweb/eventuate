@@ -9,5 +9,5 @@
     "rootDir": "src",
     "outFile": "./dist/eventuate.js"
   },
-  "exclude": ["jest.config.ts", "test"]
+  "exclude": ["*.config.ts", "test"]
 }
