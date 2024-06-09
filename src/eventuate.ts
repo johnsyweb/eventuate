@@ -1,9 +1,11 @@
-import { FinisherType, ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
+
+import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
 import {
   MilestoneCelebrations,
   MilestonePresenter,
 } from "./presenters/MilestonePresenter";
-import { pluralize, conjoin, sortAndConjoin } from "./stringFunctions";
+import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
+import { conjoin, pluralize, sortAndConjoin } from "./stringFunctions";
 
 function upsertParagraph(div: HTMLElement, id: string, content: string) {
   const existingParagraph = Array.from(div.children).find(
@@ -22,10 +24,7 @@ function upsertParagraph(div: HTMLElement, id: string, content: string) {
 
 const rpe = new ResultsPageExtractor(document);
 
-let milestoneCelebrations: MilestoneCelebrations[] = transformMilestones(
-  rpe.finishers
-);
-
+const milestoneCelebrations = fiveKFinishersToMilestones(rpe.finishers);
 const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
 const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
@@ -123,46 +122,4 @@ if (insertionPoint) {
       `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
       `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`
   );
-}
-
-function transformMilestones(
-  finishers: FinisherType[]
-): MilestoneCelebrations[] {
-  type MilestoneDefinition = {
-    restricted_age: string;
-    p_icon: string;
-    v_icon: string;
-  };
-
-  const milestones: Record<number, MilestoneDefinition> = {
-    10: { restricted_age: "J", p_icon: "⚪︎", v_icon: "🤍" },
-    25: { restricted_age: "", p_icon: "🟣", v_icon: "💜" },
-    50: { restricted_age: "", p_icon: "🔴", v_icon: "❤️" },
-    100: { restricted_age: "", p_icon: "⚫", v_icon: "🖤" },
-    250: { restricted_age: "", p_icon: "🟢", v_icon: "💚" },
-    500: { restricted_age: "", p_icon: "🔵", v_icon: "💙" },
-    1000: { restricted_age: "", p_icon: "🟡", v_icon: "💛" },
-  };
-
-  let milestoneCelebrations: MilestoneCelebrations[] = [];
-
-  for (const n in milestones) {
-    const milestone: MilestoneDefinition = milestones[n];
-    const names: string[] = finishers
-      .filter(
-        (f) =>
-          Number(f.runs) === Number(n) &&
-          f.agegroup.startsWith(milestone.restricted_age)
-      )
-      .map((f) => f.name);
-
-    if (names.length > 0) {
-      milestoneCelebrations.push({
-        finished: Number(n),
-        icon: milestone.p_icon,
-        names,
-      });
-    }
-  }
-  return milestoneCelebrations;
 }

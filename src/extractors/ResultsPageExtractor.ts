@@ -1,3 +1,5 @@
+import { Finisher } from "../Finisher";
+
 type FactType = {
   finishers: number;
   finishes: number;
@@ -5,25 +7,12 @@ type FactType = {
   volunteers: number;
 };
 
-export type FinisherType = {
-  name: string;
-  agegroup: string;
-  club: string;
-  gender?: string;
-  position: string;
-  runs: string;
-  vols?: string;
-  agegrade: string;
-  achievement?: string;
-  time?: string;
-};
-
 export class ResultsPageExtractor {
   eventName?: string;
   courseLength: number;
   eventDate?: string;
   eventNumber?: string;
-  finishers: FinisherType[];
+  finishers: Finisher[];
   unknowns: string[];
   newestParkrunners: string[];
   firstTimers: string[];
@@ -55,16 +44,19 @@ export class ResultsPageExtractor {
       resultsPageDocument.querySelectorAll(".Results-table-row");
     const times = Array.from(timeElements);
     this.finishers = Array.from(rowElements).map((d, i) => {
-      return {
-        time: times[i]?.innerText,
-        name: "a parkrunner",
-        agegroup: "",
-        club: "",
-        position: "0",
-        runs: "0",
-        agegrade: "0",
-        ...d.dataset,
-      };
+      var finisher = new Finisher(
+        d.dataset.name,
+        d.dataset.agegroup,
+        d.dataset.club,
+        d.dataset.gender,
+        d.dataset.position,
+        d.dataset.runs,
+        d.dataset.vols,
+        d.dataset.agegrade,
+        d.dataset.achievement,
+        times[i]?.innerText
+      );
+      return finisher;
     });
 
     this.unknowns = this.finishers

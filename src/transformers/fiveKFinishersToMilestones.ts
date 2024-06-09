@@ -1,8 +1,8 @@
-import { FinisherType } from "../extractors/ResultsPageExtractor";
+import { Finisher } from "../Finisher";
 import { MilestoneCelebrations } from "../presenters/MilestonePresenter";
 
 export function fiveKFinishersToMilestones(
-  finishers: FinisherType[]
+  finishers: Finisher[]
 ): MilestoneCelebrations[] {
   type MilestoneDefinition = {
     restricted_age?: string;
@@ -28,7 +28,7 @@ export function fiveKFinishersToMilestones(
         (f) =>
           Number(f.runs) === Number(n) &&
           (!milestone.restricted_age ||
-            f.agegroup.startsWith(milestone.restricted_age))
+            f.agegroup?.startsWith(milestone.restricted_age))
       )
       .map((f) => f.name);
 
