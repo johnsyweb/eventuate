@@ -8,7 +8,7 @@ I occassionally volunteer as a Run Director at [parkrun](https://parkrun.com.au/
 
 ## Development status
 
-I wrote this for myself in an afternoon to see if I could do it and figured it may be useful to others.
+I wrote this for myself in an afternoon to see if I could do it and figured it may be useful to others. I then spent a while over-engineering it in TypeScript and adding some unit tests using `jest`. I don't fully understand how modules work in TypeScript and JavaScript and after bashing my head against the desk, I used Crackle to do the heavy lifting. It almost works like I'd like it to.
 
 ## Getting started
 
@@ -24,7 +24,6 @@ Observe the additional details between the title and the event table.
 ## Requirements
 
 [Firefox](https://mozilla.org/firefox)
-
 
 ## Contributing
 

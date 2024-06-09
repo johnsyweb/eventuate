@@ -37,7 +37,10 @@
   ],
   "scripts": {
     "test": "jest",
-    "crackle:package": "crackle package"
+    "package": "crackle package",
+    "build": "web-ext build",
+    "serve": "web-ext run",
+    "lint": "web-ext lint"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.4",
@@ -48,5 +51,20 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5",
     "web-ext": "^8.0.0"
+  },
+  "webExt": {
+    "verbose": true,
+    "ignoreFiles": [
+      "CODE_OF_CONDUCT.md",
+      "LICENSE.txt",
+      "README.md",
+      "crackle.config.ts",
+      "jest.config.ts",
+      "package.json",
+      "pnpm-lock.yaml",
+      "src",
+      "test",
+      "tsconfig.json"
+    ]
   }
 }
