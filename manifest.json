@@ -39,7 +39,7 @@
         "*://www.parkrun.us/*/results/latestresults/"
       ],
       "js": [
-        "./dist/index.cjs"
+        "./dist/index.js"
       ],
       "run_at": "document_end"
     }

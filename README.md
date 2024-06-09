@@ -10,6 +10,14 @@ I occassionally volunteer as a Run Director at [parkrun](https://parkrun.com.au/
 
 I wrote this for myself in an afternoon to see if I could do it and figured it may be useful to others. I then spent a while over-engineering it in TypeScript and adding some unit tests using `jest`. I don't fully understand how modules work in TypeScript and JavaScript and after bashing my head against the desk, I used Crackle to do the heavy lifting. It almost works like I'd like it to.
 
+## Building locally
+
+Use `pnpm`:
+
+```sh
+pnpm i && pnpm build
+```
+
 ## Getting started
 
 1. Download this repository to a suitable location on your computer.

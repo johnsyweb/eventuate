@@ -36,10 +36,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "web-ext build",
-    "lint": "web-ext lint",
-    "package": "crackle package",
-    "serve": "web-ext run",
+    "build": "pnpm crackle:package ; pnpm rename && pnpm web-ext:build",
+    "crackle:package": "crackle package",
+    "rename": "bash -c 'mv ./dist/index.cjs ./dist/index.js'",
+    "web-ext:build": "web-ext build -o",
+    "web-ext:lint": "web-ext lint",
+    "web-ext:serve": "web-ext run",
     "test": "jest"
   },
   "devDependencies": {
