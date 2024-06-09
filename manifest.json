@@ -1,19 +1,46 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Eventuate",
-  "version": "1.0",
+  "version": "0.0.3",
   "author": "Pete Johns",
   "homepage_url": "https://github.com/johnsyweb/eventuate/",
   "description": "Extracts information from parkrun results pages for inclusion in reports.",
-
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "eventuate.addon@johnsy.com",
+      "strict_min_version": "52.0"
+    }
+  },
   "icons": {
     "24": "icons/eventuate-24.svg"
   },
-
   "content_scripts": [
     {
-      "matches": ["https://www.parkrun.com.au/*/results/*/"],
-      "js": ["eventuate.js"],
+      "matches": [
+        "*://www.parkrun.com.au/*/results/latestresults/",
+        "*://www.parkrun.co.at/*/results/latestresults/",
+        "*://www.parkrun.ca/*/results/latestresults/",
+        "*://www.parkrun.dk/*/results/latestresults/",
+        "*://www.parkrun.fi/*/results/latestresults/",
+        "*://www.parkrun.fr/*/results/latestresults/",
+        "*://www.parkrun.com.de/*/results/latestresults/",
+        "*://www.parkrun.ie/*/results/latestresults/",
+        "*://www.parkrun.it/*/results/latestresults/",
+        "*://www.parkrun.jp/*/results/latestresults/",
+        "*://www.parkrun.my/*/results/latestresults/",
+        "*://www.parkrun.co.nl/*/results/latestresults/",
+        "*://www.parkrun.co.nz/*/results/latestresults/",
+        "*://www.parkrun.no/*/results/latestresults/",
+        "*://www.parkrun.pl/*/results/latestresults/",
+        "*://www.parkrun.sg/*/results/latestresults/",
+        "*://www.parkrun.co.za/*/results/latestresults/",
+        "*://www.parkrun.se/*/results/latestresults/",
+        "*://www.parkrun.org.uk/*/results/latestresults/",
+        "*://www.parkrun.us/*/results/latestresults/"
+      ],
+      "js": [
+        "./dist/index.cjs"
+      ],
       "run_at": "document_end"
     }
   ]
