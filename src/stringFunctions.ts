@@ -1,5 +1,5 @@
-export function pluralize(noun: string, nouns: string, collection: any[]): string {
-  return collection.length === 1 ? noun : nouns;
+export function pluralize(singular: string, plural: string, count: number): string {
+  return count === 1 ? singular : plural;
 }
 
 export function conjoin(elements: string[]): string {

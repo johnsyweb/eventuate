@@ -25,7 +25,7 @@ export class MilestonePresenter {
     } ${pluralize(
       "parkrunner",
       "parkrunners",
-      this._milestoneCelebrationsAll
+      this._milestoneCelebrationsAll.length
     )} who earned themselves a new parkrun club shirt this weekend:\n`;
   }
 

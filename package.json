@@ -36,7 +36,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "crackle:package": "crackle package"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.4",

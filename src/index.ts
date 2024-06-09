@@ -32,12 +32,12 @@ const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eve
 
 const newestParkrunnersTitle = `Congratulations to our ${
   rpe.newestParkrunners.length
-} newest ${pluralize("parkrunner", "parkrunners", rpe.newestParkrunners)}: `;
+} newest ${pluralize("parkrunner", "parkrunners", rpe.newestParkrunners.length)}: `;
 
 const firstTimersTitle = `Welcome to the ${rpe.firstTimers.length} ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.firstTimers
+  rpe.firstTimers.length
 )} who joined us at ${rpe.eventName} for the first time: `;
 
 const finishersWithNewPBsTitle = `Very well done to the ${
@@ -45,7 +45,7 @@ const finishersWithNewPBsTitle = `Very well done to the ${
 } ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.finishersWithNewPBs
+  rpe.finishersWithNewPBs.length
 )} who improved their personal best this week: `;
 
 const runningWalkingGroupsTitle = `We were pleased to see ${
@@ -53,7 +53,7 @@ const runningWalkingGroupsTitle = `We were pleased to see ${
 } ${pluralize(
   "active group",
   "walking and running groups",
-  rpe.runningWalkingGroups
+  rpe.runningWalkingGroups.length
 )} represented at this event: `;
 
 const volunteersTitle = `${rpe.eventName} are very grateful to the ${rpe.volunteersList.length} amazing volunteers who made this event happen: `;
