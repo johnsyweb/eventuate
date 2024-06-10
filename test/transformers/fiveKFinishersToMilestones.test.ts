@@ -1,8 +1,11 @@
-import { Finisher } from "../../src/Finisher";
-import { fiveKFinishersToMilestones } from "../../src/transformers/fiveKFinishersToMilestones";
+import {
+  IFinisher,
+  fiveKFinishersToMilestones,
+} from "../../src/transformers/fiveKFinishersToMilestones";
+import { Finisher } from "../../src/extractors/ResultsPageExtractor";
 
 describe(fiveKFinishersToMilestones, () => {
-  var mickey: Finisher;
+  var mickey: IFinisher;
 
   beforeEach(() => {
     mickey = new Finisher(

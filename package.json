@@ -36,9 +36,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm crackle:package ; pnpm rename && pnpm web-ext:build",
+    "build": "pnpm crackle:package ; pnpm rename && pnpm web-ext:build && pnpm repack-for-chromium",
     "crackle:package": "crackle package",
     "rename": "bash -c 'mv ./dist/index.cjs ./dist/index.js'",
+    "repack-for-chromium": "bash './script/repack-for-chromium'",
     "web-ext:build": "web-ext build -o",
     "web-ext:lint": "web-ext lint",
     "web-ext:serve": "web-ext run",
@@ -61,6 +62,7 @@
       "LICENSE.txt",
       "README.md",
       "crackle.config.ts",
+      "dist/index.mjs",
       "jest.config.ts",
       "package.json",
       "pnpm-lock.yaml",

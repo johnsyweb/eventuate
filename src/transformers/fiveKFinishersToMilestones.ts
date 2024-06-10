@@ -1,8 +1,24 @@
-import { Finisher } from "../Finisher";
-import { MilestoneCelebrations } from "../presenters/MilestonePresenter";
+export interface IFinisher {
+  name: string;
+  agegroup?: string;
+  club?: string;
+  gender?: string;
+  position?: string;
+  runs: string;
+  vols?: string;
+  agegrade?: string;
+  achievement?: string;
+  time?: string;
+}
+
+type MilestoneCelebrations = {
+  finished: number;
+  icon: string;
+  names: string[];
+};
 
 export function fiveKFinishersToMilestones(
-  finishers: Finisher[]
+  finishers: IFinisher[]
 ): MilestoneCelebrations[] {
   type MilestoneDefinition = {
     restricted_age?: string;

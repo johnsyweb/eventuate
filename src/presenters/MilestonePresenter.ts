@@ -1,7 +1,7 @@
 
 import { pluralize, sortAndConjoin } from "../stringFunctions";
 
-export type MilestoneCelebrations = {
+ type MilestoneCelebrations = {
   finished: number;
   icon: string;
   names: string[];
@@ -20,9 +20,7 @@ export class MilestonePresenter {
   }
 
   title(): string {
-    return `Three cheers to the ${
-      this._milestoneCelebrationsAll.length
-    } ${pluralize(
+    return `Three cheers to the ${pluralize(
       "parkrunner",
       "parkrunners",
       this._milestoneCelebrationsAll.length

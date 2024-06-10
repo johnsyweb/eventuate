@@ -1,10 +1,7 @@
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
+import { MilestonePresenter } from "./presenters/MilestonePresenter";
+import { conjoin, pluralize, sortAndConjoin } from "./stringFunctions";
 import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
-import {
-  MilestoneCelebrations,
-  MilestonePresenter,
-} from "./presenters/MilestonePresenter";
-import { pluralize, conjoin, sortAndConjoin } from "./stringFunctions";
 
 function upsertParagraph(div: HTMLElement, id: string, content: string) {
   const existingParagraph = Array.from(div.children).find(
@@ -23,39 +20,30 @@ function upsertParagraph(div: HTMLElement, id: string, content: string) {
 
 const rpe = new ResultsPageExtractor(document);
 
-let milestoneCelebrations: MilestoneCelebrations[] = fiveKFinishersToMilestones(
-  rpe.finishers
-);
-
+const milestoneCelebrations = fiveKFinishersToMilestones(rpe.finishers);
 const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
 const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
 
-const newestParkrunnersTitle = `Congratulations to our ${
-  rpe.newestParkrunners.length
-} newest ${pluralize(
-  "parkrunner",
-  "parkrunners",
+const newestParkrunnersTitle = `Congratulations to our ${pluralize(
+  "newest parkrunner",
+  "newest parkrunners",
   rpe.newestParkrunners.length
 )}: `;
 
-const firstTimersTitle = `Welcome to the ${rpe.firstTimers.length} ${pluralize(
+const firstTimersTitle = `Welcome to the ${pluralize(
   "parkrunner",
   "parkrunners",
   rpe.firstTimers.length
-)} who joined us at ${rpe.eventName} for the first time: `;
+)} who joined us at ${rpe.eventName ?? "parkrun"} for the first time: `;
 
-const finishersWithNewPBsTitle = `Very well done to the ${
-  rpe.finishersWithNewPBs.length
-} ${pluralize(
+const finishersWithNewPBsTitle = `Very well done to the ${pluralize(
   "parkrunner",
   "parkrunners",
   rpe.finishersWithNewPBs.length
 )} who improved their personal best this week: `;
 
-const runningWalkingGroupsTitle = `We were pleased to see ${
-  rpe.runningWalkingGroups.length
-} ${pluralize(
+const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
   "active group",
   "walking and running groups",
   rpe.runningWalkingGroups.length
