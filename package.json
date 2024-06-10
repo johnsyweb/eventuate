@@ -63,6 +63,7 @@
       "README.md",
       "crackle.config.ts",
       "dist/index.mjs",
+      "dist/index.d.*",
       "jest.config.ts",
       "package.json",
       "pnpm-lock.yaml",
