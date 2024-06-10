@@ -40,10 +40,10 @@
     "crackle:package": "crackle package",
     "rename": "bash -c 'mv ./dist/index.cjs ./dist/index.js'",
     "repack-for-chromium": "bash './script/repack-for-chromium'",
+    "test": "jest",
     "web-ext:build": "web-ext build -o",
     "web-ext:lint": "web-ext lint",
-    "web-ext:serve": "web-ext run",
-    "test": "jest"
+    "web-ext:serve": "web-ext run"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.4",
@@ -55,10 +55,12 @@
     "typescript": "^5.4.5",
     "web-ext": "^8.0.0"
   },
+  "packageManager": "pnpm@9.2.0",
   "webExt": {
     "verbose": true,
     "ignoreFiles": [
       ".web-extension-id",
+      "Dockerfile",
       "CODE_OF_CONDUCT.md",
       "LICENSE.txt",
       "README.md",
@@ -71,6 +73,7 @@
       "pnpm-lock.yaml",
       "script",
       "src",
+      "target",
       "test",
       "tsconfig.json"
     ]

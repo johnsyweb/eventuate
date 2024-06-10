@@ -1,9 +1,11 @@
 /.web-extension-id
 /chromium*
-/eventuate-chromium.zip
+/dist
+/eventuate*
 /node_modules
-/web-ext-artifacts
+/target
 
+/web-ext-artifacts
 # managed by crackle
 /dist
 # end managed by crackle

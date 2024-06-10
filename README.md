@@ -21,6 +21,12 @@ pnpm build // Package up all the things for Firefox and Chromium browsers
 pnpm web-ext:lint // Verify package for Firefox
 ```
 
+Or if Docker's more your thing:
+
+```sh
+docker buildx build . -o target
+```
+
 ## Getting started
 
 1. Download this repository to a suitable location on your computer.
@@ -36,7 +42,7 @@ Observe the additional details between the title and the event table.
 
 ## Requirements
 
-[Firefox](https://mozilla.org/firefox)
+This was built with [Firefox](https://mozilla.org/firefox) in mind but also works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
 
 ## Contributing
 

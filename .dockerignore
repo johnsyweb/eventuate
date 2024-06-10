@@ -1,0 +1,14 @@
+/.git
+/.github
+/.gitignore
+/.web-extension-id
+/CODE_OF_CONDUCT.md
+/LICENSE.txt
+/README.md
+/assets
+/chromium*
+/dist
+/eventuate*
+/node_modules
+/target
+/web-ext-artifacts
