@@ -67,6 +67,7 @@
       "jest.config.ts",
       "package.json",
       "pnpm-lock.yaml",
+      "script",
       "src",
       "test",
       "tsconfig.json"

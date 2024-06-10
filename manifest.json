@@ -12,7 +12,8 @@
     }
   },
   "icons": {
-    "24": "icons/eventuate-24.svg"
+    "24": "icons/eventuate-24.svg",
+    "128": "icons/eventuate-128.svg"
   },
   "content_scripts": [
     {
