@@ -58,9 +58,11 @@
   "webExt": {
     "verbose": true,
     "ignoreFiles": [
+      ".web-extension-id",
       "CODE_OF_CONDUCT.md",
       "LICENSE.txt",
       "README.md",
+      "chromium*",
       "crackle.config.ts",
       "dist/index.mjs",
       "dist/index.d.*",

@@ -1,3 +1,4 @@
+/.web-extension-id
 /chromium*
 /eventuate-chromium.zip
 /node_modules
