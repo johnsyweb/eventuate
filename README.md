@@ -15,7 +15,10 @@ I wrote this for myself in an afternoon to see if I could do it and figured it m
 Use `pnpm`:
 
 ```sh
-pnpm i && pnpm build
+pnpm i // Install the development dependencies
+pnpm t // Run unit tests
+pnpm build // Package up all the things for Firefox and Chromium browsers
+pnpm web-ext:lint // Verify package for Firefox
 ```
 
 ## Getting started
@@ -25,9 +28,11 @@ pnpm i && pnpm build
 1. Use the "Load Temporary Add-on..." button.
 1. Browse to and open the file `manifest.json` from the location where it was saved.
 1. The add-on will now appear in the add-on manager’s list of installed add-ons and be ready to use
-1. Navigate to a results page such as <https://www.parkrun.com.au/brimbank/results/latestresults/>.
+1. Navigate to a results page such as <https://www.parkrun.com.au/timboon/results/latestresults/>.
 
 Observe the additional details between the title and the event table.
+
+![Sample Screenshot](./assets/screenshot.jpg)
 
 ## Requirements
 
