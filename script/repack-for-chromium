@@ -7,4 +7,4 @@ unzip web-ext-artifacts/eventuate-*.zip -d chromium
 mv chromium/manifest.json chromium/manifest-mdn.json
 jq 'del(.browser_specific_settings)' chromium/manifest-mdn.json > chromium/manifest.json
 rm chromium/manifest-mdn.json
-pushd chromium && zip ../eventuate-chromium ./* && popd
+pushd chromium && zip -r ../eventuate-chromium ./* && popd
