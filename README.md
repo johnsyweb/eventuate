@@ -4,11 +4,36 @@ Extracts information from parkrun results pages for inclusion in reports.
 
 ## Introduction
 
-I occassionally volunteer as a Run Director at [parkrun](https://parkrun.com.au/) and produce an event report to celebrate achievements. I also write software occassionally to automate parts of my life. This is the confluence of these two interests.
+I occasionally volunteer as a Run Director at [parkrun](https://parkrun.com.au/)
+and produce an event report to celebrate achievements. I also write software
+occasionally to automate parts of my life. This is the confluence of these two
+interests.
+
+## Description
+
+If you volunteer at parkrun and produce an event report to celebrate
+achievements, this addon will make your life easier!
+
+As soon as the latest results page loads for an event, you'll see a bunch some
+useful text before the results table is displayed, including:
+
+- A summary of the number of finishers
+- Any finishers who joined a milestone club
+- Congratulations to new parkrunners
+- A welcome to first-time visitors
+- A celebration of personal bests
+- A shout out to the walking and running clubs
+- Cheers to our volunteers.
+- A reminder to bring a barcode
+- And a beautiful bunch of facts and figures
 
 ## Development status
 
-I wrote this for myself in an afternoon to see if I could do it and figured it may be useful to others. I then spent a while over-engineering it in TypeScript and adding some unit tests using `jest`. I don't fully understand how modules work in TypeScript and JavaScript and after bashing my head against the desk, I used Crackle to do the heavy lifting. It almost works like I'd like it to.
+I wrote this for myself in an afternoon to see if I could do it and figured it
+may be useful to others. I then spent a while over-engineering it in TypeScript
+and adding some unit tests using `jest`. I don't fully understand how modules
+work in TypeScript and JavaScript and after bashing my head against the desk, I
+used Crackle to do the heavy lifting. It almost works like I'd like it to.
 
 ## Building locally
 
@@ -42,7 +67,8 @@ Observe the additional details between the title and the event table.
 
 ## Requirements
 
-This was built with [Firefox](https://mozilla.org/firefox) in mind but also works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
+This was built with [Firefox](https://mozilla.org/firefox) in mind but also
+works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
 
 ## Contributing
 
@@ -54,10 +80,11 @@ conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
 
 ## License [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt)
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The addon is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
 Everyone interacting in the eventuate project's codebases, issue trackers, chat
 rooms and mailing lists is expected to follow the [code of
 conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
+
