@@ -13,7 +13,7 @@ export class MilestonePresenter {
   constructor(milestoneCelebrations: MilestoneCelebrations[]) {
     this._milestoneCelebrations = milestoneCelebrations;
     this._milestoneCelebrationsAll = this._milestoneCelebrations.flatMap(
-      (mc) => mc.names
+      (mc) => mc.names,
     );
   }
 
@@ -21,7 +21,7 @@ export class MilestonePresenter {
     return `Three cheers to the ${pluralize(
       "parkrunner",
       "parkrunners",
-      this._milestoneCelebrationsAll.length
+      this._milestoneCelebrationsAll.length,
     )} who earned themselves a new parkrun club shirt this weekend:\n`;
   }
 

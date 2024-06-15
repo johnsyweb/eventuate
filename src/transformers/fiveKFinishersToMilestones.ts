@@ -18,7 +18,7 @@ type MilestoneCelebrations = {
 };
 
 export function fiveKFinishersToMilestones(
-  finishers: IFinisher[]
+  finishers: IFinisher[],
 ): MilestoneCelebrations[] {
   type MilestoneDefinition = {
     restricted_age?: string;
@@ -44,7 +44,7 @@ export function fiveKFinishersToMilestones(
         (f) =>
           Number(f.runs) === Number(n) &&
           (!milestone.restricted_age ||
-            f.agegroup?.startsWith(milestone.restricted_age))
+            f.agegroup?.startsWith(milestone.restricted_age)),
       )
       .map((f) => f.name);
 

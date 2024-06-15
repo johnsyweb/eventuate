@@ -5,7 +5,7 @@ import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMiles
 
 function upsertParagraph(div: HTMLElement, id: string, content: string) {
   const existingParagraph = Array.from(div.children).find(
-    (element) => element.id === id
+    (element) => element.id === id,
   );
 
   if (existingParagraph) {
@@ -32,25 +32,25 @@ const introduction = `${rpe.finishers.length} parkrunners joined us on ${formatt
 const newestParkrunnersTitle = `Congratulations to our ${pluralize(
   "newest parkrunner",
   "newest parkrunners",
-  rpe.newestParkrunners.length
+  rpe.newestParkrunners.length,
 )}: `;
 
 const firstTimersTitle = `Welcome to the ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.firstTimers.length
+  rpe.firstTimers.length,
 )} who joined us at ${rpe.eventName ?? "parkrun"} for the first time: `;
 
 const finishersWithNewPBsTitle = `Very well done to the ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.finishersWithNewPBs.length
+  rpe.finishersWithNewPBs.length,
 )} who improved their personal best this week: `;
 
 const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
   "active group",
   "walking and running groups",
-  rpe.runningWalkingGroups.length
+  rpe.runningWalkingGroups.length,
 )} represented at this event: `;
 
 const volunteersTitle = `${rpe.eventName} are very grateful to the ${rpe.volunteersList.length} amazing volunteers who made this event happen: `;
@@ -104,7 +104,7 @@ if (insertionPoint) {
     upsertParagraph(
       eventuateDiv,
       "unknowns",
-      `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`
+      `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`,
     );
   }
 
@@ -118,6 +118,6 @@ if (insertionPoint) {
         rpe.facts.finishes * rpe.courseLength
       ).toLocaleString()}km, ` +
       `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
-      `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`
+      `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`,
   );
 }

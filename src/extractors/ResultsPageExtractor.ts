@@ -1,4 +1,4 @@
- interface IFinisher {
+interface IFinisher {
   name: string;
   agegroup?: string;
   club?: string;
@@ -33,7 +33,7 @@ export class Finisher implements IFinisher {
     vols: string | undefined,
     agegrade: string | undefined,
     achievement: string | undefined,
-    time: string | undefined
+    time: string | undefined,
   ) {
     this.name = name ?? "a parkrunner";
     this.agegroup = agegroup;
@@ -51,7 +51,6 @@ export class Finisher implements IFinisher {
     return this.runs === "0";
   }
 }
-
 
 type FactType = {
   finishers: number;
@@ -82,16 +81,17 @@ export class ResultsPageExtractor {
 
     this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
     this.eventDate =
-      resultsPageDocument.querySelector(".format-date")?.textContent ||
+      resultsPageDocument.querySelector(".format-date")?.textContent ??
       undefined;
+
     this.eventNumber =
       resultsPageDocument.querySelector(
-        ".Results-header > h3 > span:last-child"
+        ".Results-header > h3 > span:last-child",
       )?.textContent || undefined;
 
     const timeElements: NodeListOf<HTMLElement> =
       resultsPageDocument.querySelectorAll(
-        ".Results-table-row > .Results-table-td--time"
+        ".Results-table-row > .Results-table-td--time",
       );
     const rowElements: NodeListOf<HTMLElement> =
       resultsPageDocument.querySelectorAll(".Results-table-row");
@@ -107,7 +107,7 @@ export class ResultsPageExtractor {
         d.dataset.vols,
         d.dataset.agegrade,
         d.dataset.achievement,
-        times[i]?.innerText
+        times[i]?.innerText,
       );
       return finisher;
     });
@@ -129,7 +129,7 @@ export class ResultsPageExtractor {
       .map((p) => `${p.name} (${p.time})`);
 
     this.runningWalkingGroups = Array.from(
-      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
+      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== "")),
     );
 
     const volunteerElements: NodeListOf<HTMLAnchorElement> | undefined =

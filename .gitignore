@@ -1,11 +1,11 @@
 /.web-extension-id
 /chromium*
-/dist
 /eventuate*
 /node_modules
 /target
 
 /web-ext-artifacts
+
 # managed by crackle
 /dist
 # end managed by crackle

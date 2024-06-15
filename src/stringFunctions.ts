@@ -1,4 +1,8 @@
-export function pluralize(singular: string, plural: string, count: number): string {
+export function pluralize(
+  singular: string,
+  plural: string,
+  count: number,
+): string {
   return count === 1 ? singular : `${count} ${plural}`;
 }
 

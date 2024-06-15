@@ -18,7 +18,7 @@ describe(fiveKFinishersToMilestones, () => {
       "vols",
       "agegrade",
       "achievement",
-      "59:59"
+      "59:59",
     );
   });
 
