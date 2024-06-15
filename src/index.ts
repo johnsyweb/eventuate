@@ -23,7 +23,11 @@ const rpe = new ResultsPageExtractor(document);
 const milestoneCelebrations = fiveKFinishersToMilestones(rpe.finishers);
 const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
-const introduction = `${rpe.finishers.length} parkrunners joined us on ${rpe.eventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
+const formattedEventDate = new Date(
+  Date.parse(rpe.eventDate ?? "today"),
+).toLocaleDateString(undefined, { dateStyle: "full" });
+
+const introduction = `${rpe.finishers.length} parkrunners joined us on ${formattedEventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
 
 const newestParkrunnersTitle = `Congratulations to our ${pluralize(
   "newest parkrunner",
