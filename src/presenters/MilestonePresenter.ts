@@ -1,12 +1,10 @@
-
 import { pluralize, sortAndConjoin } from "../stringFunctions";
 
- type MilestoneCelebrations = {
+type MilestoneCelebrations = {
   finished: number;
   icon: string;
   names: string[];
 };
-
 
 export class MilestonePresenter {
   _milestoneCelebrations: MilestoneCelebrations[];
@@ -33,9 +31,8 @@ export class MilestonePresenter {
         (mc) =>
           `${mc.icon} ${sortAndConjoin(mc.names)} joined the ${
             mc.finished
-          }-club.`
+          }-club`,
       )
       .join("\n");
   }
 }
-
