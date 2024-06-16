@@ -1,9 +1,14 @@
+import { VolunteerType } from "extractors/ResultsPageExtractor";
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
 import { MilestonePresenter } from "./presenters/MilestonePresenter";
 import { conjoin, pluralize, sortAndConjoin } from "./stringFunctions";
 import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
 
-function upsertParagraph(div: HTMLElement, id: string, content: string) {
+function upsertParagraph(
+  div: HTMLElement,
+  id: string,
+  content: string,
+): HTMLParagraphElement {
   const existingParagraph = Array.from(div.children).find(
     (element) => element.id === id,
   );
@@ -16,6 +21,7 @@ function upsertParagraph(div: HTMLElement, id: string, content: string) {
   paragraph.id = id;
   paragraph.innerText = content;
   div.appendChild(paragraph);
+  return paragraph;
 }
 
 const rpe = new ResultsPageExtractor(document);
@@ -53,7 +59,13 @@ const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
   rpe.runningWalkingGroups.length,
 )} represented at this event: `;
 
-const volunteersTitle = `${rpe.eventName} are very grateful to the ${rpe.volunteersList.length} amazing volunteers who made this event happen: `;
+var volunteerList = rpe.volunteersList();
+const volunteersTitle = `${rpe.eventName} are very grateful to the ${volunteerList.length} amazing volunteers who made this event happen: `;
+
+const eventuateDiv: HTMLDivElement =
+  (document.getElementById("eventuate") as HTMLDivElement) ||
+  document.createElement("div");
+eventuateDiv.id = "eventuate";
 
 const reportDetails = {
   milestoneCelebrations: {
@@ -76,15 +88,7 @@ const reportDetails = {
     title: runningWalkingGroupsTitle,
     details: sortAndConjoin(rpe.runningWalkingGroups),
   },
-  volunteers: {
-    title: volunteersTitle,
-    details: sortAndConjoin(rpe.volunteersList.map((v) => v.name)),
-  },
 };
-
-const eventuateDiv: HTMLElement =
-  document.getElementById("eventuate") || document.createElement("div");
-eventuateDiv.id = "eventuate";
 
 const insertionPoint: HTMLDivElement | null =
   document.querySelector(".Results-header");
@@ -107,6 +111,34 @@ if (insertionPoint) {
       `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`,
     );
   }
+  const p = upsertParagraph(eventuateDiv, "volunteers", volunteersTitle);
+
+  volunteerList
+    .sort((v1, v2) => v1.name.localeCompare(v2.name))
+    .forEach((v, i) => {
+      const span = document.createElement("span");
+      const punctuation =
+        i < volunteerList.length - 1
+          ? i === volunteerList.length - 2
+            ? document.createTextNode(", and ")
+            : document.createTextNode(", ")
+          : document.createTextNode(".");
+      span.id = v.athleteID.toString();
+      if (v.vols) {
+        span.title = v.vols;
+        span.innerText = presentVolunteerName(
+          v.name,
+          v.vols,
+          v.agegroup ?? "None",
+        );
+      } else {
+        span.innerText = v.name;
+        sourceVolunteerCount(v, span);
+      }
+
+      p.insertAdjacentElement("beforeend", span);
+      p.appendChild(punctuation);
+    });
 
   upsertParagraph(
     eventuateDiv,
@@ -120,4 +152,62 @@ if (insertionPoint) {
       `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
       `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`,
   );
+}
+
+function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
+  const timeout = v.athleteID % 1000;
+  const volunteerUrl = new URL(
+    `/parkrunner/${v.athleteID}/`,
+    window.location.origin,
+  ).toString();
+
+  setTimeout(() => {
+    fetch(volunteerUrl)
+      .then((r) => r.text())
+      .then((html) => new DOMParser().parseFromString(html, "text/html"))
+      .then((doc) => {
+        return {
+          vols: doc.querySelector(
+            "h3#volunteer-summary + table tfoot td:last-child",
+          ),
+          agegroup: doc.querySelector("h3 + p") as HTMLParagraphElement,
+        };
+      })
+      .then((e) => {
+        v.vols = e.vols?.textContent ?? "";
+        v.agegroup =
+          e.agegroup?.textContent?.trim().split(" ").slice(-1)[0] ?? "";
+
+        update.innerText = presentVolunteerName(v.name, v.vols, v.agegroup);
+        update.title = v.vols;
+        const a: HTMLAnchorElement | null = document.querySelector(
+          `a[data-athleteid="${v.athleteID}"]`,
+        );
+        if (a) {
+          a.title = v.vols;
+          a.dataset.vols = v.vols;
+          a.dataset.agegroup = v.agegroup;
+          a.dataset.vols_source = volunteerUrl;
+        }
+      });
+  }, timeout);
+}
+
+function presentVolunteerName(name: string, vols: string, agegroup: string) {
+  const milestones = {
+    10: "J",
+    25: "",
+    50: "",
+    100: "",
+    250: "",
+    500: "",
+    1000: "",
+  };
+  for (const n in milestones) {
+    const restricted_age: string = milestones[n];
+    if (vols === n && agegroup.startsWith(restricted_age)) {
+      return `${name} (congratulations on joining the v${n}-club)`;
+    }
+  }
+  return name;
 }

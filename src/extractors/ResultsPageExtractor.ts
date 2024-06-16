@@ -9,6 +9,7 @@ interface IFinisher {
   agegrade?: string;
   achievement?: string;
   time?: string;
+  athleteID?: number;
 }
 
 export class Finisher implements IFinisher {
@@ -22,6 +23,7 @@ export class Finisher implements IFinisher {
   agegrade?: string;
   achievement?: string;
   time?: string;
+  athleteID?: number;
 
   constructor(
     name: string | undefined,
@@ -34,6 +36,7 @@ export class Finisher implements IFinisher {
     agegrade: string | undefined,
     achievement: string | undefined,
     time: string | undefined,
+    athleteID: number | undefined,
   ) {
     this.name = name ?? "a parkrunner";
     this.agegroup = agegroup;
@@ -45,6 +48,7 @@ export class Finisher implements IFinisher {
     this.agegrade = agegrade;
     this.achievement = achievement;
     this.time = time;
+    this.athleteID = athleteID;
   }
 
   isUnknown(): boolean {
@@ -52,11 +56,23 @@ export class Finisher implements IFinisher {
   }
 }
 
+function athleteIDFromURI(uri: string): number {
+  return Number(uri?.split("/")?.slice(-1));
+}
+
 type FactType = {
   finishers: number;
   finishes: number;
   pbs: number;
   volunteers: number;
+};
+
+type VolunteerType = {
+  name: string;
+  link: string;
+  athleteID: number;
+  vols: string | undefined;
+  agegroup: string | undefined;
 };
 
 export class ResultsPageExtractor {
@@ -70,11 +86,38 @@ export class ResultsPageExtractor {
   firstTimers: string[];
   finishersWithNewPBs: string[];
   runningWalkingGroups: string[];
-  volunteersList!: { name: string; link: string }[];
-
   facts = { finishers: 0, finishes: 0, pbs: 0, volunteers: 0 };
+  resultsPageDocument: Document;
 
   constructor(resultsPageDocument: Document) {
+    this.resultsPageDocument = resultsPageDocument;
+
+    const rowElements: NodeListOf<HTMLElement> =
+      resultsPageDocument.querySelectorAll(".Results-table-row");
+
+    this.finishers = Array.from(rowElements).map(
+      (d) =>
+        new Finisher(
+          d.dataset.name,
+          d.dataset.agegroup,
+          d.dataset.club,
+          d.dataset.gender,
+          d.dataset.position,
+          d.dataset.runs,
+          d.dataset.vols,
+          d.dataset.agegrade,
+          d.dataset.achievement,
+          d.querySelector(".Results-table-td--time .compact")?.textContent ??
+            undefined,
+          athleteIDFromURI(
+            (d.querySelector(".Results-table-td--name a") as HTMLAnchorElement)
+              ?.href,
+          ),
+        ),
+    );
+
+    this.populateVolunteerData();
+
     this.eventName =
       resultsPageDocument.querySelector(".Results-header > h1")?.textContent ||
       undefined;
@@ -88,29 +131,6 @@ export class ResultsPageExtractor {
       resultsPageDocument.querySelector(
         ".Results-header > h3 > span:last-child",
       )?.textContent || undefined;
-
-    const timeElements: NodeListOf<HTMLElement> =
-      resultsPageDocument.querySelectorAll(
-        ".Results-table-row > .Results-table-td--time",
-      );
-    const rowElements: NodeListOf<HTMLElement> =
-      resultsPageDocument.querySelectorAll(".Results-table-row");
-    const times = Array.from(timeElements);
-    this.finishers = Array.from(rowElements).map((d, i) => {
-      var finisher = new Finisher(
-        d.dataset.name,
-        d.dataset.agegroup,
-        d.dataset.club,
-        d.dataset.gender,
-        d.dataset.position,
-        d.dataset.runs,
-        d.dataset.vols,
-        d.dataset.agegrade,
-        d.dataset.achievement,
-        times[i]?.innerText,
-      );
-      return finisher;
-    });
 
     this.unknowns = this.finishers
       .filter((p) => Number(p.runs) === 0)
@@ -131,16 +151,6 @@ export class ResultsPageExtractor {
     this.runningWalkingGroups = Array.from(
       new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== "")),
     );
-
-    const volunteerElements: NodeListOf<HTMLAnchorElement> | undefined =
-      resultsPageDocument
-        ?.querySelector(".Results")
-        ?.nextElementSibling?.querySelector("p")
-        ?.querySelectorAll("a");
-
-    this.volunteersList = Array.from(volunteerElements || []).map((v) => {
-      return { name: v.innerText, link: v.href };
-    });
 
     const statElements: NodeListOf<HTMLDivElement> =
       document.querySelectorAll(".aStat");
@@ -171,6 +181,45 @@ export class ResultsPageExtractor {
             break;
         }
       }
+    });
+  }
+
+  private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
+    return (
+      this.resultsPageDocument
+        .querySelector(".Results + div h3 + p")
+        ?.querySelectorAll("a") ?? []
+    );
+  }
+
+  private populateVolunteerData() {
+    this.volunteerElements().forEach((v) => {
+      const athleteID = athleteIDFromURI(v.href);
+
+      if (!v.dataset.athleteid) {
+        v.dataset.athleteid = athleteID.toString();
+      }
+
+      if (!v.dataset.vols || !v.dataset.agegroup) {
+        const finisher = this.finishers.find((f) => f.athleteID === athleteID);
+        if (finisher) {
+          v.dataset.vols = finisher?.vols?.toString();
+          v.dataset.agegroup = finisher?.agegroup;
+          v.dataset.vols_source = "finisher";
+        }
+      }
+    });
+  }
+
+  volunteersList(): VolunteerType[] {
+    return Array.from(this.volunteerElements()).map((v) => {
+      return {
+        name: v.innerText,
+        link: v.href,
+        athleteID: Number(v.dataset.athleteid),
+        agegroup: v.dataset.agegroup,
+        vols: v.dataset.vols,
+      };
     });
   }
 }
