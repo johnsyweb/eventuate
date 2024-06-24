@@ -1,0 +1,42 @@
+#eventuate::before {
+  background-color: lightcoral;
+  content: "⚠️ This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself. ⚠️";
+  color: whitesmoke;
+  font-weight: bold;
+}
+
+#eventuate {
+  background: lightgoldenrodyellow;
+}
+
+#eventuate #volunteers span:after {
+  color: orange;
+}
+
+#eventuate #volunteers span[data-vols]::after {
+  content: " (v" attr(data-vols) ")";
+}
+
+#eventuate #volunteers span:not([data-vols]):after {
+  content: " (⏳︎)";
+}
+
+.Results+div h3:first-of-type+p:first-of-type a[data-vols]::after {
+  content: " (v" attr(data-vols) ")";
+}
+
+.Results+div h3:first-of-type+p:first-of-type a:not([data-vols]):after {
+  content: " (fetching)";
+}
+
+.Results+div h3:first-of-type+p:first-of-type a[data-vols_source="finisher"]::before {
+  content: "👟";
+}
+
+#eventuate #volunteers span[data-vols]::after {
+  content: " (v" attr(data-vols) ")";
+}
+
+#eventuate #volunteers span:not([data-vols]):after {
+  content: " (⏳︎)";
+}

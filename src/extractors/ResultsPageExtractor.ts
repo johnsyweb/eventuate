@@ -187,8 +187,7 @@ export class ResultsPageExtractor {
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
     return (
       this.resultsPageDocument
-        .querySelector(".Results + div h3 + p")
-        ?.querySelectorAll("a") ?? []
+        .querySelectorAll(".Results + div h3:first-of-type + p:first-of-type a")
     );
   }
 

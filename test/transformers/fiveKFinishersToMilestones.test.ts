@@ -19,6 +19,7 @@ describe(fiveKFinishersToMilestones, () => {
       "agegrade",
       "achievement",
       "59:59",
+      9999999,
     );
   });
 

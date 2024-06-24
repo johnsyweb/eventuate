@@ -7,10 +7,10 @@ import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMiles
 function upsertParagraph(
   div: HTMLElement,
   id: string,
-  content: string,
+  content: string
 ): HTMLParagraphElement {
   const existingParagraph = Array.from(div.children).find(
-    (element) => element.id === id,
+    (element) => element.id === id
   );
 
   if (existingParagraph) {
@@ -30,33 +30,33 @@ const milestoneCelebrations = fiveKFinishersToMilestones(rpe.finishers);
 const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
 const formattedEventDate = new Date(
-  Date.parse(rpe.eventDate ?? "today"),
+  Date.parse(rpe.eventDate ?? "today")
 ).toLocaleDateString(undefined, { dateStyle: "full" });
 
-const introduction = `${rpe.finishers.length} parkrunners joined us on ${formattedEventDate} for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
+const introduction = `On ${formattedEventDate} ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
 
 const newestParkrunnersTitle = `Congratulations to our ${pluralize(
   "newest parkrunner",
   "newest parkrunners",
-  rpe.newestParkrunners.length,
+  rpe.newestParkrunners.length
 )}: `;
 
 const firstTimersTitle = `Welcome to the ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.firstTimers.length,
+  rpe.firstTimers.length
 )} who joined us at ${rpe.eventName ?? "parkrun"} for the first time: `;
 
 const finishersWithNewPBsTitle = `Very well done to the ${pluralize(
   "parkrunner",
   "parkrunners",
-  rpe.finishersWithNewPBs.length,
+  rpe.finishersWithNewPBs.length
 )} who improved their personal best this week: `;
 
 const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
   "active group",
   "walking and running groups",
-  rpe.runningWalkingGroups.length,
+  rpe.runningWalkingGroups.length
 )} represented at this event: `;
 
 var volunteerList = rpe.volunteersList();
@@ -108,7 +108,7 @@ if (insertionPoint) {
     upsertParagraph(
       eventuateDiv,
       "unknowns",
-      `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`,
+      `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded.`
     );
   }
   const p = upsertParagraph(eventuateDiv, "volunteers", volunteersTitle);
@@ -126,10 +126,14 @@ if (insertionPoint) {
       span.id = v.athleteID.toString();
       if (v.vols) {
         span.title = v.vols;
+        span.dataset.vols = v.vols;
+        span.dataset.agegroup = v.agegroup;
+        span.dataset.vols_source = "finisher";
+
         span.innerText = presentVolunteerName(
           v.name,
           v.vols,
-          v.agegroup ?? "None",
+          v.agegroup ?? "None"
         );
       } else {
         span.innerText = v.name;
@@ -150,7 +154,7 @@ if (insertionPoint) {
         rpe.facts.finishes * rpe.courseLength
       ).toLocaleString()}km, ` +
       `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
-      `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`,
+      `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions.`
   );
 }
 
@@ -158,7 +162,7 @@ function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
   const timeout = v.athleteID % 1000;
   const volunteerUrl = new URL(
     `/parkrunner/${v.athleteID}/`,
-    window.location.origin,
+    window.location.origin
   ).toString();
 
   setTimeout(() => {
@@ -168,7 +172,7 @@ function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
       .then((doc) => {
         return {
           vols: doc.querySelector(
-            "h3#volunteer-summary + table tfoot td:last-child",
+            "h3#volunteer-summary + table tfoot td:last-child"
           ),
           agegroup: doc.querySelector("h3 + p") as HTMLParagraphElement,
         };
@@ -179,12 +183,13 @@ function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
           e.agegroup?.textContent?.trim().split(" ").slice(-1)[0] ?? "";
 
         update.innerText = presentVolunteerName(v.name, v.vols, v.agegroup);
-        update.title = v.vols;
+        update.dataset.vols = v.vols;
+        update.dataset.agegroup = v.agegroup;
+        update.dataset.vols_source = volunteerUrl;
         const a: HTMLAnchorElement | null = document.querySelector(
-          `a[data-athleteid="${v.athleteID}"]`,
+          `a[data-athleteid="${v.athleteID}"]`
         );
         if (a) {
-          a.title = v.vols;
           a.dataset.vols = v.vols;
           a.dataset.agegroup = v.agegroup;
           a.dataset.vols_source = volunteerUrl;
