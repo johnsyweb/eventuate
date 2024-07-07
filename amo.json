@@ -1,0 +1,32 @@
+{
+  "summary": {
+    "en-US": "Extracts information from parkrun results pages for inclusion in reports."
+  },
+  "description": {
+    "en-US": "If you volunteer at parkrun and produce an event report to celebrate achievements, this addon will make your life easier! \n\nAs soon as the latest results page loads for an event, you'll see a bunch some useful text before the results table is displayed, including:\n\nA summary of the number of finishers\nAny finishers who joined a milestone club\nCongratulations to new parkrunners\nA welcome to first-time visitors\nA celebration of personal bests\nA shout out to the walking and running clubs\nCheers to our volunteers\nA reminder to bring a barcode\nAnd a beautiful bunch of facts and figures\n"
+  },
+  "developer_comments": {
+    "en-US": "Navigate to a results page such as https://www.parkrun.com.au/timboon/results/latestresults/. Observe the additional details between the title and the event table."
+  },
+  "tags": [
+    "social media"
+  ],
+  "categories": [
+    "other"
+  ],
+  "version": {
+    "license": "MIT",
+    "version": "0.0.9"
+  },
+  "homepage": {
+    "en-US": "https://github.com/johnsyweb/eventuate/"
+  },
+  "name": {
+    "en-US": "Eventuate"
+  },
+  "requires_payment": false,
+  "slug": "eventuate",
+  "support_email": {
+    "en-US": "eventuate.addon@johnsy.com"
+  }
+}
