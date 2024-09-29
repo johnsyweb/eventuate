@@ -1,6 +1,6 @@
 {
   "name": "eventuate",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Extracts information from parkrun results pages for inclusion in reports.",
   "keywords": [
     "parkrun",
