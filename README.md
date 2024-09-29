@@ -27,7 +27,7 @@ useful text before the results table is displayed, including:
 - A reminder to bring a barcode
 - And a beautiful bunch of facts and figures
 
-## Development status
+## Development status [![Node.js CI](https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml/badge.svg)](https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml)
 
 I wrote this for myself in an afternoon to see if I could do it and figured it
 may be useful to others. I then spent a while over-engineering it in TypeScript
@@ -73,18 +73,9 @@ works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
-<https://github.com/johnsyweb/eventuate>. This project is intended to be a
-safe, welcoming space for collaboration, and contributors are expected to adhere
-to the [code of
+<https://github.com/johnsyweb/eventuate>. Everyone interacting in the eventuate project's codebases, issue trackers, etcetera is expected to follow the [code of
 conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
 
 ## License [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt)
 
 The addon is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the eventuate project's codebases, issue trackers, chat
-rooms and mailing lists is expected to follow the [code of
-conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
-
