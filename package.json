@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.4",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "@types/node": "^20.14.2",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
