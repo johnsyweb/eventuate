@@ -1,9 +1,9 @@
+/.amo-upload-uuid
 /.web-extension-id
 /chromium*
 /eventuate*
 /node_modules
 /target
-
 /web-ext-artifacts
 
 # managed by crackle
