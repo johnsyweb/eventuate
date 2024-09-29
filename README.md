@@ -27,7 +27,7 @@ useful text before the results table is displayed, including:
 - A reminder to bring a barcode
 - And a beautiful bunch of facts and figures
 
-## Development status
+## Development status [![Node.js CI](https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml/badge.svg)](https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml)
 
 I wrote this for myself in an afternoon to see if I could do it and figured it
 may be useful to others. I then spent a while over-engineering it in TypeScript
