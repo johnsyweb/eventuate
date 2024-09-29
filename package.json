@@ -43,7 +43,7 @@
     "test": "jest",
     "web-ext:build": "web-ext build -o",
     "web-ext:lint": "web-ext lint",
-    "web-ext:serve": "web-ext run"
+    "start": "web-ext run -v -u https://www.parkrun.com.au/coburg/results/latestresults/"
   },
   "devDependencies": {
     "@crackle/cli": "^0.15.4",
