@@ -73,18 +73,9 @@ works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
-<https://github.com/johnsyweb/eventuate>. This project is intended to be a
-safe, welcoming space for collaboration, and contributors are expected to adhere
-to the [code of
+<https://github.com/johnsyweb/eventuate>. Everyone interacting in the eventuate project's codebases, issue trackers, etcetera is expected to follow the [code of
 conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
 
 ## License [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt)
 
 The addon is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the eventuate project's codebases, issue trackers, chat
-rooms and mailing lists is expected to follow the [code of
-conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
-
