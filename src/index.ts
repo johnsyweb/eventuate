@@ -28,12 +28,7 @@ const rpe = new ResultsPageExtractor(document);
 
 const milestoneCelebrations = fiveKFinishersToMilestones(rpe.finishers);
 const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
-
-const formattedEventDate = new Date(
-  Date.parse(rpe.eventDate ?? "today")
-).toLocaleDateString(undefined, { dateStyle: "full" });
-
-const introduction = `On ${formattedEventDate} ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
+const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course.`;
 
 const newestParkrunnersTitle = `Congratulations to our ${pluralize(
   "newest parkrunner",
@@ -132,7 +127,7 @@ if (insertionPoint) {
 
         span.innerText = presentVolunteerName(
           v.name,
-          v.vols,
+          Number(v.vols),
           v.agegroup ?? "None"
         );
       } else {
@@ -182,7 +177,11 @@ function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
         v.agegroup =
           e.agegroup?.textContent?.trim().split(" ").slice(-1)[0] ?? "";
 
-        update.innerText = presentVolunteerName(v.name, v.vols, v.agegroup);
+        update.innerText = presentVolunteerName(
+          v.name,
+          Number(v.vols),
+          v.agegroup
+        );
         update.dataset.vols = v.vols;
         update.dataset.agegroup = v.agegroup;
         update.dataset.vols_source = volunteerUrl;
@@ -198,8 +197,12 @@ function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
   }, timeout);
 }
 
-function presentVolunteerName(name: string, vols: string, agegroup: string) {
-  const milestones = {
+function presentVolunteerName(
+  name: string,
+  vols: number,
+  agegroup: string
+): string {
+  const milestones: Record<number, string> = {
     10: "J",
     25: "",
     50: "",
@@ -208,11 +211,13 @@ function presentVolunteerName(name: string, vols: string, agegroup: string) {
     500: "",
     1000: "",
   };
+
   for (const n in milestones) {
-    const restricted_age: string = milestones[n];
-    if (vols === n && agegroup.startsWith(restricted_age)) {
+    const restricted_age: string = milestones[Number(n)];
+    if (vols === Number(n) && agegroup.startsWith(restricted_age)) {
       return `${name} (congratulations on joining the v${n}-club)`;
     }
   }
+
   return name;
 }
