@@ -12,9 +12,9 @@
     }
   },
   "icons": {
-    "24": "icons/eventuate-24.svg",
-    "64": "icons/eventuate-64.svg",
-    "128": "icons/eventuate-128.svg"
+    "24": "icons/eventuate-24.png",
+    "64": "icons/eventuate-64.png",
+    "128": "icons/eventuate-128.png"
   },
   "content_scripts": [
     {
@@ -29,6 +29,7 @@
         "*://www.parkrun.ie/*/results/latestresults/",
         "*://www.parkrun.it/*/results/latestresults/",
         "*://www.parkrun.jp/*/results/latestresults/",
+        "*://www.parkrun.lt/*/results/latestresults/",
         "*://www.parkrun.my/*/results/latestresults/",
         "*://www.parkrun.co.nl/*/results/latestresults/",
         "*://www.parkrun.co.nz/*/results/latestresults/",
