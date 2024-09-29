@@ -12,9 +12,9 @@
     }
   },
   "icons": {
-    "24": "icons/eventuate-24.svg",
-    "64": "icons/eventuate-64.svg",
-    "128": "icons/eventuate-128.svg"
+    "24": "icons/eventuate-24.png",
+    "64": "icons/eventuate-64.png",
+    "128": "icons/eventuate-128.png"
   },
   "content_scripts": [
     {
