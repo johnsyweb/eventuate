@@ -1,6 +1,6 @@
-# Eventuate
+# Eventuate [![Mozilla / Firefox][mozilla-image]][Mozilla] [![Google Chrome / Chromium][chromewebstore-image]][Google Chrome]
 
-Extracts information from parkrun results pages for inclusion in reports.
+Extracts information from [parkrun] results pages for inclusion in reports.
 
 ## Introduction
 
@@ -11,7 +11,7 @@ interests.
 
 ## Description
 
-If you volunteer at parkrun and produce an event report to celebrate
+If you volunteer at [parkrun] and produce an event report to celebrate
 achievements, this addon will make your life easier!
 
 As soon as the latest results page loads for an event, you'll see a bunch some
@@ -27,7 +27,7 @@ useful text before the results table is displayed, including:
 - A reminder to bring a barcode
 - And a beautiful bunch of facts and figures
 
-## Development status [![Node.js CI](https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml/badge.svg)](https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml)
+## Development status [![Node.js CI][ci-badge]][Node.js CI]
 
 I wrote this for myself in an afternoon to see if I could do it and figured it
 may be useful to others. I then spent a while over-engineering it in TypeScript
@@ -76,6 +76,17 @@ Bug reports and pull requests are welcome on GitHub at
 <https://github.com/johnsyweb/eventuate>. Everyone interacting in the eventuate project's codebases, issue trackers, etcetera is expected to follow the [code of
 conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
 
-## License [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt)
+## License [![license][license-image]][licence]
 
 The addon is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+<!-- Links -->
+[chromewebstore-image]: https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
+[ci-badge]: https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml/badge.svg
+[Google Chrome]: https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
+[licence]: https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt
+[license-image]: https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
+[mozilla-image]: https://img.shields.io/amo/v/eventuate?logo=mozilla
+[Mozilla]: https://addons.mozilla.org/firefox/addon/eventuate/ "Mozilla / Firefox"
+[Node.js CI]: https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml
+[parkrun]: https://www.parkrun.com/
