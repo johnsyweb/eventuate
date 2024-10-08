@@ -1,5 +1,3 @@
-# Eventuate
-
 ## What
 
 Eventuate is a browser extension. It extracts information from [parkrun] results pages for inclusion in reports.
@@ -35,15 +33,15 @@ As soon as the latest results page loads for an event, you'll see some useful te
 
 This is currently available for desktop browsers only. I hope to make it available on mobile and Safari in the future but there are only so many hours in a week. Please be patient. Or send me your [code]!
 
-- [Mozilla / Firefox]: ![mozilla add-on][mozilla-image]
-- [Google Chrome / Chromium]: ![Google Chrome / Chromium][chromewebstore-image]
+- [![Mozilla / Firefox][mozilla-image]][Mozilla]
+- [![Google Chrome / Chromium][chromewebstore-image]][Google Chrome]
 
 <!-- Links -->
 [Brimbank parkrun Facebook page]: https://www.facebook.com/brimbankparkrun
 [Brimbank parkrun]: https://www.parkrun.com.au/brimbank/
 [chromewebstore-image]: https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
 [code]: https://github.com/johnsyweb/eventuate
-[Google Chrome / Chromium]: https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
-[Mozilla / Firefox]: https://addons.mozilla.org/en-US/firefox/addon/eventuate/
+[Google Chrome]: https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
+[Mozilla]: https://addons.mozilla.org/firefox/addon/eventuate/ "Mozilla / Firefox"
 [mozilla-image]: https://img.shields.io/amo/v/eventuate?logo=mozilla
 [parkrun]: https://www.parkrun.com/
