@@ -1,11 +1,8 @@
-import {
-  IFinisher,
-  fiveKFinishersToMilestones,
-} from "../../src/transformers/fiveKFinishersToMilestones";
-import { Finisher } from "../../src/extractors/ResultsPageExtractor";
+import { fiveKFinishersToMilestones } from "../../src/transformers/fiveKFinishersToMilestones";
+import { Finisher } from "../../src/types/Finisher";
 
 describe(fiveKFinishersToMilestones, () => {
-  var mickey: IFinisher;
+  let mickey: Finisher;
 
   beforeEach(() => {
     mickey = new Finisher(
@@ -19,7 +16,7 @@ describe(fiveKFinishersToMilestones, () => {
       "agegrade",
       "achievement",
       "59:59",
-      9999999,
+      9999999
     );
   });
 

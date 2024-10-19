@@ -1,28 +1,9 @@
-import { VolunteerType } from "extractors/ResultsPageExtractor";
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
 import { MilestonePresenter } from "./presenters/MilestonePresenter";
 import { conjoin, pluralize, sortAndConjoin } from "./stringFunctions";
 import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
-
-function upsertParagraph(
-  div: HTMLElement,
-  id: string,
-  content: string
-): HTMLParagraphElement {
-  const existingParagraph = Array.from(div.children).find(
-    (element) => element.id === id
-  );
-
-  if (existingParagraph) {
-    existingParagraph.remove();
-  }
-
-  const paragraph = document.createElement("p");
-  paragraph.id = id;
-  paragraph.innerText = content;
-  div.appendChild(paragraph);
-  return paragraph;
-}
+import { Volunteer } from "./types/Volunteer";
+import { upsertParagraph } from "./dom/upsertParagraph";
 
 const rpe = new ResultsPageExtractor(document);
 
@@ -54,7 +35,7 @@ const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
   rpe.runningWalkingGroups.length
 )} represented at this event: `;
 
-var volunteerList = rpe.volunteersList();
+const volunteerList = rpe.volunteersList();
 const volunteersTitle = `${rpe.eventName} are very grateful to the ${volunteerList.length} amazing volunteers who made this event happen: `;
 
 const eventuateDiv: HTMLDivElement =
@@ -153,7 +134,7 @@ if (insertionPoint) {
   );
 }
 
-function sourceVolunteerCount(v: VolunteerType, update: HTMLSpanElement) {
+function sourceVolunteerCount(v: Volunteer, update: HTMLSpanElement) {
   const timeout = v.athleteID % 1000;
   const volunteerUrl = new URL(
     `/parkrunner/${v.athleteID}/`,

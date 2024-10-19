@@ -1,10 +1,10 @@
 import { pluralize, sortAndConjoin } from "../stringFunctions";
 
-type MilestoneCelebrations = {
+interface MilestoneCelebrations {
   finished: number;
   icon: string;
   names: string[];
-};
+}
 
 export class MilestonePresenter {
   _milestoneCelebrations: MilestoneCelebrations[];
