@@ -3,40 +3,47 @@ import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMiles
 import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMilestones";
 import { MilestonePresenter } from "./presenters/MilestonePresenter";
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
-import { upsertParagraph } from "./dom/upsertParagraph";
+import { deleteParagraph, upsertParagraph } from "./dom/upsertParagraph";
 import { VolunteerWithCount } from "./types/Volunteer";
 
 function populate(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[],
+  message?: string
 ): void {
   const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course`;
 
   const newestParkrunnersTitle = `Congratulations to our ${pluralize(
     "newest parkrunner",
     "newest parkrunners",
-    rpe.newestParkrunners.length,
+    rpe.newestParkrunners.length
   )}: `;
 
   const firstTimersTitle = `Welcome to the ${pluralize(
     "parkrunner",
     "parkrunners",
-    rpe.firstTimers.length,
+    rpe.firstTimers.length
   )} who joined us at ${rpe.eventName ?? "parkrun"} for the first time: `;
 
   const finishersWithNewPBsTitle = `Very well done to the ${pluralize(
     "parkrunner",
     "parkrunners",
-    rpe.finishersWithNewPBs.length,
+    rpe.finishersWithNewPBs.length
   )} who improved their personal best this week: `;
 
   const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
     "active group",
     "walking and running groups",
-    rpe.runningWalkingGroups.length,
+    rpe.runningWalkingGroups.length
   )} represented at this event: `;
 
-  const volunteersTitle = `${rpe.eventName} are very grateful to the ${volunteerWithCountList.length} amazing volunteers who made this event happen: `;
+  const volunteerOccasions = volunteerWithCountList
+    .map((v) => v.vols)
+    .reduce((c, p) => c + p, 0);
+
+  const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} superstars have volunteered a total of ${volunteerOccasions.toLocaleString()} times between them, and helped us host ${
+    rpe.eventName
+  } this weekend. Our deep thanks to:  `;
 
   const milestoneCelebrations = [
     ...fiveKVolunteersToMilestones(volunteerWithCountList),
@@ -61,6 +68,7 @@ function populate(
   eventuateDiv.id = "eventuate";
 
   const reportDetails = {
+    message: { title: "⏳︎", details: message },
     introduction: { title: "", details: introduction },
 
     milestoneCelebrations: {
@@ -109,6 +117,8 @@ function populate(
       if (content.details) {
         const paragraphText = `${content.title} ${content.details}.`;
         upsertParagraph(eventuateDiv, section, paragraphText);
+      } else {
+        deleteParagraph(eventuateDiv, section);
       }
     }
   }
@@ -119,12 +129,14 @@ function eventuate() {
   const volunteerWithCountList = rpe
     .volunteersList()
     .map((vol) => new VolunteerWithCount(vol));
+  const waitingOn = volunteerWithCountList
+    .map((v) => v.promisedVols)
+    .filter((v) => !!v);
+  const loadingMessage = `Loading volunteer data for ${waitingOn.length} parkrunners. Please wait`;
 
-  populate(rpe, volunteerWithCountList); // Initial draw
+  populate(rpe, volunteerWithCountList, loadingMessage);
 
-  Promise.all(
-    volunteerWithCountList.map((v) => v.promisedVols).filter((v) => !!v),
-  ).then(() => populate(rpe, volunteerWithCountList)); // Refresh with volunteer counts
+  Promise.all(waitingOn).then(() => populate(rpe, volunteerWithCountList));
 }
 
 eventuate();
