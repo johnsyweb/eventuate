@@ -17,3 +17,13 @@ export function upsertParagraph(
   div.appendChild(paragraph);
   return paragraph;
 }
+
+export function deleteParagraph(div: HTMLElement, id: string) {
+  const existingParagraph = Array.from(div.children).find(
+    (element) => element.id === id,
+  );
+
+  if (existingParagraph) {
+    existingParagraph.remove();
+  }
+}
