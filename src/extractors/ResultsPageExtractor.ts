@@ -28,7 +28,7 @@ export class ResultsPageExtractor {
     this.finishers = Array.from(rowElements).map(
       (d) =>
         new Finisher(
-          this.privatize(d.dataset.name),
+          this.removeSurenameFromJunior(d.dataset.name),
           d.dataset.agegroup,
           d.dataset.club,
           d.dataset.gender,
@@ -120,10 +120,17 @@ export class ResultsPageExtractor {
     );
   }
 
-  privatize(name?: string): string {
-    return name && this.courseLength == 5
-      ? name
-      : (name?.replace(/[- A-Z]+$/, "") ?? "");
+  removeSurenameFromJunior(name?: string): string {
+    if (!name || this.courseLength == 5) {
+      return name ?? "";
+    } else {
+      const parts = name.split(" ");
+      if (parts.length === 2) {
+        return parts[0];
+      }
+    }
+
+    return name.replace(/[-' A-Z]+$/, "");
   }
 
   private populateVolunteerData() {
@@ -148,7 +155,7 @@ export class ResultsPageExtractor {
   volunteersList(): Volunteer[] {
     return Array.from(this.volunteerElements()).map((v) => {
       return {
-        name: v.innerText,
+        name: this.removeSurenameFromJunior(v.innerText),
         link: v.href,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,
