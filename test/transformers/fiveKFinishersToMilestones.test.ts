@@ -33,7 +33,7 @@ describe(fiveKFinishersToMilestones, () => {
     mickey.agegroup = "JM10";
     mickey.runs = "10";
     expect(fiveKFinishersToMilestones([mickey])).toEqual([
-      { finished: 10, icon: "⚪︎", names: ["Just right!"] },
+      { clubName: "10", icon: "⚪︎", names: ["Just right!"] },
     ]);
   });
 
@@ -45,7 +45,7 @@ describe(fiveKFinishersToMilestones, () => {
   test("50", () => {
     mickey.runs = "50";
     expect(fiveKFinishersToMilestones([mickey])).toEqual([
-      { finished: 50, icon: "🔴", names: ["Mickey"] },
+      { clubName: "50", icon: "🔴", names: ["Mickey"] },
     ]);
   });
 
