@@ -10,9 +10,6 @@ function populate(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[],
 ): void {
-  console.debug(
-    `⏱︎ Eventuating with ${JSON.stringify(volunteerWithCountList)}`,
-  );
   const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course`;
 
   const newestParkrunnersTitle = `Congratulations to our ${pluralize(
@@ -117,15 +114,17 @@ function populate(
   }
 }
 
-function gather() {
+function eventuate() {
   const rpe = new ResultsPageExtractor(document);
   const volunteerWithCountList = rpe
     .volunteersList()
     .map((vol) => new VolunteerWithCount(vol));
 
+  populate(rpe, volunteerWithCountList); // Initial draw
+
   Promise.all(
     volunteerWithCountList.map((v) => v.promisedVols).filter((v) => !!v),
-  ).then(() => populate(rpe, volunteerWithCountList));
+  ).then(() => populate(rpe, volunteerWithCountList)); // Refresh with volunteer counts
 }
 
-gather();
+eventuate();
