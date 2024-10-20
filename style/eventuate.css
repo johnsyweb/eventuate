@@ -9,3 +9,8 @@
   background: lightgoldenrodyellow;
   padding: 12px;
 }
+
+#eventuate #message {
+  color: lightcoral;
+  font-weight: bold;
+}
