@@ -5,7 +5,7 @@ import {
 import { VolunteerWithCount } from "../types/Volunteer";
 
 export function fiveKVolunteersToMilestones(
-  volunteers: VolunteerWithCount[],
+  volunteers: VolunteerWithCount[]
 ): MilestoneCelebrations[] {
   const milestones: Record<number, MilestoneDefinition> = {
     10: { icon: "🤍", restricted_age: "J" },
@@ -24,9 +24,9 @@ export function fiveKVolunteersToMilestones(
     const names: string[] = volunteers
       .filter(
         (v) =>
-          Number(v.vols) === Number(n) &&
+          v.vols === Number(n) &&
           (!milestone.restricted_age ||
-            v.agegroup?.startsWith(milestone.restricted_age)),
+            v.agegroup?.startsWith(milestone.restricted_age))
       )
       .map((v) => v.name);
 

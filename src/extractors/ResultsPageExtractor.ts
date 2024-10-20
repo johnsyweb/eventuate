@@ -21,6 +21,10 @@ export class ResultsPageExtractor {
 
   constructor(resultsPageDocument: Document) {
     this.resultsPageDocument = resultsPageDocument;
+    this.eventName =
+      resultsPageDocument.querySelector(".Results-header > h1")?.textContent ??
+      undefined;
+    this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
 
     const rowElements: NodeListOf<HTMLElement> =
       resultsPageDocument.querySelectorAll(".Results-table-row");
@@ -28,7 +32,7 @@ export class ResultsPageExtractor {
     this.finishers = Array.from(rowElements).map(
       (d) =>
         new Finisher(
-          d.dataset.name,
+          this.removeSurenameFromJunior(d.dataset.name),
           d.dataset.agegroup,
           d.dataset.club,
           d.dataset.gender,
@@ -41,25 +45,20 @@ export class ResultsPageExtractor {
             undefined,
           athleteIDFromURI(
             (d.querySelector(".Results-table-td--name a") as HTMLAnchorElement)
-              ?.href,
-          ),
-        ),
+              ?.href
+          )
+        )
     );
 
     this.populateVolunteerData();
 
-    this.eventName =
-      resultsPageDocument.querySelector(".Results-header > h1")?.textContent ||
-      undefined;
-
-    this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
     this.eventDate =
       resultsPageDocument.querySelector(".format-date")?.textContent ??
       undefined;
 
     this.eventNumber =
       resultsPageDocument.querySelector(
-        ".Results-header > h3 > span:last-child",
+        ".Results-header > h3 > span:last-child"
       )?.textContent || undefined;
 
     this.unknowns = this.finishers
@@ -79,7 +78,7 @@ export class ResultsPageExtractor {
       .map((p) => `${p.name} (${p.time})`);
 
     this.runningWalkingGroups = Array.from(
-      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== "")),
+      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
     );
 
     const statElements: NodeListOf<HTMLDivElement> =
@@ -116,8 +115,21 @@ export class ResultsPageExtractor {
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
     return this.resultsPageDocument.querySelectorAll(
-      ".Results + div h3:first-of-type + p:first-of-type a",
+      ".Results + div h3:first-of-type + p:first-of-type a"
     );
+  }
+
+  removeSurenameFromJunior(name?: string): string {
+    if (!name || this.courseLength == 5) {
+      return name ?? "";
+    } else {
+      const parts = name.split(" ");
+      if (parts.length === 2) {
+        return parts[0];
+      }
+    }
+
+    return name.replace(/[-' A-Z]+$/, "");
   }
 
   private populateVolunteerData() {
@@ -142,7 +154,7 @@ export class ResultsPageExtractor {
   volunteersList(): Volunteer[] {
     return Array.from(this.volunteerElements()).map((v) => {
       return {
-        name: v.innerText,
+        name: this.removeSurenameFromJunior(v.innerText),
         link: v.href,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,

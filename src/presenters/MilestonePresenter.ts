@@ -17,7 +17,7 @@ export class MilestonePresenter {
       "parkrunner",
       "parkrunners",
       this._milestoneCelebrationsAll.length,
-    )} who earned themselves a new parkrun club shirt this weekend:\n`;
+    )} who joined a new parkrun milestone club this weekend:\n`;
   }
 
   details(): string {
