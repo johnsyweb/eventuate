@@ -33,7 +33,7 @@ function populate(
   )} who improved their personal best this week: `;
 
   const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
-    "active group",
+    "at least one active group",
     "walking and running groups",
     rpe.runningWalkingGroups.length
   )} represented at this event: `;
