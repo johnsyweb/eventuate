@@ -1,9 +1,10 @@
 import { conjoin, pluralize, sortAndConjoin } from "./stringFunctions";
+import { deleteParagraph, upsertParagraph } from "./dom/upsertParagraph";
 import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
 import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMilestones";
 import { MilestonePresenter } from "./presenters/MilestonePresenter";
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
-import { deleteParagraph, upsertParagraph } from "./dom/upsertParagraph";
+import { twoKFinishersToMilestones } from "./transformers/twoKFinishersToMilestone";
 import { VolunteerWithCount } from "./types/Volunteer";
 
 function populate(
@@ -45,11 +46,14 @@ function populate(
     rpe.eventName
   } this weekend. Our deep thanks to:  `;
 
+  const finisherMilestoneCelebrations =
+    rpe.courseLength == 2
+      ? twoKFinishersToMilestones(rpe.finishers)
+      : fiveKFinishersToMilestones(rpe.finishers);
   const milestoneCelebrations = [
     ...fiveKVolunteersToMilestones(volunteerWithCountList),
-    ...fiveKFinishersToMilestones(rpe.finishers),
+    ...finisherMilestoneCelebrations,
   ];
-
   const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
   const facts =

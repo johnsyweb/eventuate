@@ -28,7 +28,7 @@ export class ResultsPageExtractor {
     this.finishers = Array.from(rowElements).map(
       (d) =>
         new Finisher(
-          d.dataset.name,
+          this.privatize(d.dataset.name),
           d.dataset.agegroup,
           d.dataset.club,
           d.dataset.gender,
@@ -41,9 +41,9 @@ export class ResultsPageExtractor {
             undefined,
           athleteIDFromURI(
             (d.querySelector(".Results-table-td--name a") as HTMLAnchorElement)
-              ?.href,
-          ),
-        ),
+              ?.href
+          )
+        )
     );
 
     this.populateVolunteerData();
@@ -59,7 +59,7 @@ export class ResultsPageExtractor {
 
     this.eventNumber =
       resultsPageDocument.querySelector(
-        ".Results-header > h3 > span:last-child",
+        ".Results-header > h3 > span:last-child"
       )?.textContent || undefined;
 
     this.unknowns = this.finishers
@@ -79,7 +79,7 @@ export class ResultsPageExtractor {
       .map((p) => `${p.name} (${p.time})`);
 
     this.runningWalkingGroups = Array.from(
-      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== "")),
+      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
     );
 
     const statElements: NodeListOf<HTMLDivElement> =
@@ -116,8 +116,14 @@ export class ResultsPageExtractor {
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
     return this.resultsPageDocument.querySelectorAll(
-      ".Results + div h3:first-of-type + p:first-of-type a",
+      ".Results + div h3:first-of-type + p:first-of-type a"
     );
+  }
+
+  privatize(name?: string): string {
+    return name && this.courseLength == 5
+      ? name
+      : (name?.replace(/[- A-Z]+$/, "") ?? "");
   }
 
   private populateVolunteerData() {
