@@ -43,8 +43,10 @@
       ],
       "js": [
         "./dist/eventuate.js"
-        ],
-      "css": ["./style/eventuate.css"],
+      ],
+      "css": [
+        "./style/eventuate.css"
+      ],
       "run_at": "document_end"
     }
   ]
