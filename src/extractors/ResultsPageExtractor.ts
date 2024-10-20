@@ -21,6 +21,10 @@ export class ResultsPageExtractor {
 
   constructor(resultsPageDocument: Document) {
     this.resultsPageDocument = resultsPageDocument;
+    this.eventName =
+      resultsPageDocument.querySelector(".Results-header > h1")?.textContent ??
+      undefined;
+    this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
 
     const rowElements: NodeListOf<HTMLElement> =
       resultsPageDocument.querySelectorAll(".Results-table-row");
@@ -48,11 +52,6 @@ export class ResultsPageExtractor {
 
     this.populateVolunteerData();
 
-    this.eventName =
-      resultsPageDocument.querySelector(".Results-header > h1")?.textContent ||
-      undefined;
-
-    this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
     this.eventDate =
       resultsPageDocument.querySelector(".format-date")?.textContent ??
       undefined;
