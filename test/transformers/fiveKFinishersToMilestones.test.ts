@@ -1,11 +1,8 @@
-import {
-  IFinisher,
-  fiveKFinishersToMilestones,
-} from "../../src/transformers/fiveKFinishersToMilestones";
-import { Finisher } from "../../src/extractors/ResultsPageExtractor";
+import { fiveKFinishersToMilestones } from "../../src/transformers/fiveKFinishersToMilestones";
+import { Finisher } from "../../src/types/Finisher";
 
 describe(fiveKFinishersToMilestones, () => {
-  var mickey: IFinisher;
+  let mickey: Finisher;
 
   beforeEach(() => {
     mickey = new Finisher(
@@ -19,7 +16,7 @@ describe(fiveKFinishersToMilestones, () => {
       "agegrade",
       "achievement",
       "59:59",
-      9999999,
+      9999999
     );
   });
 
@@ -36,7 +33,7 @@ describe(fiveKFinishersToMilestones, () => {
     mickey.agegroup = "JM10";
     mickey.runs = "10";
     expect(fiveKFinishersToMilestones([mickey])).toEqual([
-      { finished: 10, icon: "⚪︎", names: ["Just right!"] },
+      { clubName: "10", icon: "⚪︎", names: ["Just right!"] },
     ]);
   });
 
@@ -48,7 +45,7 @@ describe(fiveKFinishersToMilestones, () => {
   test("50", () => {
     mickey.runs = "50";
     expect(fiveKFinishersToMilestones([mickey])).toEqual([
-      { finished: 50, icon: "🔴", names: ["Mickey"] },
+      { clubName: "50", icon: "🔴", names: ["Mickey"] },
     ]);
   });
 

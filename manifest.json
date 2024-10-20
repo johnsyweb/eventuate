@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Eventuate",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "Pete Johns",
   "homepage_url": "https://github.com/johnsyweb/eventuate/",
   "description": "Extracts information from parkrun results pages for inclusion in reports.",
@@ -42,9 +42,11 @@
         "*://www.parkrun.us/*/results/latestresults/"
       ],
       "js": [
-        "./dist/index.js"
+        "./dist/eventuate.js"
       ],
-      "css": ["./style/eventuate.css"],
+      "css": [
+        "./style/eventuate.css"
+      ],
       "run_at": "document_end"
     }
   ]

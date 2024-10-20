@@ -1,10 +1,5 @@
 import { pluralize, sortAndConjoin } from "../stringFunctions";
-
-type MilestoneCelebrations = {
-  finished: number;
-  icon: string;
-  names: string[];
-};
+import { MilestoneCelebrations } from "../types/Milestones";
 
 export class MilestonePresenter {
   _milestoneCelebrations: MilestoneCelebrations[];
@@ -25,12 +20,12 @@ export class MilestonePresenter {
     )} who earned themselves a new parkrun club shirt this weekend:\n`;
   }
 
-  details() {
+  details(): string {
     return this._milestoneCelebrations
       .map(
         (mc) =>
           `${mc.icon} ${sortAndConjoin(mc.names)} joined the ${
-            mc.finished
+            mc.clubName
           }-club`,
       )
       .join("\n");

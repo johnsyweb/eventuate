@@ -1,79 +1,9 @@
-interface IFinisher {
-  name: string;
-  agegroup?: string;
-  club?: string;
-  gender?: string;
-  position?: string;
-  runs: string;
-  vols?: string;
-  agegrade?: string;
-  achievement?: string;
-  time?: string;
-  athleteID?: number;
-}
-
-export class Finisher implements IFinisher {
-  name: string;
-  agegroup?: string;
-  club?: string;
-  gender?: string;
-  position?: string;
-  runs: string;
-  vols?: string;
-  agegrade?: string;
-  achievement?: string;
-  time?: string;
-  athleteID?: number;
-
-  constructor(
-    name: string | undefined,
-    agegroup: string | undefined,
-    club: string | undefined,
-    gender: string | undefined,
-    position: string | undefined,
-    runs: string | undefined,
-    vols: string | undefined,
-    agegrade: string | undefined,
-    achievement: string | undefined,
-    time: string | undefined,
-    athleteID: number | undefined,
-  ) {
-    this.name = name ?? "a parkrunner";
-    this.agegroup = agegroup;
-    this.club = club;
-    this.gender = gender;
-    this.position = position;
-    this.runs = runs ?? "0";
-    this.vols = vols;
-    this.agegrade = agegrade;
-    this.achievement = achievement;
-    this.time = time;
-    this.athleteID = athleteID;
-  }
-
-  isUnknown(): boolean {
-    return this.runs === "0";
-  }
-}
+import { Finisher, IFinisher } from "../types/Finisher";
+import { Volunteer } from "../types/Volunteer";
 
 function athleteIDFromURI(uri: string): number {
   return Number(uri?.split("/")?.slice(-1));
 }
-
-type FactType = {
-  finishers: number;
-  finishes: number;
-  pbs: number;
-  volunteers: number;
-};
-
-type VolunteerType = {
-  name: string;
-  link: string;
-  athleteID: number;
-  vols: string | undefined;
-  agegroup: string | undefined;
-};
 
 export class ResultsPageExtractor {
   eventName?: string;
@@ -134,7 +64,7 @@ export class ResultsPageExtractor {
 
     this.unknowns = this.finishers
       .filter((p) => Number(p.runs) === 0)
-      .map((_) => "Unknown");
+      .map(() => "Unknown");
 
     this.newestParkrunners = this.finishers
       .filter((p) => Number(p.runs) === 1)
@@ -185,9 +115,8 @@ export class ResultsPageExtractor {
   }
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
-    return (
-      this.resultsPageDocument
-        .querySelectorAll(".Results + div h3:first-of-type + p:first-of-type a")
+    return this.resultsPageDocument.querySelectorAll(
+      ".Results + div h3:first-of-type + p:first-of-type a",
     );
   }
 
@@ -210,14 +139,14 @@ export class ResultsPageExtractor {
     });
   }
 
-  volunteersList(): VolunteerType[] {
+  volunteersList(): Volunteer[] {
     return Array.from(this.volunteerElements()).map((v) => {
       return {
         name: v.innerText,
         link: v.href,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,
-        vols: v.dataset.vols,
+        vols: Number(v.dataset.vols),
       };
     });
   }
