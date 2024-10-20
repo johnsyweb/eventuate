@@ -36,7 +36,7 @@ export class Finisher implements IFinisher {
     agegrade?: string,
     achievement?: string,
     time?: string,
-    athleteID?: number
+    athleteID?: number,
   ) {
     this.name = name ?? "a parkrunner";
     this.agegroup = agegroup;
@@ -55,4 +55,3 @@ export class Finisher implements IFinisher {
     return this.runs === "0";
   }
 }
-

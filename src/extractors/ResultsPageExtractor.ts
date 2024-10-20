@@ -1,4 +1,4 @@
-import { Finisher, IFinisher } from "../types/Finisher"
+import { Finisher, IFinisher } from "../types/Finisher";
 import { Volunteer } from "../types/Volunteer";
 
 function athleteIDFromURI(uri: string): number {
@@ -115,9 +115,8 @@ export class ResultsPageExtractor {
   }
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
-    return (
-      this.resultsPageDocument
-        .querySelectorAll(".Results + div h3:first-of-type + p:first-of-type a")
+    return this.resultsPageDocument.querySelectorAll(
+      ".Results + div h3:first-of-type + p:first-of-type a",
     );
   }
 
@@ -147,7 +146,7 @@ export class ResultsPageExtractor {
         link: v.href,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,
-        vols: v.dataset.vols,
+        vols: Number(v.dataset.vols),
       };
     });
   }
