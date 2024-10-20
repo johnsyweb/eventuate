@@ -5,6 +5,7 @@ import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMil
 import { MilestonePresenter } from "./presenters/MilestonePresenter";
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
 import { twoKFinishersToMilestones } from "./transformers/twoKFinishersToMilestone";
+import { twoKVolunteersToMilestones } from "./transformers/twoKVolunteersToMilestones";
 import { VolunteerWithCount } from "./types/Volunteer";
 
 function populate(
@@ -48,7 +49,7 @@ function populate(
 
   const finisherMilestoneCelebrations =
     rpe.courseLength == 2
-      ? twoKFinishersToMilestones(rpe.finishers)
+      ? [...twoKVolunteersToMilestones(volunteerWithCountList), ...twoKFinishersToMilestones(rpe.finishers)]
       : fiveKFinishersToMilestones(rpe.finishers);
   const milestoneCelebrations = [
     ...fiveKVolunteersToMilestones(volunteerWithCountList),
