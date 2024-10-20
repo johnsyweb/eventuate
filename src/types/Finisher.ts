@@ -1,29 +1,17 @@
-import { IFinisher } from "./IFinisher";
-
 export interface IFinisher {
   name: string;
-  agegroup?: string;
-  club?: string;
-  gender?: string;
-  position?: string;
-  runs: string;
-  vols?: string;
-  agegrade?: string;
   achievement?: string;
-  time?: string;
-}export interface IFinisher {
-  name: string;
-  agegroup?: string;
-  club?: string;
-  gender?: string;
-  position?: string;
-  runs: string;
-  vols?: string;
   agegrade?: string;
-  achievement?: string;
-  time?: string;
+  agegroup?: string;
   athleteID?: number;
+  club?: string;
+  gender?: string;
+  position?: string;
+  runs: string;
+  time?: string;
+  vols?: string;
 }
+
 export class Finisher implements IFinisher {
   name: string;
   agegroup?: string;

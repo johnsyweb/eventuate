@@ -42,8 +42,8 @@
         "*://www.parkrun.us/*/results/latestresults/"
       ],
       "js": [
-        "./dist/index.js"
-      ],
+        "./dist/eventuate.js"
+        ],
       "css": ["./style/eventuate.css"],
       "run_at": "document_end"
     }

@@ -5,10 +5,8 @@ RUN corepack enable
 RUN apt-get update && apt-get -y install jq zip
 COPY . /eventuate
 WORKDIR /eventuate
-RUN pnpm i
-RUN pnpm t
-RUN pnpm build
-RUN pnpm web-ext:lint
+RUN pnpm it
+RUN pnpm package
 
 FROM scratch AS export-stage
 COPY --from=build-stage /eventuate/chromium/ /chromium
