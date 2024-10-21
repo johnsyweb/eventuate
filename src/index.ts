@@ -1,4 +1,4 @@
-import { conjoin, pluralize, sortAndConjoin } from "./stringFunctions";
+import { pluralize, sortAndConjoin } from "./stringFunctions";
 import { deleteParagraph, upsertParagraph } from "./dom/upsertParagraph";
 import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
 import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMilestones";
@@ -15,7 +15,7 @@ function populate(
 ): void {
   const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course`;
 
-  const newestParkrunnersTitle = `Congratulations to our ${pluralize(
+  const newestParkrunnersTitle = `Kudos to our ${pluralize(
     "newest parkrunner",
     "newest parkrunners",
     rpe.newestParkrunners.length
@@ -82,7 +82,7 @@ function populate(
     },
     newestParkrunners: {
       title: newestParkrunnersTitle,
-      details: conjoin(rpe.newestParkrunners),
+      details: sortAndConjoin(rpe.newestParkrunners),
     },
     firstTimers: {
       title: firstTimersTitle,

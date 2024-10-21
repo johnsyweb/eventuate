@@ -4,18 +4,17 @@ Extracts information from [parkrun] results pages for inclusion in reports.
 
 ## Introduction
 
-I occasionally volunteer as a Run Director at [parkrun](https://parkrun.com.au/)
-and produce an event report to celebrate achievements. I also write software
-occasionally to automate parts of my life. This is the confluence of these two
-interests.
+I occasionally volunteer as a Run Director at [parkrun] and produce an
+event report to celebrate achievements. I also write software
+occasionally to automate parts of my life. This is the confluence of
+these two interests.
 
 ## Description
 
 If you volunteer at [parkrun] and produce an event report to celebrate
 achievements, this addon will make your life easier!
 
-As soon as the latest results page loads for an event, you'll see a bunch some
-useful text before the results table is displayed, including:
+As soon as the latest results page loads for an event, you'll see a bunch of useful text before the results table is displayed, including:
 
 - A summary of the number of finishers
 - Any finishers who joined a milestone club
@@ -29,11 +28,9 @@ useful text before the results table is displayed, including:
 
 ## Development status [![Node.js CI][ci-badge]][Node.js CI]
 
-I wrote this for myself in an afternoon to see if I could do it and figured it
-may be useful to others. I then spent a while over-engineering it in TypeScript
-and adding some unit tests using `jest`. I don't fully understand how modules
-work in TypeScript and JavaScript and after bashing my head against the desk, I
-used Crackle to do the heavy lifting. It almost works like I'd like it to.
+I wrote this for myself in an afternoon to see if I could do it and
+figured it may be useful to others. I then spent a while over-engineering
+it in TypeScript and adding some unit tests using `jest`.
 
 ## Building locally
 
@@ -42,7 +39,7 @@ Use `pnpm`:
 ```sh
 pnpm i // Install the development dependencies
 pnpm t // Run unit tests
-pnpm build // Package up all the things for Firefox and Chromium browsers
+pnpm package // Package up all the things for Firefox and Chromium browsers
 pnpm web-ext:lint // Verify package for Firefox
 ```
 
@@ -52,7 +49,23 @@ Or if Docker's more your thing:
 docker buildx build . -o target
 ```
 
-## Getting started
+## Running locally
+
+First, let's turn the TypeScript files into a single JavaScript file to be consumed by `web-ext`...
+
+```sh
+pnpm build --watch
+```
+
+...`--watch` means we can edit the `.ts` files and have our change reflected in an instant.
+
+Second, in another terminal, let's start up Firefox and see our code in action...
+
+```sh
+pnpm start
+```
+
+## Installing in a browser from source
 
 1. Download this repository to a suitable location on your computer.
 1. In Firefox, navigate to "about:debugging#/runtime/this-firefox"
@@ -67,25 +80,30 @@ Observe the additional details between the title and the event table.
 
 ## Requirements
 
-This was built with [Firefox](https://mozilla.org/firefox) in mind but also
-works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
+This was built with [Firefox](https://mozilla.org/firefox) in mind but
+also works in Chromium-based browsers, using the `chromium` artefacts.
+Enjoy!
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at
-<https://github.com/johnsyweb/eventuate>. Everyone interacting in the eventuate project's codebases, issue trackers, etcetera is expected to follow the [code of
-conduct](https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on [GitHub]. Everyone
+interacting in the eventuate project's codebases, issue trackers,
+_etcetera_ is expected to follow the [code of conduct].
 
 ## License [![license][license-image]][licence]
 
-The addon is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The addon is available as open source under the terms of the [MIT License].
 
 <!-- Links -->
+
 [chromewebstore-image]: https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
 [ci-badge]: https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml/badge.svg
+[code of conduct]: https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md
+[GitHub]: https://github.com/johnsyweb/eventuate/
 [Google Chrome]: https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
 [licence]: https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt
 [license-image]: https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
+[MIT License]: https://opensource.org/licenses/MIT
 [mozilla-image]: https://img.shields.io/amo/v/eventuate?logo=mozilla
 [Mozilla]: https://addons.mozilla.org/firefox/addon/eventuate/ "Mozilla / Firefox"
 [Node.js CI]: https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml
