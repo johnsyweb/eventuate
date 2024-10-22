@@ -47,20 +47,20 @@
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
   },
-  "packageManager": "pnpm@9.2.0",
+  "packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228",
   "webExt": {
     "verbose": true,
     "ignoreFiles": [
-      "assets",
-      "amo.json",
-      "eslint.config.mjs",
-      "webpack.config.js",
+      ".tool-versions",
       ".web-extension-id",
-      "Dockerfile",
       "CODE_OF_CONDUCT.md",
+      "Dockerfile",
       "LICENSE.txt",
       "README.md",
+      "amo.json",
+      "assets",
       "chromium*",
+      "eslint.config.mjs",
       "jest.config.ts",
       "package.json",
       "pnpm-lock.yaml",
@@ -68,6 +68,7 @@
       "src",
       "target",
       "test",
+      "webpack.config.js",
       "tsconfig.json"
     ]
   }
