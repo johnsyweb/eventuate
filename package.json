@@ -51,6 +51,10 @@
   "webExt": {
     "verbose": true,
     "ignoreFiles": [
+      "assets",
+      "amo.json",
+      "eslint.config.mjs",
+      "webpack.config.js",
       ".web-extension-id",
       "Dockerfile",
       "CODE_OF_CONDUCT.md",
