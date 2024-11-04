@@ -65,13 +65,14 @@ export class ResultsPageExtractor {
       .filter((p) => Number(p.runs) === 0)
       .map(() => "Unknown");
 
+    
     this.newestParkrunners = this.finishers
       .filter((p) => Number(p.runs) === 1)
       .map((p) => p.name);
 
-    this.firstTimers = this.finishers
-      .filter((p) => p.achievement === "First Timer!" && Number(p.runs) > 1)
-      .map((p) => p.name);
+    this.firstTimers = Array.from(rowElements)
+      ?.filter((tr) => tr.querySelector("td.Results-table-td--ft") && Number(tr.dataset.runs) > 1)
+      ?.map((tr) => tr.dataset.name as string);
 
     this.finishersWithNewPBs = this.finishers
       .filter((p) => p.achievement === "New PB!")
