@@ -65,18 +65,24 @@ export class ResultsPageExtractor {
       .filter((p) => Number(p.runs) === 0)
       .map(() => "Unknown");
 
-    
     this.newestParkrunners = this.finishers
       .filter((p) => Number(p.runs) === 1)
       .map((p) => p.name);
 
     this.firstTimers = Array.from(rowElements)
-      ?.filter((tr) => tr.querySelector("td.Results-table-td--ft") && Number(tr.dataset.runs) > 1)
-      ?.map((tr) => tr.dataset.name as string);
+      .filter(
+        (tr) =>
+          tr.querySelector("td.Results-table-td--ft") &&
+          Number(tr.dataset.runs) > 1
+      )
+      .map((tr) => tr.dataset.name as string);
 
-    this.finishersWithNewPBs = this.finishers
-      .filter((p) => p.achievement === "New PB!")
-      .map((p) => `${p.name} (${p.time})`);
+    this.finishersWithNewPBs = Array.from(rowElements)
+      .filter((tr) => tr.querySelector("td.Results-table-td--pb"))
+      .map(
+        (tr) =>
+          `${tr.dataset.name} (${tr.querySelector(".Results-table-td--time .compact")?.textContent})`
+      );
 
     this.runningWalkingGroups = Array.from(
       new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
