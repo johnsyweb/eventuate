@@ -88,36 +88,22 @@ export class ResultsPageExtractor {
       new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
     );
 
-    const statElements: NodeListOf<HTMLDivElement> =
-      document.querySelectorAll(".aStat");
+    const [
+      _events,
+      finishers,
+      finishes,
+      volunteers,
+      pbs,
+      _averageFinishTime,
+      _groups,
+    ] = Array.from(document.querySelectorAll(".aStat")).map((s) =>
+      s?.textContent?.replace(/^[^:]*:/, "").trim()
+    );
 
-    statElements?.forEach((e) => {
-      const key = e.firstChild?.textContent
-        ?.trim()
-        ?.toLocaleLowerCase()
-        ?.replace(":", "");
-      if (
-        key !== undefined &&
-        e.firstElementChild !== null &&
-        Object.hasOwn(this.facts, key)
-      ) {
-        const value = Number(e.firstElementChild.textContent);
-        switch (key) {
-          case "finishers":
-            this.facts.finishers = value;
-            break;
-          case "finishes":
-            this.facts.finishes = value;
-            break;
-          case "pbs":
-            this.facts.pbs = value;
-            break;
-          case "volunteers":
-            this.facts.volunteers = value;
-            break;
-        }
-      }
-    });
+    this.facts.finishers = finishers ? Number(finishers) : 0;
+    this.facts.finishes = finishes ? Number(finishes) : 0;
+    this.facts.pbs = pbs ? Number(pbs) : 0;
+    this.facts.volunteers = volunteers ? Number(volunteers) : 0;
   }
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
