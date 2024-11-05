@@ -71,5 +71,8 @@
       "webpack.config.js",
       "tsconfig.json"
     ]
+  },
+  "dependencies": {
+    "chart.js": "^4.4.6"
   }
 }
