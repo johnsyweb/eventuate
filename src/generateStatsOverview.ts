@@ -1,6 +1,9 @@
-import { Chart, LinearScale, LineElement, LineController, CategoryScale, PointElement, Legend, Tooltip } from "chart.js";
+import Chart from "chart.js/auto";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 export function generateStatsOverview() {
+  const eventName = document.querySelector("h1")?.textContent;
   const eventHistoryData = Array.from(
     document.querySelectorAll(".Results-table-row")
   )
@@ -13,29 +16,40 @@ export function generateStatsOverview() {
         volunteers: Number(element.dataset.volunteers),
       };
     });
-  console.log(eventHistoryData);
 
-  let ctx: HTMLCanvasElement | null = document.querySelector(".eventHistoryChart");
+  // Create and insert date range picker input fields and update button
+  const dateRangeContainer = document.createElement("div");
+  dateRangeContainer.id = "dateRangeContainer";
+  dateRangeContainer.innerHTML = `
+    <input type="text" id="startDate" placeholder="Start Date">
+    <input type="text" id="endDate" placeholder="End Date">
+    <button id="updateChart">Update Chart</button>
+  `;
+  const insertionPoint: HTMLDivElement | null = document.querySelector("h1");
+  if (insertionPoint) {
+    insertionPoint.insertAdjacentElement("afterend", dateRangeContainer);
+  }
+
+  // Initialize flatpickr for the date range picker inputs
+  flatpickr("#startDate", {
+    dateFormat: "Y-m-d",
+  });
+
+  flatpickr("#endDate", {
+    dateFormat: "Y-m-d",
+  });
+
+  let ctx: HTMLCanvasElement | null =
+    document.querySelector(".eventHistoryChart");
   if (!ctx) {
     ctx = document.createElement("canvas");
     ctx.id = "eventHistoryChart";
-    const insertionPoint: HTMLDivElement | null = document.querySelector("h1");
     if (insertionPoint) {
       insertionPoint.insertAdjacentElement("afterend", ctx);
     }
   }
 
-  Chart.register(
-    LinearScale,
-    LineElement,
-    LineController,
-    CategoryScale,
-    PointElement,
-    Legend,
-    Tooltip
-  );
-
-  new Chart(ctx, {
+  const chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: eventHistoryData.map((d) => d.eventDate),
@@ -66,6 +80,30 @@ export function generateStatsOverview() {
           beginAtZero: true,
         },
       },
+      plugins: {
+        legend: {
+          display: true,
+          position: "right",
+        },
+        title: {
+          display: true,
+          text: `${eventName}`,
+        },
+      },
     },
+  });
+
+  document.getElementById("updateChart")?.addEventListener("click", () => {
+    const startDate = (document.getElementById("startDate") as HTMLInputElement).value;
+    const endDate = (document.getElementById("endDate") as HTMLInputElement).value;
+
+    const filteredData = eventHistoryData.filter((d) => {
+      return (!startDate || d.eventDate >= startDate) && (!endDate || d.eventDate <= endDate);
+    });
+
+    chart.data.labels = filteredData.map((d) => d.eventDate);
+    chart.data.datasets[0].data = filteredData.map((d) => d.finishers);
+    chart.data.datasets[1].data = filteredData.map((d) => d.volunteers);
+    chart.update();
   });
 }
