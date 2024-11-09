@@ -1,13 +1,18 @@
-import { upsertParagraph, deleteParagraph } from "./dom/upsertParagraph";
+import { deleteParagraph, upsertParagraph } from "./dom/upsertParagraph";
 import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
 import { MilestonePresenter } from "./presenters/MilestonePresenter";
 import { pluralize, sortAndConjoin } from "./stringFunctions";
 import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
-import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMilestones";
+import {
+  fiveKVolunteersToMilestones,
+} from "./transformers/fiveKVolunteersToMilestones";
 import { twoKFinishersToMilestones } from "./transformers/twoKFinishersToMilestone";
 import { twoKVolunteersToMilestones } from "./transformers/twoKVolunteersToMilestones";
 import { VolunteerWithCount } from "./types/Volunteer";
-import Chart from 'chart.js/auto';
+import Chart from "chart.js/auto";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+Chart.register(ChartDataLabels);
 
 function populate(
   rpe: ResultsPageExtractor,
@@ -46,16 +51,21 @@ function populate(
 
   const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} superstars have volunteered a total of ${volunteerOccasions.toLocaleString()} times between them, and helped us host ${rpe.eventName} this weekend. Our deep thanks to:  `;
 
-  const finisherMilestoneCelebrations = rpe.courseLength == 2
-    ? [...twoKVolunteersToMilestones(volunteerWithCountList), ...twoKFinishersToMilestones(rpe.finishers)]
-    : fiveKFinishersToMilestones(rpe.finishers);
+  const finisherMilestoneCelebrations =
+    rpe.courseLength == 2
+      ? [
+          ...twoKVolunteersToMilestones(volunteerWithCountList),
+          ...twoKFinishersToMilestones(rpe.finishers),
+        ]
+      : fiveKFinishersToMilestones(rpe.finishers);
   const milestoneCelebrations = [
     ...fiveKVolunteersToMilestones(volunteerWithCountList),
     ...finisherMilestoneCelebrations,
   ];
   const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
-  const facts = `Since ${rpe.eventName} started ` +
+  const facts =
+    `Since ${rpe.eventName} started ` +
     `${rpe.facts?.finishers?.toLocaleString()} brilliant parkrunners have had their barcodes scanned, ` +
     `and a grand total of ${rpe.facts.finishes.toLocaleString()} finishers ` +
     `have covered a total distance of ${(
@@ -64,12 +74,14 @@ function populate(
     `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
     `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions`;
 
-  const eventuateDiv: HTMLDivElement = (document.getElementById("eventuate") as HTMLDivElement) ||
+  const eventuateDiv: HTMLDivElement =
+    (document.getElementById("eventuate") as HTMLDivElement) ||
     document.createElement("div");
   eventuateDiv.id = "eventuate";
 
-  const finishTimesChart = (document.getElementById('finishTimesChart') ?? document.createElement('canvas')) as HTMLCanvasElement;
-  finishTimesChart.id = 'finishTimesChart';
+  const finishTimesChart = (document.getElementById("finishTimesChart") ??
+    document.createElement("canvas")) as HTMLCanvasElement;
+  finishTimesChart.id = "finishTimesChart";
 
   const reportDetails = {
     message: { title: "⏳︎", details: message },
@@ -101,9 +113,10 @@ function populate(
     },
     unknowns: {
       title: "",
-      details: rpe.unknowns.length > 0
-        ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded`
-        : undefined,
+      details:
+        rpe.unknowns.length > 0
+          ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded`
+          : undefined,
     },
     facts: {
       title: "",
@@ -111,7 +124,8 @@ function populate(
     },
   };
 
-  const insertionPoint: HTMLDivElement | null = document.querySelector(".Results-header");
+  const insertionPoint: HTMLDivElement | null =
+    document.querySelector(".Results-header");
   if (insertionPoint) {
     insertionPoint.insertAdjacentElement("afterend", finishTimesChart);
     insertionPoint.insertAdjacentElement("afterend", eventuateDiv);
@@ -141,63 +155,115 @@ export function generateEventOverview() {
 
   Promise.all(waitingOn).then(() => {
     populate(rpe, volunteerWithCountList);
-    createFinishTimesChart(rpe.getFinishTimes());
+    createFinishTimesChart(rpe.getFinishTimes(), rpe.eventName ?? "WAT", rpe.eventNumber ?? "WEN");
   });
 }
 
-function createFinishTimesChart(finishTimes: { finishTime: number; vols: number }[]) {
-  const ctx = document.getElementById('finishTimesChart') as HTMLCanvasElement;
+function createFinishTimesChart(
+  finishTimes: { finishTime: number; vols: number }[],
+  eventName: string,
+  eventNumber: string
+) {
+  const ctx = document.getElementById("finishTimesChart") as HTMLCanvasElement;
   const finishTimesDistribution = getFinishTimesDistribution(finishTimes);
 
   new Chart(ctx, {
-    type: 'bar',
+    type: "bar",
     data: {
       labels: finishTimesDistribution.labels,
-      datasets: finishTimesDistribution.datasets
+      datasets: finishTimesDistribution.datasets,
     },
     options: {
       scales: {
         x: {
-          stacked: true
+          stacked: true,
+          title: {
+            display: true,
+            text: "Finish Time Ranges (minutes)",
+          },
         },
         y: {
           stacked: true,
-          beginAtZero: true
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Number of Finishers",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: "right",
+        },
+        datalabels: {
+          display: 'auto',
+          color: 'auto',
+          anchor: 'center',
+          align: 'center',
+          formatter: (value) => {
+            return value > 0 ? value : '';
+          }
+        },
+        title: {
+          display: true,
+          text: `Distribution of Finish Times at ${eventName} ${eventNumber} by Volunteer Milestone Clubs`
         }
-      }
-    }
+      },
+    },
   });
 }
 
-function getFinishTimesDistribution(finishTimes: { finishTime: number; vols: number }[]) {
+const VolunteerGroups: Record<string, { text: string; colour: string }> = {
+  0: { text: "yet to have a go", colour: "grey" },
+  1: { text: "on the way to the v25 club", colour: "white" },
+  25: { text: "member of the v25 club", colour: "purple" },
+  50: { text: "member of the v50 club", colour: "red" },
+  100: { text: "member of the v100 club", colour: "black" },
+  250: { text: "member of the v250 club", colour: "green" },
+  500: { text: "member of the v500 club", colour: "blue" },
+  1000: { text: "member of the v1000 club", colour: "yellow" },
+};
+
+function getFinishTimesDistribution(
+  finishTimes: { finishTime: number; vols: number }[]
+) {
   const distribution: Record<string, Record<string, number>> = {};
 
   finishTimes.forEach(({ finishTime, vols }) => {
     const timeRange = `${Math.floor(finishTime / 5) * 5}-${Math.floor(finishTime / 5) * 5 + 4}`;
-    const volRange = `${Math.floor(vols / 5) * 5}-${Math.floor(vols / 5) * 5 + 4}`;
+    const volRange = getMilestoneClub(vols);
 
     if (!distribution[timeRange]) {
       distribution[timeRange] = {};
     }
-    distribution[timeRange][volRange] = (distribution[timeRange][volRange] || 0) + 1;
+    distribution[timeRange][volRange] =
+      (distribution[timeRange][volRange] || 0) + 1;
   });
 
-  const labels = Object.keys(distribution).sort((a, b) => parseInt(a.split('-')[0]) - parseInt(b.split('-')[0]));
-  const volRanges = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50+'];
-  const datasets = volRanges.map(volRange => ({
-    label: volRange,
-    data: labels.map(label => distribution[label][volRange] || 0),
-    backgroundColor: getRandomColor()
+  const labels = Object.keys(distribution).sort(
+    (a, b) => parseInt(a.split("-")[0]) - parseInt(b.split("-")[0])
+  );
+  const volRanges = Object.keys(VolunteerGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const datasets = volRanges.map((volRange) => ({
+    label: VolunteerGroups[volRange].text,
+    data: labels.map((label) => distribution[label][volRange] || 0),
+    backgroundColor: VolunteerGroups[volRange].colour,
   }));
 
   return { labels, datasets };
 }
 
-function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
+function getMilestoneClub(vols: number): string {
+  const milestones = Object.keys(VolunteerGroups)
+    .map(Number)
+    .sort((a, b) => b - a);
+  for (const milestone of milestones) {
+    if (vols >= milestone) {
+      return milestone.toString();
+    }
   }
-  return color;
+  return "0";
 }

@@ -125,6 +125,7 @@ export class ResultsPageExtractor {
             timeInMinutes = Number(timeParts[0]) * 60 + Number(timeParts[1]);
           }
         }
+        console.log(finisher.position, { finishTime: timeInMinutes, vols });
         return { finishTime: timeInMinutes, vols };
       }).filter((f) => f.finishTime);
     }
