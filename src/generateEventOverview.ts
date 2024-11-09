@@ -7,6 +7,7 @@ import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMil
 import { twoKFinishersToMilestones } from "./transformers/twoKFinishersToMilestone";
 import { twoKVolunteersToMilestones } from "./transformers/twoKVolunteersToMilestones";
 import { VolunteerWithCount } from "./types/Volunteer";
+import Chart from 'chart.js/auto';
 
 function populate(
   rpe: ResultsPageExtractor,
@@ -67,6 +68,9 @@ function populate(
     document.createElement("div");
   eventuateDiv.id = "eventuate";
 
+  const finishTimesChart = (document.getElementById('finishTimesChart') ?? document.createElement('canvas')) as HTMLCanvasElement;
+  finishTimesChart.id = 'finishTimesChart';
+
   const reportDetails = {
     message: { title: "⏳︎", details: message },
     introduction: { title: "", details: introduction },
@@ -109,6 +113,7 @@ function populate(
 
   const insertionPoint: HTMLDivElement | null = document.querySelector(".Results-header");
   if (insertionPoint) {
+    insertionPoint.insertAdjacentElement("afterend", finishTimesChart);
     insertionPoint.insertAdjacentElement("afterend", eventuateDiv);
 
     for (const [section, content] of Object.entries(reportDetails)) {
@@ -123,6 +128,7 @@ function populate(
 }
 export function generateEventOverview() {
   const rpe = new ResultsPageExtractor(document);
+
   const volunteerWithCountList = rpe
     .volunteersList()
     .map((vol) => new VolunteerWithCount(vol));
@@ -133,5 +139,65 @@ export function generateEventOverview() {
 
   populate(rpe, volunteerWithCountList, loadingMessage);
 
-  Promise.all(waitingOn).then(() => populate(rpe, volunteerWithCountList));
+  Promise.all(waitingOn).then(() => {
+    populate(rpe, volunteerWithCountList);
+    createFinishTimesChart(rpe.getFinishTimes());
+  });
+}
+
+function createFinishTimesChart(finishTimes: { finishTime: number; vols: number }[]) {
+  const ctx = document.getElementById('finishTimesChart') as HTMLCanvasElement;
+  const finishTimesDistribution = getFinishTimesDistribution(finishTimes);
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: finishTimesDistribution.labels,
+      datasets: finishTimesDistribution.datasets
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+function getFinishTimesDistribution(finishTimes: { finishTime: number; vols: number }[]) {
+  const distribution: Record<string, Record<string, number>> = {};
+
+  finishTimes.forEach(({ finishTime, vols }) => {
+    const timeRange = `${Math.floor(finishTime / 5) * 5}-${Math.floor(finishTime / 5) * 5 + 4}`;
+    const volRange = `${Math.floor(vols / 5) * 5}-${Math.floor(vols / 5) * 5 + 4}`;
+
+    if (!distribution[timeRange]) {
+      distribution[timeRange] = {};
+    }
+    distribution[timeRange][volRange] = (distribution[timeRange][volRange] || 0) + 1;
+  });
+
+  const labels = Object.keys(distribution).sort((a, b) => parseInt(a.split('-')[0]) - parseInt(b.split('-')[0]));
+  const volRanges = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50+'];
+  const datasets = volRanges.map(volRange => ({
+    label: volRange,
+    data: labels.map(label => distribution[label][volRange] || 0),
+    backgroundColor: getRandomColor()
+  }));
+
+  return { labels, datasets };
+}
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }

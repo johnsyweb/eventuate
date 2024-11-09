@@ -113,6 +113,22 @@ export class ResultsPageExtractor {
     });
   }
 
+  getFinishTimes(): {finishTime: number, vols: number}[] {
+    return this.finishers.map((finisher) => {
+      const vols: number = parseInt(finisher.vols ?? '0');
+      let timeInMinutes = 0;
+      if (finisher.time) {
+          const timeParts = finisher.time.split(':');
+          if (timeParts.length === 2) {
+            timeInMinutes = Number(timeParts[0]);
+           } else if (timeParts.length === 3) {
+            timeInMinutes = Number(timeParts[0]) * 60 + Number(timeParts[1]);
+          }
+        }
+        return { finishTime: timeInMinutes, vols };
+      }).filter((f) => f.finishTime);
+    }
+
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
     return this.resultsPageDocument.querySelectorAll(
       ".Results + div h3:first-of-type + p:first-of-type a"

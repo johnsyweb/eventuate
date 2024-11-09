@@ -22,7 +22,7 @@
     "build": "webpack",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
     "repack-for-chromium": "bash './script/repack-for-chromium'",
-    "start": "web-ext run -v -u https://www.parkrun.com.au/brimbank/results/latestresults/",
+    "start": "web-ext run -v -u https://www.parkrun.com.au/albertmelbourne/results/latestresults/",
     "test": "jest",
     "lint": "eslint .",
     "web-ext:build": "web-ext build -o",
