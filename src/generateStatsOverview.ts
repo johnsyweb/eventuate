@@ -17,12 +17,16 @@ export function generateStatsOverview() {
       };
     });
 
+  // Determine the start and end dates
+  const startDate = eventHistoryData[0]?.eventDate;
+  const endDate = eventHistoryData[eventHistoryData.length - 1]?.eventDate;
+
   // Create and insert date range picker input fields and update button
   const dateRangeContainer = document.createElement("div");
   dateRangeContainer.id = "dateRangeContainer";
   dateRangeContainer.innerHTML = `
-    <input type="text" id="startDate" placeholder="Start Date">
-    <input type="text" id="endDate" placeholder="End Date">
+    <input type="text" id="startDate" placeholder="Start Date" value="${startDate}">
+    <input type="text" id="endDate" placeholder="End Date" value="${endDate}">
     <button id="updateChart">Update Chart</button>
   `;
   const insertionPoint: HTMLDivElement | null = document.querySelector("h1");
@@ -33,10 +37,12 @@ export function generateStatsOverview() {
   // Initialize flatpickr for the date range picker inputs
   flatpickr("#startDate", {
     dateFormat: "Y-m-d",
+    defaultDate: startDate,
   });
 
   flatpickr("#endDate", {
     dateFormat: "Y-m-d",
+    defaultDate: endDate,
   });
 
   let ctx: HTMLCanvasElement | null =
