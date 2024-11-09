@@ -237,21 +237,19 @@ function getFinishTimesDistribution(
     if (!distribution[timeRange]) {
       distribution[timeRange] = {};
     }
-    distribution[timeRange][volRange] =
-      (distribution[timeRange][volRange] || 0) + 1;
+    distribution[timeRange][volRange] = (distribution[timeRange][volRange] || 0) + 1;
   });
 
-  const labels = Object.keys(distribution).sort(
-    (a, b) => parseInt(a.split("-")[0]) - parseInt(b.split("-")[0])
-  );
-  const volRanges = Object.keys(VolunteerGroups)
-    .map(Number)
-    .sort((a, b) => a - b);
-  const datasets = volRanges.map((volRange) => ({
-    label: VolunteerGroups[volRange].text,
-    data: labels.map((label) => distribution[label][volRange] || 0),
-    backgroundColor: VolunteerGroups[volRange].colour,
-  }));
+  const labels = Object.keys(distribution).sort((a, b) => parseInt(a.split('-')[0]) - parseInt(b.split('-')[0]));
+  const volRanges = Object.keys(VolunteerGroups).map(Number).sort((a, b) => a - b);
+  const datasets = volRanges.map(volRange => {
+    const data = labels.map(label => distribution[label][volRange] || 0);
+    return {
+      label: VolunteerGroups[volRange].text,
+      data,
+      backgroundColor: VolunteerGroups[volRange].colour,
+    };
+  }).filter(dataset => dataset.data.some(value => value > 0)); // Filter out datasets with all zero values
 
   return { labels, datasets };
 }
