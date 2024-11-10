@@ -185,10 +185,16 @@ function createFinishTimesChart(
         y: {
           stacked: true,
           beginAtZero: true,
+          max: 100,
           title: {
             display: true,
-            text: "Number of Finishers",
+            text: "Percentage of Finishers",
           },
+          ticks: {
+            callback: function(value) {
+              return value + '%';
+            }
+          }
         },
       },
       plugins: {
@@ -198,16 +204,16 @@ function createFinishTimesChart(
         },
         datalabels: {
           display: 'auto',
-          color: 'auto',
+          color: 'black',
           anchor: 'center',
           align: 'center',
           formatter: (value) => {
-            return value > 0 ? value : '';
+            return value > 0 ? value.toFixed(1) + '%' : '';
           }
         },
         title: {
           display: true,
-          text: `Distribution of Finish Times at ${eventName} ${eventNumber} by Volunteer Milestone Clubs`
+          text: `Distribution of Finish Times at ${eventName} ${eventNumber} by Volunteer Milestone Clubs as a percentage.`
         }
       },
     },
@@ -249,7 +255,15 @@ function getFinishTimesDistribution(
       data,
       backgroundColor: VolunteerGroups[volRange].colour,
     };
-  }).filter(dataset => dataset.data.some(value => value > 0)); // Filter out datasets with all zero values
+  });
+
+  // Normalize the data to percentages
+  labels.forEach((label, index) => {
+    const total = datasets.reduce((sum, dataset) => sum + dataset.data[index], 0);
+    datasets.forEach(dataset => {
+      dataset.data[index] = total ? (dataset.data[index] / total) * 100 : 0;
+    });
+  });
 
   return { labels, datasets };
 }
