@@ -69,48 +69,41 @@ export class ResultsPageExtractor {
       .filter((p) => Number(p.runs) === 1)
       .map((p) => p.name);
 
-    this.firstTimers = this.finishers
-      .filter((p) => p.achievement === "First Timer!" && Number(p.runs) > 1)
-      .map((p) => p.name);
+    this.firstTimers = Array.from(rowElements)
+      .filter(
+        (tr) =>
+          tr.querySelector("td.Results-table-td--ft") &&
+          Number(tr.dataset.runs) > 1
+      )
+      .map((tr) => tr.dataset.name as string);
 
-    this.finishersWithNewPBs = this.finishers
-      .filter((p) => p.achievement === "New PB!")
-      .map((p) => `${p.name} (${p.time})`);
+    this.finishersWithNewPBs = Array.from(rowElements)
+      .filter((tr) => tr.querySelector("td.Results-table-td--pb"))
+      .map(
+        (tr) =>
+          `${tr.dataset.name} (${tr.querySelector(".Results-table-td--time .compact")?.textContent})`
+      );
 
     this.runningWalkingGroups = Array.from(
       new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
     );
 
-    const statElements: NodeListOf<HTMLDivElement> =
-      document.querySelectorAll(".aStat");
+    const [
+      _events,
+      finishers,
+      finishes,
+      volunteers,
+      pbs,
+      _averageFinishTime,
+      _groups,
+    ] = Array.from(document.querySelectorAll(".aStat")).map((s) =>
+      s?.textContent?.replace(/^[^:]*:/, "").trim()
+    );
 
-    statElements?.forEach((e) => {
-      const key = e.firstChild?.textContent
-        ?.trim()
-        ?.toLocaleLowerCase()
-        ?.replace(":", "");
-      if (
-        key !== undefined &&
-        e.firstElementChild !== null &&
-        Object.hasOwn(this.facts, key)
-      ) {
-        const value = Number(e.firstElementChild.textContent);
-        switch (key) {
-          case "finishers":
-            this.facts.finishers = value;
-            break;
-          case "finishes":
-            this.facts.finishes = value;
-            break;
-          case "pbs":
-            this.facts.pbs = value;
-            break;
-          case "volunteers":
-            this.facts.volunteers = value;
-            break;
-        }
-      }
-    });
+    this.facts.finishers = finishers ? Number(finishers) : 0;
+    this.facts.finishes = finishes ? Number(finishes) : 0;
+    this.facts.pbs = pbs ? Number(pbs) : 0;
+    this.facts.volunteers = volunteers ? Number(volunteers) : 0;
   }
 
   getFinishTimes(): {finishTime: number, vols: number}[] {
