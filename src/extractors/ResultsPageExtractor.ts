@@ -106,9 +106,10 @@ export class ResultsPageExtractor {
     this.facts.volunteers = volunteers ? Number(volunteers) : 0;
   }
 
-  getFinishTimes(): {finishTime: number, vols: number}[] {
+  getFinishTimes(): {finishTime: number, vols: number, ageGroup: string}[] {
     return this.finishers.map((finisher) => {
       const vols: number = parseInt(finisher.vols ?? '0');
+      const ageGroup = finisher.agegroup ?? 'unspecified';
       let timeInMinutes = 0;
       if (finisher.time) {
           const timeParts = finisher.time.split(':');
@@ -118,8 +119,7 @@ export class ResultsPageExtractor {
             timeInMinutes = Number(timeParts[0]) * 60 + Number(timeParts[1]);
           }
         }
-        console.log(finisher.position, { finishTime: timeInMinutes, vols });
-        return { finishTime: timeInMinutes, vols };
+        return { finishTime: timeInMinutes, vols, ageGroup };
       }).filter((f) => f.finishTime);
     }
 

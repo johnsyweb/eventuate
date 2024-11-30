@@ -20,6 +20,7 @@
   "author": "Pete Johns",
   "scripts": {
     "build": "webpack",
+    "build:watch": "webpack --watch",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
     "repack-for-chromium": "bash './script/repack-for-chromium'",
     "start": "web-ext run -v -u https://www.parkrun.com.au/albertmelbourne/results/latestresults/",

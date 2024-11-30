@@ -1,4 +1,4 @@
-import { Chart, LinearScale, LineElement, LineController, CategoryScale, PointElement, Legend, Tooltip } from "chart.js";
+import { Chart, LinearScale, LineElement, LineController, CategoryScale, PointElement, Legend, Tooltip, Title } from "chart.js/auto";
 
 export function generateStatsOverview() {
   const eventHistoryData = Array.from(
@@ -13,7 +13,11 @@ export function generateStatsOverview() {
         volunteers: Number(element.dataset.volunteers),
       };
     });
-  console.log(eventHistoryData);
+
+    let title = document.querySelector("h1")?.textContent;
+    if (!title) {
+      title = "Event History";
+    }
 
   let ctx: HTMLCanvasElement | null = document.querySelector(".eventHistoryChart");
   if (!ctx) {
@@ -32,7 +36,8 @@ export function generateStatsOverview() {
     CategoryScale,
     PointElement,
     Legend,
-    Tooltip
+    Tooltip,
+    Title
   );
 
   new Chart(ctx, {
@@ -57,6 +62,10 @@ export function generateStatsOverview() {
       ],
     },
     options: {
+      legend: {
+        display: true,
+        position: "right",
+      },
       scales: {
         finishers: {
           beginAtZero: true,
@@ -65,6 +74,7 @@ export function generateStatsOverview() {
           position: "right",
           beginAtZero: true,
         },
+        
       },
     },
   });
