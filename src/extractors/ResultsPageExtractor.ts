@@ -89,13 +89,13 @@ export class ResultsPageExtractor {
     );
 
     const [
-      _events,
+      ,
       finishers,
       finishes,
       volunteers,
       pbs,
-      _averageFinishTime,
-      _groups,
+      ,
+      ,
     ] = Array.from(document.querySelectorAll(".aStat")).map((s) =>
       s?.textContent?.replace(/^[^:]*:/, "").trim()
     );
