@@ -32,7 +32,7 @@ export class ResultsPageExtractor {
     this.finishers = Array.from(rowElements).map(
       (d) =>
         new Finisher(
-          this.removeSurenameFromJunior(d.dataset.name),
+          this.removeSurnameFromJunior(d.dataset.name),
           d.dataset.agegroup,
           d.dataset.club,
           d.dataset.gender,
@@ -75,13 +75,13 @@ export class ResultsPageExtractor {
           tr.querySelector("td.Results-table-td--ft") &&
           Number(tr.dataset.runs) > 1
       )
-      .map((tr) => tr.dataset.name as string);
+      .map((tr) => this.removeSurnameFromJunior(tr.dataset.name));
 
     this.finishersWithNewPBs = Array.from(rowElements)
       .filter((tr) => tr.querySelector("td.Results-table-td--pb"))
       .map(
         (tr) =>
-          `${tr.dataset.name} (${tr.querySelector(".Results-table-td--time .compact")?.textContent})`
+          `${this.removeSurnameFromJunior(tr.dataset.name)} (${tr.querySelector(".Results-table-td--time .compact")?.textContent})`
       );
 
     this.runningWalkingGroups = Array.from(
@@ -112,7 +112,7 @@ export class ResultsPageExtractor {
     );
   }
 
-  removeSurenameFromJunior(name?: string): string {
+  removeSurnameFromJunior(name?: string): string {
     if (!name || this.courseLength == 5) {
       return name ?? "";
     } else {
@@ -147,7 +147,7 @@ export class ResultsPageExtractor {
   volunteersList(): Volunteer[] {
     return Array.from(this.volunteerElements()).map((v) => {
       return {
-        name: this.removeSurenameFromJunior(v.innerText),
+        name: this.removeSurnameFromJunior(v.innerText),
         link: v.href,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,
