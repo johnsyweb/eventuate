@@ -114,6 +114,8 @@ Bug reports and pull requests are welcome on [GitHub]. Everyone
 interacting in the eventuate project's codebases, issue trackers,
 _etcetera_ is expected to follow the [code of conduct].
 
+We use semantic commits in this project. Please see our [contribuition guidelines](./CONTRIBUTING.md) for more information about the preferred commit message format.
+
 ## License [![license][license-image]][licence]
 
 The addon is available as open source under the terms of the [MIT License].

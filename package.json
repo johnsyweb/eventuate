@@ -20,22 +20,30 @@
   "author": "Pete Johns",
   "scripts": {
     "build": "webpack",
+    "commit": "cz",
+    "lint": "eslint .",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
+    "prepare": "husky",
     "repack-for-chromium": "bash './script/repack-for-chromium'",
     "start": "web-ext run -v -u https://www.parkrun.com.au/brimbank/results/latestresults/",
     "test": "jest",
-    "lint": "eslint .",
     "web-ext:build": "web-ext build -o",
-    "web-ext:lint": "web-ext lint"
+    "web-ext:lint": "web-ext lint",
+    "commitlint": "commitlint --edit"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@eslint/js": "^9.20.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
+    "commitizen": "^4.3.1",
     "copy-webpack-plugin": "^12.0.2",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.20.1",
     "globals": "^15.15.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "^3.5.1",
     "ts-jest": "^29.2.5",
@@ -70,6 +78,16 @@
       "test",
       "webpack.config.js",
       "tsconfig.json"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   }
 }
