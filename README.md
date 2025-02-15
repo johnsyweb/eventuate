@@ -34,13 +34,37 @@ it in TypeScript and adding some unit tests using `jest`.
 
 ## Building locally
 
-Use `pnpm`:
+### Prerequisites
+
+This project uses [asdf](https://asdf-vm.com/) to manage Node.js versions and [corepack](https://nodejs.org/api/corepack.html) to manage pnpm. Here's how to set up your development environment:
 
 ```sh
-pnpm i // Install the development dependencies
-pnpm t // Run unit tests
-pnpm package // Package up all the things for Firefox and Chromium browsers
-pnpm web-ext:lint // Verify package for Firefox
+# Install asdf (if you haven't already)
+brew install asdf
+
+# Add the NodeJS plugin
+asdf plugin add nodejs
+
+# Install NodeJS at the version specified in .tool-versions
+asdf install
+
+# Enable corepack (comes with NodeJS)
+corepack enable
+
+# Verify installations
+node --version
+pnpm --version
+```
+
+### Building the Extension
+
+Once the tools are installed:
+
+```sh
+pnpm i        # Install the development dependencies
+pnpm t        # Run unit tests
+pnpm package  # Package up all the things for Firefox and Chromium browsers
+pnpm web-ext:lint  # Verify package for Firefox
 ```
 
 Or if Docker's more your thing:
