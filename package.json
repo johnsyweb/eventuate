@@ -75,6 +75,7 @@
       "CODE_OF_CONDUCT.md",
       "dist/eventuate.bookmarklet.js",
       "Dockerfile",
+      "eslint.config.mjs",
       "jest.config.ts",
       "LICENSE.txt",
       "package.json",
@@ -116,25 +117,6 @@
           { "path": "dist/bookmarklet.html", "label": "Bookmarklet Installation Page" }
         ]
       }]
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "@eslint/js/recommended",
-      "typescript-eslint/strict",
-      "typescript-eslint/stylistic"
-    ],
-    "files": ["**/*.{js,mjs,cjs,ts}"],
-    "languageOptions": {
-      "globals": {
-        "browser": true
-      }
-    },
-    "ignores": [
-      "*.js",
-      "src/*.template.js",
-      "dist/**/*.js",
-      "target/**/*.js"
     ]
   }
 }
