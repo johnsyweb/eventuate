@@ -19,7 +19,7 @@
   "license": "MIT",
   "author": "Pete Johns",
   "scripts": {
-    "build": "webpack && webpack --config webpack.tampermonkey.config.js",
+    "build": "webpack && webpack --config webpack.tampermonkey.config.js && webpack --config webpack.bookmarklet.config.js",
     "commit": "cz",
     "lint": "eslint .",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
@@ -112,7 +112,8 @@
         "assets": [
           { "path": "web-ext-artifacts/*.zip", "label": "Firefox Extension" },
           { "path": "chromium-*.zip", "label": "Chrome Extension" },
-          { "path": "dist/eventuate.user.js", "label": "Tampermonkey Script" }
+          { "path": "dist/eventuate.user.js", "label": "Tampermonkey Script" },
+          { "path": "dist/bookmarklet.html", "label": "Bookmarklet Installation Page" }
         ]
       }]
     ]
