@@ -69,23 +69,24 @@
     "ignoreFiles": [
       ".tool-versions",
       ".web-extension-id",
-      "CODE_OF_CONDUCT.md",
-      "Dockerfile",
-      "LICENSE.txt",
-      "README.md",
       "amo.json",
       "assets",
       "chromium*",
+      "CODE_OF_CONDUCT.md",
+      "dist/eventuate.bookmarklet.js",
+      "Dockerfile",
       "eslint.config.mjs",
       "jest.config.ts",
+      "LICENSE.txt",
       "package.json",
       "pnpm-lock.yaml",
+      "README.md",
       "script",
       "src",
       "target",
       "test",
-      "webpack.config.js",
-      "tsconfig.json"
+      "tsconfig.json",
+      "webpack.config.js"
     ]
   },
   "config": {
