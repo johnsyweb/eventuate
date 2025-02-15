@@ -19,7 +19,7 @@
   "license": "MIT",
   "author": "Pete Johns",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && webpack --config webpack.tampermonkey.config.js",
     "commit": "cz",
     "lint": "eslint .",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
@@ -111,7 +111,8 @@
       ["@semantic-release/github", {
         "assets": [
           { "path": "web-ext-artifacts/*.zip", "label": "Firefox Extension" },
-          { "path": "chromium-*.zip", "label": "Chrome Extension" }
+          { "path": "chromium-*.zip", "label": "Chrome Extension" },
+          { "path": "dist/eventuate.user.js", "label": "Tampermonkey Script" }
         ]
       }]
     ]
