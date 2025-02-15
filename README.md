@@ -34,13 +34,37 @@ it in TypeScript and adding some unit tests using `jest`.
 
 ## Building locally
 
-Use `pnpm`:
+### Prerequisites
+
+This project uses [asdf](https://asdf-vm.com/) to manage Node.js versions and [corepack](https://nodejs.org/api/corepack.html) to manage pnpm. Here's how to set up your development environment:
 
 ```sh
-pnpm i // Install the development dependencies
-pnpm t // Run unit tests
-pnpm package // Package up all the things for Firefox and Chromium browsers
-pnpm web-ext:lint // Verify package for Firefox
+# Install asdf (if you haven't already)
+brew install asdf
+
+# Add the NodeJS plugin
+asdf plugin add nodejs
+
+# Install NodeJS at the version specified in .tool-versions
+asdf install
+
+# Enable corepack (comes with NodeJS)
+corepack enable
+
+# Verify installations
+node --version
+pnpm --version
+```
+
+### Building the Extension
+
+Once the tools are installed:
+
+```sh
+pnpm i        # Install the development dependencies
+pnpm t        # Run unit tests
+pnpm package  # Package up all the things for Firefox and Chromium browsers
+pnpm web-ext:lint  # Verify package for Firefox
 ```
 
 Or if Docker's more your thing:
@@ -89,6 +113,35 @@ Enjoy!
 Bug reports and pull requests are welcome on [GitHub]. Everyone
 interacting in the eventuate project's codebases, issue trackers,
 _etcetera_ is expected to follow the [code of conduct].
+
+We use semantic commits in this project. Please see our [contibution guidelines](docs/CONTRIBUTING.md) for more information about the preferred commit message format.
+
+## Releasing
+
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to automate version management and package releases. The release process is triggered automatically when changes are pushed to the `main` branch.
+
+The process will:
+
+1. Analyze commits to determine the next version number
+2. Update the CHANGELOG.md
+3. Create a new GitHub release
+4. Build and attach extension packages:
+   - Firefox extension (`.zip`)
+   - Chrome extension (`.zip`)
+   - Tampermonkey script (`.user.js`)
+   - Bookmarklet installation page (`.html`)
+
+To test the release process locally:
+
+```sh
+GITHUB_TOKEN=your-token pnpm semantic-release --dry-run
+```
+
+The version number will be automatically incremented based on your commits:
+
+- `fix:` → patch (0.0.x)
+- `feat:` → minor (0.x.0)
+- `BREAKING CHANGE:` → major (x.0.0)
 
 ## License [![license][license-image]][licence]
 
