@@ -114,7 +114,34 @@ Bug reports and pull requests are welcome on [GitHub]. Everyone
 interacting in the eventuate project's codebases, issue trackers,
 _etcetera_ is expected to follow the [code of conduct].
 
-We use semantic commits in this project. Please see our [contribuition guidelines](./CONTRIBUTING.md) for more information about the preferred commit message format.
+We use semantic commits in this project. Please see our [contibution guidelines](docs/CONTRIBUTING.md) for more information about the preferred commit message format.
+
+## Releasing
+
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to automate version management and package releases. The release process is triggered automatically when changes are pushed to the `main` branch.
+
+The process will:
+
+1. Analyze commits to determine the next version number
+2. Update the CHANGELOG.md
+3. Create a new GitHub release
+4. Build and attach extension packages:
+   - Firefox extension (`.zip`)
+   - Chrome extension (`.zip`)
+   - Tampermonkey script (`.user.js`)
+   - Bookmarklet installation page (`.html`)
+
+To test the release process locally:
+
+```sh
+GITHUB_TOKEN=your-token pnpm semantic-release --dry-run
+```
+
+The version number will be automatically incremented based on your commits:
+
+- `fix:` → patch (0.0.x)
+- `feat:` → minor (0.x.0)
+- `BREAKING CHANGE:` → major (x.0.0)
 
 ## License [![license][license-image]][licence]
 
