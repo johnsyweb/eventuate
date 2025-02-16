@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/johnsyweb/eventuate/compare/v1.0.0...v1.0.1) (2025-02-16)
+
+
+### Bug Fixes
+
+* **bookmarklet:** encode bookmarklet ([1ee1024](https://github.com/johnsyweb/eventuate/commit/1ee1024cdcc337193532ff5dc8ed9c1efe0d1e33))
+* **bookmarklet:** ensure bookmarklet works in Safari ([b8e3645](https://github.com/johnsyweb/eventuate/commit/b8e3645416ebcfbe8ff8134e61a5fda7f1984c63))
+
 # 1.0.0 (2025-02-16)
 
 
