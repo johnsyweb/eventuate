@@ -1,6 +1,6 @@
 {
   "name": "eventuate",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "description": "Extracts information from parkrun results pages for inclusion in reports.",
   "keywords": [
     "parkrun",
@@ -87,7 +87,10 @@
       "test",
       "tsconfig.json",
       "webpack.config.js"
-    ]
+    ],
+    "sign": {
+      "channel": "listed"
+    }
   },
   "config": {
     "commitizen": {
@@ -100,22 +103,46 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
-      ["@semantic-release/git", {
-        "assets": ["CHANGELOG.md", "manifest.json"],
-      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes.split('\\n').slice(0, 3).join('\\n')}"}],
-      ["@semantic-release/github", {
-        "assets": [
-          { "path": "web-ext-artifacts/*.zip", "label": "Firefox Extension" },
-          { "path": "chromium-*.zip", "label": "Chrome Extension" },
-          { "path": "dist/eventuate.user.js", "label": "Tampermonkey Script" },
-          { "path": "dist/bookmarklet.html", "label": "Bookmarklet Installation Page" }
-        ]
-      }]
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "manifest.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes.split('\\n').slice(0, 3).join('\\n')}"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "web-ext-artifacts/*.zip",
+              "label": "Firefox Extension"
+            },
+            {
+              "path": "chromium-*.zip",
+              "label": "Chrome Extension"
+            },
+            {
+              "path": "dist/eventuate.user.js",
+              "label": "Tampermonkey Script"
+            },
+            {
+              "path": "dist/bookmarklet.html",
+              "label": "Bookmarklet Installation Page"
+            }
+          ]
+        }
+      ]
     ]
   }
 }
