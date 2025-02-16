@@ -64,7 +64,7 @@ module.exports = {
   <div class="instructions">
     <p>Drag this link to your bookmarks bar:</p>
     <p class="bookmarklet">
-      <a href="${script}">Eventuate</a>
+      <a href="${encodeURIComponent(script)}">Eventuate</a>
     </p>
   </div>
   <p>Version: ${version}</p>
