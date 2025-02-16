@@ -1,3 +1,11 @@
+# 1.0.0 (2025-02-16)
+
+
+### Features
+
+* **build:** emit Tampermonkey script ([8867ba0](https://github.com/johnsyweb/eventuate/commit/8867ba0162de423921cf29cb1fa118bd7aae585e))
+* **build:** wIP: emit a bookmarklet version ([1b802c0](https://github.com/johnsyweb/eventuate/commit/1b802c023aa027a17a2b8081db8213b91dc384c3))
+
 ## <small>0.0.7 (2024-06-11)</small>
 
 * 0.0.4 ([091a90e](https://github.com/johnsyweb/eventuate/commit/091a90e))
@@ -30,6 +38,3 @@
 * yarn run eslint --fix eventuate.js ([14a5437](https://github.com/johnsyweb/eventuate/commit/14a5437))
 * yarn run eslint --fix eventuate.js ([fd6ab01](https://github.com/johnsyweb/eventuate/commit/fd6ab01))
 * zip all the things for 0.0.7 ([fdc35e7](https://github.com/johnsyweb/eventuate/commit/fdc35e7))
-
-
-
