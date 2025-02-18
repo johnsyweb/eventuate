@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+VERSION="$1"
+
+bump_version_string() {
+  local file=$1
+  jq ".version = \"$VERSION\"" "$file" >"$file.tmp"
+  mv "$file.tmp" "$file"
+}
+
+bump_version_string amo.json
+bump_version_string manifest.json
+bump_version_string package.json
+
+pnpm package

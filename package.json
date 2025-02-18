@@ -118,7 +118,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "jq '.version = \"${nextRelease.version}\"' amo.json > amo.json.tmp && mv amo.json.tmp amo.json && jq '.version = \"${nextRelease.version}\"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json"
+          "prepareCmd": "./script/release.sh \"${nextRelease.version}\""
         }
       ],
       [

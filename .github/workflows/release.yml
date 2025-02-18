@@ -40,16 +40,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build extensions
-        run: pnpm package
-
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm semantic-release
-
-      - name: Build extensions with new version strings
-        run: pnpm web-ext:build && pnpm repack-for-chromium
 
       - name: Submit to Chrome Web Store
         run: pnpm chrome-webstore-upload upload --source eventuate-chromium.zip --auto-publish
