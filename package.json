@@ -70,26 +70,28 @@
   "webExt": {
     "verbose": true,
     "ignoreFiles": [
+      "*.config.js",
       ".tool-versions",
       ".web-extension-id",
+      "CODE_OF_CONDUCT.md",
+      "Dockerfile",
+      "LICENSE.txt",
+      "README.md",
       "amo.json",
       "assets",
       "chromium*",
-      "CODE_OF_CONDUCT.md",
+      "dist/bookmarklet.html",
       "dist/eventuate.bookmarklet.js",
-      "Dockerfile",
+      "dist/eventuate.user.js",
       "eslint.config.mjs",
       "jest.config.ts",
-      "LICENSE.txt",
       "package.json",
       "pnpm-lock.yaml",
-      "README.md",
       "script",
       "src",
       "target",
       "test",
-      "tsconfig.json",
-      "webpack.config.js"
+      "tsconfig.json"
     ],
     "sign": {
       "channel": "listed"

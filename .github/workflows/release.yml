@@ -48,6 +48,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm semantic-release
 
+      - name: Build extensions with new version strings
+        run: pnpm package
+
       - name: Submit to Chrome Web Store
         run: pnpm chrome-webstore-upload upload --source chromium-*.zip --auto-publish
         env:
