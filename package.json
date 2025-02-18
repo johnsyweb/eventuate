@@ -142,12 +142,12 @@
               "label": "Firefox Extension"
             },
             {
-              "path": "chromium-*.zip",
-              "label": "Chrome Extension"
+              "path": "eventuate-chromium.zip",
+              "label": "Chromium Extension"
             },
             {
               "path": "dist/eventuate.user.js",
-              "label": "Tampermonkey Script"
+              "label": "User Script"
             },
             {
               "path": "dist/bookmarklet.html",

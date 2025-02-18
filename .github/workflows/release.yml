@@ -49,10 +49,10 @@ jobs:
         run: pnpm semantic-release
 
       - name: Build extensions with new version strings
-        run: pnpm package
+        run: pnpm web-ext:build && pnpm repack-for-chromium
 
       - name: Submit to Chrome Web Store
-        run: pnpm chrome-webstore-upload upload --source chromium-*.zip --auto-publish
+        run: pnpm chrome-webstore-upload upload --source eventuate-chromium.zip --auto-publish
         env:
           EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
