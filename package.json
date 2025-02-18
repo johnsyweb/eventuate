@@ -32,18 +32,21 @@
     "commitlint": "commitlint --edit",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "version": "pnpm changelog && git add CHANGELOG.md",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "chrome-store-upload": "chrome-webstore-upload upload --source chromium-*.zip --auto-publish"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
     "@eslint/js": "^9.20.0",
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.1",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
+    "chrome-webstore-upload-cli": "^3.3.1",
     "commitizen": "^4.3.1",
     "conventional-changelog-cli": "^5.0.0",
     "copy-webpack-plugin": "^12.0.2",
@@ -53,12 +56,12 @@
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "^3.5.1",
-    "semantic-release": "^24.2.2",
+    "semantic-release": "^24.2.3",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.0",
+    "typescript-eslint": "^8.24.1",
     "web-ext": "^8.4.0",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1"
@@ -110,12 +113,21 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "jq '.version = \"${nextRelease.version}\"' amo.json > amo.json.tmp && mv amo.json.tmp amo.json && jq '.version = \"${nextRelease.version}\"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json"
+        }
+      ],
       [
         "@semantic-release/git",
         {
           "assets": [
             "CHANGELOG.md",
-            "manifest.json"
+            "package.json",
+            "manifest.json",
+            "amo.json"
           ],
           "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes.split('\\n').slice(0, 3).join('\\n')}"
         }
@@ -137,8 +149,8 @@
               "label": "Tampermonkey Script"
             },
             {
-              "path": "dist/bookmarklet.html",
-              "label": "Bookmarklet Installation Page"
+              "path": "dist/eventuate.bookmarklet.js",
+              "label": "Bookmarklet"
             }
           ]
         }
