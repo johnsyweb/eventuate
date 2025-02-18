@@ -32,7 +32,8 @@
     "commitlint": "commitlint --edit",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "version": "pnpm changelog && git add CHANGELOG.md",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "chrome-store-upload": "chrome-webstore-upload upload --source chromium-*.zip --auto-publish"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
@@ -45,6 +46,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
+    "chrome-webstore-upload-cli": "^3.3.1",
     "commitizen": "^4.3.1",
     "conventional-changelog-cli": "^5.0.0",
     "copy-webpack-plugin": "^12.0.2",
