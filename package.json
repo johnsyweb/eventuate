@@ -137,8 +137,8 @@
               "label": "Tampermonkey Script"
             },
             {
-              "path": "dist/bookmarklet.html",
-              "label": "Bookmarklet Installation Page"
+              "path": "dist/eventuate.bookmarklet.js",
+              "label": "Bookmarklet"
             }
           ]
         }
