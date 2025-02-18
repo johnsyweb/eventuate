@@ -1,9 +1,11 @@
 ---
 name: Release
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Node.js CI"]
+    branches: [main]
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -14,17 +16,18 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.tool-versions'
-      
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -45,12 +48,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm semantic-release
 
-      - name: Sign and submit to AMO
-        run: pnpm web-ext sign
-        env:
-          WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
-
       - name: Submit to Chrome Web Store
         run: pnpm chrome-webstore-upload upload --source chromium-*.zip --auto-publish
         env:
@@ -58,3 +55,11 @@ jobs:
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+
+      - name: Sign and submit to AMO
+        run: pnpm web-ext sign
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
+
+
