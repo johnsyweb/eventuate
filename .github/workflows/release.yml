@@ -47,7 +47,6 @@ jobs:
         run: pnpm semantic-release
 
       - name: Submit to Chrome Web Store
-        if: steps.semantic-release.outputs.new_release_published == 'true'
         run: pnpm chrome-webstore-upload upload --source eventuate-chromium.zip --auto-publish
         env:
           EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
@@ -56,7 +55,6 @@ jobs:
           REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
 
       - name: Sign and submit to AMO
-        if: steps.semantic-release.outputs.new_release_published == 'true'
         run: pnpm web-ext sign
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
