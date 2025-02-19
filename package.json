@@ -116,7 +116,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "./script/release.sh \"${nextRelease.version}\""
+          "prepareCmd": "./script/release \"${nextRelease.version}\""
         }
       ],
       [
