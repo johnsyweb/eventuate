@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/johnsyweb/eventuate/compare/v1.0.3...v1.1.0) (2025-02-19)
+
+
+### Bug Fixes
+
+* **ci:** fix script name ([cbe881e](https://github.com/johnsyweb/eventuate/commit/cbe881e603d5b5c5a0d69ee3c16b19f5af49d033))
+
+
+### Features
+
+* **website:** publish bookmarklet on website ([5475f19](https://github.com/johnsyweb/eventuate/commit/5475f1922676f133fd4b8c3222605b37c45ab214))
+
 ## [1.0.3](https://github.com/johnsyweb/eventuate/compare/v1.0.2...v1.0.3) (2025-02-18)
 
 
