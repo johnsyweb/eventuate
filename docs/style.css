@@ -1,0 +1,21 @@
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin-right: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.bookmarklet {
+  background: #f0f0f0;
+  padding: 1em;
+  border-radius: 4px;
+}
+
+.warning {
+  color: #d43;
+}
