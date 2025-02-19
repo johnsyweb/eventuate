@@ -80,9 +80,7 @@
       "amo.json",
       "assets",
       "chromium*",
-      "dist/bookmarklet.html",
-      "dist/eventuate.bookmarklet.js",
-      "dist/eventuate.user.js",
+      "docs/**/*",
       "eslint.config.mjs",
       "jest.config.ts",
       "package.json",
@@ -151,7 +149,7 @@
               "label": "User Script"
             },
             {
-              "path": "dist/bookmarklet.html",
+              "path": "docs/bookmarklet.html",
               "label": "Bookmarklet Installation Page"
             }
           ]
