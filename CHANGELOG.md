@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/johnsyweb/eventuate/compare/v1.1.0...v1.1.1) (2025-02-19)
+
+
+### Bug Fixes
+
+* **release:** testing ([941f4f2](https://github.com/johnsyweb/eventuate/commit/941f4f29e465f3cb82d29e9bef288473b2b084b8))
+
 # [1.1.0](https://github.com/johnsyweb/eventuate/compare/v1.0.3...v1.1.0) (2025-02-19)
 
 
