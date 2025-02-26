@@ -6,9 +6,9 @@
 /dist/
 /docs/
 /eventuate*
+/manifest.json
 /node_modules
 /src/*template.js
 /target
 /test/fixtures/*
 /web-ext-artifacts
-
