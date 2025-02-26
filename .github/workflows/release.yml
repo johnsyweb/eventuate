@@ -32,13 +32,10 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 8
-          run_install: false
+          run_install: true
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Install dependencies
-        run: pnpm install
 
       - name: Release
         id: semantic-release

@@ -49,7 +49,7 @@ options available to them, in the forms of a
 [bookmarklet](https://en.wikipedia.org/wiki/Bookmarklet) and a
 [userscript](https://en.wikipedia.org/wiki/Userscript).
 
-Grab your [free bookmarklet](./bookmarklet.html) or [userscript][./]!
+Grab your [free bookmarklet](./bookmarklet.html) or [userscript](./eventuate.user.js)!
 
 The Chromium extension for Google Chrome is compatible with other browsers
 including Microsoft Edge and Opera. Please
