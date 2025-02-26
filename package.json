@@ -19,7 +19,9 @@
   "license": "MIT",
   "author": "Pete Johns",
   "scripts": {
-    "build": "webpack && webpack --config webpack.tampermonkey.config.js && webpack --config webpack.bookmarklet.config.js",
+    "build": "webpack && webpack --config webpack.userscript.config.js && webpack --config webpack.bookmarklet.config.js",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s",
+    "chrome-store-upload": "chrome-webstore-upload upload --source chromium-*.zip --auto-publish",
     "commit": "cz",
     "commitlint": "commitlint --edit",
     "docs:build": "cd docs && bundle exec jekyll build",
@@ -29,17 +31,14 @@
     "format": "prettier --write .",
     "lint": "eslint . && pnpm format:check",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
-    "prepare": "husky",
+    "prepare": "husky install",
+    "release": "semantic-release",
     "repack-for-chromium": "bash './script/repack-for-chromium'",
     "start": "web-ext run -v -u https://www.parkrun.com.au/brimbank/results/latestresults/",
     "test": "jest",
-    "web-ext:build": "web-ext build -o",
-    "web-ext:lint": "web-ext lint",
-    "commitlint": "commitlint --edit",
-    "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "version": "pnpm changelog && git add CHANGELOG.md",
-    "release": "semantic-release",
-    "chrome-store-upload": "chrome-webstore-upload upload --source chromium-*.zip --auto-publish"
+    "web-ext:build": "web-ext build -o",
+    "web-ext:lint": "web-ext lint"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
@@ -152,11 +151,11 @@
               "label": "Chromium Extension"
             },
             {
-              "path": "dist/eventuate.user.js",
-              "label": "User Script"
+              "path": "docs/eventuate.user.js",
+              "label": "Userscript"
             },
             {
-              "path": "docs/bookmarklet.html",
+              "path": "docs/bookmarklet.md",
               "label": "Bookmarklet Installation Page"
             }
           ]
