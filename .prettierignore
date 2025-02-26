@@ -6,9 +6,10 @@
 /dist/
 /docs/
 /eventuate*
+/manifest.json
 /node_modules
+/pnpm-lock.yaml
 /src/*template.js
 /target
 /test/fixtures/*
 /web-ext-artifacts
-
