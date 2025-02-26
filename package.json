@@ -21,6 +21,10 @@
   "scripts": {
     "build": "webpack && webpack --config webpack.tampermonkey.config.js && webpack --config webpack.bookmarklet.config.js",
     "commit": "cz",
+    "commitlint": "commitlint --edit",
+    "docs:build": "cd docs && bundle exec jekyll build",
+    "docs:install": "cd docs && bundle install",
+    "docs:serve": "cd docs && bundle exec jekyll serve",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint . && pnpm format:check",

@@ -1,0 +1,11 @@
+---
+title: Eventuate
+description: A tool for parkrun report writers
+baseurl: /eventuate
+url: https://johnsy.com
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

@@ -2,6 +2,7 @@
 /.web-extension-id
 /chromium*
 /dist/
+/docs/_site
 /eventuate*
 /node_modules
 /target
