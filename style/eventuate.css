@@ -1,6 +1,6 @@
 #eventuate::before {
   background-color: lightcoral;
-  content: "⚠️ This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself. ⚠️";
+  content: '⚠️ This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself. ⚠️';
   color: whitesmoke;
   font-weight: bold;
 }

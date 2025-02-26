@@ -2,7 +2,7 @@
 name: Release
 on:
   workflow_run:
-    workflows: ["Node.js CI"]
+    workflows: ['Node.js CI']
     branches: [main]
     types:
       - completed
@@ -47,7 +47,9 @@ jobs:
         run: pnpm semantic-release
 
       - name: Submit to Chrome Web Store
-        run: pnpm chrome-webstore-upload upload --source eventuate-chromium.zip --auto-publish
+        run:
+          pnpm chrome-webstore-upload upload --source eventuate-chromium.zip
+          --auto-publish
         env:
           EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
@@ -59,5 +61,3 @@ jobs:
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
-
-

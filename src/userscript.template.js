@@ -1,4 +1,6 @@
 // ==UserScript==
+// @downloadURL  https://github.com/johnsyweb/eventuate/eventuate.user.js
+// @updateURL    https://github.com/johnsyweb/eventuate/eventuate.user.js
 // @name         Eventuate
 // @namespace    https://github.com/johnsyweb/eventuate
 // @version      ${version}
@@ -47,4 +49,4 @@ GM_addStyle(`
 }
 `);
 
-${code}
+${ code }

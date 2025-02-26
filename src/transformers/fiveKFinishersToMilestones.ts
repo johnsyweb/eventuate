@@ -1,20 +1,20 @@
-import { IFinisher } from "../types/Finisher";
+import { IFinisher } from '../types/Finisher';
 import {
   MilestoneCelebrations,
   MilestoneDefinition,
-} from "../types/Milestones";
+} from '../types/Milestones';
 
 export function fiveKFinishersToMilestones(
-  finishers: IFinisher[],
+  finishers: IFinisher[]
 ): MilestoneCelebrations[] {
   const milestones: Record<number, MilestoneDefinition> = {
-    10: { icon: "⚪︎", restricted_age: "J" },
-    25: { icon: "🟣" },
-    50: { icon: "🔴" },
-    100: { icon: "⚫" },
-    250: { icon: "🟢" },
-    500: { icon: "🔵" },
-    1000: { icon: "🟡" },
+    10: { icon: '&#x26AA;', restricted_age: 'J' }, // white circle
+    25: { icon: '&#x1F7E3;' }, // purple circle
+    50: { icon: '&#x1F534;' }, // red circle
+    100: { icon: '&#x26AB;' }, // black circle
+    250: { icon: '&#x1F7E2;' }, // green circle
+    500: { icon: '&#x1F535;' }, // blue circle
+    1000: { icon: '&#x1F7E1;' }, // yellow circle
   };
 
   const milestoneCelebrations: MilestoneCelebrations[] = [];
@@ -26,7 +26,7 @@ export function fiveKFinishersToMilestones(
         (f) =>
           Number(f.runs) === Number(n) &&
           (!milestone.restricted_age ||
-            f.agegroup?.startsWith(milestone.restricted_age)),
+            f.agegroup?.startsWith(milestone.restricted_age))
       )
       .map((f) => f.name);
 

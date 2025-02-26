@@ -1,8 +1,8 @@
-import { Finisher, IFinisher } from "../types/Finisher";
-import { Volunteer } from "../types/Volunteer";
+import { Finisher, IFinisher } from '../types/Finisher';
+import { Volunteer } from '../types/Volunteer';
 
 function athleteIDFromURI(uri: string): number {
-  return Number(uri?.split("/")?.slice(-1));
+  return Number(uri?.split('/')?.slice(-1));
 }
 
 export class ResultsPageExtractor {
@@ -22,12 +22,12 @@ export class ResultsPageExtractor {
   constructor(resultsPageDocument: Document) {
     this.resultsPageDocument = resultsPageDocument;
     this.eventName =
-      resultsPageDocument.querySelector(".Results-header > h1")?.textContent ??
+      resultsPageDocument.querySelector('.Results-header > h1')?.textContent ??
       undefined;
-    this.courseLength = this.eventName?.includes("junior parkrun") ? 2 : 5;
+    this.courseLength = this.eventName?.includes('junior parkrun') ? 2 : 5;
 
     const rowElements: NodeListOf<HTMLElement> =
-      resultsPageDocument.querySelectorAll(".Results-table-row");
+      resultsPageDocument.querySelectorAll('.Results-table-row');
 
     this.finishers = Array.from(rowElements).map(
       (d) =>
@@ -41,10 +41,10 @@ export class ResultsPageExtractor {
           d.dataset.vols,
           d.dataset.agegrade,
           d.dataset.achievement,
-          d.querySelector(".Results-table-td--time .compact")?.textContent ??
+          d.querySelector('.Results-table-td--time .compact')?.textContent ??
             undefined,
           athleteIDFromURI(
-            (d.querySelector(".Results-table-td--name a") as HTMLAnchorElement)
+            (d.querySelector('.Results-table-td--name a') as HTMLAnchorElement)
               ?.href
           )
         )
@@ -53,17 +53,17 @@ export class ResultsPageExtractor {
     this.populateVolunteerData();
 
     this.eventDate =
-      resultsPageDocument.querySelector(".format-date")?.textContent ??
+      resultsPageDocument.querySelector('.format-date')?.textContent ??
       undefined;
 
     this.eventNumber =
       resultsPageDocument.querySelector(
-        ".Results-header > h3 > span:last-child"
+        '.Results-header > h3 > span:last-child'
       )?.textContent || undefined;
 
     this.unknowns = this.finishers
       .filter((p) => Number(p.runs) === 0)
-      .map(() => "Unknown");
+      .map(() => 'Unknown');
 
     this.newestParkrunners = this.finishers
       .filter((p) => Number(p.runs) === 1)
@@ -72,33 +72,25 @@ export class ResultsPageExtractor {
     this.firstTimers = Array.from(rowElements)
       .filter(
         (tr) =>
-          tr.querySelector("td.Results-table-td--ft") &&
+          tr.querySelector('td.Results-table-td--ft') &&
           Number(tr.dataset.runs) > 1
       )
       .map((tr) => this.removeSurnameFromJunior(tr.dataset.name));
 
     this.finishersWithNewPBs = Array.from(rowElements)
-      .filter((tr) => tr.querySelector("td.Results-table-td--pb"))
+      .filter((tr) => tr.querySelector('td.Results-table-td--pb'))
       .map(
         (tr) =>
-          `${this.removeSurnameFromJunior(tr.dataset.name)} (${tr.querySelector(".Results-table-td--time .compact")?.textContent})`
+          `${this.removeSurnameFromJunior(tr.dataset.name)} (${tr.querySelector('.Results-table-td--time .compact')?.textContent})`
       );
 
     this.runningWalkingGroups = Array.from(
-      new Set(this.finishers.map((p) => p?.club || "").filter((c) => c !== ""))
+      new Set(this.finishers.map((p) => p?.club || '').filter((c) => c !== ''))
     );
 
-    const [
-      ,
-      finishers,
-      finishes,
-      volunteers,
-      pbs,
-      ,
-      ,
-    ] = Array.from(document.querySelectorAll(".aStat")).map((s) =>
-      s?.textContent?.replace(/^[^:]*:/, "").trim()
-    );
+    const [, finishers, finishes, volunteers, pbs, , ,] = Array.from(
+      document.querySelectorAll('.aStat')
+    ).map((s) => s?.textContent?.replace(/^[^:]*:/, '').trim());
 
     this.facts.finishers = finishers ? Number(finishers) : 0;
     this.facts.finishes = finishes ? Number(finishes) : 0;
@@ -108,37 +100,35 @@ export class ResultsPageExtractor {
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
     return this.resultsPageDocument.querySelectorAll(
-      ".Results + div h3:first-of-type + p:first-of-type a"
+      '.Results + div h3:first-of-type + p:first-of-type a'
     );
   }
 
   removeSurnameFromJunior(name?: string): string {
     if (!name || this.courseLength == 5) {
-      return name ?? "";
+      return name ?? '';
     } else {
-      const parts = name.split(" ");
+      const parts = name.split(' ');
       if (parts.length === 2) {
         return parts[0];
       }
     }
 
-    return name.replace(/[-' A-Z]+$/, "");
+    return name.replace(/[-' A-Z]+$/, '');
   }
 
   private populateVolunteerData() {
     this.volunteerElements().forEach((v) => {
       const athleteID = athleteIDFromURI(v.href);
 
-      if (!v.dataset.athleteid) {
-        v.dataset.athleteid = athleteID.toString();
-      }
+      v.dataset.athleteid ??= athleteID.toString();
 
       if (!v.dataset.vols || !v.dataset.agegroup) {
         const finisher = this.finishers.find((f) => f.athleteID === athleteID);
         if (finisher) {
           v.dataset.vols = finisher?.vols?.toString();
           v.dataset.agegroup = finisher?.agegroup;
-          v.dataset.vols_source = "finisher";
+          v.dataset.vols_source = 'finisher';
         }
       }
     });
@@ -147,7 +137,7 @@ export class ResultsPageExtractor {
   volunteersList(): Volunteer[] {
     return Array.from(this.volunteerElements()).map((v) => {
       return {
-        name: this.removeSurnameFromJunior(v.innerText),
+        name: this.removeSurnameFromJunior(v.text),
         link: v.href,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,

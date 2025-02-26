@@ -36,14 +36,14 @@ export class Finisher implements IFinisher {
     agegrade?: string,
     achievement?: string,
     time?: string,
-    athleteID?: number,
+    athleteID?: number
   ) {
-    this.name = name ?? "a parkrunner";
+    this.name = name ?? 'a parkrunner';
     this.agegroup = agegroup;
     this.club = club;
     this.gender = gender;
     this.position = position;
-    this.runs = runs ?? "0";
+    this.runs = runs ?? '0';
     this.vols = vols;
     this.agegrade = agegrade;
     this.achievement = achievement;
@@ -52,6 +52,6 @@ export class Finisher implements IFinisher {
   }
 
   isUnknown(): boolean {
-    return this.runs === "0";
+    return this.runs === '0';
   }
 }
