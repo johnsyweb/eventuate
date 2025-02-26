@@ -11,8 +11,8 @@ export function twoKVolunteersToMilestones(
   return names.length
     ? [
         {
-          clubName: "junior parkrun v5",
-          icon: "💟",
+          clubName: 'junior parkrun v5',
+          icon: '&#x1F49E;',
           names,
         },
       ]

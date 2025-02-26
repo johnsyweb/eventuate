@@ -13,8 +13,12 @@ export function upsertParagraph(
 
   const paragraph = document.createElement('p');
   paragraph.id = id;
-  paragraph.innerText = content;
   div.appendChild(paragraph);
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, 'text/html');
+  for (const node of doc.body.childNodes) {
+    paragraph.appendChild(node.cloneNode(true));
+  }
   return paragraph;
 }
 
