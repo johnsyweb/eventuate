@@ -42,16 +42,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm semantic-release
 
-      - name: Submit to Chrome Web Store
-        run:
-          pnpm chrome-webstore-upload upload --source eventuate-chromium.zip
-          --auto-publish
-        env:
-          EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
-          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-
       - name: Sign and submit to AMO
         run: pnpm web-ext sign
         env:
