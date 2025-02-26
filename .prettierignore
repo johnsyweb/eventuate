@@ -1,0 +1,11 @@
+/.amo-upload-uuid
+/.web-extension-id
+/chromium*
+/dist/
+/docs/
+/eventuate*
+/node_modules
+/src/*template.js
+/target
+/test/fixtures/*
+/web-ext-artifacts

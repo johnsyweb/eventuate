@@ -21,7 +21,9 @@
   "scripts": {
     "build": "webpack && webpack --config webpack.tampermonkey.config.js && webpack --config webpack.bookmarklet.config.js",
     "commit": "cz",
-    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint . && pnpm format:check",
     "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
     "prepare": "husky",
     "repack-for-chromium": "bash './script/repack-for-chromium'",
@@ -156,5 +158,16 @@
         }
       ]
     ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "proseWrap": "always"
   }
 }

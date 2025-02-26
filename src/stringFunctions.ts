@@ -1,14 +1,14 @@
 export function pluralize(
   singular: string,
   plural: string,
-  count: number,
+  count: number
 ): string {
   return count === 1 ? singular : `${count} ${plural}`;
 }
 
 export function conjoin(elements: string[]): string {
   return elements.length > 1
-    ? `${elements.slice(0, -1).join(", ")} and ${elements.slice(-1)}`
+    ? `${elements.slice(0, -1).join(', ')} and ${elements.slice(-1)}`
     : elements[0];
 }
 

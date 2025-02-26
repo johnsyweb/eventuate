@@ -8,12 +8,8 @@
   "developer_comments": {
     "en-US": "Navigate to a results page such as https://www.parkrun.com.au/timboon/results/latestresults/. Observe the additional details between the title and the event table."
   },
-  "tags": [
-    "social media"
-  ],
-  "categories": [
-    "other"
-  ],
+  "tags": ["social media"],
+  "categories": ["other"],
   "version": "1.1.0",
   "homepage": {
     "en-US": "https://johnsy.com/eventuate/"

@@ -1,12 +1,12 @@
-import { pluralize, sortAndConjoin } from "./stringFunctions";
-import { deleteParagraph, upsertParagraph } from "./dom/upsertParagraph";
-import { fiveKFinishersToMilestones } from "./transformers/fiveKFinishersToMilestones";
-import { fiveKVolunteersToMilestones } from "./transformers/fiveKVolunteersToMilestones";
-import { MilestonePresenter } from "./presenters/MilestonePresenter";
-import { ResultsPageExtractor } from "./extractors/ResultsPageExtractor";
-import { twoKFinishersToMilestones } from "./transformers/twoKFinishersToMilestone";
-import { twoKVolunteersToMilestones } from "./transformers/twoKVolunteersToMilestones";
-import { VolunteerWithCount } from "./types/Volunteer";
+import { pluralize, sortAndConjoin } from './stringFunctions';
+import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
+import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMilestones';
+import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
+import { MilestonePresenter } from './presenters/MilestonePresenter';
+import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
+import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
+import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
+import { VolunteerWithCount } from './types/Volunteer';
 
 function populate(
   rpe: ResultsPageExtractor,
@@ -16,26 +16,26 @@ function populate(
   const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course`;
 
   const newestParkrunnersTitle = `Kudos to our ${pluralize(
-    "newest parkrunner",
-    "newest parkrunners",
+    'newest parkrunner',
+    'newest parkrunners',
     rpe.newestParkrunners.length
   )}: `;
 
   const firstTimersTitle = `Welcome to the ${pluralize(
-    "parkrunner",
-    "parkrunners",
+    'parkrunner',
+    'parkrunners',
     rpe.firstTimers.length
-  )} who joined us at ${rpe.eventName ?? "parkrun"} for the first time: `;
+  )} who joined us at ${rpe.eventName ?? 'parkrun'} for the first time: `;
 
   const finishersWithNewPBsTitle = `Very well done to the ${pluralize(
-    "parkrunner",
-    "parkrunners",
+    'parkrunner',
+    'parkrunners',
     rpe.finishersWithNewPBs.length
   )} who improved their personal best this week: `;
 
   const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
-    "at least one active group",
-    "walking and running groups",
+    'at least one active group',
+    'walking and running groups',
     rpe.runningWalkingGroups.length
   )} represented at this event: `;
 
@@ -49,7 +49,10 @@ function populate(
 
   const finisherMilestoneCelebrations =
     rpe.courseLength == 2
-      ? [...twoKVolunteersToMilestones(volunteerWithCountList), ...twoKFinishersToMilestones(rpe.finishers)]
+      ? [
+          ...twoKVolunteersToMilestones(volunteerWithCountList),
+          ...twoKFinishersToMilestones(rpe.finishers),
+        ]
       : fiveKFinishersToMilestones(rpe.finishers);
   const milestoneCelebrations = [
     ...fiveKVolunteersToMilestones(volunteerWithCountList),
@@ -68,13 +71,13 @@ function populate(
     `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions`;
 
   const eventuateDiv: HTMLDivElement =
-    (document.getElementById("eventuate") as HTMLDivElement) ||
-    document.createElement("div");
-  eventuateDiv.id = "eventuate";
+    (document.getElementById('eventuate') as HTMLDivElement) ||
+    document.createElement('div');
+  eventuateDiv.id = 'eventuate';
 
   const reportDetails = {
-    message: { title: "⏳︎", details: message },
-    introduction: { title: "", details: introduction },
+    message: { title: '⏳︎', details: message },
+    introduction: { title: '', details: introduction },
 
     milestoneCelebrations: {
       title: milestonePresenter.title(),
@@ -101,22 +104,22 @@ function populate(
       details: sortAndConjoin(volunteerWithCountList.map((v) => v.name)),
     },
     unknowns: {
-      title: "",
+      title: '',
       details:
         rpe.unknowns.length > 0
           ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded`
           : undefined,
     },
     facts: {
-      title: "",
+      title: '',
       details: facts,
     },
   };
 
   const insertionPoint: HTMLDivElement | null =
-    document.querySelector(".Results-header");
+    document.querySelector('.Results-header');
   if (insertionPoint) {
-    insertionPoint.insertAdjacentElement("afterend", eventuateDiv);
+    insertionPoint.insertAdjacentElement('afterend', eventuateDiv);
 
     for (const [section, content] of Object.entries(reportDetails)) {
       if (content.details) {

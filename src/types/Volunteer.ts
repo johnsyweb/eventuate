@@ -1,4 +1,4 @@
-import { VolunteerPageExtractor } from "../extractors/VolunteerPageExtractor";
+import { VolunteerPageExtractor } from '../extractors/VolunteerPageExtractor';
 
 export interface Volunteer {
   name: string;
@@ -22,13 +22,13 @@ export class VolunteerWithCount implements Volunteer {
     this.link = volunteer.link;
     const url = new URL(volunteer.link);
     this.volunteerDataSource = new URL(
-      url.pathname.split("/").slice(2).join("/"),
-      url.origin,
+      url.pathname.split('/').slice(2).join('/'),
+      url.origin
     );
 
     this.athleteID = volunteer.athleteID;
     this.vols = volunteer.vols ?? 0;
-    this.agegroup = volunteer.agegroup ?? "";
+    this.agegroup = volunteer.agegroup ?? '';
     if (!this.vols) {
       this.promisedVols = this.fetchdata();
     }
@@ -50,7 +50,7 @@ export class VolunteerWithCount implements Volunteer {
 
   private volsFromHtml(html: string): VolunteerPageExtractor {
     const vpe = new VolunteerPageExtractor(
-      new DOMParser().parseFromString(html, "text/html"),
+      new DOMParser().parseFromString(html, 'text/html')
     );
 
     this.vols = vpe.vols;

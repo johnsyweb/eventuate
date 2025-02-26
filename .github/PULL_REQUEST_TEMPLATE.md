@@ -14,7 +14,7 @@ review the change. This is the why. -->
 #### Change
 
 <!-- Here is where you describe *how* you're solving the problem. Ideally,
-you're using meaningful commit messages: 
+you're using meaningful commit messages:
 https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html -->
 
 See individual commits for finer details.

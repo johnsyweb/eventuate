@@ -1,8 +1,8 @@
 import {
   MilestoneCelebrations,
   MilestoneDefinition,
-} from "../types/Milestones";
-import { VolunteerWithCount } from "../types/Volunteer";
+} from '../types/Milestones';
+import { VolunteerWithCount } from '../types/Volunteer';
 
 export function fiveKVolunteersToMilestones(
   volunteers: VolunteerWithCount[]

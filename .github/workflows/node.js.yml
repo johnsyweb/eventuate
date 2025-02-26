@@ -2,38 +2,37 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Check it out now"
-      uses: actions/checkout@v4
+      - name: 'Check it out now'
+        uses: actions/checkout@v4
 
-    - name: "Install pnpm"
-      uses: pnpm/action-setup@v4
-      with:
-        run_install: false
+      - name: 'Install pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
 
-    - name: "Use Node.js from .tool-versions"
-      uses: actions/setup-node@v4
-      with:
-        node-version-file: ".tool-versions"
-        cache: "pnpm"
+      - name: 'Use Node.js from .tool-versions'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.tool-versions'
+          cache: 'pnpm'
 
-    - name: "⬇️ Install dependencies"
-      run: pnpm i
+      - name: '⬇️ Install dependencies'
+        run: pnpm i
 
-    - name: "🧪 Testing, testing, 1, 2, 3"
-      run: pnpm t
+      - name: '🧪 Testing, testing, 1, 2, 3'
+        run: pnpm t
 
-    - name: "📦 Package up all the things"
-      run: "pnpm build"
+      - name: '📦 Package up all the things'
+        run: 'pnpm build'
 
-    - name: "🔍 Verify package for Firefox"
-      run: "pnpm web-ext:lint"
+      - name: '🔍 Verify package for Firefox'
+        run: 'pnpm web-ext:lint'
