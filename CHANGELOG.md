@@ -1,3 +1,23 @@
+# [1.2.0](https://github.com/johnsyweb/eventuate/compare/v1.1.1...v1.2.0) (2025-02-26)
+
+
+### Bug Fixes
+
+* **build:** pnpm version ([b2a7681](https://github.com/johnsyweb/eventuate/commit/b2a7681b26e2746d03daa4e5b0635385c63a5f09))
+* **build:** pnpm version ([696ab63](https://github.com/johnsyweb/eventuate/commit/696ab6305a79050e6edf9e21b5130fac4de0fb30))
+* **milestones:** prefer HTML entities over Unicode characters for portability ([63ef828](https://github.com/johnsyweb/eventuate/commit/63ef8289f37504f5fbf8b6e248b0ebace39d98e3))
+* **website:** fix website ([fcf2890](https://github.com/johnsyweb/eventuate/commit/fcf289000aa6ba036dc5727bd3510c3910a0590f))
+
+
+### Features
+
+* **website:** build website with jekyll for great good ([2ea590a](https://github.com/johnsyweb/eventuate/commit/2ea590ac54db46b7eedcdccb557bf8b0ef013ea1))
+
+
+### Reverts
+
+* bring back the index page! ([4b0f8f8](https://github.com/johnsyweb/eventuate/commit/4b0f8f810b93ee1cffcba574e49e539d00dd2dcc))
+
 ## [1.1.1](https://github.com/johnsyweb/eventuate/compare/v1.1.0...v1.1.1) (2025-02-19)
 
 
