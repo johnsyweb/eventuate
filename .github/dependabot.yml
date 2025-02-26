@@ -1,58 +1,58 @@
 ---
 version: 2
 updates:
-- package-ecosystem: 'bundler'
-  directory: '/docs'
-  schedule:
-    interval: 'weekly'
-  open-pull-requests-limit: 10
-  groups:
-    dependencies:
-      patterns:
-        - '*'
-  commit-message:
-    prefix: 'chore'
-    prefix-development: 'chore'
-    include: 'scope'
+  - package-ecosystem: 'bundler'
+    directory: '/docs'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    groups:
+      dependencies:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
 
-- package-ecosystem: 'npm'
-  directory: '/'
-  schedule:
-    interval: 'weekly'
-  open-pull-requests-limit: 10
-  groups:
-    dependencies:
-      patterns:
-        - '*'
-  commit-message:
-    prefix: 'chore'
-    prefix-development: 'chore'
-    include: 'scope'
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    groups:
+      dependencies:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
 
-- package-ecosystem: 'docker'
-  directory: '/'
-  schedule:
-    interval: 'weekly'
-  open-pull-requests-limit: 10
-  groups:
-    dependencies:
-      patterns:
-        - '*'
-  commit-message:
-    prefix: 'chore'
-    prefix-development: 'chore'
-    include: 'scope'
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    groups:
+      dependencies:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
 
-- package-ecosystem: 'github-actions'
-  directory: '/'
-  schedule:
-    interval: 'weekly'
-  open-pull-requests-limit: 10
-  groups:
-    dependencies:
-      patterns:
-        - '*'
-  commit-message:
-    prefix: 'chore'
-    prefix-development: 'chore'
-    include: 'scope'
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    groups:
+      dependencies:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'

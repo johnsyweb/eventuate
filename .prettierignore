@@ -1,5 +1,7 @@
 /.amo-upload-uuid
 /.web-extension-id
+/CHANGELOG.md
+/amo.json
 /chromium*
 /dist/
 /docs/
@@ -9,3 +11,4 @@
 /target
 /test/fixtures/*
 /web-ext-artifacts
+
