@@ -54,7 +54,9 @@ jobs:
         if:
           ${{steps.version-before.outputs.version}} !=
           ${{steps.version-after.outputs.version}}
-        run: pnpm web-ext sign
+        run: |
+          echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
+          pnpm web-ext sign
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
