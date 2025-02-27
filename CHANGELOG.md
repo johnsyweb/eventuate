@@ -1,3 +1,13 @@
+## [1.2.1](https://github.com/johnsyweb/eventuate/compare/v1.2.0...v1.2.1) (2025-02-27)
+
+
+### Bug Fixes
+
+* **addon:** use html entities over Unicode characters for portibility ([51d1429](https://github.com/johnsyweb/eventuate/commit/51d1429a59f5ba9ec8bd8abef2d56c24de04e286))
+* **bookmarklet:** refined generation of bookmarklet ([4c98dbe](https://github.com/johnsyweb/eventuate/commit/4c98dbe60e14ace14aa5685d44f6403ed0233741))
+* **style:** use escape sequences over Unicode for portability ([d422553](https://github.com/johnsyweb/eventuate/commit/d422553f65e4a037887084c7f267233da1ce7ae1))
+* **userscript:** refined the generation of the userscript ([0b7ad48](https://github.com/johnsyweb/eventuate/commit/0b7ad480b099afddc0d9e9b6893bda27f1f60a2a))
+
 # [1.2.0](https://github.com/johnsyweb/eventuate/compare/v1.1.1...v1.2.0) (2025-02-26)
 
 
