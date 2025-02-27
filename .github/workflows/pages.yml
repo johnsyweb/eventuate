@@ -35,6 +35,11 @@ jobs:
         with:
           run_install: true
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
       - name: Build docs
         run: pnpm docs:build
 
