@@ -12,3 +12,5 @@ FROM scratch AS export-stage
 COPY --from=build-stage /eventuate/chromium/ /chromium
 COPY --from=build-stage /eventuate/web-ext-artifacts/ /web-ext-artifacts
 COPY --from=build-stage /eventuate/*.zip /
+COPY --from=build-stage /eventuate/docs/*.js /
+COPY --from=build-stage /eventuate/docs/bookmarklet.* /

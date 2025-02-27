@@ -7,14 +7,14 @@ title: Eventuate Bookmarklet
 
 Drag this link to your bookmarks bar:
 
-[Eventuate v${version}](javascript:${script})
+[Eventuate v${version}](javascript:${encodedScript})
 
 ## Mobile Instructions
 
 - Copy this JavaScript code snippet to the clipboard:
 
 ```js
-javascript:${script}
+javascript:${encodedScript}
 ```
 
 - Tap the Share button (rectangle with arrow)

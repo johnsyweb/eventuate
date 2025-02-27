@@ -1,4 +1,4 @@
-javascript:(function(){
+(function () {
   // Version ${version}
-  ${code}
+  ${ code }
 })();

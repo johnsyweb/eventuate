@@ -76,7 +76,7 @@ function populate(
   eventuateDiv.id = 'eventuate';
 
   const reportDetails = {
-    message: { title: '⏳︎', details: message },
+    message: { title: '&#x23f3;', details: message },
     introduction: { title: '', details: introduction },
 
     milestoneCelebrations: {

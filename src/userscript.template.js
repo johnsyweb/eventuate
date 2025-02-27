@@ -1,8 +1,8 @@
 // ==UserScript==
-// @downloadURL  https://github.com/johnsyweb/eventuate/eventuate.user.js
-// @updateURL    https://github.com/johnsyweb/eventuate/eventuate.user.js
+// @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
+// @updateURL    https://johnsy.com/eventuate/eventuate.user.js
 // @name         Eventuate
-// @namespace    https://github.com/johnsyweb/eventuate
+// @namespace    https://johnsy.com/eventuate
 // @version      ${version}
 // @description  Extracts information from parkrun results pages for inclusion in reports
 // @author       Pete Johns
@@ -33,7 +33,7 @@
 GM_addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "⚠️ This information is drawn by Eventuate from the results table to facilitate writing a report. It is not a report in itself. ⚠️";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate ${version} from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
