@@ -36,13 +36,24 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Version before release
+        id: version-before
+        run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
+
       - name: Release
         id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm semantic-release
 
+      - name: Version after release
+        id: version-after
+        run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
+
       - name: Sign and submit to AMO
+        if:
+          ${{steps.version-before.outputs.version}} !=
+          ${{steps.version-after.outputs.version}}
         run: pnpm web-ext sign
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
