@@ -52,8 +52,8 @@ jobs:
 
       - name: Sign and submit to AMO
         if:
-          ${{steps.version-before.outputs.version}} !=
-          ${{steps.version-after.outputs.version}}
+          ${{steps.version-before.outputs.version !=
+          steps.version-after.outputs.version}}
         run: |
           echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
           pnpm web-ext sign
