@@ -37,8 +37,8 @@ module.exports = {
           );
           const version = require('./package.json').version;
           const script = template
-            .replace('${version}', version)
-            .replace('${code}', bundledCode);
+            .replaceAll('${version}', version)
+            .replace('${ code }', bundledCode);
 
           fs.writeFileSync(
             path.resolve(__dirname, 'docs/eventuate.user.js'),
