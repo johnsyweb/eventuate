@@ -19,7 +19,7 @@ module.exports = {
   },
   output: {
     filename: 'eventuate.bookmarklet.js',
-    path: path.resolve(__dirname, 'docs'),
+    path: path.resolve(__dirname, 'dist'),
   },
   optimization: {
     minimize: true,
@@ -42,20 +42,9 @@ module.exports = {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('BookmarkletPlugin', (compilation) => {
           const bundledCode = fs.readFileSync(
-            path.resolve(__dirname, 'docs/eventuate.bookmarklet.js'),
+            path.resolve(__dirname, 'dist/eventuate.bookmarklet.js'),
             'utf8'
           );
-
-          // URL-encode the code
-          const encodedCode = encodeURIComponent(bundledCode);
-
-          // Check size limits
-          const sizeKB = encodedCode.length / 1024;
-          console.log(`Bookmarklet size: ${sizeKB.toFixed(2)}KB`);
-
-          if (sizeKB > 30) {
-            console.warn("Warning: Bookmarklet exceeds Chrome's size limit!");
-          }
 
           const template = fs.readFileSync(
             path.resolve(__dirname, 'src/bookmarklet.template.js'),
@@ -63,10 +52,16 @@ module.exports = {
           );
 
           const version = require('./package.json').version;
-          const script = `(function(){
-            // Version ${version}
-            ${bundledCode}
-          })();`;
+          const script = template
+            .replaceAll('${version}', version)
+            .replaceAll('${ code }', bundledCode);
+
+          const encodedScript = encodeURIComponent(script);
+          const sizeKB = encodedScript.length / 1024;
+
+          if (sizeKB > 30) {
+            console.warn("Warning: Bookmarklet exceeds Chrome's size limit!");
+          }
 
           const markdownTemplate = fs.readFileSync(
             path.resolve(__dirname, 'src/bookmarklet.template.md'),
@@ -75,7 +70,7 @@ module.exports = {
 
           const markdown = markdownTemplate
             .replaceAll('${version}', version)
-            .replaceAll('${script}', encodeURIComponent(script))
+            .replaceAll('${encodedScript}', encodedScript)
             .replaceAll(
               '${warning}',
               sizeKB > 30
