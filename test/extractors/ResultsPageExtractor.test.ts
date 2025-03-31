@@ -81,7 +81,7 @@ describe('ResultsPageExtractor', () => {
       });
     });
 
-    xit('extracts facts', () => {
+    it('extracts facts', () => {
       expect(extractor.facts).toMatchObject({
         finishers: 4884,
         finishes: 23299,
