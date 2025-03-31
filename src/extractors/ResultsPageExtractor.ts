@@ -1,3 +1,4 @@
+import { IResultsPageStats } from '../types/IResultsPageStats';
 import { Finisher, IFinisher } from '../types/Finisher';
 import { Volunteer } from '../types/Volunteer';
 
@@ -16,7 +17,7 @@ export class ResultsPageExtractor {
   firstTimers: string[];
   finishersWithNewPBs: string[];
   runningWalkingGroups: string[];
-  facts = { finishers: 0, finishes: 0, pbs: 0, volunteers: 0 };
+  facts: IResultsPageStats;
   resultsPageDocument: Document;
 
   constructor(resultsPageDocument: Document) {
@@ -89,13 +90,10 @@ export class ResultsPageExtractor {
     );
 
     const [, finishers, finishes, volunteers, pbs, , ,] = Array.from(
-      document.querySelectorAll('.aStat')
-    ).map((s) => s?.textContent?.replace(/^[^:]*:/, '').trim());
+      resultsPageDocument.querySelectorAll('.aStat .num')
+    ).map((s) => this.parseNumericString(s.textContent?.trim()));
 
-    this.facts.finishers = finishers ? Number(finishers) : 0;
-    this.facts.finishes = finishes ? Number(finishes) : 0;
-    this.facts.pbs = pbs ? Number(pbs) : 0;
-    this.facts.volunteers = volunteers ? Number(volunteers) : 0;
+    this.facts = { finishers, finishes, volunteers, pbs };
   }
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
@@ -144,5 +142,13 @@ export class ResultsPageExtractor {
         vols: Number(v.dataset.vols),
       };
     });
+  }
+
+  private parseNumericString(value?: string): number {
+    if (!value) {
+      return NaN;
+    }
+
+    return parseInt(value.replace(/[^0-9]/g, ''), 10);
   }
 }
