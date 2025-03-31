@@ -1,6 +1,6 @@
 #eventuate::before {
   background-color: lightcoral;
-  content: '\\26A0\\FE0F This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F';
+  content: '\26A0\FE0F This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself. \26A0\FE0F';
   color: whitesmoke;
   font-weight: bold;
 }
