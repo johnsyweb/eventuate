@@ -1,3 +1,11 @@
+## [1.2.2](https://github.com/johnsyweb/eventuate/compare/v1.2.1...v1.2.2) (2025-03-31)
+
+
+### Bug Fixes
+
+* **css:** display warning signs again ([eff03b0](https://github.com/johnsyweb/eventuate/commit/eff03b0ec948a5b7d371f737dbe2fdec9db476e7))
+* **facts:** handle where parkrun has successfully localised numeric values ([0103250](https://github.com/johnsyweb/eventuate/commit/0103250fe0ce763a5452f1592ae5df485d400313))
+
 ## [1.2.1](https://github.com/johnsyweb/eventuate/compare/v1.2.0...v1.2.1) (2025-02-27)
 
 
