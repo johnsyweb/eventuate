@@ -24,6 +24,4 @@ javascript:${encodedScript}
 - Find and edit the bookmark you just created
 - Replace the URL with the code you copied from the textbox
 
-${warning}
-
-Size: ${sizeKB}KB
+${warning} Size: ${sizeKB}KB
