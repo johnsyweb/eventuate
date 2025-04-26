@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/johnsyweb/eventuate/compare/v1.4.0...v1.4.1) (2025-04-26)
+
+
+### Bug Fixes
+
+* **firefox:** android take two ([4559baa](https://github.com/johnsyweb/eventuate/commit/4559baa67e164be62ea4198d4659058c6bfd4cc1))
+
 # [1.4.0](https://github.com/johnsyweb/eventuate/compare/v1.3.0...v1.4.0) (2025-04-26)
 
 

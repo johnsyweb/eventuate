@@ -3,7 +3,7 @@
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
 // @name         Eventuate
 // @namespace    https://johnsy.com/eventuate
-// @version      1.4.0
+// @version      1.4.1
 // @description  Extracts information from parkrun results pages for inclusion in reports
 // @author       Pete Johns
 // @match        *://www.parkrun.com.au/*/results/latestresults/
@@ -33,7 +33,7 @@
 GM_addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.1 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
