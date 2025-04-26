@@ -99,9 +99,19 @@ function populate(
       title: runningWalkingGroupsTitle,
       details: sortAndConjoin(rpe.runningWalkingGroups),
     },
+    fullResults: {
+      title: '',
+      details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${canonicalResultsPageUrl(
+        rpe.eventNumber ?? 'latestresults'
+      )} `,
+    },
     volunteers: {
       title: volunteersTitle,
       details: sortAndConjoin(volunteerWithCountList.map((v) => v.name)),
+    },
+    volunteerInvitation: {
+      title: '',
+      details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${futureRosterUrl()} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
     },
     unknowns: {
       title: '',
