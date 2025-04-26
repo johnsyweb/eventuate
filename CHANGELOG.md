@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/johnsyweb/eventuate/compare/v1.2.2...v1.3.0) (2025-04-26)
+
+
+### Features
+
+* **plurals:** localise numeric strings ([cf80d9c](https://github.com/johnsyweb/eventuate/commit/cf80d9cdf5913fb2a9ba5ed11d8bde69f3277702))
+* **report:** include links to results and roster pages ([416bb7a](https://github.com/johnsyweb/eventuate/commit/416bb7a543ad27b5924a6a1171c0ef7e3984568d))
+* **report:** new introduction and closing sections ([362f325](https://github.com/johnsyweb/eventuate/commit/362f3258ace47adafd3cfa415b663f6bf072ef8b))
+
 ## [1.2.2](https://github.com/johnsyweb/eventuate/compare/v1.2.1...v1.2.2) (2025-03-31)
 
 
