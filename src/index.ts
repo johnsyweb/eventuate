@@ -7,13 +7,22 @@ import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
 import { VolunteerWithCount } from './types/Volunteer';
+import { canonicalResultsPageUrl, futureRosterUrl } from './urlFunctions';
 
 function populate(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[],
   message?: string
 ): void {
-  const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course`;
+  const introduction = `Thank you to the ${pluralize(
+    'parkrunner',
+    'parkrunners',
+    rpe.finishers.length
+  )} and ${pluralize(
+    'volunteer',
+    'volunteers',
+    volunteerWithCountList.length
+  )} who joined us for ${rpe.eventName} event ${rpe.eventNumber}. Without you, this event would not have been possible`;
 
   const newestParkrunnersTitle = `Kudos to our ${pluralize(
     'newest parkrunner',
@@ -123,6 +132,10 @@ function populate(
     facts: {
       title: '',
       details: facts,
+    },
+    closing: {
+      title: '&#x1f333;',
+      details: '#loveparkrun #TheFreedomMovement',
     },
   };
 
