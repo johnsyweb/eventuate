@@ -3,7 +3,7 @@ export function pluralize(
   plural: string,
   count: number
 ): string {
-  return count === 1 ? singular : `${count} ${plural}`;
+  return count === 1 ? singular : `${count.toLocaleString()} ${plural}`;
 }
 
 export function conjoin(elements: string[]): string {

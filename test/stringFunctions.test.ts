@@ -13,5 +13,9 @@ describe('stringFunctions', () => {
     it('is plural when there are two to pluralize', () => {
       expect(pluralize('mouse', 'mice', 2)).toBe('2 mice');
     });
+
+    it('adds commas, where appropriate', () => {
+      expect(pluralize('mouse', 'mice', 1000)).toBe('1,000 mice');
+    });
   });
 });
