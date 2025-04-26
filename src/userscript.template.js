@@ -1,33 +1,39 @@
 // ==UserScript==
-// @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
-// @updateURL    https://johnsy.com/eventuate/eventuate.user.js
 // @name         Eventuate
-// @namespace    https://johnsy.com/eventuate
-// @version      ${version}
 // @description  Extracts information from parkrun results pages for inclusion in reports
-// @author       Pete Johns
-// @match        *://www.parkrun.com.au/*/results/latestresults/
-// @match        *://www.parkrun.co.at/*/results/latestresults/
+// @author       Pete Johns (@johnsyweb)
+// @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
+// @grant        GM_addStyle
+// @homepage     https://johnsy.com/eventuate/
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=parkrun.com.au
+// @license      MIT
 // @match        *://www.parkrun.ca/*/results/latestresults/
+// @match        *://www.parkrun.co.at/*/results/latestresults/
+// @match        *://www.parkrun.co.nl/*/results/latestresults/
+// @match        *://www.parkrun.co.nz/*/results/latestresults/
+// @match        *://www.parkrun.co.za/*/results/latestresults/
+// @match        *://www.parkrun.com.au/*/results/latestresults/
+// @match        *://www.parkrun.com.de/*/results/latestresults/
 // @match        *://www.parkrun.dk/*/results/latestresults/
 // @match        *://www.parkrun.fi/*/results/latestresults/
 // @match        *://www.parkrun.fr/*/results/latestresults/
-// @match        *://www.parkrun.com.de/*/results/latestresults/
 // @match        *://www.parkrun.ie/*/results/latestresults/
 // @match        *://www.parkrun.it/*/results/latestresults/
 // @match        *://www.parkrun.jp/*/results/latestresults/
 // @match        *://www.parkrun.lt/*/results/latestresults/
 // @match        *://www.parkrun.my/*/results/latestresults/
-// @match        *://www.parkrun.co.nl/*/results/latestresults/
-// @match        *://www.parkrun.co.nz/*/results/latestresults/
 // @match        *://www.parkrun.no/*/results/latestresults/
-// @match        *://www.parkrun.pl/*/results/latestresults/
-// @match        *://www.parkrun.sg/*/results/latestresults/
-// @match        *://www.parkrun.co.za/*/results/latestresults/
-// @match        *://www.parkrun.se/*/results/latestresults/
 // @match        *://www.parkrun.org.uk/*/results/latestresults/
+// @match        *://www.parkrun.pl/*/results/latestresults/
+// @match        *://www.parkrun.se/*/results/latestresults/
+// @match        *://www.parkrun.sg/*/results/latestresults/
 // @match        *://www.parkrun.us/*/results/latestresults/
-// @grant        GM_addStyle
+// @namespace    https://johnsy.com/eventuate
+// @run-at       document-end
+// @tag          parkrun
+// @supportURL   https://github.com/johnsyweb/eventuate/issues
+// @updateURL    https://johnsy.com/eventuate/eventuate.user.js
+// @version      ${version}
 // ==/UserScript==
 
 GM_addStyle(`
