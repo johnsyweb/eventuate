@@ -43,8 +43,10 @@ text before the results table is displayed, including:
 and [releases](https://github.com/johnsyweb/eventuate/releases/) are available
 in a range of formats, including packages for your browser of choice.
 
+Happily, Eventuate is available on [Firefox for Android](https://www.mozilla.org/firefox/browsers/mobile/android/).
+
 Apple charge a fee to distribute software through their App Store, so Eventuate
-is not available as an extension for Safari. Safari and mobile users have two
+is not available as an extension for Safari. Safari and iOS users have two
 options available to them, in the forms of a
 [bookmarklet](https://en.wikipedia.org/wiki/Bookmarklet) and a
 [userscript](https://en.wikipedia.org/wiki/Userscript).
