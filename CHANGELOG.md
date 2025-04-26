@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/johnsyweb/eventuate/compare/v1.3.0...v1.4.0) (2025-04-26)
+
+
+### Features
+
+* **firefox:** android compatibility ([083bdd4](https://github.com/johnsyweb/eventuate/commit/083bdd429f85c9caf6a61ab4d70c7b050d35fc4a))
+
 # [1.3.0](https://github.com/johnsyweb/eventuate/compare/v1.2.2...v1.3.0) (2025-04-26)
 
 
