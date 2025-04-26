@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/johnsyweb/eventuate/compare/v1.4.1...v1.4.2) (2025-04-26)
+
+
+### Bug Fixes
+
+* **pages:** upload correct dir ([cda1bc3](https://github.com/johnsyweb/eventuate/commit/cda1bc39b4f6c6ab3f34ce19fec09bfad04ff6df))
+
 ## [1.4.1](https://github.com/johnsyweb/eventuate/compare/v1.4.0...v1.4.1) (2025-04-26)
 
 
