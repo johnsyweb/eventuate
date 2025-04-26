@@ -7,13 +7,22 @@ import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
 import { VolunteerWithCount } from './types/Volunteer';
+import { canonicalResultsPageUrl, futureRosterUrl } from './urlFunctions';
 
 function populate(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[],
   message?: string
 ): void {
-  const introduction = `On parkrunday, ${rpe.finishers.length} parkrunners joined us for event ${rpe.eventNumber} and completed the ${rpe.courseLength}km ${rpe.eventName} course`;
+  const introduction = `Thank you to the ${pluralize(
+    'parkrunner',
+    'parkrunners',
+    rpe.finishers.length
+  )} and ${pluralize(
+    'volunteer',
+    'volunteers',
+    volunteerWithCountList.length
+  )} who joined us for ${rpe.eventName} event ${rpe.eventNumber}. Without you, this event would not have been possible`;
 
   const newestParkrunnersTitle = `Kudos to our ${pluralize(
     'newest parkrunner',
@@ -99,9 +108,19 @@ function populate(
       title: runningWalkingGroupsTitle,
       details: sortAndConjoin(rpe.runningWalkingGroups),
     },
+    fullResults: {
+      title: '',
+      details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${canonicalResultsPageUrl(
+        rpe.eventNumber ?? 'latestresults'
+      )} `,
+    },
     volunteers: {
       title: volunteersTitle,
       details: sortAndConjoin(volunteerWithCountList.map((v) => v.name)),
+    },
+    volunteerInvitation: {
+      title: '',
+      details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${futureRosterUrl()} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
     },
     unknowns: {
       title: '',
@@ -113,6 +132,10 @@ function populate(
     facts: {
       title: '',
       details: facts,
+    },
+    closing: {
+      title: '&#x1f333;',
+      details: '#loveparkrun #TheFreedomMovement',
     },
   };
 
