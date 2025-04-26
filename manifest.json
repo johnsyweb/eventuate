@@ -8,7 +8,10 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "eventuate.addon@johnsy.com",
-      "strict_min_version": "58.0"
+      "strict_min_version": "58.0",
+      "android": {
+        "id": "eventuate.addon@johnsy.com"
+      }
     }
   },
   "icons": {
