@@ -1,6 +1,6 @@
 ---
 title: Eventuate
-description: A tool for parkrun report writers
+description: Extracts information from parkrun results pages for inclusion in reports
 baseurl: /eventuate
 url: https://johnsy.com
 
