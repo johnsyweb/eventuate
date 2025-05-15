@@ -3,7 +3,7 @@
     "en-US": "Extracts information from parkrun results pages for inclusion in reports."
   },
   "description": {
-    "en-US": "If you volunteer at parkrun and produce an event report to celebrate achievements, this addon will make your life easier! \n\nAs soon as the latest results page loads for an event, you'll see a bunch some useful text before the results table is displayed, including:\n\nA summary of the number of finishers\nAny finishers who joined a milestone club\nCongratulations to new parkrunners\nA welcome to first-time visitors\nA celebration of personal bests\nA shout out to the walking and running clubs\nCheers to our volunteers\nA reminder to bring a barcode\nAnd a beautiful bunch of facts and figures\n"
+    "en-US": "If you volunteer at parkrun and produce an event report to celebrate achievements, this addon will make your life easier! \n\nAs soon as the latest results page loads for an event, you'll see a bunch of useful text before the results table is displayed, including:\n\n- Weekly event summary\n- New milestone club members\n- Kudos for new parkrunners\n- Welcome for first-time visitors\n- Celebrating personal bests\n- Acknowledgement of walking and running groups\n- Link to the full results\n- Gratitude to volunteers\n- Invitation to volunteer with a link to the roster\n- Reminder to bring a barcode\n- Overall event summary facts and figures\n"
   },
   "developer_comments": {
     "en-US": "Navigate to a results page such as https://www.parkrun.com.au/timboon/results/latestresults/. Observe the additional details between the title and the event table."

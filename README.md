@@ -1,12 +1,21 @@
 # Eventuate [![Mozilla / Firefox][mozilla-image]][Mozilla] [![Google Chrome / Chromium][chromewebstore-image]][Google Chrome]
 
-Extracts information from [parkrun] results pages for inclusion in reports.
+Extracts information from parkrun event result pages for inclusion in reports.
+It's not a run report generator, but will help you write a weekly report for an
+event.
 
 ## Introduction
 
-I occasionally volunteer as a Run Director at [parkrun] and produce an event
-report to celebrate achievements. I also write software occasionally to automate
-parts of my life. This is the confluence of these two interests.
+I wrote this while volunteering as a Run Director at the beautiful [Brimbank
+parkrun][brimbank], to make it easy to celebrate our community's achievements on
+the [Brimbank parkrun Facebook page][facebook]. I am sharing it so that you get
+to enjoy it too.
+
+I initially wrote this as a Firefox Add-On, as the developer tooling is pretty
+good in this space and Firefox Browser Add-Ons are pretty easy to distribute.
+However, once I worked out I could generate a userscript as part of the
+automated release process and run it in any browser with a userscript manager,
+including iOS and iPadOS devices, I switched to using that!
 
 ## Description
 
@@ -16,15 +25,19 @@ achievements, this addon will make your life easier!
 As soon as the latest results page loads for an event, you'll see a bunch of
 useful text before the results table is displayed, including:
 
-- A summary of the number of finishers
-- Any finishers who joined a milestone club
-- Congratulations to new parkrunners
-- A welcome to first-time visitors
-- A celebration of personal bests
-- A shout out to the walking and running clubs
-- Cheers to our volunteers.
-- A reminder to bring a barcode
-- And a beautiful bunch of facts and figures
+- Weekly event summary
+- New milestone club members
+- Kudos for new parkrunners
+- Welcome for first-time visitors
+- Celebrating personal bests
+- Acknowledgement of walking and running groups
+- Link to the full results
+- Gratitude to volunteers
+- Invitation to volunteer with a link to the roster
+- Reminder to bring a barcode
+- Overall event summary facts and figures
+
+![Eventuate extension output displaying Brimbank parkrun event #332 summary with yellow background. Shows participant statistics including 112 parkrunners, 8 volunteers, 3 milestone achievers, 8 first-timers, 17 personal bests, and various community statistics. Contains red notification banner indicating this is extracted data for report writing assistance.][eventuate-results-summary-image]
 
 ## Development status [![Node.js CI][ci-badge]][Node.js CI]
 
@@ -75,6 +88,22 @@ Or if Docker's more your thing:
 docker buildx build . -o target
 ```
 
+### Building the Userscript and Bookmarklet
+
+The userscript and bookmarklet are built automatically as part of the `pnpm package` command. They will be generated in:
+
+- Userscript: `target/eventuate.user.js`
+- Bookmarklet: `target/bookmarklet.md`
+
+To build them individually:
+
+```sh
+pnpm webpack --config webpack.userscript.config.js
+pnpm webpack --config webpack.bookmarklet.config.js
+```
+
+The userscript can be installed in browsers that support userscript managers like Tampermonkey or Greasemonkey. The bookmarklet can be used in any browser, including Safari on iOS devices, by creating a bookmark with the generated JavaScript code.
+
 ## Running locally
 
 First, let's turn the TypeScript files into a single JavaScript file to be
@@ -108,12 +137,10 @@ pnpm start
 
 Observe the additional details between the title and the event table.
 
-![Sample Screenshot](./assets/screenshot.jpg)
-
 ## Requirements
 
-This was built with [Firefox](https://mozilla.org/firefox) in mind but also
-works in Chromium-based browsers, using the `chromium` artefacts. Enjoy!
+This was built with [Firefox][firefox] in mind but also works in Chromium-based
+browsers, using the `chromium` artefacts. Enjoy!
 
 ## Contributing
 
@@ -121,16 +148,15 @@ Bug reports and pull requests are welcome on [GitHub]. Everyone interacting in
 the eventuate project's codebases, issue trackers, _etcetera_ is expected to
 follow the [code of conduct].
 
-We use semantic commits in this project. Please see our
-[contibution guidelines](docs/CONTRIBUTING.md) for more information about the
-preferred commit message format.
+We use semantic commits in this project. Please see our [contibution
+guidelines][contributing] for more information about the preferred commit
+message format.
 
 ## Releasing
 
-This project uses
-[semantic-release](https://github.com/semantic-release/semantic-release) to
-automate version management and package releases. The release process is
-triggered automatically when changes are pushed to the `main` branch.
+This project uses [semantic-release][semantic-release] to automate version
+management and package releases. The release process is triggered automatically
+when changes are pushed to the `main` branch.
 
 The process will:
 
@@ -181,3 +207,11 @@ The addon is available as open source under the terms of the [MIT License].
 [Node.js CI]:
   https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml
 [parkrun]: https://www.parkrun.com/
+[brimbank]: https://www.parkrun.com.au/brimbank/
+[facebook]: https://www.facebook.com/brimbankparkrun
+[firefox]: https://mozilla.org/firefox
+[contributing]: docs/CONTRIBUTING.md
+[semantic-release]: https://github.com/semantic-release/semantic-release
+
+<!-- Images -->
+[eventuate-results-summary-image]: ./docs/images/eventuate-results-summary.png
