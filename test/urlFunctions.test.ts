@@ -12,9 +12,7 @@ describe('URL Functions', () => {
 
   test('futureRosterUrl should return the future roster URL', () => {
     const result = futureRosterUrl();
-    expect(result).toBe(
-      'https://www.parkrun.org.uk/beeston/results/futureroster/'
-    );
+    expect(result).toBe('https://www.parkrun.org.uk/beeston/futureroster/');
   });
 
   test('canonicalResultsPageUrl should return the canonical results page URL', () => {

@@ -1,24 +1,63 @@
-function modifyUrlPath(segment: string, replacement: string): string {
+/**
+ * Safely creates a new URL based on the current location
+ */
+function createUrlFromCurrent(): URL | null {
   try {
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const pathParts = url.pathname.split('/');
-    if (pathParts.length > 3 && pathParts[2] === segment) {
-      pathParts[3] = replacement;
-      url.pathname = pathParts.join('/');
-    }
-    return url.toString();
+    return new URL(window.location.href);
   } catch (error) {
     console.error('Invalid URL:', error);
-    return window.location.href;
+    return null;
   }
 }
 
+/**
+ * Parses the URL path into segments for easier manipulation
+ */
+function getPathSegments(url: URL): string[] {
+  return url.pathname.split('/');
+}
+
+/**
+ * Changes a specific segment in the URL path
+ */
+function changePathSegment(
+  url: URL,
+  segmentIndex: number,
+  newValue: string,
+  pathSegments?: string[]
+): URL {
+  const segments = pathSegments || getPathSegments(url);
+  if (segments.length > segmentIndex) {
+    segments[segmentIndex] = newValue;
+    url.pathname = segments.join('/');
+  }
+  return url;
+}
+
 export function futureRosterUrl(): string {
-  return modifyUrlPath('results', 'futureroster');
+  const url = createUrlFromCurrent();
+  if (!url) return window.location.href;
+
+  const pathSegments = getPathSegments(url);
+  const eventShortName = pathSegments[1];
+  url.pathname = [eventShortName, 'futureroster', ''].join('/');
+  return url.toString();
 }
 
 export function canonicalResultsPageUrl(eventNumber: string): string {
-  const eventNum = eventNumber.replace('#', '');
-  return modifyUrlPath('results', eventNum);
+  const url = createUrlFromCurrent();
+  const normalisedEventNumber = eventNumber.replace('#', '');
+  if (!url) return window.location.href;
+
+  const pathSegments = getPathSegments(url);
+  if (pathSegments.length > 3 && pathSegments[2] === 'results') {
+    return changePathSegment(
+      url,
+      3,
+      normalisedEventNumber,
+      pathSegments
+    ).toString();
+  }
+
+  return window.location.href;
 }
