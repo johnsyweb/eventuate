@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/johnsyweb/eventuate/compare/v1.4.2...v1.4.3) (2025-05-15)
+
+
+### Bug Fixes
+
+* **futureroster:** correct url ([f8b748e](https://github.com/johnsyweb/eventuate/commit/f8b748e18657634a97c94504567070eacd5e113d))
+
 ## [1.4.2](https://github.com/johnsyweb/eventuate/compare/v1.4.1...v1.4.2) (2025-04-26)
 
 
