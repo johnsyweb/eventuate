@@ -90,7 +90,8 @@ docker buildx build . -o target
 
 ### Building the Userscript and Bookmarklet
 
-The userscript and bookmarklet are built automatically as part of the `pnpm package` command. They will be generated in:
+The userscript and bookmarklet are built automatically as part of the
+`pnpm package` command. They will be generated in:
 
 - Userscript: `target/eventuate.user.js`
 - Bookmarklet: `target/bookmarklet.md`
@@ -102,7 +103,10 @@ pnpm webpack --config webpack.userscript.config.js
 pnpm webpack --config webpack.bookmarklet.config.js
 ```
 
-The userscript can be installed in browsers that support userscript managers like Tampermonkey or Greasemonkey. The bookmarklet can be used in any browser, including Safari on iOS devices, by creating a bookmark with the generated JavaScript code.
+The userscript can be installed in browsers that support userscript managers
+like Tampermonkey or Greasemonkey. The bookmarklet can be used in any browser,
+including Safari on iOS devices, by creating a bookmark with the generated
+JavaScript code.
 
 ## Running locally
 
@@ -214,4 +218,5 @@ The addon is available as open source under the terms of the [MIT License].
 [semantic-release]: https://github.com/semantic-release/semantic-release
 
 <!-- Images -->
+
 [eventuate-results-summary-image]: ./docs/images/eventuate-results-summary.png

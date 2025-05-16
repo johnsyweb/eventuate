@@ -57,7 +57,7 @@ The Chromium extension for Google Chrome is compatible with other browsers inclu
 [userscript-wiki]: https://en.wikipedia.org/wiki/Userscript
 [bookmarklet]: ./bookmarklet.html
 [userscript]: ./eventuate.user.js
-[issues]: https://github.com/johnsyweb/eventuate/issues/new
+[issues]: https://github.com/johnsyweb/eventuate/issues/new?template=bug_report.md
 
 <!-- Images -->
 [eventuate-results-summary-image]: ./images/eventuate-results-summary.png

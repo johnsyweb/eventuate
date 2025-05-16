@@ -1,5 +1,11 @@
 import { VolunteerPageExtractor } from '../extractors/VolunteerPageExtractor';
 
+interface CachedVolunteerData {
+  vols: number;
+  agegroup: string;
+  timestamp: number;
+}
+
 export interface Volunteer {
   name: string;
   link: string;
@@ -16,6 +22,7 @@ export class VolunteerWithCount implements Volunteer {
   agegroup: string;
   volunteerDataSource: URL;
   promisedVols?: Promise<VolunteerPageExtractor>;
+  private static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
   constructor(volunteer: Volunteer) {
     this.name = volunteer.name;
@@ -34,17 +41,51 @@ export class VolunteerWithCount implements Volunteer {
     }
   }
 
+  private static getCacheKey(athleteID: number): string {
+    return `volunteer_${athleteID}`;
+  }
+
+  private static isValidCache(data: CachedVolunteerData): boolean {
+    return Date.now() - data.timestamp < VolunteerWithCount.CACHE_EXPIRY;
+  }
+
+  private fetchAndExtractData(): Promise<VolunteerPageExtractor> {
+    return fetch(this.volunteerDataSource)
+      .then((r) => r.text())
+      .then((doc) => this.volsFromHtml(doc));
+  }
+
   fetchdata(): Promise<VolunteerPageExtractor> | undefined {
-    const cached = sessionStorage.getItem(this.athleteID.toString());
-    if (cached) {
-      const data = JSON.parse(cached);
-      this.vols = Number(data.vols);
-      this.agegroup = data.agegroup;
-    } else {
-      return fetch(this.volunteerDataSource)
-        .then((r) => r.text())
-        .then((doc) => this.volsFromHtml(doc));
+    const cacheKey = VolunteerWithCount.getCacheKey(this.athleteID);
+    let cached: string | null = null;
+
+    try {
+      cached = localStorage.getItem(cacheKey);
+    } catch (err: unknown) {
+      console.error('localStorage.getItem failed:', err);
+      return this.fetchAndExtractData();
     }
+
+    if (!cached) {
+      return this.fetchAndExtractData();
+    }
+
+    let data: CachedVolunteerData;
+    try {
+      data = JSON.parse(cached) as CachedVolunteerData;
+    } catch (err: unknown) {
+      console.error('JSON.parse failed:', err);
+      localStorage.removeItem(cacheKey);
+      return this.fetchAndExtractData();
+    }
+
+    if (!VolunteerWithCount.isValidCache(data)) {
+      localStorage.removeItem(cacheKey);
+      return this.fetchAndExtractData();
+    }
+
+    this.vols = data.vols;
+    this.agegroup = data.agegroup;
     return undefined;
   }
 
@@ -56,7 +97,19 @@ export class VolunteerWithCount implements Volunteer {
     this.vols = vpe.vols;
     this.agegroup = vpe.agegroup;
 
-    sessionStorage.setItem(this.athleteID.toString(), JSON.stringify(vpe));
+    try {
+      const cacheData: CachedVolunteerData = {
+        vols: vpe.vols,
+        agegroup: vpe.agegroup,
+        timestamp: Date.now(),
+      };
+      localStorage.setItem(
+        VolunteerWithCount.getCacheKey(this.athleteID),
+        JSON.stringify(cacheData)
+      );
+    } catch (err: unknown) {
+      console.error('localStorage.setItem failed:', err);
+    }
 
     return vpe;
   }
