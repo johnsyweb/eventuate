@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/johnsyweb/eventuate/compare/v1.4.3...v1.4.4) (2025-05-16)
+
+
+### Bug Fixes
+
+* improve localStorage caching in VolunteerWithCount ([0daec01](https://github.com/johnsyweb/eventuate/commit/0daec01b24335e4a2b391ca7e509af4cf2ffcf06))
+
 ## [1.4.3](https://github.com/johnsyweb/eventuate/compare/v1.4.2...v1.4.3) (2025-05-15)
 
 

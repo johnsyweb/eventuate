@@ -33,13 +33,13 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.4.3
+// @version      1.4.4
 // ==/UserScript==
 
 GM_addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.3 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.4 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -415,6 +415,7 @@ class VolunteerWithCount {
     agegroup;
     volunteerDataSource;
     promisedVols;
+    static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     constructor(volunteer) {
         this.name = volunteer.name;
         this.link = volunteer.link;
@@ -427,25 +428,62 @@ class VolunteerWithCount {
             this.promisedVols = this.fetchdata();
         }
     }
+    static getCacheKey(athleteID) {
+        return `volunteer_${athleteID}`;
+    }
+    static isValidCache(data) {
+        return Date.now() - data.timestamp < VolunteerWithCount.CACHE_EXPIRY;
+    }
+    fetchAndExtractData() {
+        return fetch(this.volunteerDataSource)
+            .then((r) => r.text())
+            .then((doc) => this.volsFromHtml(doc));
+    }
     fetchdata() {
-        const cached = sessionStorage.getItem(this.athleteID.toString());
-        if (cached) {
-            const data = JSON.parse(cached);
-            this.vols = Number(data.vols);
-            this.agegroup = data.agegroup;
+        const cacheKey = VolunteerWithCount.getCacheKey(this.athleteID);
+        let cached = null;
+        try {
+            cached = localStorage.getItem(cacheKey);
         }
-        else {
-            return fetch(this.volunteerDataSource)
-                .then((r) => r.text())
-                .then((doc) => this.volsFromHtml(doc));
+        catch (err) {
+            console.error('localStorage.getItem failed:', err);
+            return this.fetchAndExtractData();
         }
+        if (!cached) {
+            return this.fetchAndExtractData();
+        }
+        let data;
+        try {
+            data = JSON.parse(cached);
+        }
+        catch (err) {
+            console.error('JSON.parse failed:', err);
+            localStorage.removeItem(cacheKey);
+            return this.fetchAndExtractData();
+        }
+        if (!VolunteerWithCount.isValidCache(data)) {
+            localStorage.removeItem(cacheKey);
+            return this.fetchAndExtractData();
+        }
+        this.vols = data.vols;
+        this.agegroup = data.agegroup;
         return undefined;
     }
     volsFromHtml(html) {
         const vpe = new VolunteerPageExtractor_1.VolunteerPageExtractor(new DOMParser().parseFromString(html, 'text/html'));
         this.vols = vpe.vols;
         this.agegroup = vpe.agegroup;
-        sessionStorage.setItem(this.athleteID.toString(), JSON.stringify(vpe));
+        try {
+            const cacheData = {
+                vols: vpe.vols,
+                agegroup: vpe.agegroup,
+                timestamp: Date.now(),
+            };
+            localStorage.setItem(VolunteerWithCount.getCacheKey(this.athleteID), JSON.stringify(cacheData));
+        }
+        catch (err) {
+            console.error('localStorage.setItem failed:', err);
+        }
         return vpe;
     }
 }
