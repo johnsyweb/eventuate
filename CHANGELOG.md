@@ -1,3 +1,11 @@
+## [1.4.5](https://github.com/johnsyweb/eventuate/compare/v1.4.4...v1.4.5) (2025-06-09)
+
+
+### Bug Fixes
+
+* cwe-275 ([dbecdf9](https://github.com/johnsyweb/eventuate/commit/dbecdf98853adb0fb43466eb8a15230b2ec58890))
+* pin to sha ([7c98d36](https://github.com/johnsyweb/eventuate/commit/7c98d361f934f64d692fdeee95246edbb2e04e21))
+
 ## [1.4.4](https://github.com/johnsyweb/eventuate/compare/v1.4.3...v1.4.4) (2025-05-16)
 
 
