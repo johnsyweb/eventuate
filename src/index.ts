@@ -111,7 +111,8 @@ function populate(
     fullResults: {
       title: '',
       details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${canonicalResultsPageUrl(
-        rpe.eventNumber ?? 'latestresults'
+        rpe.eventNumber ?? 'latestresults',
+        window.location.href
       )} `,
     },
     volunteers: {
@@ -120,7 +121,7 @@ function populate(
     },
     volunteerInvitation: {
       title: '',
-      details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${futureRosterUrl()} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
+      details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${futureRosterUrl(window.location.href)} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
     },
     unknowns: {
       title: '',

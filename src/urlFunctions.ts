@@ -1,9 +1,9 @@
 /**
- * Safely creates a new URL based on the current location
+ * Safely creates a new URL based on the provided href
  */
-function createUrlFromCurrent(): URL | null {
+function createUrlFromCurrent(currentHref: string): URL | null {
   try {
-    return new URL(window.location.href);
+    return new URL(currentHref);
   } catch (error) {
     console.error('Invalid URL:', error);
     return null;
@@ -34,9 +34,9 @@ function changePathSegment(
   return url;
 }
 
-export function futureRosterUrl(): string {
-  const url = createUrlFromCurrent();
-  if (!url) return window.location.href;
+export function futureRosterUrl(currentHref: string): string {
+  const url = createUrlFromCurrent(currentHref);
+  if (!url) return currentHref;
 
   const pathSegments = getPathSegments(url);
   const eventShortName = pathSegments[1];
@@ -44,10 +44,13 @@ export function futureRosterUrl(): string {
   return url.toString();
 }
 
-export function canonicalResultsPageUrl(eventNumber: string): string {
-  const url = createUrlFromCurrent();
+export function canonicalResultsPageUrl(
+  eventNumber: string,
+  currentHref: string
+): string {
+  const url = createUrlFromCurrent(currentHref);
   const normalisedEventNumber = eventNumber.replace('#', '');
-  if (!url) return window.location.href;
+  if (!url) return currentHref;
 
   const pathSegments = getPathSegments(url);
   if (pathSegments.length > 3 && pathSegments[2] === 'results') {
@@ -59,5 +62,5 @@ export function canonicalResultsPageUrl(eventNumber: string): string {
     ).toString();
   }
 
-  return window.location.href;
+  return currentHref;
 }

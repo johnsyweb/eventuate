@@ -136,7 +136,7 @@ export class ResultsPageExtractor {
     return Array.from(this.volunteerElements()).map((v) => {
       return {
         name: this.removeSurnameFromJunior(v.text),
-        link: v.href,
+        link: v.getAttribute('href') ?? '',
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,
         vols: Number(v.dataset.vols),
