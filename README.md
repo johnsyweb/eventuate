@@ -104,7 +104,8 @@ pnpm webpack --config webpack.bookmarklet.config.js
 ```
 
 The userscript can be installed in browsers that support userscript managers
-like [Tampermonkey][tampermonkey], [Userscripts][userscripts], or [Greasemonkey][greasemonkey]. The bookmarklet can be used in any browser,
+like [Tampermonkey][tampermonkey], [Userscripts][userscripts], or
+[Greasemonkey][greasemonkey]. The bookmarklet can be used in any browser,
 including Safari on iOS devices, by creating a bookmark with the generated
 JavaScript code.
 
