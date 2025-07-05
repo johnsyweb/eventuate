@@ -104,7 +104,7 @@ pnpm webpack --config webpack.bookmarklet.config.js
 ```
 
 The userscript can be installed in browsers that support userscript managers
-like Tampermonkey or Greasemonkey. The bookmarklet can be used in any browser,
+like [Tampermonkey][tampermonkey], [Userscripts][userscripts], or [Greasemonkey][greasemonkey]. The bookmarklet can be used in any browser,
 including Safari on iOS devices, by creating a bookmark with the generated
 JavaScript code.
 
@@ -216,6 +216,9 @@ The addon is available as open source under the terms of the [MIT License].
 [firefox]: https://mozilla.org/firefox
 [contributing]: docs/CONTRIBUTING.md
 [semantic-release]: https://github.com/semantic-release/semantic-release
+[tampermonkey]: https://www.tampermonkey.net/
+[userscripts]: https://github.com/quoid/userscripts
+[greasemonkey]: https://www.greasespot.net/
 
 <!-- Images -->
 

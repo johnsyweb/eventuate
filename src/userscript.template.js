@@ -4,6 +4,7 @@
 // @author       Pete Johns (@johnsyweb)
 // @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
 // @grant        GM_addStyle
+// @grant        GM.addStyle
 // @homepage     https://johnsy.com/eventuate/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=parkrun.com.au
 // @license      MIT
@@ -36,7 +37,24 @@
 // @version      ${version}
 // ==/UserScript==
 
-GM_addStyle(`
+// Polyfill for cross-compatibility between Userscripts and Tampermonkey
+const addStyle = (css) => {
+  if (typeof GM !== 'undefined' && GM.addStyle) {
+    // Userscripts
+    return GM.addStyle(css);
+  } else if (typeof GM_addStyle !== 'undefined') {
+    // Tampermonkey
+    return GM_addStyle(css);
+  } else {
+    // Fallback for environments without GM APIs
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+    return style;
+  }
+};
+
+addStyle(`
 #eventuate::before {
   background-color: lightcoral;
   content: "\\26A0\\FE0F This information is drawn by Eventuate ${version} from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
