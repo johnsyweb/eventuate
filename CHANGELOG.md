@@ -1,3 +1,11 @@
+## [1.4.6](https://github.com/johnsyweb/eventuate/compare/v1.4.5...v1.4.6) (2025-07-05)
+
+
+### Bug Fixes
+
+* **urlfunctions:** prefer dependency injection over mocking ([0706d1a](https://github.com/johnsyweb/eventuate/commit/0706d1acf897cad3b49cc327f8c5d7786ccb80dc))
+* **userscript:** compatibility with github.com/quoid/userscripts ([3c48b9f](https://github.com/johnsyweb/eventuate/commit/3c48b9f754c5f934052bd41787eee652748f4b3d))
+
 ## [1.4.5](https://github.com/johnsyweb/eventuate/compare/v1.4.4...v1.4.5) (2025-06-09)
 
 

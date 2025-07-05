@@ -4,6 +4,7 @@
 // @author       Pete Johns (@johnsyweb)
 // @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
 // @grant        GM_addStyle
+// @grant        GM.addStyle
 // @homepage     https://johnsy.com/eventuate/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=parkrun.com.au
 // @license      MIT
@@ -33,13 +34,30 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.4.5
+// @version      1.4.6
 // ==/UserScript==
 
-GM_addStyle(`
+// Polyfill for cross-compatibility between Userscripts and Tampermonkey
+const addStyle = (css) => {
+  if (typeof GM !== 'undefined' && GM.addStyle) {
+    // Userscripts
+    return GM.addStyle(css);
+  } else if (typeof GM_addStyle !== 'undefined') {
+    // Tampermonkey
+    return GM_addStyle(css);
+  } else {
+    // Fallback for environments without GM APIs
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+    return style;
+  }
+};
+
+addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.5 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.6 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -186,7 +204,7 @@ class ResultsPageExtractor {
         return Array.from(this.volunteerElements()).map((v) => {
             return {
                 name: this.removeSurnameFromJunior(v.text),
-                link: v.href,
+                link: v.getAttribute('href') ?? '',
                 athleteID: Number(v.dataset.athleteid),
                 agegroup: v.dataset.agegroup,
                 vols: Number(v.dataset.vols),
@@ -249,11 +267,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.futureRosterUrl = futureRosterUrl;
 exports.canonicalResultsPageUrl = canonicalResultsPageUrl;
 /**
- * Safely creates a new URL based on the current location
+ * Safely creates a new URL based on the provided href
  */
-function createUrlFromCurrent() {
+function createUrlFromCurrent(currentHref) {
     try {
-        return new URL(window.location.href);
+        return new URL(currentHref);
     }
     catch (error) {
         console.error('Invalid URL:', error);
@@ -277,25 +295,25 @@ function changePathSegment(url, segmentIndex, newValue, pathSegments) {
     }
     return url;
 }
-function futureRosterUrl() {
-    const url = createUrlFromCurrent();
+function futureRosterUrl(currentHref) {
+    const url = createUrlFromCurrent(currentHref);
     if (!url)
-        return window.location.href;
+        return currentHref;
     const pathSegments = getPathSegments(url);
     const eventShortName = pathSegments[1];
     url.pathname = [eventShortName, 'futureroster', ''].join('/');
     return url.toString();
 }
-function canonicalResultsPageUrl(eventNumber) {
-    const url = createUrlFromCurrent();
+function canonicalResultsPageUrl(eventNumber, currentHref) {
+    const url = createUrlFromCurrent(currentHref);
     const normalisedEventNumber = eventNumber.replace('#', '');
     if (!url)
-        return window.location.href;
+        return currentHref;
     const pathSegments = getPathSegments(url);
     if (pathSegments.length > 3 && pathSegments[2] === 'results') {
         return changePathSegment(url, 3, normalisedEventNumber, pathSegments).toString();
     }
-    return window.location.href;
+    return currentHref;
 }
 
 
@@ -703,7 +721,7 @@ function populate(rpe, volunteerWithCountList, message) {
         },
         fullResults: {
             title: '',
-            details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${(0, urlFunctions_1.canonicalResultsPageUrl)(rpe.eventNumber ?? 'latestresults')} `,
+            details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${(0, urlFunctions_1.canonicalResultsPageUrl)(rpe.eventNumber ?? 'latestresults', window.location.href)} `,
         },
         volunteers: {
             title: volunteersTitle,
@@ -711,7 +729,7 @@ function populate(rpe, volunteerWithCountList, message) {
         },
         volunteerInvitation: {
             title: '',
-            details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${(0, urlFunctions_1.futureRosterUrl)()} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
+            details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${(0, urlFunctions_1.futureRosterUrl)(window.location.href)} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
         },
         unknowns: {
             title: '',
