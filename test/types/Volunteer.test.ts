@@ -59,7 +59,10 @@ describe('VolunteerWithCount', () => {
       link: 'https://www.parkrun.org.uk/parkrunner/1234567/',
       athleteID: 1234567,
     };
-    const volunteer = new VolunteerWithCount(basicVolunteer);
+    const volunteer = new VolunteerWithCount(
+      basicVolunteer,
+      'https://www.parkrun.org.uk'
+    );
     expect(volunteer.name).toBe('Test Runner');
     expect(volunteer.athleteID).toBe(1234567);
     expect(volunteer.vols).toBe(0);
@@ -70,20 +73,26 @@ describe('VolunteerWithCount', () => {
     const fetchSpy = jest.spyOn(global, 'fetch');
 
     // Create volunteer with no vols - should trigger fetch
-    new VolunteerWithCount({
-      name: 'Test Runner',
-      link: 'https://www.parkrun.org.uk/parkrunner/1234567/',
-      athleteID: 1234567,
-    });
+    new VolunteerWithCount(
+      {
+        name: 'Test Runner',
+        link: 'https://www.parkrun.org.uk/parkrunner/1234567/',
+        athleteID: 1234567,
+      },
+      'https://www.parkrun.org.uk'
+    );
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     // Create volunteer with vols - should not trigger fetch
-    new VolunteerWithCount({
-      name: 'Test Runner',
-      link: 'https://www.parkrun.org.uk/parkrunner/1234567/',
-      athleteID: 1234567,
-      vols: 25,
-    });
+    new VolunteerWithCount(
+      {
+        name: 'Test Runner',
+        link: 'https://www.parkrun.org.uk/parkrunner/1234567/',
+        athleteID: 1234567,
+        vols: 25,
+      },
+      'https://www.parkrun.org.uk'
+    );
     expect(fetchSpy).toHaveBeenCalledTimes(1); // Count should not increase
   });
 
@@ -95,7 +104,10 @@ describe('VolunteerWithCount', () => {
     };
     localStorage.setItem('volunteer_1234567', JSON.stringify(cachedData));
 
-    const volunteer = new VolunteerWithCount(testVolunteer);
+    const volunteer = new VolunteerWithCount(
+      testVolunteer,
+      'https://www.parkrun.org.uk'
+    );
     const result = volunteer.fetchdata();
 
     expect(result).toBeUndefined();
@@ -113,7 +125,10 @@ describe('VolunteerWithCount', () => {
 
     const fetchSpy = jest.spyOn(global, 'fetch');
 
-    const volunteer = new VolunteerWithCount(testVolunteer);
+    const volunteer = new VolunteerWithCount(
+      testVolunteer,
+      'https://www.parkrun.org.uk'
+    );
     const result = volunteer.fetchdata();
 
     expect(result).toBeDefined();
@@ -126,7 +141,10 @@ describe('VolunteerWithCount', () => {
       throw error;
     });
 
-    const volunteer = new VolunteerWithCount(testVolunteer);
+    const volunteer = new VolunteerWithCount(
+      testVolunteer,
+      'https://www.parkrun.org.uk'
+    );
     const result = volunteer.fetchdata();
 
     expect(result).toBeDefined();

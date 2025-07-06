@@ -24,10 +24,10 @@ export class VolunteerWithCount implements Volunteer {
   promisedVols?: Promise<VolunteerPageExtractor>;
   private static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-  constructor(volunteer: Volunteer) {
+  constructor(volunteer: Volunteer, origin: string) {
     this.name = volunteer.name;
     this.link = volunteer.link;
-    const url = new URL(volunteer.link);
+    const url = new URL(volunteer.link, origin);
     this.volunteerDataSource = new URL(
       url.pathname.split('/').slice(2).join('/'),
       url.origin
