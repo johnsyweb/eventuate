@@ -48,11 +48,7 @@ function populate(
     rpe.runningWalkingGroups.length
   )} represented at this event: `;
 
-  const volunteerOccasions = volunteerWithCountList
-    .map((v) => v.vols)
-    .reduce((c, p) => c + p, 0);
-
-  const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} superstars have volunteered a total of ${volunteerOccasions.toLocaleString()} times between them, and helped us host ${
+  const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} parkrunners volunteered to host ${
     rpe.eventName
   } this weekend. Our deep thanks to:  `;
 
@@ -160,7 +156,7 @@ function eventuate() {
   const rpe = new ResultsPageExtractor(document);
   const volunteerWithCountList = rpe
     .volunteersList()
-    .map((vol) => new VolunteerWithCount(vol));
+    .map((vol) => new VolunteerWithCount(vol, window.location.origin));
   const waitingOn = volunteerWithCountList
     .map((v) => v.promisedVols)
     .filter((v) => !!v);
