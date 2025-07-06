@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.4.6
+// @version      1.4.7
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.6 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.7 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -482,10 +482,10 @@ class VolunteerWithCount {
     volunteerDataSource;
     promisedVols;
     static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    constructor(volunteer) {
+    constructor(volunteer, origin) {
         this.name = volunteer.name;
         this.link = volunteer.link;
-        const url = new URL(volunteer.link);
+        const url = new URL(volunteer.link, origin);
         this.volunteerDataSource = new URL(url.pathname.split('/').slice(2).join('/'), url.origin);
         this.athleteID = volunteer.athleteID;
         this.vols = volunteer.vols ?? 0;
@@ -672,10 +672,7 @@ function populate(rpe, volunteerWithCountList, message) {
     const firstTimersTitle = `Welcome to the ${(0, stringFunctions_1.pluralize)('parkrunner', 'parkrunners', rpe.firstTimers.length)} who joined us at ${rpe.eventName ?? 'parkrun'} for the first time: `;
     const finishersWithNewPBsTitle = `Very well done to the ${(0, stringFunctions_1.pluralize)('parkrunner', 'parkrunners', rpe.finishersWithNewPBs.length)} who improved their personal best this week: `;
     const runningWalkingGroupsTitle = `We were pleased to see ${(0, stringFunctions_1.pluralize)('at least one active group', 'walking and running groups', rpe.runningWalkingGroups.length)} represented at this event: `;
-    const volunteerOccasions = volunteerWithCountList
-        .map((v) => v.vols)
-        .reduce((c, p) => c + p, 0);
-    const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} superstars have volunteered a total of ${volunteerOccasions.toLocaleString()} times between them, and helped us host ${rpe.eventName} this weekend. Our deep thanks to:  `;
+    const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} parkrunners volunteered to host ${rpe.eventName} this weekend. Our deep thanks to:  `;
     const finisherMilestoneCelebrations = rpe.courseLength == 2
         ? [
             ...(0, twoKVolunteersToMilestones_1.twoKVolunteersToMilestones)(volunteerWithCountList),
@@ -764,7 +761,7 @@ function eventuate() {
     const rpe = new ResultsPageExtractor_1.ResultsPageExtractor(document);
     const volunteerWithCountList = rpe
         .volunteersList()
-        .map((vol) => new Volunteer_1.VolunteerWithCount(vol));
+        .map((vol) => new Volunteer_1.VolunteerWithCount(vol, window.location.origin));
     const waitingOn = volunteerWithCountList
         .map((v) => v.promisedVols)
         .filter((v) => !!v);

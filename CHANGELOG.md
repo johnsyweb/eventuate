@@ -1,3 +1,10 @@
+## [1.4.7](https://github.com/johnsyweb/eventuate/compare/v1.4.6...v1.4.7) (2025-07-06)
+
+
+### Bug Fixes
+
+* **volunteers:** let's not deify the volunteers and ensure we use absolute uris ([f8b2ec2](https://github.com/johnsyweb/eventuate/commit/f8b2ec219f5817b5c7067e6f3f7326ef6ccd47cb))
+
 ## [1.4.6](https://github.com/johnsyweb/eventuate/compare/v1.4.5...v1.4.6) (2025-07-05)
 
 
