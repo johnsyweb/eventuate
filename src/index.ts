@@ -132,7 +132,7 @@ function populate(
     },
     closing: {
       title: '&#x1f333;',
-      details: '#loveparkrun #TheFreedomMovement',
+      details: '#loveparkrun',
     },
   };
 
