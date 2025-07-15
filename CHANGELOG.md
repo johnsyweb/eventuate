@@ -1,3 +1,10 @@
+## [1.4.8](https://github.com/johnsyweb/eventuate/compare/v1.4.7...v1.4.8) (2025-07-15)
+
+
+### Bug Fixes
+
+* remove hashtag that was more broadly used by entities other than parkrun ([aac2255](https://github.com/johnsyweb/eventuate/commit/aac225524522dc017aef89497d750ef7ef412d56))
+
 ## [1.4.7](https://github.com/johnsyweb/eventuate/compare/v1.4.6...v1.4.7) (2025-07-06)
 
 
