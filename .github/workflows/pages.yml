@@ -31,12 +31,12 @@ jobs:
           node-version-file: '.tool-versions'
 
       - name: Install pnpm
-        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061
         with:
           run_install: true
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@0481980f17b760ef6bca5e8c55809102a0af1e5a
+        uses: ruby/setup-ruby@ab177d40ee5483edb974554986f56b33477e21d0
         with:
           bundler-cache: true
           working-directory: docs
