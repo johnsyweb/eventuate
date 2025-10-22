@@ -39,6 +39,69 @@ useful text before the results table is displayed, including:
 
 ![Eventuate extension output displaying Brimbank parkrun event #332 summary with yellow background. Shows participant statistics including 112 parkrunners, 8 volunteers, 3 milestone achievers, 8 first-timers, 17 personal bests, and various community statistics. Contains red notification banner indicating this is extracted data for report writing assistance.][eventuate-results-summary-image]
 
+## Internationalisation
+
+Eventuate automatically detects your browser's language and displays reports in
+the appropriate language. Currently supported languages:
+
+- **English** (default)
+- **German** (Deutsch)
+
+### Adding a New Language
+
+We welcome contributions to add support for additional languages! Here's how to
+add a new language:
+
+1. **Create a new translation file**:
+
+   ```sh
+   # Copy the English template
+   cp src/translations/en.ts src/translations/[language-code].ts
+   ```
+
+2. **Translate all strings** in the new file. Each translation file contains:
+   - Event summaries and introductions
+   - Milestone celebration messages
+   - Volunteer acknowledgments
+   - Personal best celebrations
+   - Loading messages and fallback text
+   - Milestone club names (e.g., "10 club", "25 club", etc.)
+
+3. **Register the new language** in `src/translations/index.ts`:
+
+   ```typescript
+   import { [language-code] } from './[language-code]';
+
+   export const translations: Record<string, TranslationKeys> = {
+     en,
+     de,
+     [language-code], // Add your new language here
+   };
+   ```
+
+4. **Test your translation**:
+
+   ```sh
+   pnpm test
+   pnpm build
+   ```
+
+5. **Submit a pull request** with your translation.
+
+### Translation Guidelines
+
+- Use Australian English spelling conventions (e.g., "colour" not "color")
+- Maintain the friendly, celebratory tone of parkrun reports
+- Keep milestone club names consistent with parkrun terminology
+- Test with real parkrun data to ensure translations work correctly
+- Consider cultural differences in how achievements are celebrated
+
+### Supported parkrun Countries
+
+Eventuate works with parkrun results pages from all countries. Adding
+translations helps make the tool more accessible to parkrun communities
+worldwide.
+
 ## Development status [![Node.js CI][ci-badge]][Node.js CI]
 
 I wrote this for myself in an afternoon to see if I could do it and figured it

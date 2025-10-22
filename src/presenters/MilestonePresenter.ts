@@ -1,5 +1,6 @@
-import { pluralize, sortAndConjoin } from '../stringFunctions';
+import { sortAndConjoin } from '../stringFunctions';
 import { MilestoneCelebrations } from '../types/Milestones';
+import { getTranslations, interpolate } from '../translations';
 
 export class MilestonePresenter {
   _milestoneCelebrations: MilestoneCelebrations[];
@@ -13,19 +14,24 @@ export class MilestonePresenter {
   }
 
   title(): string {
-    return `Three cheers to the ${pluralize(
-      'parkrunner',
-      'parkrunners',
-      this._milestoneCelebrationsAll.length
-    )} who joined a new parkrun milestone club this weekend:<br>`;
+    const t = getTranslations();
+    const count = this._milestoneCelebrationsAll.length;
+    const countText = count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+    return interpolate(t.milestoneCelebrations.title, {
+      count: countText,
+    });
   }
 
   details(): string {
+    const t = getTranslations();
     return this._milestoneCelebrations
-      .map(
-        (mc) =>
-          `${mc.icon} ${sortAndConjoin(mc.names)} joined the ${mc.clubName} club`
-      )
+      .map((mc) => {
+        const clubName = t.milestoneClubs[mc.clubName] || mc.clubName;
+        return `${mc.icon} ${interpolate(t.milestoneCelebrations.joinedClub, {
+          names: sortAndConjoin(mc.names),
+          clubName: clubName,
+        })}`;
+      })
       .join('<br>');
   }
 }

@@ -1,4 +1,4 @@
-import { pluralize, sortAndConjoin } from './stringFunctions';
+import { sortAndConjoin } from './stringFunctions';
 import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
 import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMilestones';
 import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
@@ -8,49 +8,72 @@ import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilesto
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
 import { VolunteerWithCount } from './types/Volunteer';
 import { canonicalResultsPageUrl, futureRosterUrl } from './urlFunctions';
+import {
+  getTranslations,
+  interpolate,
+  pluralizeTranslated,
+} from './translations';
 
 function populate(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[],
   message?: string
 ): void {
-  const introduction = `Thank you to all the parkrunners, including the ${pluralize(
-    'finisher',
-    'finishers',
-    rpe.finishers.length
-  )} and ${pluralize(
-    'volunteer',
-    'volunteers',
-    volunteerWithCountList.length
-  )}, who joined us for ${rpe.eventName} event ${rpe.eventNumber}. Without you, this event would not have been possible`;
+  const t = getTranslations();
 
-  const newestParkrunnersTitle = `The first time to parkrun is something to celebrate! It's also the first step towards your first official milestone club membership. Welcome to the ${pluralize(
-    'parkrunner',
-    'parkrunners',
-    rpe.newestParkrunners.length
-  )} who took this step this weekend: `;
+  const introduction = interpolate(t.introduction, {
+    finisherCount: `${rpe.finishers.length} ${pluralizeTranslated(
+      t.finisher,
+      t.finishers,
+      rpe.finishers.length
+    )}`,
+    volunteerCount: `${volunteerWithCountList.length} ${pluralizeTranslated(
+      t.volunteer,
+      t.volunteers,
+      volunteerWithCountList.length
+    )}`,
+    eventName: rpe.eventName || t.fallbackParkrunName,
+    eventNumber: rpe.eventNumber || '',
+  });
 
-  const firstTimersTitle = `Welcome to the ${pluralize(
-    'parkrunner',
-    'parkrunners',
-    rpe.firstTimers.length
-  )} who joined us at ${rpe.eventName ?? 'parkrun'} for the first time: `;
+  const newestParkrunnersTitle = interpolate(t.newestParkrunnersTitle, {
+    count: `${rpe.newestParkrunners.length} ${pluralizeTranslated(
+      t.parkrunner,
+      t.parkrunners,
+      rpe.newestParkrunners.length
+    )}`,
+  });
 
-  const finishersWithNewPBsTitle = `${rpe.eventName} is not a race, but it's a great way to challenge yourself. Very well done to the ${pluralize(
-    'parkrunner',
-    'parkrunners',
-    rpe.finishersWithNewPBs.length
-  )} who improved their personal best this week: `;
+  const firstTimersTitle = interpolate(t.firstTimersTitle, {
+    count: `${rpe.firstTimers.length} ${pluralizeTranslated(
+      t.parkrunner,
+      t.parkrunners,
+      rpe.firstTimers.length
+    )}`,
+    eventName: rpe.eventName || t.fallbackParkrunName,
+  });
 
-  const runningWalkingGroupsTitle = `We were pleased to see ${pluralize(
-    'at least one active group',
-    'walking and running groups',
-    rpe.runningWalkingGroups.length
-  )} represented at this event: `;
+  const finishersWithNewPBsTitle = interpolate(t.finishersWithNewPBsTitle, {
+    eventName: rpe.eventName || t.fallbackParkrunName,
+    count: `${rpe.finishersWithNewPBs.length} ${pluralizeTranslated(
+      t.parkrunner,
+      t.parkrunners,
+      rpe.finishersWithNewPBs.length
+    )}`,
+  });
 
-  const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} parkrunners volunteered to host ${
-    rpe.eventName
-  } this weekend. Our deep thanks to:  `;
+  const runningWalkingGroupsTitle = interpolate(t.runningWalkingGroupsTitle, {
+    count: `${rpe.runningWalkingGroups.length} ${
+      rpe.runningWalkingGroups.length === 1
+        ? 'active group'
+        : 'walking and running groups'
+    }`,
+  });
+
+  const volunteersTitle = interpolate(t.volunteersTitle, {
+    count: volunteerWithCountList.length.toLocaleString(),
+    eventName: rpe.eventName || t.fallbackParkrunName,
+  });
 
   const finisherMilestoneCelebrations =
     rpe.courseLength == 2
@@ -65,15 +88,26 @@ function populate(
   ];
   const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
-  const facts =
-    `Since ${rpe.eventName} started ` +
-    `${rpe.facts?.finishers?.toLocaleString()} brilliant parkrunners have had their barcodes scanned, ` +
-    `and a grand total of ${rpe.facts.finishes.toLocaleString()} finishers ` +
-    `have covered a total distance of ${(
-      rpe.facts.finishes * rpe.courseLength
-    ).toLocaleString()} km, ` +
-    `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
-    `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions`;
+  const facts = [
+    interpolate(t.facts.sinceStarted, {
+      eventName: rpe.eventName || t.fallbackParkrunName,
+    }),
+    interpolate(t.facts.brilliantParkrunners, {
+      count: rpe.facts?.finishers?.toLocaleString() || '0',
+    }),
+    interpolate(t.facts.grandTotal, {
+      count: rpe.facts.finishes.toLocaleString(),
+    }),
+    interpolate(t.facts.coveredDistance, {
+      distance: (rpe.facts.finishes * rpe.courseLength).toLocaleString(),
+    }),
+    interpolate(t.facts.celebratingPBs, {
+      count: rpe.facts.pbs.toLocaleString(),
+    }),
+    interpolate(t.facts.gratefulToVolunteers, {
+      count: rpe.facts.volunteers.toLocaleString(),
+    }),
+  ].join('');
 
   const eventuateDiv: HTMLDivElement =
     (document.getElementById('eventuate') as HTMLDivElement) ||
@@ -106,10 +140,14 @@ function populate(
     },
     fullResults: {
       title: '',
-      details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${canonicalResultsPageUrl(
-        rpe.eventNumber ?? 'latestresults',
-        window.location.href
-      )} `,
+      details: interpolate(t.fullResults, {
+        eventName: rpe.eventName || t.fallbackParkrunName,
+        eventNumber: rpe.eventNumber || '',
+        url: canonicalResultsPageUrl(
+          rpe.eventNumber ?? 'latestresults',
+          window.location.href
+        ),
+      }),
     },
     volunteers: {
       title: volunteersTitle,
@@ -117,15 +155,18 @@ function populate(
     },
     volunteerInvitation: {
       title: '',
-      details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${futureRosterUrl(window.location.href)} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
+      details: interpolate(t.volunteerInvitation, {
+        eventName: rpe.eventName || t.fallbackParkrunName,
+        url: futureRosterUrl(window.location.href),
+      }),
     },
     unknowns: {
       title: '',
       details:
         rpe.unknowns.length > 0
-          ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded. ` +
-            `These stripy little tickets are your passpoert to free, weekly, timed events all over the world ` +
-            `and also carry contact details in case of an emergency at our event`
+          ? interpolate(t.unknowns, {
+              eventName: rpe.eventName || t.fallbackParkrunName,
+            })
           : undefined,
     },
     facts: {
@@ -134,7 +175,7 @@ function populate(
     },
     closing: {
       title: '&#x1f333;',
-      details: '#loveparkrun',
+      details: t.closing,
     },
   };
 
@@ -162,7 +203,9 @@ function eventuate() {
   const waitingOn = volunteerWithCountList
     .map((v) => v.promisedVols)
     .filter((v) => !!v);
-  const loadingMessage = `Loading volunteer data for ${waitingOn.length} parkrunners. Please wait`;
+  const loadingMessage = interpolate(getTranslations().loadingMessage, {
+    count: waitingOn.length,
+  });
 
   populate(rpe, volunteerWithCountList, loadingMessage);
 

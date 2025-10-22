@@ -1,3 +1,5 @@
+import { getTranslations } from '../translations';
+
 export interface IFinisher {
   name: string;
   achievement?: string;
@@ -38,7 +40,8 @@ export class Finisher implements IFinisher {
     time?: string,
     athleteID?: number
   ) {
-    this.name = name ?? 'a parkrunner';
+    const t = getTranslations();
+    this.name = name ?? t.fallbackParkrunnerName;
     this.agegroup = agegroup;
     this.club = club;
     this.gender = gender;
