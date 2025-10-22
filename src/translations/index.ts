@@ -3,6 +3,11 @@ import { en } from './en';
 import { de } from './de';
 
 export interface TranslationKeys {
+  // Language metadata
+  flag: string;
+  languageName: string;
+
+  // Translation strings
   introduction: string;
   newestParkrunnersTitle: string;
   firstTimersTitle: string;
@@ -38,17 +43,21 @@ export interface TranslationKeys {
 }
 
 export const translations: Record<string, TranslationKeys> = {
-  'en-AU': en,
   en,
   de,
 };
 
 // Detect browser locale
 export function detectLocale(): string {
-  const browserLocale =
-    navigator.language || navigator.languages?.[0] || 'en-AU';
+  // First check for stored user preference
+  const stored = localStorage.getItem('eventuate-language');
+  if (stored && translations[stored]) {
+    return stored;
+  }
 
-  // Check for exact match first (e.g., en-AU, de-DE)
+  const browserLocale = navigator.language || navigator.languages?.[0] || 'en';
+
+  // Check for exact match first (e.g., en-GB, de-DE)
   if (translations[browserLocale]) {
     return browserLocale;
   }
@@ -59,14 +68,14 @@ export function detectLocale(): string {
     return language;
   }
 
-  // Default to Australian English
-  return 'en-AU';
+  // Default to English
+  return 'en';
 }
 
 // Get translations for current locale
 export function getTranslations(locale?: string): TranslationKeys {
   const targetLocale = locale || detectLocale();
-  return translations[targetLocale] || translations['en-AU'];
+  return translations[targetLocale] || translations.en;
 }
 
 // Simple template replacement function
@@ -77,6 +86,54 @@ export function interpolate(
   return template.replace(/\{(\w+)\}/g, (match, key) => {
     return values[key]?.toString() || match;
   });
+}
+
+// Language switcher functionality
+export function createLanguageSwitcher(): string {
+  const currentLocale = detectLocale();
+  const availableLocales = Object.keys(translations);
+
+  return `
+    <div class="eventuate-language-switcher">
+      <span class="eventuate-language-label">Language:</span>
+      ${availableLocales
+        .map(
+          (locale) => `
+        <button 
+          class="eventuate-language-btn ${currentLocale === locale ? 'active' : ''}" 
+          data-locale="${locale}"
+          title="${translations[locale].languageName}"
+        >
+          ${translations[locale].flag} ${translations[locale].languageName}
+        </button>
+      `
+        )
+        .join('')}
+    </div>
+  `;
+}
+
+// Switch language function
+export function switchLanguage(locale: string): void {
+  if (!translations[locale]) {
+    console.warn(`Locale ${locale} not supported`);
+    return;
+  }
+
+  // Store the user's language preference
+  localStorage.setItem('eventuate-language', locale);
+
+  // Reload the page to apply the new language
+  window.location.reload();
+}
+
+// Get stored language preference or detect from browser
+export function getStoredOrDetectedLocale(): string {
+  const stored = localStorage.getItem('eventuate-language');
+  if (stored && translations[stored]) {
+    return stored;
+  }
+  return detectLocale();
 }
 
 // Pluralization helper that works with translations

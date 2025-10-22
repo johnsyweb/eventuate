@@ -12,6 +12,8 @@ import {
   getTranslations,
   interpolate,
   pluralizeTranslated,
+  createLanguageSwitcher,
+  switchLanguage,
 } from './translations';
 
 function populate(
@@ -115,6 +117,10 @@ function populate(
   eventuateDiv.id = 'eventuate';
 
   const reportDetails = {
+    languageSwitcher: {
+      title: '',
+      details: createLanguageSwitcher(),
+    },
     message: { title: '&#x23f3;', details: message },
     introduction: { title: '', details: introduction },
 
@@ -186,12 +192,31 @@ function populate(
 
     for (const [section, content] of Object.entries(reportDetails)) {
       if (content.details) {
-        const paragraphText = `${content.title} ${content.details}.`;
-        upsertParagraph(eventuateDiv, section, paragraphText);
+        if (section === 'languageSwitcher') {
+          // Handle language switcher specially - no title, no period
+          upsertParagraph(eventuateDiv, section, content.details);
+        } else {
+          const paragraphText = `${content.title} ${content.details}.`;
+          upsertParagraph(eventuateDiv, section, paragraphText);
+        }
       } else {
         deleteParagraph(eventuateDiv, section);
       }
     }
+
+    // Add event listeners for language switcher
+    const languageButtons = eventuateDiv.querySelectorAll(
+      '.eventuate-language-btn'
+    );
+    languageButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        const target = e.target as HTMLButtonElement;
+        const locale = target.getAttribute('data-locale');
+        if (locale) {
+          switchLanguage(locale);
+        }
+      });
+    });
   }
 }
 

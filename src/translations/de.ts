@@ -1,5 +1,10 @@
 // translations/de.ts - German translations
 export const de = {
+  // Language metadata
+  flag: '🇩🇪',
+  languageName: 'Deutsch',
+
+  // Translation strings
   introduction:
     'Vielen Dank an alle Parkrunner, einschließlich der {finisherCount} und {volunteerCount}, die bei {eventName} Event {eventNumber} mitgemacht haben. Ohne Sie wäre diese Veranstaltung nicht möglich gewesen',
   newestParkrunnersTitle:

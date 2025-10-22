@@ -1,5 +1,10 @@
-// translations/en.ts - English translations
+// translations/en.ts - British English translations
 export const en = {
+  // Language metadata
+  flag: '🇬🇧',
+  languageName: 'English',
+
+  // Translation strings
   introduction:
     'Thank you to all the parkrunners, including the {finisherCount} and {volunteerCount}, who joined us for {eventName} event {eventNumber}. Without you, this event would not have been possible',
   newestParkrunnersTitle:

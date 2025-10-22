@@ -44,8 +44,12 @@ useful text before the results table is displayed, including:
 Eventuate automatically detects your browser's language and displays reports in
 the appropriate language. Currently supported languages:
 
-- **English** (default)
-- **German** (Deutsch)
+- **English** 🇬🇧 (default)
+- **German** 🇩🇪 (Deutsch)
+
+You can easily switch between languages using the flag buttons that appear at
+the top of the Eventuate output. Your language preference is saved and will be
+remembered across browser sessions.
 
 ### Adding a New Language
 
@@ -60,6 +64,7 @@ add a new language:
    ```
 
 2. **Translate all strings** in the new file. Each translation file contains:
+   - Language metadata (flag emoji and language name)
    - Event summaries and introductions
    - Milestone celebration messages
    - Volunteer acknowledgments
@@ -90,7 +95,7 @@ add a new language:
 
 ### Translation Guidelines
 
-- Use Australian English spelling conventions (e.g., "colour" not "color")
+- Use British English spelling conventions (e.g., "colour" not "color")
 - Maintain the friendly, celebratory tone of parkrun reports
 - Keep milestone club names consistent with parkrun terminology
 - Test with real parkrun data to ensure translations work correctly
@@ -200,8 +205,10 @@ pnpm start
    saved.
 1. The add-on will now appear in the add-on manager’s list of installed add-ons
    and be ready to use
-1. Navigate to a results page such as
-   <https://www.parkrun.com.au/timboon/results/latestresults/>.
+1. Navigate to a results page such as:
+   - **English**: <https://www.parkrun.com.au/timboon/results/latestresults/>
+   - **German**:
+     <https://www.parkrun.com.de/priessnitzgrund/results/latestresults/>
 
 Observe the additional details between the title and the event table.
 
