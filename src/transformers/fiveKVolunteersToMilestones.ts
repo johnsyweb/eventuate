@@ -32,7 +32,7 @@ export function fiveKVolunteersToMilestones(
 
     if (names.length > 0) {
       milestoneCelebrations.push({
-        clubName: `v${n}`,
+        clubName: `Volunteer ${n}`,
         icon: milestone.icon,
         names,
       });
