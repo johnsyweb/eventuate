@@ -1,12 +1,15 @@
 {
   "summary": {
-    "en-US": "Extracts information from parkrun results pages for inclusion in reports."
+    "en-AU": "Extracts information from parkrun results pages for inclusion in reports.",
+    "de": "Extrahiert Informationen von parkrun Ergebnisseiten für die Verwendung in Berichten."
   },
   "description": {
-    "en-US": "If you volunteer at parkrun and produce an event report to celebrate achievements, this addon will make your life easier! \n\nAs soon as the latest results page loads for an event, you'll see a bunch of useful text before the results table is displayed, including:\n\n- Weekly event summary\n- New milestone club members\n- Kudos for new parkrunners\n- Welcome for first-time visitors\n- Celebrating personal bests\n- Acknowledgement of walking and running groups\n- Link to the full results\n- Gratitude to volunteers\n- Invitation to volunteer with a link to the roster\n- Reminder to bring a barcode\n- Overall event summary facts and figures\n"
+    "en-AU": "If you volunteer at parkrun and produce an event report to celebrate achievements, this addon will make your life easier! \n\nAs soon as the latest results page loads for an event, you'll see a bunch of useful text before the results table is displayed, including:\n\n- Weekly event summary\n- New milestone club members\n- Kudos for new parkrunners\n- Welcome for first-time visitors\n- Celebrating personal bests\n- Acknowledgement of walking and running groups\n- Link to the full results\n- Gratitude to volunteers\n- Invitation to volunteer with a link to the roster\n- Reminder to bring a barcode\n- Overall event summary facts and figures\n\n🌍 Internationalisation: Automatically detects your browser language and displays reports in English or German. More languages welcome!\n",
+    "de": "Wenn Sie bei parkrun freiwillig helfen und einen Veranstaltungsbericht erstellen, um Erfolge zu feiern, wird dieses Add-on Ihr Leben erleichtern!\n\nSobald die neueste Ergebnisseite für eine Veranstaltung lädt, sehen Sie nützlichen Text vor der Ergebnistabelle, einschließlich:\n\n- Wöchentliche Veranstaltungszusammenfassung\n- Neue Meilenstein-Club-Mitglieder\n- Lob für neue Parkrunner\n- Willkommen für Erstbesucher\n- Feiern persönlicher Bestzeiten\n- Anerkennung von Lauf- und Walking-Gruppen\n- Link zu den vollständigen Ergebnissen\n- Dankbarkeit an Freiwillige\n- Einladung zur Freiwilligenarbeit mit Link zum Roster\n- Erinnerung, einen Barcode mitzubringen\n- Gesamte Veranstaltungszusammenfassung mit Fakten und Zahlen\n\n🌍 Internationalisierung: Erkennt automatisch Ihre Browser-Sprache und zeigt Berichte auf Englisch oder Deutsch an. Weitere Sprachen sind willkommen!\n"
   },
   "developer_comments": {
-    "en-US": "Navigate to a results page such as https://www.parkrun.com.au/timboon/results/latestresults/. Observe the additional details between the title and the event table."
+    "en-AU": "Navigate to a results page such as https://www.parkrun.com.au/timboon/results/latestresults/. Observe the additional details between the title and the event table.",
+    "de": "Navigieren Sie zu einer Ergebnisseite wie https://www.parkrun.com.de/priessnitzgrund/results/latestresults/. Beobachten Sie die zusätzlichen Details zwischen dem Titel und der Ereignistabelle."
   },
   "tags": [
     "social media"
@@ -16,14 +19,17 @@
   ],
   "version": "1.4.8",
   "homepage": {
-    "en-US": "https://johnsy.com/eventuate/"
+    "en-AU": "https://johnsy.com/eventuate/",
+    "de": "https://johnsy.com/eventuate/"
   },
   "name": {
-    "en-US": "Eventuate"
+    "en-AU": "Eventuate",
+    "de": "Eventuate"
   },
   "requires_payment": false,
   "slug": "eventuate",
   "support_email": {
-    "en-US": "eventuate.addon@johnsy.com"
+    "en-AU": "eventuate.addon@johnsy.com",
+    "de": "eventuate.addon@johnsy.com"
   }
 }

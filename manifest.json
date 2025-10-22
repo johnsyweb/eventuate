@@ -4,7 +4,7 @@
   "version": "1.4.8",
   "author": "Pete Johns",
   "homepage_url": "https://github.com/johnsyweb/eventuate/",
-  "description": "Extracts information from parkrun results pages for inclusion in reports.",
+  "description": "Extracts information from parkrun results pages for inclusion in reports. Supports English and German languages with automatic browser locale detection.",
   "browser_specific_settings": {
     "gecko": {
       "id": "eventuate.addon@johnsy.com",

@@ -38,23 +38,35 @@ export interface TranslationKeys {
 }
 
 export const translations: Record<string, TranslationKeys> = {
+  'en-AU': en,
   en,
   de,
 };
 
 // Detect browser locale
 export function detectLocale(): string {
-  const browserLocale = navigator.language || navigator.languages?.[0] || 'en';
-  const language = browserLocale.split('-')[0].toLowerCase();
+  const browserLocale =
+    navigator.language || navigator.languages?.[0] || 'en-AU';
 
-  // Return supported locale or fallback to English
-  return translations[language] ? language : 'en';
+  // Check for exact match first (e.g., en-AU, de-DE)
+  if (translations[browserLocale]) {
+    return browserLocale;
+  }
+
+  // Check for language match (e.g., en, de)
+  const language = browserLocale.split('-')[0].toLowerCase();
+  if (translations[language]) {
+    return language;
+  }
+
+  // Default to Australian English
+  return 'en-AU';
 }
 
 // Get translations for current locale
 export function getTranslations(locale?: string): TranslationKeys {
   const targetLocale = locale || detectLocale();
-  return translations[targetLocale] || translations.en;
+  return translations[targetLocale] || translations['en-AU'];
 }
 
 // Simple template replacement function

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Eventuate
-// @description  Extracts information from parkrun results pages for inclusion in reports
+// @description  Extracts information from parkrun results pages for inclusion in reports. Supports English and German languages with automatic browser locale detection.
 // @author       Pete Johns (@johnsyweb)
 // @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
 // @grant        GM_addStyle
