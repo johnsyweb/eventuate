@@ -22,13 +22,13 @@ function populate(
     'volunteer',
     'volunteers',
     volunteerWithCountList.length
-  )} who joined us for ${rpe.eventName} event ${rpe.eventNumber}. Without you, this event would not have been possible`;
+  )}, who joined us for ${rpe.eventName} event ${rpe.eventNumber}. Without you, this event would not have been possible`;
 
-  const newestParkrunnersTitle = `Kudos to our ${pluralize(
-    'newest parkrunner',
-    'newest parkrunners',
+  const newestParkrunnersTitle = `The first time to parkrun is something to celebrate! It's also the first step towards your first official milestone club membership. Welcome to the ${pluralize(
+    'parkrunner',
+    'parkrunners',
     rpe.newestParkrunners.length
-  )}: `;
+  )} who took this step this weekend: `;
 
   const firstTimersTitle = `Welcome to the ${pluralize(
     'parkrunner',
@@ -36,7 +36,7 @@ function populate(
     rpe.firstTimers.length
   )} who joined us at ${rpe.eventName ?? 'parkrun'} for the first time: `;
 
-  const finishersWithNewPBsTitle = `Very well done to the ${pluralize(
+  const finishersWithNewPBsTitle = `${rpe.eventName} is not a race, but it's a great way to challenge yourself. Very well done to the ${pluralize(
     'parkrunner',
     'parkrunners',
     rpe.finishersWithNewPBs.length
@@ -71,7 +71,7 @@ function populate(
     `and a grand total of ${rpe.facts.finishes.toLocaleString()} finishers ` +
     `have covered a total distance of ${(
       rpe.facts.finishes * rpe.courseLength
-    ).toLocaleString()}km, ` +
+    ).toLocaleString()} km, ` +
     `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
     `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions`;
 
@@ -123,7 +123,9 @@ function populate(
       title: '',
       details:
         rpe.unknowns.length > 0
-          ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded`
+          ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded. ` +
+            `These stripy little tickets are your passpoert to free, weekly, timed events all over the world ` +
+            `and also carry contact details in case of an emergency at our event`
           : undefined,
     },
     facts: {
