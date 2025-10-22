@@ -67,3 +67,30 @@
   background: #0056b3;
   border-color: #0056b3;
 }
+
+/* Share Button Styles */
+.eventuate-share-btn {
+  background: #28a745;
+  color: white;
+  border: 2px solid #28a745;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.eventuate-share-btn:hover {
+  background: #218838;
+  border-color: #218838;
+  transform: translateY(-1px);
+}
+
+.eventuate-share-btn.shared {
+  background: #17a2b8;
+  border-color: #17a2b8;
+}

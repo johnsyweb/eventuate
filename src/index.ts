@@ -14,6 +14,7 @@ import {
   pluralizeTranslated,
   createLanguageSwitcher,
   switchLanguage,
+  shareReportText,
 } from './translations';
 
 function populate(
@@ -204,7 +205,7 @@ function populate(
       }
     }
 
-    // Add event listeners for language switcher
+    // Add event listeners for language switcher and copy button
     const languageButtons = eventuateDiv.querySelectorAll(
       '.eventuate-language-btn'
     );
@@ -217,6 +218,14 @@ function populate(
         }
       });
     });
+
+    // Add event listener for share button
+    const shareButton = eventuateDiv.querySelector('.eventuate-share-btn');
+    if (shareButton) {
+      shareButton.addEventListener('click', () => {
+        shareReportText();
+      });
+    }
   }
 }
 

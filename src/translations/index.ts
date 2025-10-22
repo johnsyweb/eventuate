@@ -109,6 +109,13 @@ export function createLanguageSwitcher(): string {
       `
         )
         .join('')}
+      <button 
+        class="eventuate-share-btn" 
+        title="Share report text"
+        data-action="share-report"
+      >
+        📤 Share Report
+      </button>
     </div>
   `;
 }
@@ -143,4 +150,86 @@ export function pluralizeTranslated(
   count: number
 ): string {
   return count === 1 ? singular : plural;
+}
+
+// Share report text using native share or clipboard
+export function shareReportText(): void {
+  const eventuateDiv = document.getElementById('eventuate');
+  if (!eventuateDiv) {
+    console.warn('Eventuate content not found');
+    return;
+  }
+
+  // Get all paragraphs and process them individually
+  const paragraphs = eventuateDiv.querySelectorAll('p');
+  const reportText = Array.from(paragraphs)
+    .map((p) => {
+      // Skip the language switcher paragraph
+      if (
+        p.id === 'languageSwitcher' ||
+        p.querySelector('.eventuate-language-switcher')
+      ) {
+        return '';
+      }
+
+      // Get the text content, preserving line breaks from <br> tags
+      const htmlContent = p.innerHTML;
+      const textContent = htmlContent
+        .replace(/<br\s*\/?>/gi, '\n') // Convert <br> tags to line breaks
+        .replace(/<[^>]*>/g, '') // Remove other HTML tags
+        .trim();
+
+      return textContent;
+    })
+    .filter((text) => text && text.length > 0)
+    .join('\n\n'); // Join paragraphs with double line breaks
+
+  if (reportText) {
+    // Try native share first (works on mobile devices and some desktop browsers)
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'parkrun Event Report',
+          text: reportText,
+        })
+        .catch((err) => {
+          console.log('Native share cancelled or failed:', err);
+          // Fall back to clipboard if share fails
+          copyToClipboard(reportText);
+        });
+    } else {
+      // Fall back to clipboard for browsers without native share
+      copyToClipboard(reportText);
+    }
+  }
+}
+
+// Helper function to copy text to clipboard
+function copyToClipboard(text: string): void {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // Show success feedback
+      const shareBtn = document.querySelector('.eventuate-share-btn');
+      if (shareBtn) {
+        const originalText = shareBtn.textContent;
+        shareBtn.textContent = '✅ Copied!';
+        shareBtn.classList.add('shared');
+
+        setTimeout(() => {
+          shareBtn.textContent = originalText;
+          shareBtn.classList.remove('shared');
+        }, 2000);
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to copy text: ', err);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    });
 }
