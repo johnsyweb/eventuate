@@ -24,7 +24,7 @@ export class MilestonePresenter {
     return this._milestoneCelebrations
       .map(
         (mc) =>
-          `${mc.icon} ${sortAndConjoin(mc.names)} joined the ${mc.clubName}-club`
+          `${mc.icon} ${sortAndConjoin(mc.names)} joined the ${mc.clubName} club`
       )
       .join('<br>');
   }
