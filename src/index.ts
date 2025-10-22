@@ -14,9 +14,9 @@ function populate(
   volunteerWithCountList: VolunteerWithCount[],
   message?: string
 ): void {
-  const introduction = `Thank you to the ${pluralize(
-    'parkrunner',
-    'parkrunners',
+  const introduction = `Thank you to all the parkrunners, including the ${pluralize(
+    'finisher',
+    'finishers',
     rpe.finishers.length
   )} and ${pluralize(
     'volunteer',
