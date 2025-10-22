@@ -197,7 +197,9 @@ function populate(
           // Handle language switcher specially - no title, no period
           upsertParagraph(eventuateDiv, section, content.details);
         } else {
-          const paragraphText = `${content.title} ${content.details}.`;
+          // Check if title ends with <br> to avoid extra space
+          const separator = content.title.endsWith('<br>') ? '' : ' ';
+          const paragraphText = `${content.title}${separator}${content.details}.`;
           upsertParagraph(eventuateDiv, section, paragraphText);
         }
       } else {
