@@ -115,10 +115,10 @@ First, let's turn the TypeScript files into a single JavaScript file to be
 consumed by `web-ext`...
 
 ```sh
-pnpm build --watch
+pnpm build:watch
 ```
 
-...`--watch` means we can edit the `.ts` files and have our change reflected in
+...`:watch` means we can edit the `.ts` files and have our change reflected in
 an instant.
 
 Second, in another terminal, let's start up Firefox and see our code in
