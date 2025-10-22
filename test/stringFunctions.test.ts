@@ -1,21 +1,37 @@
-import { pluralize } from '../src/stringFunctions';
+import { conjoin, alphabetize, sortAndConjoin } from '../src/stringFunctions';
 
 describe('stringFunctions', () => {
-  describe('pluralize', () => {
-    it('is plural when there is nothing to pluralize', () => {
-      expect(pluralize('mouse', 'mice', 0)).toBe('0 mice');
+  describe('conjoin', () => {
+    it('returns single element as-is', () => {
+      expect(conjoin(['Alice'])).toBe('Alice');
     });
 
-    it('is singular when there is one to pluralize', () => {
-      expect(pluralize('mouse', 'mice', 1)).toBe('mouse');
+    it('joins two elements with "and"', () => {
+      expect(conjoin(['Alice', 'Bob'])).toBe('Alice and Bob');
     });
 
-    it('is plural when there are two to pluralize', () => {
-      expect(pluralize('mouse', 'mice', 2)).toBe('2 mice');
+    it('joins multiple elements with commas and "and"', () => {
+      expect(conjoin(['Alice', 'Bob', 'Charlie'])).toBe(
+        'Alice, Bob and Charlie'
+      );
     });
+  });
 
-    it('adds commas, where appropriate', () => {
-      expect(pluralize('mouse', 'mice', 1000)).toBe('1,000 mice');
+  describe('alphabetize', () => {
+    it('sorts names alphabetically', () => {
+      expect(alphabetize(['Charlie', 'Alice', 'Bob'])).toEqual([
+        'Alice',
+        'Bob',
+        'Charlie',
+      ]);
+    });
+  });
+
+  describe('sortAndConjoin', () => {
+    it('sorts and joins names', () => {
+      expect(sortAndConjoin(['Charlie', 'Alice', 'Bob'])).toBe(
+        'Alice, Bob and Charlie'
+      );
     });
   });
 });
