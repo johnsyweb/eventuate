@@ -111,25 +111,25 @@
     padding: 8px;
     font-size: 14px;
   }
-  
+
   .eventuate-language-switcher {
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
   }
-  
+
   .eventuate-language-label {
     text-align: center;
     margin-bottom: 4px;
   }
-  
+
   .eventuate-language-btn,
   .eventuate-share-btn {
     justify-content: center;
     width: 100%;
     margin-left: 0;
   }
-  
+
   .eventuate-language-btn {
     margin-bottom: 4px;
   }
@@ -140,7 +140,7 @@
     padding: 6px;
     font-size: 13px;
   }
-  
+
   .eventuate-language-btn,
   .eventuate-share-btn {
     padding: 6px 8px;
