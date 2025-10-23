@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Eventuate
-// @description  Extracts information from parkrun results pages for inclusion in reports
+// @description  Extracts information from parkrun results pages for inclusion in reports. Supports English and German languages with automatic browser locale detection.
 // @author       Pete Johns (@johnsyweb)
 // @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
 // @grant        GM_addStyle
@@ -77,31 +77,70 @@ addStyle(`
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 27:
+/***/ 2:
 /***/ ((__unused_webpack_module, exports) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.twoKVolunteersToMilestones = twoKVolunteersToMilestones;
-function twoKVolunteersToMilestones(volunteers) {
-    const names = volunteers
-        .filter((v) => v.vols === 5 && v.agegroup?.startsWith('J'))
-        .map((v) => v.name);
-    return names.length
-        ? [
-            {
-                clubName: 'junior parkrun v5',
-                icon: '&#x1F49E;',
-                names,
-            },
-        ]
-        : [];
+exports.VolunteerPageExtractor = void 0;
+class VolunteerPageExtractor {
+    vols;
+    agegroup;
+    constructor(doc) {
+        const ageGroupData = doc.querySelector('#content > p:last-of-type')?.textContent ?? '';
+        this.vols = Number(doc.querySelector('h3#volunteer-summary + table tfoot td:last-child')
+            ?.textContent);
+        this.agegroup =
+            ageGroupData.trim().split(' ').slice(-1)[0] ?? 'Not found on page';
+    }
 }
+exports.VolunteerPageExtractor = VolunteerPageExtractor;
 
 
 /***/ }),
 
-/***/ 180:
+/***/ 75:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MilestonePresenter = void 0;
+const stringFunctions_1 = __webpack_require__(541);
+const translations_1 = __webpack_require__(536);
+class MilestonePresenter {
+    _milestoneCelebrations;
+    _milestoneCelebrationsAll;
+    constructor(milestoneCelebrations) {
+        this._milestoneCelebrations = milestoneCelebrations;
+        this._milestoneCelebrationsAll = this._milestoneCelebrations.flatMap((mc) => mc.names);
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        const count = this._milestoneCelebrationsAll.length;
+        const countText = count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+        return (0, translations_1.interpolate)(t.milestoneCelebrations.title, {
+            count: countText,
+        });
+    }
+    details() {
+        const t = (0, translations_1.getTranslations)();
+        return this._milestoneCelebrations
+            .map((mc) => {
+            const clubName = t.milestoneClubs[mc.clubName] || mc.clubName;
+            return `${mc.icon} ${(0, translations_1.interpolate)(t.milestoneCelebrations.joinedClub, {
+                names: (0, stringFunctions_1.sortAndConjoin)(mc.names),
+                clubName: clubName,
+            })}`;
+        })
+            .join('<br>');
+    }
+}
+exports.MilestonePresenter = MilestonePresenter;
+
+
+/***/ }),
+
+/***/ 131:
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -133,13 +172,655 @@ function deleteParagraph(div, id) {
 
 /***/ }),
 
-/***/ 241:
+/***/ 135:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.twoKFinishersToMilestones = twoKFinishersToMilestones;
+function twoKFinishersToMilestones(finishers) {
+    const milestones = {
+        11: { icon: '&#x1F7E6;', restricted_age: 'J', name: 'Half marathon' },
+        21: { icon: '&#x1F7E9;', restricted_age: 'J', name: 'Marathon' },
+        50: { icon: '&#x1F7E7;', restricted_age: 'J', name: 'Ultra marathon' },
+        100: { icon: '&#x2B1C;', restricted_age: 'J', name: 'junior parkrun 100' },
+        250: { icon: '&#x1F7E8;', restricted_age: 'J', name: 'junior parkrun 250' },
+    };
+    const milestoneCelebrations = [];
+    for (const n in milestones) {
+        const milestone = milestones[n];
+        const names = finishers
+            .filter((f) => Number(f.runs) === Number(n) &&
+            (!milestone.restricted_age ||
+                f.agegroup?.startsWith(milestone.restricted_age)))
+            .map((f) => f.name);
+        if (names.length > 0) {
+            milestoneCelebrations.push({
+                clubName: milestone.name,
+                icon: milestone.icon,
+                names,
+            });
+        }
+    }
+    return milestoneCelebrations;
+}
+
+
+/***/ }),
+
+/***/ 177:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.de = void 0;
+// translations/de.ts - German translations
+exports.de = {
+    // Language metadata
+    flag: '🇩🇪',
+    languageName: 'Deutsch',
+    // Translation strings
+    introduction: 'Vielen Dank an alle Parkrunner, einschließlich der {finisherCount} und {volunteerCount}, die bei {eventName} Event {eventNumber} mitgemacht haben. Ohne Sie wäre diese Veranstaltung nicht möglich gewesen',
+    newestParkrunnersTitle: 'Das erste Mal bei Parkrun ist etwas zu feiern! Es ist auch der erste Schritt zu Ihrer ersten offiziellen Meilenstein-Club-Mitgliedschaft. Willkommen bei den {count}, die diesen Schritt dieses Wochenende gemacht haben: ',
+    firstTimersTitle: 'Willkommen bei den {count}, die zum ersten Mal bei {eventName} mitgemacht haben: ',
+    finishersWithNewPBsTitle: '{eventName} ist kein Rennen, aber eine großartige Möglichkeit, sich selbst herauszufordern. Sehr gut gemacht an die {count}, die diese Woche ihre persönliche Bestzeit verbessert haben: ',
+    runningWalkingGroupsTitle: 'Wir freuten uns, {count} bei dieser Veranstaltung vertreten zu sehen: ',
+    volunteersTitle: 'Die folgenden {count} Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
+    fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
+    volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
+    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, wöchentlichen, zeitgestoppten Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
+    facts: {
+        sinceStarted: 'Seit {eventName} begonnen hat ',
+        brilliantParkrunners: 'haben {count} brillante Parkrunner ihre Barcodes scannen lassen, ',
+        grandTotal: 'und insgesamt {count} Finisher ',
+        coveredDistance: 'haben eine Gesamtstrecke von {distance} km zurückgelegt, ',
+        celebratingPBs: 'während {count} persönliche Bestzeiten gefeiert wurden. ',
+        gratefulToVolunteers: 'Wir werden immer dankbar für jeden unserer {count} wunderbaren Freiwilligen für ihre Beiträge sein',
+    },
+    milestoneCelebrations: {
+        title: 'Drei Hochrufe für die {count}, die dieses Wochenende einem neuen Parkrun-Meilenstein-Club beigetreten sind:<br>',
+        joinedClub: '{names} ist dem {clubName} beigetreten',
+    },
+    loadingMessage: 'Lade Freiwilligendaten für {count} Parkrunner. Bitte warten',
+    closing: '#liebeparkrun',
+    fallbackParkrunName: 'Parkrun',
+    fallbackParkrunnerName: 'ein Parkrunner',
+    // Pluralization helpers
+    finisher: 'Finisher',
+    finishers: 'Finisher',
+    volunteer: 'Freiwilliger',
+    volunteers: 'Freiwillige',
+    parkrunner: 'Parkrunner',
+    parkrunners: 'Parkrunner',
+    // Milestone club names
+    milestoneClubs: {
+        '10': '10er Club',
+        '25': '25er Club',
+        '50': '50er Club',
+        '100': '100er Club',
+        '250': '250er Club',
+        '500': '500er Club',
+        '1000': '1000er Club',
+        'Volunteer 10': 'Freiwilligen 10er Club',
+        'Volunteer 25': 'Freiwilligen 25er Club',
+        'Volunteer 50': 'Freiwilligen 50er Club',
+        'Volunteer 100': 'Freiwilligen 100er Club',
+        'Volunteer 250': 'Freiwilligen 250er Club',
+        'Volunteer 500': 'Freiwilligen 500er Club',
+        'Volunteer 1000': 'Freiwilligen 1000er Club',
+        'junior parkrun v5': 'Junior Parkrun v5 Club',
+        'junior parkrun 100': 'Junior Parkrun 100er Club',
+        'junior parkrun 250': 'Junior Parkrun 250er Club',
+    },
+};
+
+
+/***/ }),
+
+/***/ 184:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.twoKVolunteersToMilestones = twoKVolunteersToMilestones;
+function twoKVolunteersToMilestones(volunteers) {
+    const names = volunteers
+        .filter((v) => v.vols === 5 && v.agegroup?.startsWith('J'))
+        .map((v) => v.name);
+    return names.length
+        ? [
+            {
+                clubName: 'junior parkrun v5',
+                icon: '&#x1F49E;',
+                names,
+            },
+        ]
+        : [];
+}
+
+
+/***/ }),
+
+/***/ 213:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.futureRosterUrl = futureRosterUrl;
+exports.canonicalResultsPageUrl = canonicalResultsPageUrl;
+/**
+ * Safely creates a new URL based on the provided href
+ */
+function createUrlFromCurrent(currentHref) {
+    try {
+        return new URL(currentHref);
+    }
+    catch (error) {
+        console.error('Invalid URL:', error);
+        return null;
+    }
+}
+/**
+ * Parses the URL path into segments for easier manipulation
+ */
+function getPathSegments(url) {
+    return url.pathname.split('/');
+}
+/**
+ * Changes a specific segment in the URL path
+ */
+function changePathSegment(url, segmentIndex, newValue, pathSegments) {
+    const segments = pathSegments || getPathSegments(url);
+    if (segments.length > segmentIndex) {
+        segments[segmentIndex] = newValue;
+        url.pathname = segments.join('/');
+    }
+    return url;
+}
+function futureRosterUrl(currentHref) {
+    const url = createUrlFromCurrent(currentHref);
+    if (!url)
+        return currentHref;
+    const pathSegments = getPathSegments(url);
+    const eventShortName = pathSegments[1];
+    url.pathname = [eventShortName, 'futureroster', ''].join('/');
+    return url.toString();
+}
+function canonicalResultsPageUrl(eventNumber, currentHref) {
+    const url = createUrlFromCurrent(currentHref);
+    const normalisedEventNumber = eventNumber.replace('#', '');
+    if (!url)
+        return currentHref;
+    const pathSegments = getPathSegments(url);
+    if (pathSegments.length > 3 && pathSegments[2] === 'results') {
+        return changePathSegment(url, 3, normalisedEventNumber, pathSegments).toString();
+    }
+    return currentHref;
+}
+
+
+/***/ }),
+
+/***/ 448:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fiveKVolunteersToMilestones = fiveKVolunteersToMilestones;
+function fiveKVolunteersToMilestones(volunteers) {
+    const milestones = {
+        10: { icon: '&#x1F90D;', restricted_age: 'J' },
+        25: { icon: '&#x1F49C;' },
+        50: { icon: '&#x2764;' },
+        100: { icon: '&#x1F5A4;' },
+        250: { icon: '&#x1F49A;' },
+        500: { icon: '&#x1F499;' },
+        1000: { icon: '&#x1F49B;' },
+    };
+    const milestoneCelebrations = [];
+    for (const n in milestones) {
+        const milestone = milestones[n];
+        const names = volunteers
+            .filter((v) => v.vols === Number(n) &&
+            (!milestone.restricted_age ||
+                v.agegroup?.startsWith(milestone.restricted_age)))
+            .map((v) => v.name);
+        if (names.length > 0) {
+            milestoneCelebrations.push({
+                clubName: `Volunteer ${n}`,
+                icon: milestone.icon,
+                names,
+            });
+        }
+    }
+    return milestoneCelebrations;
+}
+
+
+/***/ }),
+
+/***/ 523:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.VolunteerWithCount = void 0;
+const VolunteerPageExtractor_1 = __webpack_require__(2);
+class VolunteerWithCount {
+    name;
+    link;
+    athleteID;
+    vols;
+    agegroup;
+    volunteerDataSource;
+    promisedVols;
+    static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    constructor(volunteer, origin) {
+        this.name = volunteer.name;
+        this.link = volunteer.link;
+        const url = new URL(volunteer.link, origin);
+        this.volunteerDataSource = new URL(url.pathname.split('/').slice(2).join('/'), url.origin);
+        this.athleteID = volunteer.athleteID;
+        this.vols = volunteer.vols ?? 0;
+        this.agegroup = volunteer.agegroup ?? '';
+        if (!this.vols) {
+            this.promisedVols = this.fetchdata();
+        }
+    }
+    static getCacheKey(athleteID) {
+        return `volunteer_${athleteID}`;
+    }
+    static isValidCache(data) {
+        return Date.now() - data.timestamp < VolunteerWithCount.CACHE_EXPIRY;
+    }
+    fetchAndExtractData() {
+        return fetch(this.volunteerDataSource)
+            .then((r) => r.text())
+            .then((doc) => this.volsFromHtml(doc));
+    }
+    fetchdata() {
+        const cacheKey = VolunteerWithCount.getCacheKey(this.athleteID);
+        let cached = null;
+        try {
+            cached = localStorage.getItem(cacheKey);
+        }
+        catch (err) {
+            console.error('localStorage.getItem failed:', err);
+            return this.fetchAndExtractData();
+        }
+        if (!cached) {
+            return this.fetchAndExtractData();
+        }
+        let data;
+        try {
+            data = JSON.parse(cached);
+        }
+        catch (err) {
+            console.error('JSON.parse failed:', err);
+            localStorage.removeItem(cacheKey);
+            return this.fetchAndExtractData();
+        }
+        if (!VolunteerWithCount.isValidCache(data)) {
+            localStorage.removeItem(cacheKey);
+            return this.fetchAndExtractData();
+        }
+        this.vols = data.vols;
+        this.agegroup = data.agegroup;
+        return undefined;
+    }
+    volsFromHtml(html) {
+        const vpe = new VolunteerPageExtractor_1.VolunteerPageExtractor(new DOMParser().parseFromString(html, 'text/html'));
+        this.vols = vpe.vols;
+        this.agegroup = vpe.agegroup;
+        try {
+            const cacheData = {
+                vols: vpe.vols,
+                agegroup: vpe.agegroup,
+                timestamp: Date.now(),
+            };
+            localStorage.setItem(VolunteerWithCount.getCacheKey(this.athleteID), JSON.stringify(cacheData));
+        }
+        catch (err) {
+            console.error('localStorage.setItem failed:', err);
+        }
+        return vpe;
+    }
+}
+exports.VolunteerWithCount = VolunteerWithCount;
+
+
+/***/ }),
+
+/***/ 536:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.translations = void 0;
+exports.detectLocale = detectLocale;
+exports.getTranslations = getTranslations;
+exports.interpolate = interpolate;
+exports.createLanguageSwitcher = createLanguageSwitcher;
+exports.switchLanguage = switchLanguage;
+exports.getStoredOrDetectedLocale = getStoredOrDetectedLocale;
+exports.pluralizeTranslated = pluralizeTranslated;
+exports.shareReportText = shareReportText;
+// translations/index.ts - Translation registry and utilities
+const en_1 = __webpack_require__(685);
+const de_1 = __webpack_require__(177);
+exports.translations = {
+    en: en_1.en,
+    de: de_1.de,
+};
+// Detect browser locale
+function detectLocale() {
+    // First check for stored user preference
+    const stored = localStorage.getItem('eventuate-language');
+    if (stored && exports.translations[stored]) {
+        return stored;
+    }
+    const browserLocale = navigator.language || navigator.languages?.[0] || 'en';
+    // Check for exact match first (e.g., en-GB, de-DE)
+    if (exports.translations[browserLocale]) {
+        return browserLocale;
+    }
+    // Check for language match (e.g., en, de)
+    const language = browserLocale.split('-')[0].toLowerCase();
+    if (exports.translations[language]) {
+        return language;
+    }
+    // Default to English
+    return 'en';
+}
+// Get translations for current locale
+function getTranslations(locale) {
+    const targetLocale = locale || detectLocale();
+    return exports.translations[targetLocale] || exports.translations.en;
+}
+// Simple template replacement function
+function interpolate(template, values) {
+    return template.replace(/\{(\w+)\}/g, (match, key) => {
+        return values[key]?.toString() || match;
+    });
+}
+// Language switcher functionality
+function createLanguageSwitcher() {
+    const currentLocale = detectLocale();
+    const availableLocales = Object.keys(exports.translations);
+    return `
+    <div class="eventuate-language-switcher">
+      <span class="eventuate-language-label">Language:</span>
+      ${availableLocales
+        .map((locale) => `
+        <button 
+          class="eventuate-language-btn ${currentLocale === locale ? 'active' : ''}" 
+          data-locale="${locale}"
+          title="${exports.translations[locale].languageName}"
+        >
+          ${exports.translations[locale].flag} ${exports.translations[locale].languageName}
+        </button>
+      `)
+        .join('')}
+      <button 
+        class="eventuate-share-btn" 
+        title="Share report text"
+        data-action="share-report"
+      >
+        📤 Share Report
+      </button>
+    </div>
+  `;
+}
+function switchLanguage(locale) {
+    if (!exports.translations[locale]) {
+        console.warn(`Locale ${locale} not supported`);
+        return;
+    }
+    localStorage.setItem('eventuate-language', locale);
+    const eventuateDiv = document.getElementById('eventuate');
+    const windowWithEventuate = window;
+    if (eventuateDiv && windowWithEventuate.eventuate) {
+        windowWithEventuate.eventuate();
+    }
+    else {
+        window.location.reload();
+    }
+}
+// Get stored language preference or detect from browser
+function getStoredOrDetectedLocale() {
+    const stored = localStorage.getItem('eventuate-language');
+    if (stored && exports.translations[stored]) {
+        return stored;
+    }
+    return detectLocale();
+}
+// Pluralization helper that works with translations
+function pluralizeTranslated(singular, plural, count) {
+    return count === 1 ? singular : plural;
+}
+// Share report text using native share or clipboard
+function shareReportText(rpe) {
+    const eventuateDiv = document.getElementById('eventuate');
+    if (!eventuateDiv) {
+        console.warn('Eventuate content not found');
+        return;
+    }
+    // Build event title from extractor data
+    let eventTitle = 'parkrun Event Report';
+    if (rpe?.eventName && rpe?.eventDate && rpe?.eventNumber) {
+        eventTitle = `${rpe.eventName} ${rpe.eventDate} | ${rpe.eventNumber}`;
+    }
+    else if (rpe?.eventName) {
+        eventTitle = rpe.eventName;
+    }
+    // Get all paragraphs and process them individually
+    const paragraphs = eventuateDiv.querySelectorAll('p');
+    const reportText = Array.from(paragraphs)
+        .map((p) => {
+        // Skip the language switcher paragraph
+        if (p.id === 'languageSwitcher' ||
+            p.querySelector('.eventuate-language-switcher')) {
+            return '';
+        }
+        // Get the text content, preserving line breaks from <br> tags
+        const htmlContent = p.innerHTML;
+        const textContent = htmlContent
+            .replace(/<br\s*\/?>/gi, '\n') // Convert <br> tags to line breaks
+            .replace(/<[^>]*>/g, '') // Remove other HTML tags
+            .trim();
+        return textContent;
+    })
+        .filter((text) => text && text.length > 0)
+        .join('\n\n'); // Join paragraphs with double line breaks
+    if (reportText) {
+        // Try native share first (works on mobile devices and some desktop browsers)
+        if (navigator.share) {
+            navigator
+                .share({
+                title: eventTitle,
+                text: reportText,
+            })
+                .catch((err) => {
+                console.log('Native share cancelled or failed:', err);
+                // Fall back to clipboard if share fails
+                copyToClipboard(reportText);
+            });
+        }
+        else {
+            // Fall back to clipboard for browsers without native share
+            copyToClipboard(reportText);
+        }
+    }
+}
+// Helper function to copy text to clipboard
+function copyToClipboard(text) {
+    navigator.clipboard
+        .writeText(text)
+        .then(() => {
+        // Show success feedback
+        const shareBtn = document.querySelector('.eventuate-share-btn');
+        if (shareBtn) {
+            const originalText = shareBtn.textContent;
+            shareBtn.textContent = '✅ Copied!';
+            shareBtn.classList.add('shared');
+            setTimeout(() => {
+                shareBtn.textContent = originalText;
+                shareBtn.classList.remove('shared');
+            }, 2000);
+        }
+    })
+        .catch((err) => {
+        console.error('Failed to copy text: ', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+    });
+}
+
+
+/***/ }),
+
+/***/ 541:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.conjoin = conjoin;
+exports.alphabetize = alphabetize;
+exports.sortAndConjoin = sortAndConjoin;
+function conjoin(elements) {
+    return elements.length > 1
+        ? `${elements.slice(0, -1).join(', ')} and ${elements.slice(-1)}`
+        : elements[0];
+}
+function alphabetize(names) {
+    return names.sort((a, b) => a.localeCompare(b));
+}
+function sortAndConjoin(names) {
+    return conjoin(alphabetize(names));
+}
+
+
+/***/ }),
+
+/***/ 654:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fiveKFinishersToMilestones = fiveKFinishersToMilestones;
+function fiveKFinishersToMilestones(finishers) {
+    const milestones = {
+        10: { icon: '&#x26AA;', restricted_age: 'J' }, // white circle
+        25: { icon: '&#x1F7E3;' }, // purple circle
+        50: { icon: '&#x1F534;' }, // red circle
+        100: { icon: '&#x26AB;' }, // black circle
+        250: { icon: '&#x1F7E2;' }, // green circle
+        500: { icon: '&#x1F535;' }, // blue circle
+        1000: { icon: '&#x1F7E1;' }, // yellow circle
+    };
+    const milestoneCelebrations = [];
+    for (const n in milestones) {
+        const milestone = milestones[n];
+        const names = finishers
+            .filter((f) => Number(f.runs) === Number(n) &&
+            (!milestone.restricted_age ||
+                f.agegroup?.startsWith(milestone.restricted_age)))
+            .map((f) => f.name);
+        if (names.length > 0) {
+            milestoneCelebrations.push({
+                clubName: n,
+                icon: milestone.icon,
+                names,
+            });
+        }
+    }
+    return milestoneCelebrations;
+}
+
+
+/***/ }),
+
+/***/ 685:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.en = void 0;
+// translations/en.ts - British English translations
+exports.en = {
+    // Language metadata
+    flag: '🇬🇧',
+    languageName: 'English',
+    // Translation strings
+    introduction: 'Thank you to all the parkrunners, including the {finisherCount} and {volunteerCount}, who joined us for {eventName} event {eventNumber}. Without you, this event would not have been possible',
+    newestParkrunnersTitle: "The first time to parkrun is something to celebrate! It's also the first step towards your first official milestone club membership. Welcome to the {count} who took this step this weekend: ",
+    firstTimersTitle: 'Welcome to the {count} who joined us at {eventName} for the first time: ',
+    finishersWithNewPBsTitle: "{eventName} is not a race, but it's a great way to challenge yourself. Very well done to the {count} who improved their personal best this week: ",
+    runningWalkingGroupsTitle: 'We were pleased to see {count} represented at this event: ',
+    volunteersTitle: 'The following {count} parkrunners volunteered to host {eventName} this weekend. Our deep thanks to:  ',
+    fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
+    volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
+    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, weekly, timed events all over the world and also carry contact details in case of an emergency at an event",
+    facts: {
+        sinceStarted: 'Since {eventName} started ',
+        brilliantParkrunners: '{count} brilliant parkrunners have had their barcodes scanned, ',
+        grandTotal: 'and a grand total of {count} finishers ',
+        coveredDistance: 'have covered a total distance of {distance} km, ',
+        celebratingPBs: 'while celebrating {count} personal bests. ',
+        gratefulToVolunteers: 'We shall always be grateful to each of our {count} wonderful volunteers for their contributions',
+    },
+    milestoneCelebrations: {
+        title: 'Three cheers to the {count} who joined a new parkrun milestone club this weekend:<br>',
+        joinedClub: '{names} joined the {clubName}',
+    },
+    loadingMessage: 'Loading volunteer data for {count} parkrunners. Please wait',
+    closing: '#loveparkrun',
+    fallbackParkrunName: 'parkrun',
+    fallbackParkrunnerName: 'a parkrunner',
+    // Pluralization helpers
+    finisher: 'finisher',
+    finishers: 'finishers',
+    volunteer: 'volunteer',
+    volunteers: 'volunteers',
+    parkrunner: 'parkrunner',
+    parkrunners: 'parkrunners',
+    // Milestone club names
+    milestoneClubs: {
+        '10': '10 club',
+        '25': '25 club',
+        '50': '50 club',
+        '100': '100 club',
+        '250': '250 club',
+        '500': '500 club',
+        '1000': '1000 club',
+        'Volunteer 10': 'Volunteer 10 club',
+        'Volunteer 25': 'Volunteer 25 club',
+        'Volunteer 50': 'Volunteer 50 club',
+        'Volunteer 100': 'Volunteer 100 club',
+        'Volunteer 250': 'Volunteer 250 club',
+        'Volunteer 500': 'Volunteer 500 club',
+        'Volunteer 1000': 'Volunteer 1000 club',
+        'junior parkrun v5': 'junior parkrun v5 club',
+        'junior parkrun 100': 'junior parkrun 100 club',
+        'junior parkrun 250': 'junior parkrun 250 club',
+    },
+};
+
+
+/***/ }),
+
+/***/ 694:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ResultsPageExtractor = void 0;
-const Finisher_1 = __webpack_require__(848);
+const Finisher_1 = __webpack_require__(989);
 function athleteIDFromURI(uri) {
     return Number(uri?.split('/')?.slice(-1));
 }
@@ -241,217 +922,13 @@ exports.ResultsPageExtractor = ResultsPageExtractor;
 
 /***/ }),
 
-/***/ 268:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.twoKFinishersToMilestones = twoKFinishersToMilestones;
-function twoKFinishersToMilestones(finishers) {
-    const milestones = {
-        11: { icon: '&#x1F7E6;', restricted_age: 'J', name: 'Half marathon' },
-        21: { icon: '&#x1F7E9;', restricted_age: 'J', name: 'Marathon' },
-        50: { icon: '&#x1F7E7;', restricted_age: 'J', name: 'Ultra marathon' },
-        100: { icon: '&#x2B1C;', restricted_age: 'J', name: 'junior parkrun 100' },
-        250: { icon: '&#x1F7E8;', restricted_age: 'J', name: 'junior parkrun 250' },
-    };
-    const milestoneCelebrations = [];
-    for (const n in milestones) {
-        const milestone = milestones[n];
-        const names = finishers
-            .filter((f) => Number(f.runs) === Number(n) &&
-            (!milestone.restricted_age ||
-                f.agegroup?.startsWith(milestone.restricted_age)))
-            .map((f) => f.name);
-        if (names.length > 0) {
-            milestoneCelebrations.push({
-                clubName: milestone.name,
-                icon: milestone.icon,
-                names,
-            });
-        }
-    }
-    return milestoneCelebrations;
-}
-
-
-/***/ }),
-
-/***/ 305:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VolunteerPageExtractor = void 0;
-class VolunteerPageExtractor {
-    vols;
-    agegroup;
-    constructor(doc) {
-        const ageGroupData = doc.querySelector('#content > p:last-of-type')?.textContent ?? '';
-        this.vols = Number(doc.querySelector('h3#volunteer-summary + table tfoot td:last-child')
-            ?.textContent);
-        this.agegroup =
-            ageGroupData.trim().split(' ').slice(-1)[0] ?? 'Not found on page';
-    }
-}
-exports.VolunteerPageExtractor = VolunteerPageExtractor;
-
-
-/***/ }),
-
-/***/ 316:
+/***/ 989:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.MilestonePresenter = void 0;
-const stringFunctions_1 = __webpack_require__(710);
-class MilestonePresenter {
-    _milestoneCelebrations;
-    _milestoneCelebrationsAll;
-    constructor(milestoneCelebrations) {
-        this._milestoneCelebrations = milestoneCelebrations;
-        this._milestoneCelebrationsAll = this._milestoneCelebrations.flatMap((mc) => mc.names);
-    }
-    title() {
-        return `Three cheers to the ${(0, stringFunctions_1.pluralize)('parkrunner', 'parkrunners', this._milestoneCelebrationsAll.length)} who joined a new parkrun milestone club this weekend:<br>`;
-    }
-    details() {
-        return this._milestoneCelebrations
-            .map((mc) => `${mc.icon} ${(0, stringFunctions_1.sortAndConjoin)(mc.names)} joined the ${mc.clubName}-club`)
-            .join('<br>');
-    }
-}
-exports.MilestonePresenter = MilestonePresenter;
-
-
-/***/ }),
-
-/***/ 596:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VolunteerWithCount = void 0;
-const VolunteerPageExtractor_1 = __webpack_require__(305);
-class VolunteerWithCount {
-    name;
-    link;
-    athleteID;
-    vols;
-    agegroup;
-    volunteerDataSource;
-    promisedVols;
-    static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    constructor(volunteer, origin) {
-        this.name = volunteer.name;
-        this.link = volunteer.link;
-        const url = new URL(volunteer.link, origin);
-        this.volunteerDataSource = new URL(url.pathname.split('/').slice(2).join('/'), url.origin);
-        this.athleteID = volunteer.athleteID;
-        this.vols = volunteer.vols ?? 0;
-        this.agegroup = volunteer.agegroup ?? '';
-        if (!this.vols) {
-            this.promisedVols = this.fetchdata();
-        }
-    }
-    static getCacheKey(athleteID) {
-        return `volunteer_${athleteID}`;
-    }
-    static isValidCache(data) {
-        return Date.now() - data.timestamp < VolunteerWithCount.CACHE_EXPIRY;
-    }
-    fetchAndExtractData() {
-        return fetch(this.volunteerDataSource)
-            .then((r) => r.text())
-            .then((doc) => this.volsFromHtml(doc));
-    }
-    fetchdata() {
-        const cacheKey = VolunteerWithCount.getCacheKey(this.athleteID);
-        let cached = null;
-        try {
-            cached = localStorage.getItem(cacheKey);
-        }
-        catch (err) {
-            console.error('localStorage.getItem failed:', err);
-            return this.fetchAndExtractData();
-        }
-        if (!cached) {
-            return this.fetchAndExtractData();
-        }
-        let data;
-        try {
-            data = JSON.parse(cached);
-        }
-        catch (err) {
-            console.error('JSON.parse failed:', err);
-            localStorage.removeItem(cacheKey);
-            return this.fetchAndExtractData();
-        }
-        if (!VolunteerWithCount.isValidCache(data)) {
-            localStorage.removeItem(cacheKey);
-            return this.fetchAndExtractData();
-        }
-        this.vols = data.vols;
-        this.agegroup = data.agegroup;
-        return undefined;
-    }
-    volsFromHtml(html) {
-        const vpe = new VolunteerPageExtractor_1.VolunteerPageExtractor(new DOMParser().parseFromString(html, 'text/html'));
-        this.vols = vpe.vols;
-        this.agegroup = vpe.agegroup;
-        try {
-            const cacheData = {
-                vols: vpe.vols,
-                agegroup: vpe.agegroup,
-                timestamp: Date.now(),
-            };
-            localStorage.setItem(VolunteerWithCount.getCacheKey(this.athleteID), JSON.stringify(cacheData));
-        }
-        catch (err) {
-            console.error('localStorage.setItem failed:', err);
-        }
-        return vpe;
-    }
-}
-exports.VolunteerWithCount = VolunteerWithCount;
-
-
-/***/ }),
-
-/***/ 710:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.pluralize = pluralize;
-exports.conjoin = conjoin;
-exports.alphabetize = alphabetize;
-exports.sortAndConjoin = sortAndConjoin;
-function pluralize(singular, plural, count) {
-    return count === 1 ? singular : `${count.toLocaleString()} ${plural}`;
-}
-function conjoin(elements) {
-    return elements.length > 1
-        ? `${elements.slice(0, -1).join(', ')} and ${elements.slice(-1)}`
-        : elements[0];
-}
-function alphabetize(names) {
-    return names.sort((a, b) => a.localeCompare(b));
-}
-function sortAndConjoin(names) {
-    return conjoin(alphabetize(names));
-}
-
-
-/***/ }),
-
-/***/ 848:
-/***/ ((__unused_webpack_module, exports) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Finisher = void 0;
+const translations_1 = __webpack_require__(536);
 class Finisher {
     name;
     agegroup;
@@ -465,7 +942,8 @@ class Finisher {
     time;
     athleteID;
     constructor(name, agegroup, club, gender, position, runs, vols, agegrade, achievement, time, athleteID) {
-        this.name = name ?? 'a parkrunner';
+        const t = (0, translations_1.getTranslations)();
+        this.name = name ?? t.fallbackParkrunnerName;
         this.agegroup = agegroup;
         this.club = club;
         this.gender = gender;
@@ -482,142 +960,6 @@ class Finisher {
     }
 }
 exports.Finisher = Finisher;
-
-
-/***/ }),
-
-/***/ 869:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.fiveKFinishersToMilestones = fiveKFinishersToMilestones;
-function fiveKFinishersToMilestones(finishers) {
-    const milestones = {
-        10: { icon: '&#x26AA;', restricted_age: 'J' }, // white circle
-        25: { icon: '&#x1F7E3;' }, // purple circle
-        50: { icon: '&#x1F534;' }, // red circle
-        100: { icon: '&#x26AB;' }, // black circle
-        250: { icon: '&#x1F7E2;' }, // green circle
-        500: { icon: '&#x1F535;' }, // blue circle
-        1000: { icon: '&#x1F7E1;' }, // yellow circle
-    };
-    const milestoneCelebrations = [];
-    for (const n in milestones) {
-        const milestone = milestones[n];
-        const names = finishers
-            .filter((f) => Number(f.runs) === Number(n) &&
-            (!milestone.restricted_age ||
-                f.agegroup?.startsWith(milestone.restricted_age)))
-            .map((f) => f.name);
-        if (names.length > 0) {
-            milestoneCelebrations.push({
-                clubName: n,
-                icon: milestone.icon,
-                names,
-            });
-        }
-    }
-    return milestoneCelebrations;
-}
-
-
-/***/ }),
-
-/***/ 928:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.futureRosterUrl = futureRosterUrl;
-exports.canonicalResultsPageUrl = canonicalResultsPageUrl;
-/**
- * Safely creates a new URL based on the provided href
- */
-function createUrlFromCurrent(currentHref) {
-    try {
-        return new URL(currentHref);
-    }
-    catch (error) {
-        console.error('Invalid URL:', error);
-        return null;
-    }
-}
-/**
- * Parses the URL path into segments for easier manipulation
- */
-function getPathSegments(url) {
-    return url.pathname.split('/');
-}
-/**
- * Changes a specific segment in the URL path
- */
-function changePathSegment(url, segmentIndex, newValue, pathSegments) {
-    const segments = pathSegments || getPathSegments(url);
-    if (segments.length > segmentIndex) {
-        segments[segmentIndex] = newValue;
-        url.pathname = segments.join('/');
-    }
-    return url;
-}
-function futureRosterUrl(currentHref) {
-    const url = createUrlFromCurrent(currentHref);
-    if (!url)
-        return currentHref;
-    const pathSegments = getPathSegments(url);
-    const eventShortName = pathSegments[1];
-    url.pathname = [eventShortName, 'futureroster', ''].join('/');
-    return url.toString();
-}
-function canonicalResultsPageUrl(eventNumber, currentHref) {
-    const url = createUrlFromCurrent(currentHref);
-    const normalisedEventNumber = eventNumber.replace('#', '');
-    if (!url)
-        return currentHref;
-    const pathSegments = getPathSegments(url);
-    if (pathSegments.length > 3 && pathSegments[2] === 'results') {
-        return changePathSegment(url, 3, normalisedEventNumber, pathSegments).toString();
-    }
-    return currentHref;
-}
-
-
-/***/ }),
-
-/***/ 969:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.fiveKVolunteersToMilestones = fiveKVolunteersToMilestones;
-function fiveKVolunteersToMilestones(volunteers) {
-    const milestones = {
-        10: { icon: '&#x1F90D;', restricted_age: 'J' },
-        25: { icon: '&#x1F49C;' },
-        50: { icon: '&#x2764;' },
-        100: { icon: '&#x1F5A4;' },
-        250: { icon: '&#x1F49A;' },
-        500: { icon: '&#x1F499;' },
-        1000: { icon: '&#x1F49B;' },
-    };
-    const milestoneCelebrations = [];
-    for (const n in milestones) {
-        const milestone = milestones[n];
-        const names = volunteers
-            .filter((v) => v.vols === Number(n) &&
-            (!milestone.restricted_age ||
-                v.agegroup?.startsWith(milestone.restricted_age)))
-            .map((v) => v.name);
-        if (names.length > 0) {
-            milestoneCelebrations.push({
-                clubName: `v${n}`,
-                icon: milestone.icon,
-                names,
-            });
-        }
-    }
-    return milestoneCelebrations;
-}
 
 
 /***/ })
@@ -656,23 +998,45 @@ var exports = __webpack_exports__;
 var __webpack_unused_export__;
 
 __webpack_unused_export__ = ({ value: true });
-const stringFunctions_1 = __webpack_require__(710);
-const upsertParagraph_1 = __webpack_require__(180);
-const fiveKFinishersToMilestones_1 = __webpack_require__(869);
-const fiveKVolunteersToMilestones_1 = __webpack_require__(969);
-const MilestonePresenter_1 = __webpack_require__(316);
-const ResultsPageExtractor_1 = __webpack_require__(241);
-const twoKFinishersToMilestone_1 = __webpack_require__(268);
-const twoKVolunteersToMilestones_1 = __webpack_require__(27);
-const Volunteer_1 = __webpack_require__(596);
-const urlFunctions_1 = __webpack_require__(928);
+const stringFunctions_1 = __webpack_require__(541);
+const upsertParagraph_1 = __webpack_require__(131);
+const fiveKFinishersToMilestones_1 = __webpack_require__(654);
+const fiveKVolunteersToMilestones_1 = __webpack_require__(448);
+const MilestonePresenter_1 = __webpack_require__(75);
+const ResultsPageExtractor_1 = __webpack_require__(694);
+const twoKFinishersToMilestone_1 = __webpack_require__(135);
+const twoKVolunteersToMilestones_1 = __webpack_require__(184);
+const Volunteer_1 = __webpack_require__(523);
+const urlFunctions_1 = __webpack_require__(213);
+const translations_1 = __webpack_require__(536);
 function populate(rpe, volunteerWithCountList, message) {
-    const introduction = `Thank you to the ${(0, stringFunctions_1.pluralize)('parkrunner', 'parkrunners', rpe.finishers.length)} and ${(0, stringFunctions_1.pluralize)('volunteer', 'volunteers', volunteerWithCountList.length)} who joined us for ${rpe.eventName} event ${rpe.eventNumber}. Without you, this event would not have been possible`;
-    const newestParkrunnersTitle = `Kudos to our ${(0, stringFunctions_1.pluralize)('newest parkrunner', 'newest parkrunners', rpe.newestParkrunners.length)}: `;
-    const firstTimersTitle = `Welcome to the ${(0, stringFunctions_1.pluralize)('parkrunner', 'parkrunners', rpe.firstTimers.length)} who joined us at ${rpe.eventName ?? 'parkrun'} for the first time: `;
-    const finishersWithNewPBsTitle = `Very well done to the ${(0, stringFunctions_1.pluralize)('parkrunner', 'parkrunners', rpe.finishersWithNewPBs.length)} who improved their personal best this week: `;
-    const runningWalkingGroupsTitle = `We were pleased to see ${(0, stringFunctions_1.pluralize)('at least one active group', 'walking and running groups', rpe.runningWalkingGroups.length)} represented at this event: `;
-    const volunteersTitle = `The following ${volunteerWithCountList.length.toLocaleString()} parkrunners volunteered to host ${rpe.eventName} this weekend. Our deep thanks to:  `;
+    const t = (0, translations_1.getTranslations)();
+    const introduction = (0, translations_1.interpolate)(t.introduction, {
+        finisherCount: `${rpe.finishers.length} ${(0, translations_1.pluralizeTranslated)(t.finisher, t.finishers, rpe.finishers.length)}`,
+        volunteerCount: `${volunteerWithCountList.length} ${(0, translations_1.pluralizeTranslated)(t.volunteer, t.volunteers, volunteerWithCountList.length)}`,
+        eventName: rpe.eventName || t.fallbackParkrunName,
+        eventNumber: rpe.eventNumber || '',
+    });
+    const newestParkrunnersTitle = (0, translations_1.interpolate)(t.newestParkrunnersTitle, {
+        count: `${rpe.newestParkrunners.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.newestParkrunners.length)}`,
+    });
+    const firstTimersTitle = (0, translations_1.interpolate)(t.firstTimersTitle, {
+        count: `${rpe.firstTimers.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.firstTimers.length)}`,
+        eventName: rpe.eventName || t.fallbackParkrunName,
+    });
+    const finishersWithNewPBsTitle = (0, translations_1.interpolate)(t.finishersWithNewPBsTitle, {
+        eventName: rpe.eventName || t.fallbackParkrunName,
+        count: `${rpe.finishersWithNewPBs.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.finishersWithNewPBs.length)}`,
+    });
+    const runningWalkingGroupsTitle = (0, translations_1.interpolate)(t.runningWalkingGroupsTitle, {
+        count: `${rpe.runningWalkingGroups.length} ${rpe.runningWalkingGroups.length === 1
+            ? 'active group'
+            : 'walking and running groups'}`,
+    });
+    const volunteersTitle = (0, translations_1.interpolate)(t.volunteersTitle, {
+        count: volunteerWithCountList.length.toLocaleString(),
+        eventName: rpe.eventName || t.fallbackParkrunName,
+    });
     const finisherMilestoneCelebrations = rpe.courseLength == 2
         ? [
             ...(0, twoKVolunteersToMilestones_1.twoKVolunteersToMilestones)(volunteerWithCountList),
@@ -684,16 +1048,34 @@ function populate(rpe, volunteerWithCountList, message) {
         ...finisherMilestoneCelebrations,
     ];
     const milestonePresenter = new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations);
-    const facts = `Since ${rpe.eventName} started ` +
-        `${rpe.facts?.finishers?.toLocaleString()} brilliant parkrunners have had their barcodes scanned, ` +
-        `and a grand total of ${rpe.facts.finishes.toLocaleString()} finishers ` +
-        `have covered a total distance of ${(rpe.facts.finishes * rpe.courseLength).toLocaleString()}km, ` +
-        `while celebrating ${rpe.facts.pbs.toLocaleString()} personal bests. ` +
-        `We shall always be grateful to each of our ${rpe.facts.volunteers.toLocaleString()} wonderful volunteers for their contributions`;
+    const facts = [
+        (0, translations_1.interpolate)(t.facts.sinceStarted, {
+            eventName: rpe.eventName || t.fallbackParkrunName,
+        }),
+        (0, translations_1.interpolate)(t.facts.brilliantParkrunners, {
+            count: rpe.facts?.finishers?.toLocaleString() || '0',
+        }),
+        (0, translations_1.interpolate)(t.facts.grandTotal, {
+            count: rpe.facts.finishes.toLocaleString(),
+        }),
+        (0, translations_1.interpolate)(t.facts.coveredDistance, {
+            distance: (rpe.facts.finishes * rpe.courseLength).toLocaleString(),
+        }),
+        (0, translations_1.interpolate)(t.facts.celebratingPBs, {
+            count: rpe.facts.pbs.toLocaleString(),
+        }),
+        (0, translations_1.interpolate)(t.facts.gratefulToVolunteers, {
+            count: rpe.facts.volunteers.toLocaleString(),
+        }),
+    ].join('');
     const eventuateDiv = document.getElementById('eventuate') ||
         document.createElement('div');
     eventuateDiv.id = 'eventuate';
     const reportDetails = {
+        languageSwitcher: {
+            title: '',
+            details: (0, translations_1.createLanguageSwitcher)(),
+        },
         message: { title: '&#x23f3;', details: message },
         introduction: { title: '', details: introduction },
         milestoneCelebrations: {
@@ -718,7 +1100,11 @@ function populate(rpe, volunteerWithCountList, message) {
         },
         fullResults: {
             title: '',
-            details: `You can find the full results for ${rpe.eventName} event ${rpe.eventNumber} at ${(0, urlFunctions_1.canonicalResultsPageUrl)(rpe.eventNumber ?? 'latestresults', window.location.href)} `,
+            details: (0, translations_1.interpolate)(t.fullResults, {
+                eventName: rpe.eventName || t.fallbackParkrunName,
+                eventNumber: rpe.eventNumber || '',
+                url: (0, urlFunctions_1.canonicalResultsPageUrl)(rpe.eventNumber ?? 'latestresults', window.location.href),
+            }),
         },
         volunteers: {
             title: volunteersTitle,
@@ -726,12 +1112,17 @@ function populate(rpe, volunteerWithCountList, message) {
         },
         volunteerInvitation: {
             title: '',
-            details: `If you would like to volunteer at ${rpe.eventName}, please check out our future roster page at ${(0, urlFunctions_1.futureRosterUrl)(window.location.href)} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us`,
+            details: (0, translations_1.interpolate)(t.volunteerInvitation, {
+                eventName: rpe.eventName || t.fallbackParkrunName,
+                url: (0, urlFunctions_1.futureRosterUrl)(window.location.href),
+            }),
         },
         unknowns: {
             title: '',
             details: rpe.unknowns.length > 0
-                ? `Please don't forget to bring a scannable copy of your barcode with you to ${rpe.eventName} if you'd like to have your time recorded`
+                ? (0, translations_1.interpolate)(t.unknowns, {
+                    eventName: rpe.eventName || t.fallbackParkrunName,
+                })
                 : undefined,
         },
         facts: {
@@ -740,7 +1131,7 @@ function populate(rpe, volunteerWithCountList, message) {
         },
         closing: {
             title: '&#x1f333;',
-            details: '#loveparkrun',
+            details: t.closing,
         },
     };
     const insertionPoint = document.querySelector('.Results-header');
@@ -748,12 +1139,38 @@ function populate(rpe, volunteerWithCountList, message) {
         insertionPoint.insertAdjacentElement('afterend', eventuateDiv);
         for (const [section, content] of Object.entries(reportDetails)) {
             if (content.details) {
-                const paragraphText = `${content.title} ${content.details}.`;
-                (0, upsertParagraph_1.upsertParagraph)(eventuateDiv, section, paragraphText);
+                if (section === 'languageSwitcher') {
+                    // Handle language switcher specially - no title, no period
+                    (0, upsertParagraph_1.upsertParagraph)(eventuateDiv, section, content.details);
+                }
+                else {
+                    // Check if title ends with <br> to avoid extra space
+                    const separator = content.title.endsWith('<br>') ? '' : ' ';
+                    const paragraphText = `${content.title}${separator}${content.details}.`;
+                    (0, upsertParagraph_1.upsertParagraph)(eventuateDiv, section, paragraphText);
+                }
             }
             else {
                 (0, upsertParagraph_1.deleteParagraph)(eventuateDiv, section);
             }
+        }
+        // Add event listeners for language switcher and copy button
+        const languageButtons = eventuateDiv.querySelectorAll('.eventuate-language-btn');
+        languageButtons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                const target = e.target;
+                const locale = target.getAttribute('data-locale');
+                if (locale) {
+                    (0, translations_1.switchLanguage)(locale);
+                }
+            });
+        });
+        // Add event listener for share button
+        const shareButton = eventuateDiv.querySelector('.eventuate-share-btn');
+        if (shareButton) {
+            shareButton.addEventListener('click', () => {
+                (0, translations_1.shareReportText)(rpe);
+            });
         }
     }
 }
@@ -765,10 +1182,13 @@ function eventuate() {
     const waitingOn = volunteerWithCountList
         .map((v) => v.promisedVols)
         .filter((v) => !!v);
-    const loadingMessage = `Loading volunteer data for ${waitingOn.length} parkrunners. Please wait`;
+    const loadingMessage = (0, translations_1.interpolate)((0, translations_1.getTranslations)().loadingMessage, {
+        count: waitingOn.length,
+    });
     populate(rpe, volunteerWithCountList, loadingMessage);
     Promise.all(waitingOn).then(() => populate(rpe, volunteerWithCountList));
 }
+window.eventuate = eventuate;
 eventuate();
 
 })();

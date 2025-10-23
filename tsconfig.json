@@ -9,5 +9,5 @@
     "rootDir": "./src",
     "outDir": "./dist"
   },
-  "exclude": ["*.config.ts", "test"]
+  "exclude": ["*.config.ts", "test", "script"]
 }
