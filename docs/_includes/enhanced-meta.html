@@ -8,24 +8,24 @@
 <meta property="og:title" content="{{ page.title | default: 'Eventuate - A tool for parkrun report writers' }}" />
 <meta property="og:description" content="{{ page.description | default: 'Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically from parkrun results pages.' }}" />
 <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
-<meta property="og:image" content="{{ site.url }}/images/eventuate-social-preview.png" />
+<meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/images/eventuate-social-preview.png" />
 <meta property="og:image:alt" content="Eventuate extension showing parkrun event summary with statistics, milestone celebrations, and community data" />
 <!-- Fallback icon for smaller social media contexts -->
-<meta property="og:image" content="{{ site.url }}/icons/social-icon-192x192.svg" />
+<meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/icons/social-icon-192x192.svg" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@johnsyweb" />
 <meta name="twitter:title" content="{{ page.title | default: 'Eventuate - A tool for parkrun report writers' }}" />
 <meta name="twitter:description" content="{{ page.description | default: 'Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically.' }}" />
-<meta name="twitter:image" content="{{ site.url }}/images/eventuate-social-preview.png" />
+<meta name="twitter:image" content="{{ site.url }}{{ site.baseurl }}/images/eventuate-social-preview.png" />
 <meta name="twitter:image:alt" content="Eventuate extension showing parkrun event summary with statistics, milestone celebrations, and community data" />
 
 <!-- Bluesky (uses same meta tags as Twitter/OpenGraph) -->
 <meta name="bluesky:card" content="summary_large_image" />
 <meta name="bluesky:title" content="{{ page.title | default: 'Eventuate - A tool for parkrun report writers' }}" />
 <meta name="bluesky:description" content="{{ page.description | default: 'Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically.' }}" />
-<meta name="bluesky:image" content="{{ site.url }}/images/eventuate-social-preview.png" />
+<meta name="bluesky:image" content="{{ site.url }}{{ site.baseurl }}/images/eventuate-social-preview.png" />
 
 <!-- Additional SEO -->
 <meta name="robots" content="index, follow" />
@@ -39,7 +39,7 @@
 <meta property="og:image:type" content="image/png" />
 
 <!-- Signal/WhatsApp: Ensure images are publicly accessible -->
-<meta property="og:image:secure_url" content="{{ site.url }}/images/eventuate-social-preview.png" />
+<meta property="og:image:secure_url" content="{{ site.url }}{{ site.baseurl }}/images/eventuate-social-preview.png" />
 
 <!-- Additional messaging platform support -->
 <meta name="format-detection" content="telephone=no" />
@@ -68,8 +68,8 @@
     "name": "Pete Johns",
     "url": "https://johnsy.com"
   },
-    "screenshot": "{{ site.url }}/images/eventuate-social-preview.png",
-  "downloadUrl": "{{ site.url }}/eventuate.user.js",
+    "screenshot": "{{ site.url }}{{ site.baseurl }}/images/eventuate-social-preview.png",
+  "downloadUrl": "{{ site.url }}{{ site.baseurl }}/eventuate.user.js",
   "softwareVersion": "1.4.8",
   "datePublished": "2024-01-01",
   "dateModified": "{{ site.time | date: '%Y-%m-%d' }}"

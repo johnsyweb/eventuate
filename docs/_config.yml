@@ -4,6 +4,9 @@ description: Extracts information from parkrun results pages for inclusion in re
 baseurl: /eventuate
 url: https://johnsy.com
 
+include:
+  - icons
+
 exclude:
   - Gemfile
   - Gemfile.lock
