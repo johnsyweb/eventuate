@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/johnsyweb/eventuate/compare/v1.6.1...v1.6.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* resolve race condition in screenshot commit workflow ([bcf99b3](https://github.com/johnsyweb/eventuate/commit/bcf99b366deb5347112aef3072d43b2bfabf726f))
+
 ## [1.6.1](https://github.com/johnsyweb/eventuate/compare/v1.6.0...v1.6.1) (2025-10-23)
 
 
