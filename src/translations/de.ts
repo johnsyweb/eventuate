@@ -16,7 +16,9 @@ export const de = {
   runningWalkingGroupsTitle:
     'Wir freuten uns, {count} bei dieser Veranstaltung vertreten zu sehen: ',
   volunteersTitle:
-    'Die folgenden {count} Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
+    'Die folgenden Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
+  firstTimeVolunteersTitle:
+    'Ein besonderes Willkommen an die {count}, die dieses Wochenende zum ersten Mal freiwillig geholfen haben: ',
   fullResults:
     'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
   volunteerInvitation:

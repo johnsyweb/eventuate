@@ -4,6 +4,7 @@ import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMiles
 import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
 import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
+import { FirstTimeVolunteersPresenter } from './presenters/FirstTimeVolunteersPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
@@ -53,6 +54,11 @@ function populate(
     rpe.eventName
   );
 
+  const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter(
+    volunteerWithCountList,
+    rpe.eventName
+  );
+
   const finishersWithNewPBsTitle = interpolate(t.finishersWithNewPBsTitle, {
     eventName: rpe.eventName || t.fallbackParkrunName,
     count: `${rpe.finishersWithNewPBs.length} ${pluralizeTranslated(
@@ -71,7 +77,6 @@ function populate(
   });
 
   const volunteersTitle = interpolate(t.volunteersTitle, {
-    count: volunteerWithCountList.length.toLocaleString(),
     eventName: rpe.eventName || t.fallbackParkrunName,
   });
 
@@ -155,8 +160,18 @@ function populate(
     },
     volunteers: {
       title: volunteersTitle,
-      details: sortAndConjoin(volunteerWithCountList.map((v) => v.name)),
+      details: sortAndConjoin(
+        volunteerWithCountList
+          .filter((v) => v.vols !== 1) // Exclude first-time volunteers
+          .map((v) => v.name)
+      ),
     },
+    ...(firstTimeVolunteersPresenter.hasFirstTimeVolunteers() && {
+      firstTimeVolunteers: {
+        title: firstTimeVolunteersPresenter.title(),
+        details: firstTimeVolunteersPresenter.details(),
+      },
+    }),
     volunteerInvitation: {
       title: '',
       details: interpolate(t.volunteerInvitation, {
