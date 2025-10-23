@@ -38,8 +38,8 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: chore: update screenshots for documentation [skip ci]
-          title: chore: update screenshots for documentation
+          commit-message: 'chore: update screenshots for documentation [skip ci]'
+          title: 'chore: update screenshots for documentation'
           body: |
             This PR contains generated changes from the GitHub Actions workflow (updated screenshots/site build).
 
