@@ -34,9 +34,15 @@ async function generateScreenshots(): Promise<void> {
 
   try {
     console.log('🚀 Starting screenshot generation...');
-    console.log(
-      '📝 Note: This script will open a browser window and inject the extension.'
-    );
+    const isCI =
+      process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+    if (isCI) {
+      console.log('📝 Running in CI mode (headless browser)');
+    } else {
+      console.log(
+        '📝 Note: This script will open a browser window and inject the extension.'
+      );
+    }
     console.log(
       '📝 The script will navigate to the parkrun results page and take screenshots.'
     );
@@ -44,10 +50,18 @@ async function generateScreenshots(): Promise<void> {
     // Launch browser
     console.log('🌐 Launching browser...');
     browser = await puppeteer.launch({
-      headless: false,
+      headless: isCI ? true : false,
       args: [
         '--disable-web-security',
         '--disable-features=VizDisplayCompositor',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu',
       ],
       defaultViewport: null,
     });

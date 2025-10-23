@@ -36,6 +36,26 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Generate screenshots
+        run: |
+          # Set display for headless browser
+          export DISPLAY=:99
+          # Start virtual display
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          # Wait for display to start
+          sleep 2
+          # Generate screenshots
+          pnpm screenshots
+
       - name: Version before release
         id: version-before
         run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
