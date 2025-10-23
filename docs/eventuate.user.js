@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.4.8
+// @version      1.5.0
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.4.8 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.5.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -208,6 +208,40 @@ function twoKFinishersToMilestones(finishers) {
 
 /***/ }),
 
+/***/ 169:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FirstTimeVolunteersPresenter = void 0;
+const stringFunctions_1 = __webpack_require__(541);
+const translations_1 = __webpack_require__(536);
+class FirstTimeVolunteersPresenter {
+    _firstTimeVolunteers;
+    _eventName;
+    constructor(volunteers, eventName) {
+        // Filter volunteers with exactly 1 volunteer count
+        this._firstTimeVolunteers = volunteers.filter((v) => v.vols === 1);
+        this._eventName = eventName;
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
+            count: `${this._firstTimeVolunteers.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, this._firstTimeVolunteers.length)}`,
+        });
+    }
+    details() {
+        return (0, stringFunctions_1.sortAndConjoin)(this._firstTimeVolunteers.map((v) => v.name));
+    }
+    hasFirstTimeVolunteers() {
+        return this._firstTimeVolunteers.length > 0;
+    }
+}
+exports.FirstTimeVolunteersPresenter = FirstTimeVolunteersPresenter;
+
+
+/***/ }),
+
 /***/ 177:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -225,7 +259,8 @@ exports.de = {
     firstTimersTitle: 'Willkommen bei den {count}, die zum ersten Mal bei {eventName} mitgemacht haben: ',
     finishersWithNewPBsTitle: '{eventName} ist kein Rennen, aber eine großartige Möglichkeit, sich selbst herauszufordern. Sehr gut gemacht an die {count}, die diese Woche ihre persönliche Bestzeit verbessert haben: ',
     runningWalkingGroupsTitle: 'Wir freuten uns, {count} bei dieser Veranstaltung vertreten zu sehen: ',
-    volunteersTitle: 'Die folgenden {count} Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
+    volunteersTitle: 'Die folgenden Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
+    firstTimeVolunteersTitle: 'Ein besonderes Willkommen an die {count}, die dieses Wochenende zum ersten Mal freiwillig geholfen haben: ',
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
     unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, wöchentlichen, zeitgestoppten Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
@@ -693,6 +728,8 @@ exports.conjoin = conjoin;
 exports.alphabetize = alphabetize;
 exports.sortAndConjoin = sortAndConjoin;
 function conjoin(elements) {
+    if (elements.length === 0)
+        return '';
     return elements.length > 1
         ? `${elements.slice(0, -1).join(', ')} and ${elements.slice(-1)}`
         : elements[0];
@@ -703,6 +740,37 @@ function alphabetize(names) {
 function sortAndConjoin(names) {
     return conjoin(alphabetize(names));
 }
+
+
+/***/ }),
+
+/***/ 545:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FirstTimersPresenter = void 0;
+const stringFunctions_1 = __webpack_require__(541);
+const translations_1 = __webpack_require__(536);
+class FirstTimersPresenter {
+    _firstTimers;
+    _eventName;
+    constructor(firstTimers, eventName) {
+        this._firstTimers = firstTimers;
+        this._eventName = eventName;
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.firstTimersTitle, {
+            count: `${this._firstTimers.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, this._firstTimers.length)}`,
+            eventName: this._eventName || t.fallbackParkrunName,
+        });
+    }
+    details() {
+        return (0, stringFunctions_1.sortAndConjoin)(this._firstTimers);
+    }
+}
+exports.FirstTimersPresenter = FirstTimersPresenter;
 
 
 /***/ }),
@@ -762,7 +830,8 @@ exports.en = {
     firstTimersTitle: 'Welcome to the {count} who joined us at {eventName} for the first time: ',
     finishersWithNewPBsTitle: "{eventName} is not a race, but it's a great way to challenge yourself. Very well done to the {count} who improved their personal best this week: ",
     runningWalkingGroupsTitle: 'We were pleased to see {count} represented at this event: ',
-    volunteersTitle: 'The following {count} parkrunners volunteered to host {eventName} this weekend. Our deep thanks to:  ',
+    volunteersTitle: 'The following parkrunners volunteered to host {eventName} this weekend. Our deep thanks to:  ',
+    firstTimeVolunteersTitle: 'A special welcome to the {count} who volunteered for the first time this weekend: ',
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
     unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, weekly, timed events all over the world and also carry contact details in case of an emergency at an event",
@@ -1003,6 +1072,8 @@ const upsertParagraph_1 = __webpack_require__(131);
 const fiveKFinishersToMilestones_1 = __webpack_require__(654);
 const fiveKVolunteersToMilestones_1 = __webpack_require__(448);
 const MilestonePresenter_1 = __webpack_require__(75);
+const FirstTimersPresenter_1 = __webpack_require__(545);
+const FirstTimeVolunteersPresenter_1 = __webpack_require__(169);
 const ResultsPageExtractor_1 = __webpack_require__(694);
 const twoKFinishersToMilestone_1 = __webpack_require__(135);
 const twoKVolunteersToMilestones_1 = __webpack_require__(184);
@@ -1020,10 +1091,8 @@ function populate(rpe, volunteerWithCountList, message) {
     const newestParkrunnersTitle = (0, translations_1.interpolate)(t.newestParkrunnersTitle, {
         count: `${rpe.newestParkrunners.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.newestParkrunners.length)}`,
     });
-    const firstTimersTitle = (0, translations_1.interpolate)(t.firstTimersTitle, {
-        count: `${rpe.firstTimers.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.firstTimers.length)}`,
-        eventName: rpe.eventName || t.fallbackParkrunName,
-    });
+    const firstTimersPresenter = new FirstTimersPresenter_1.FirstTimersPresenter(rpe.firstTimers, rpe.eventName);
+    const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter_1.FirstTimeVolunteersPresenter(volunteerWithCountList, rpe.eventName);
     const finishersWithNewPBsTitle = (0, translations_1.interpolate)(t.finishersWithNewPBsTitle, {
         eventName: rpe.eventName || t.fallbackParkrunName,
         count: `${rpe.finishersWithNewPBs.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.finishersWithNewPBs.length)}`,
@@ -1034,7 +1103,6 @@ function populate(rpe, volunteerWithCountList, message) {
             : 'walking and running groups'}`,
     });
     const volunteersTitle = (0, translations_1.interpolate)(t.volunteersTitle, {
-        count: volunteerWithCountList.length.toLocaleString(),
         eventName: rpe.eventName || t.fallbackParkrunName,
     });
     const finisherMilestoneCelebrations = rpe.courseLength == 2
@@ -1087,8 +1155,8 @@ function populate(rpe, volunteerWithCountList, message) {
             details: (0, stringFunctions_1.sortAndConjoin)(rpe.newestParkrunners),
         },
         firstTimers: {
-            title: firstTimersTitle,
-            details: (0, stringFunctions_1.sortAndConjoin)(rpe.firstTimers),
+            title: firstTimersPresenter.title(),
+            details: firstTimersPresenter.details(),
         },
         newPBs: {
             title: finishersWithNewPBsTitle,
@@ -1108,8 +1176,16 @@ function populate(rpe, volunteerWithCountList, message) {
         },
         volunteers: {
             title: volunteersTitle,
-            details: (0, stringFunctions_1.sortAndConjoin)(volunteerWithCountList.map((v) => v.name)),
+            details: (0, stringFunctions_1.sortAndConjoin)(volunteerWithCountList
+                .filter((v) => v.vols !== 1) // Exclude first-time volunteers
+                .map((v) => v.name)),
         },
+        ...(firstTimeVolunteersPresenter.hasFirstTimeVolunteers() && {
+            firstTimeVolunteers: {
+                title: firstTimeVolunteersPresenter.title(),
+                details: firstTimeVolunteersPresenter.details(),
+            },
+        }),
         volunteerInvitation: {
             title: '',
             details: (0, translations_1.interpolate)(t.volunteerInvitation, {

@@ -1,3 +1,34 @@
+# [1.5.0](https://github.com/johnsyweb/eventuate/compare/v1.4.8...v1.5.0) (2025-10-23)
+
+
+### Bug Fixes
+
+* add build step before screenshot generation in workflows ([12144dc](https://github.com/johnsyweb/eventuate/commit/12144dc9205bab69e9ec196cf743675b7fd72b07))
+* bookmarklet language switching without page reload ([36aeb3f](https://github.com/johnsyweb/eventuate/commit/36aeb3fb1a6b0fd9d7a78a739f57765fcfcd9a6f))
+* remove extra space before milestone icons ([e973777](https://github.com/johnsyweb/eventuate/commit/e973777f856d76a8f3ac847c39614a9e5ce8e62e))
+* remove unneccesary hyphen ([948765c](https://github.com/johnsyweb/eventuate/commit/948765ce872396ad34dba471ce4244cb97aab32c))
+* update Node.js to 24.10.0 for semantic-release compatibility ([521d444](https://github.com/johnsyweb/eventuate/commit/521d4441557817d1357e06a9c957311bef730e1e))
+
+
+### Features
+
+* add Ruby management with mise ([9a95efa](https://github.com/johnsyweb/eventuate/commit/9a95efa831d8c66bdba743385e2479009aff3c8f))
+* add third-party content cleanup to screenshot generation ([d18c4f6](https://github.com/johnsyweb/eventuate/commit/d18c4f6f9ead4aa594348d593ffde8718fb30d7a))
+* enhance automated screenshot generation system ([6459757](https://github.com/johnsyweb/eventuate/commit/645975755b975aca177806851a1e54a965b5dd32)), closes [hi#quality](https://github.com/hi/issues/quality)
+* enhance Eventuate container responsiveness ([ddd6ef8](https://github.com/johnsyweb/eventuate/commit/ddd6ef8b9624ea835dc4862985721ff72ea76433))
+* **i18n:** add internationalisation support with German translations ([5445b88](https://github.com/johnsyweb/eventuate/commit/5445b88bdb9a43276ac07c8c387eb41ac5070de5))
+* **i18n:** consolidate English translations to British English as default ([e26a3c3](https://github.com/johnsyweb/eventuate/commit/e26a3c360b01ad3f48c9bfeb33201a3ed3b6556f))
+* implement comprehensive SEO and social media optimization ([2756c1b](https://github.com/johnsyweb/eventuate/commit/2756c1bfeff7bd7d41f1510c46439ac62f8a2205))
+* improve introduction text to be more inclusive ([2463f7d](https://github.com/johnsyweb/eventuate/commit/2463f7df9489a55277d76071894ef378fa70cd14))
+* integrate automated screenshot generation into GitHub Pages workflow ([4a3e0db](https://github.com/johnsyweb/eventuate/commit/4a3e0db1e20ed3bfd07bc5576921e6bf387228b8))
+* integrate screenshot generation into release and pages workflows ([d160f95](https://github.com/johnsyweb/eventuate/commit/d160f95693f26d7bd1ca48efbe79994af34e8beb))
+* **metadata:** update browser extension metadata for internationalisation ([7c7ec4b](https://github.com/johnsyweb/eventuate/commit/7c7ec4b717334a04c78481e39020473bed6d4e6a))
+* new and improved wording ([f282164](https://github.com/johnsyweb/eventuate/commit/f28216406f10217f67e97af5b4136426d679a893))
+* **share:** add native share functionality with proper formatting ([3e46254](https://github.com/johnsyweb/eventuate/commit/3e4625431eeec96c265c26d820829439292ec820))
+* spell out Volunteer, as it is on the results page ([d21613b](https://github.com/johnsyweb/eventuate/commit/d21613b2b4d60cf7a5e5063f2424fd58203775e4))
+* update screenshot generation to use real parkrun page ([feabd50](https://github.com/johnsyweb/eventuate/commit/feabd5040dc1009638f9f6f9d42aaf3928b30249))
+* use event details from ResultsPageExtractor for share title ([b4403c7](https://github.com/johnsyweb/eventuate/commit/b4403c7e0e6fb99c154355482ed2998ed455f4fe))
+
 ## [1.4.8](https://github.com/johnsyweb/eventuate/compare/v1.4.7...v1.4.8) (2025-07-15)
 
 
