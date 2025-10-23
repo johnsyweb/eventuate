@@ -16,8 +16,8 @@ import {
   pluralizeTranslated,
   createLanguageSwitcher,
   switchLanguage,
-  shareReportText,
 } from './translations';
+import { shareReportText } from './share';
 
 function populate(
   rpe: ResultsPageExtractor,
@@ -101,16 +101,16 @@ function populate(
       count: rpe.facts?.finishers?.toLocaleString() || '0',
     }),
     interpolate(t.facts.grandTotal, {
-      count: rpe.facts.finishes.toLocaleString(),
+      count: rpe.facts.finishes?.toLocaleString() || '0',
     }),
     interpolate(t.facts.coveredDistance, {
-      distance: (rpe.facts.finishes * rpe.courseLength).toLocaleString(),
+      distance: ((rpe.facts.finishes || 0) * rpe.courseLength).toLocaleString(),
     }),
     interpolate(t.facts.celebratingPBs, {
-      count: rpe.facts.pbs.toLocaleString(),
+      count: rpe.facts.pbs?.toLocaleString() || '0',
     }),
     interpolate(t.facts.gratefulToVolunteers, {
-      count: rpe.facts.volunteers.toLocaleString(),
+      count: rpe.facts.volunteers?.toLocaleString() || '0',
     }),
   ].join('');
 
