@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/johnsyweb/eventuate/compare/v1.6.2...v1.7.0) (2025-10-23)
+
+
+### Features
+
+* implement consistent Material Symbols edit_note icons ([ac49635](https://github.com/johnsyweb/eventuate/commit/ac49635ee047bc6ce9743c4d3a2d152a80ea883c)), closes [#3e3e77](https://github.com/johnsyweb/eventuate/issues/3e3e77)
+
 ## [1.6.2](https://github.com/johnsyweb/eventuate/compare/v1.6.1...v1.6.2) (2025-10-23)
 
 
