@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/johnsyweb/eventuate/compare/v1.5.0...v1.5.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* docker build using pnpm via npm install ([c82685a](https://github.com/johnsyweb/eventuate/commit/c82685a907f1226eb1b173f92b456f7cb35dbabf))
+
 # [1.5.0](https://github.com/johnsyweb/eventuate/compare/v1.4.8...v1.5.0) (2025-10-23)
 
 
