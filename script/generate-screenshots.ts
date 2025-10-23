@@ -27,6 +27,13 @@ const screenshotConfigs: ScreenshotConfig[] = [
     waitForTimeout: 5000,
     viewport: { width: 1200, height: 800 },
   },
+  {
+    name: 'eventuate-social-preview',
+    url: 'https://www.parkrun.com.au/brimbank/results/latestresults/',
+    waitForSelector: '#eventuate',
+    waitForTimeout: 5000,
+    viewport: { width: 1200, height: 800 },
+  },
 ];
 
 async function generateScreenshots(): Promise<void> {
@@ -196,8 +203,11 @@ async function generateScreenshots(): Promise<void> {
 
         console.log(`✅ Screenshot saved: ${screenshotPath}`);
 
-        // Also save to docs/images if it's the results summary
-        if (config.name === 'eventuate-results-summary') {
+        // Also save to docs/images if it's the results summary or social preview
+        if (
+          config.name === 'eventuate-results-summary' ||
+          config.name === 'eventuate-social-preview'
+        ) {
           const docsPath = path.join(
             process.cwd(),
             'docs',
