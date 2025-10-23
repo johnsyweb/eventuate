@@ -117,9 +117,8 @@ and adding some unit tests using `jest`.
 
 ### Prerequisites
 
-This project uses [mise](https://mise.jdx.dev/) to manage Node.js and Ruby
-versions, and [corepack](https://nodejs.org/api/corepack.html) to manage pnpm.
-Here's how to set up your development environment:
+This project uses [mise](https://mise.jdx.dev/) to manage tool versions from
+`.tool-versions`.
 
 ```sh
 # Install mise (if you haven't already)
@@ -130,26 +129,21 @@ echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
 # or for bash:
 echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
-# Install all tools specified in .tool-versions
+# Install all tools
 mise install
 
-# IMPORTANT: Enable corepack to manage pnpm versions
+# Enable corepack for pnpm (if available)
 corepack enable
 
 # Verify installations
-node --version
-pnpm --version  # Should now be available via corepack
-ruby --version
-bundle --version
+node --version && pnpm --version && ruby --version
 ```
 
-**Important Notes**:
-- **Corepack is required**: This project uses corepack to manage pnpm versions. Make sure to run `corepack enable` after installing Node.js.
-- **Ruby required**: This project requires Ruby for Jekyll documentation builds.
-- **Version specifications**: The `.tool-versions` file specifies:
-  - Node.js 24.10.0
-  - pnpm 10.5.2 (managed by corepack)
-  - Ruby 3.4.7
+**Requirements**:
+
+- Node.js 24.10.0
+- pnpm 10.5.2 (via corepack or `npm install -g pnpm`)
+- Ruby 3.4.7 (for Jekyll documentation builds)
 
 ### Building the Extension
 
@@ -217,30 +211,11 @@ includes:
 
 #### pnpm command not found
 
-If you get a "pnpm command not found" error, make sure you've enabled corepack:
+Try these solutions in order:
 
-```sh
-# Enable corepack to manage pnpm
-corepack enable
-
-# Verify pnpm is now available
-pnpm --version
-```
-
-If you're still having issues, you can use npm instead of pnpm for most commands:
-
-```sh
-# Instead of: pnpm i
-npm install
-
-# Instead of: pnpm t  
-npm test
-
-# Instead of: pnpm build
-npm run build
-```
-
-However, the project is designed to work with pnpm, so using corepack is the recommended approach.
+1. **Enable corepack**: `corepack enable`
+2. **Install pnpm globally**: `npm install -g pnpm`
+3. **Use npm instead**: Replace `pnpm` commands with `npm run` equivalents
 
 ## Running locally
 
