@@ -41,6 +41,9 @@ jobs:
           bundler-cache: true
           working-directory: docs
 
+      - name: Build project
+        run: pnpm build
+
       - name: Install Chrome dependencies
         run: |
           sudo apt-get update
