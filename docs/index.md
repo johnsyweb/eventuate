@@ -1,6 +1,8 @@
 ---
 layout: default
 title: A tool for parkrun report writers
+description: Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically from parkrun results pages.
+keywords: parkrun, eventuate, parkrun reports, running community, volunteer management, milestone celebrations, personal bests, parkrun statistics, running groups, parkrun extension, userscript, bookmarklet
 ---
 
 ## What

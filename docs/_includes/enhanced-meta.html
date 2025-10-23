@@ -1,0 +1,75 @@
+<!-- Enhanced SEO and OpenGraph meta tags -->
+<meta name="description" content="{{ page.description | default: 'Eventuate: Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically from parkrun results pages.' }}" />
+<meta name="keywords" content="parkrun, eventuate, parkrun reports, running community, volunteer management, milestone celebrations, personal bests, parkrun statistics, running groups, parkrun extension, userscript, bookmarklet" />
+
+<!-- OpenGraph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Eventuate" />
+<meta property="og:title" content="{{ page.title | default: 'Eventuate - A tool for parkrun report writers' }}" />
+<meta property="og:description" content="{{ page.description | default: 'Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically from parkrun results pages.' }}" />
+<meta property="og:url" content="{{ site.url }}{{ page.url }}" />
+<meta property="og:image" content="{{ site.url }}/images/eventuate-social-preview.png" />
+<meta property="og:image:alt" content="Eventuate extension showing parkrun event summary with statistics, milestone celebrations, and community data" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@johnsyweb" />
+<meta name="twitter:title" content="{{ page.title | default: 'Eventuate - A tool for parkrun report writers' }}" />
+<meta name="twitter:description" content="{{ page.description | default: 'Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically.' }}" />
+<meta name="twitter:image" content="{{ site.url }}/images/eventuate-social-preview.png" />
+<meta name="twitter:image:alt" content="Eventuate extension showing parkrun event summary with statistics, milestone celebrations, and community data" />
+
+<!-- Bluesky (uses same meta tags as Twitter/OpenGraph) -->
+<meta name="bluesky:card" content="summary_large_image" />
+<meta name="bluesky:title" content="{{ page.title | default: 'Eventuate - A tool for parkrun report writers' }}" />
+<meta name="bluesky:description" content="{{ page.description | default: 'Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically.' }}" />
+<meta name="bluesky:image" content="{{ site.url }}/images/eventuate-social-preview.png" />
+
+<!-- Additional SEO -->
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Pete Johns" />
+<meta name="theme-color" content="#2b233d" />
+
+<!-- Messaging Platform Optimizations -->
+<!-- iMessage: Ensure images are at least 900px wide and high-res -->
+<meta property="og:image:width" content="1100" />
+<meta property="og:image:height" content="1337" />
+<meta property="og:image:type" content="image/png" />
+
+<!-- Signal/WhatsApp: Ensure images are publicly accessible -->
+<meta property="og:image:secure_url" content="{{ site.url }}/images/eventuate-social-preview.png" />
+
+<!-- Additional messaging platform support -->
+<meta name="format-detection" content="telephone=no" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Eventuate",
+  "description": "Extract parkrun event data for report writing. Generate summaries, milestone celebrations, volunteer acknowledgments, and community statistics automatically from parkrun results pages.",
+  "url": "{{ site.url }}",
+  "applicationCategory": "BrowserExtension",
+  "operatingSystem": ["Windows", "macOS", "Linux", "Android", "iOS"],
+  "browserRequirements": "Requires JavaScript. Works with Firefox, Chrome, Safari, Edge, and userscript managers.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Pete Johns",
+    "url": "https://johnsy.com"
+  },
+    "screenshot": "{{ site.url }}/images/eventuate-social-preview.png",
+  "downloadUrl": "{{ site.url }}/eventuate.user.js",
+  "softwareVersion": "1.4.8",
+  "datePublished": "2024-01-01",
+  "dateModified": "{{ site.time | date: '%Y-%m-%d' }}"
+}
+</script>

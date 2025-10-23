@@ -6,20 +6,13 @@
     <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="application-name" content="Eventuate" />
-    <meta name="description" content="{{ site.description }}" />
-    <meta name="keywords" content="parkrun" />
-    <meta property="og:description" content="{{ site.description }}" />
-    <meta
-      property="og:image"
-      content="https://johnsy.com/icons/favicon-196x196.png"
-    />
-    <meta property="og:title" content="Eventuate" />
-    <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
-
-    {% include meta.html %} {% include styles.html %}
+    
+    {% include enhanced-meta.html %}
+    {% include meta.html %} 
+    {% include styles.html %}
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}" />
     <title>
-      johnsy.com/eventuate/ --{{ page.title | default: "A tool for parkrun
-      report writers" }}
+      {{ page.title | default: "Eventuate - A tool for parkrun report writers" }} | johnsy.com/eventuate/
     </title>
   </head>
   <body>
