@@ -7,7 +7,11 @@
 
 #eventuate {
   background: lightgoldenrodyellow;
-  padding: 12px;
+  padding: clamp(8px, 2vw, 16px);
+  max-width: 100%;
+  box-sizing: border-box;
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: 1.5;
 }
 
 #eventuate #message {
@@ -18,8 +22,8 @@
 /* Language Switcher Styles */
 #eventuate #languageSwitcher {
   background: rgba(255, 255, 255, 0.9);
-  padding: 8px 12px;
-  margin-bottom: 8px;
+  padding: clamp(6px, 1.5vw, 12px);
+  margin-bottom: clamp(6px, 1.5vw, 12px);
   border-radius: 6px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -28,26 +32,30 @@
 .eventuate-language-switcher {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(6px, 1.5vw, 12px);
+  flex-wrap: wrap;
 }
 
 .eventuate-language-label {
   font-weight: bold;
   color: #333;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
+  white-space: nowrap;
 }
 
 .eventuate-language-btn {
   background: #fff;
   border: 2px solid #ddd;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: clamp(4px, 1vw, 8px) clamp(8px, 2vw, 12px);
   cursor: pointer;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: clamp(2px, 0.5vw, 4px);
+  min-height: 32px;
+  flex-shrink: 0;
 }
 
 .eventuate-language-btn:hover {
@@ -74,14 +82,16 @@
   color: white;
   border: 2px solid #28a745;
   border-radius: 4px;
-  padding: 6px 12px;
+  padding: clamp(4px, 1vw, 8px) clamp(8px, 2vw, 12px);
   cursor: pointer;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: clamp(2px, 0.5vw, 4px);
   margin-left: auto;
+  min-height: 32px;
+  flex-shrink: 0;
 }
 
 .eventuate-share-btn:hover {
@@ -93,4 +103,48 @@
 .eventuate-share-btn.shared {
   background: #17a2b8;
   border-color: #17a2b8;
+}
+
+/* Mobile-specific responsive styles */
+@media (max-width: 768px) {
+  #eventuate {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .eventuate-language-switcher {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .eventuate-language-label {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  
+  .eventuate-language-btn,
+  .eventuate-share-btn {
+    justify-content: center;
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .eventuate-language-btn {
+    margin-bottom: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  #eventuate {
+    padding: 6px;
+    font-size: 13px;
+  }
+  
+  .eventuate-language-btn,
+  .eventuate-share-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+    min-height: 28px;
+  }
 }
