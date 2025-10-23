@@ -133,22 +133,23 @@ echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 # Install all tools specified in .tool-versions
 mise install
 
-# Enable corepack (comes with NodeJS)
+# IMPORTANT: Enable corepack to manage pnpm versions
 corepack enable
 
 # Verify installations
 node --version
-pnpm --version
+pnpm --version  # Should now be available via corepack
 ruby --version
 bundle --version
 ```
 
-**Note**: This project requires Ruby for Jekyll documentation builds. The
-`.tool-versions` file specifies:
-
-- Node.js 24.10.0
-- pnpm 10.5.2
-- Ruby 3.4.7
+**Important Notes**:
+- **Corepack is required**: This project uses corepack to manage pnpm versions. Make sure to run `corepack enable` after installing Node.js.
+- **Ruby required**: This project requires Ruby for Jekyll documentation builds.
+- **Version specifications**: The `.tool-versions` file specifies:
+  - Node.js 24.10.0
+  - pnpm 10.5.2 (managed by corepack)
+  - Ruby 3.4.7
 
 ### Building the Extension
 
@@ -211,6 +212,35 @@ includes:
 - Installation instructions
 - Internationalization support
 - Development guidelines
+
+### Troubleshooting
+
+#### pnpm command not found
+
+If you get a "pnpm command not found" error, make sure you've enabled corepack:
+
+```sh
+# Enable corepack to manage pnpm
+corepack enable
+
+# Verify pnpm is now available
+pnpm --version
+```
+
+If you're still having issues, you can use npm instead of pnpm for most commands:
+
+```sh
+# Instead of: pnpm i
+npm install
+
+# Instead of: pnpm t  
+npm test
+
+# Instead of: pnpm build
+npm run build
+```
+
+However, the project is designed to work with pnpm, so using corepack is the recommended approach.
 
 ## Running locally
 
