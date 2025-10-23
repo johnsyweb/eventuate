@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/johnsyweb/eventuate/compare/v1.6.0...v1.6.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* **ci:** permission to write ([2a1f18d](https://github.com/johnsyweb/eventuate/commit/2a1f18d72e789a71eac42ca68a76ae84ccdb29f7))
+
 # [1.6.0](https://github.com/johnsyweb/eventuate/compare/v1.5.1...v1.6.0) (2025-10-23)
 
 
