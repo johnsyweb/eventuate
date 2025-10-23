@@ -117,9 +117,9 @@ and adding some unit tests using `jest`.
 
 ### Prerequisites
 
-This project uses [mise](https://mise.jdx.dev/) to manage Node.js and Ruby versions, and
-[corepack](https://nodejs.org/api/corepack.html) to manage pnpm. Here's how to
-set up your development environment:
+This project uses [mise](https://mise.jdx.dev/) to manage Node.js and Ruby
+versions, and [corepack](https://nodejs.org/api/corepack.html) to manage pnpm.
+Here's how to set up your development environment:
 
 ```sh
 # Install mise (if you haven't already)
@@ -143,9 +143,11 @@ ruby --version
 bundle --version
 ```
 
-**Note**: This project requires Ruby for Jekyll documentation builds. The `.tool-versions` file specifies:
+**Note**: This project requires Ruby for Jekyll documentation builds. The
+`.tool-versions` file specifies:
+
 - Node.js 24.10.0
-- pnpm 10.5.2  
+- pnpm 10.5.2
 - Ruby 3.4.7
 
 ### Building the Extension
@@ -202,7 +204,9 @@ bundle exec jekyll build --baseurl /eventuate
 bundle exec jekyll serve --baseurl /eventuate --port 4000
 ```
 
-The documentation will be available at `http://localhost:4000/eventuate/` and includes:
+The documentation will be available at `http://localhost:4000/eventuate/` and
+includes:
+
 - Project overview and features
 - Installation instructions
 - Internationalization support
