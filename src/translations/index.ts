@@ -158,11 +158,23 @@ export function pluralizeTranslated(
 }
 
 // Share report text using native share or clipboard
-export function shareReportText(): void {
+export function shareReportText(rpe?: {
+  eventName?: string;
+  eventDate?: string;
+  eventNumber?: string;
+}): void {
   const eventuateDiv = document.getElementById('eventuate');
   if (!eventuateDiv) {
     console.warn('Eventuate content not found');
     return;
+  }
+
+  // Build event title from extractor data
+  let eventTitle = 'parkrun Event Report';
+  if (rpe?.eventName && rpe?.eventDate && rpe?.eventNumber) {
+    eventTitle = `${rpe.eventName} ${rpe.eventDate} | ${rpe.eventNumber}`;
+  } else if (rpe?.eventName) {
+    eventTitle = rpe.eventName;
   }
 
   // Get all paragraphs and process them individually
@@ -194,7 +206,7 @@ export function shareReportText(): void {
     if (navigator.share) {
       navigator
         .share({
-          title: 'parkrun Event Report',
+          title: eventTitle,
           text: reportText,
         })
         .catch((err) => {

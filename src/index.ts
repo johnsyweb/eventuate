@@ -225,7 +225,7 @@ function populate(
     const shareButton = eventuateDiv.querySelector('.eventuate-share-btn');
     if (shareButton) {
       shareButton.addEventListener('click', () => {
-        shareReportText();
+        shareReportText(rpe);
       });
     }
   }
