@@ -64,6 +64,18 @@ jobs:
           # Generate screenshots
           pnpm screenshots
 
+      - name: Commit updated screenshots
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add assets/screenshot.png assets/eventuate-results-summary.png docs/images/eventuate-results-summary.png
+          if git diff --staged --quiet; then
+            echo "No screenshot changes to commit"
+          else
+            git commit -m "chore: update screenshots for documentation [skip ci]"
+            git push
+          fi
+
       - name: Build docs
         run: pnpm docs:build
 
