@@ -1,3 +1,17 @@
+# [1.6.0](https://github.com/johnsyweb/eventuate/compare/v1.5.1...v1.6.0) (2025-10-23)
+
+
+### Bug Fixes
+
+* improve first-time volunteers grammar for better readability ([4059137](https://github.com/johnsyweb/eventuate/commit/405913707223ae8cdad72bfb7cac8a596c968e05))
+* shorten manifest description to comply with Chrome Web Store limit ([c9086c1](https://github.com/johnsyweb/eventuate/commit/c9086c12c409b470b5de4e7423eda8fc58b7f755))
+
+
+### Features
+
+* add Chrome Web Store images ([75e1335](https://github.com/johnsyweb/eventuate/commit/75e13354e66a1a8d64d3264783f971cbe0be5a4d))
+* enhance screenshot generation for Chrome Web Store ([65e87a4](https://github.com/johnsyweb/eventuate/commit/65e87a48529a3610bdc8e8493426abc806999706))
+
 ## [1.5.1](https://github.com/johnsyweb/eventuate/compare/v1.5.0...v1.5.1) (2025-10-23)
 
 

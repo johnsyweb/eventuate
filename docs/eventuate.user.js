@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.5.1
+// @version      1.6.0
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.5.1 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.6.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -226,9 +226,22 @@ class FirstTimeVolunteersPresenter {
     }
     title() {
         const t = (0, translations_1.getTranslations)();
-        return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
-            count: `${this._firstTimeVolunteers.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, this._firstTimeVolunteers.length)}`,
-        });
+        const count = this._firstTimeVolunteers.length;
+        // Handle different grammar for different languages
+        if (t.languageName === 'Deutsch') {
+            // German: "an den Parkrunner" (singular) vs "an die Parkrunner" (plural)
+            const countText = count === 1 ? `den ${t.parkrunner}` : `die ${count} ${t.parkrunners}`;
+            return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
+                count: countText,
+            });
+        }
+        else {
+            // English: "to the parkrunner" (singular) vs "to the 2 parkrunners" (plural)
+            const countText = count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+            return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
+                count: countText,
+            });
+        }
     }
     details() {
         return (0, stringFunctions_1.sortAndConjoin)(this._firstTimeVolunteers.map((v) => v.name));
@@ -260,7 +273,7 @@ exports.de = {
     finishersWithNewPBsTitle: '{eventName} ist kein Rennen, aber eine großartige Möglichkeit, sich selbst herauszufordern. Sehr gut gemacht an die {count}, die diese Woche ihre persönliche Bestzeit verbessert haben: ',
     runningWalkingGroupsTitle: 'Wir freuten uns, {count} bei dieser Veranstaltung vertreten zu sehen: ',
     volunteersTitle: 'Die folgenden Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
-    firstTimeVolunteersTitle: 'Ein besonderes Willkommen an die {count}, die dieses Wochenende zum ersten Mal freiwillig geholfen haben: ',
+    firstTimeVolunteersTitle: 'Ein besonderes Willkommen an {count}, die dieses Wochenende zum ersten Mal freiwillig geholfen haben: ',
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
     unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, wöchentlichen, zeitgestoppten Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
@@ -434,6 +447,118 @@ function fiveKVolunteersToMilestones(volunteers) {
 
 /***/ }),
 
+/***/ 516:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.shareReportText = shareReportText;
+// Share report text using native share or clipboard
+function shareReportText(options) {
+    const eventuateDiv = document.getElementById('eventuate');
+    if (!eventuateDiv) {
+        console.warn('Eventuate content not found');
+        return;
+    }
+    const eventTitle = buildEventTitle(options);
+    const reportText = extractReportText(eventuateDiv);
+    if (reportText) {
+        // Try native share first (works on mobile devices and some desktop browsers)
+        if (navigator.share) {
+            navigator
+                .share({
+                title: eventTitle,
+                text: reportText,
+            })
+                .catch((error) => {
+                console.warn('Native share failed:', error);
+                copyToClipboard(eventTitle, reportText);
+            });
+        }
+        else {
+            copyToClipboard(eventTitle, reportText);
+        }
+    }
+}
+function buildEventTitle(options) {
+    if (options?.eventName && options?.eventDate && options?.eventNumber) {
+        return `${options.eventName} ${options.eventDate} | ${options.eventNumber}`;
+    }
+    else if (options?.eventName) {
+        return options.eventName;
+    }
+    else {
+        return 'parkrun Event Report';
+    }
+}
+function extractReportText(eventuateDiv) {
+    const paragraphs = eventuateDiv.querySelectorAll('p');
+    const reportText = Array.from(paragraphs)
+        .map((p) => {
+        if (p.id === 'languageSwitcher' ||
+            p.querySelector('.eventuate-language-switcher')) {
+            return '';
+        }
+        const clone = p.cloneNode(true);
+        const elementsToRemove = clone.querySelectorAll('*:not(br)');
+        elementsToRemove.forEach((el) => {
+            const parent = el.parentNode;
+            if (parent) {
+                while (el.firstChild) {
+                    parent.insertBefore(el.firstChild, el);
+                }
+                parent.removeChild(el);
+            }
+        });
+        const textContent = clone.innerHTML.replace(/<br\s*\/?>/gi, '\n').trim();
+        return textContent;
+    })
+        .filter((text) => text && text.length > 0)
+        .join('\n\n');
+    return reportText;
+}
+function copyToClipboard(title, text) {
+    const fullText = `${title}\n\n${text}`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard
+            .writeText(fullText)
+            .then(() => {
+            showSuccessFeedback();
+        })
+            .catch((error) => {
+            console.warn('Clipboard write failed:', error);
+            fallbackCopyToClipboard(fullText);
+        });
+    }
+    else {
+        fallbackCopyToClipboard(fullText);
+    }
+}
+function showSuccessFeedback() {
+    const shareBtn = document.querySelector('.eventuate-share-btn');
+    if (shareBtn) {
+        const originalText = shareBtn.textContent;
+        shareBtn.textContent = '✅ Copied!';
+        shareBtn.classList.add('shared');
+        setTimeout(() => {
+            shareBtn.textContent = originalText;
+            shareBtn.classList.remove('shared');
+        }, 2000);
+    }
+}
+function fallbackCopyToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    showSuccessFeedback();
+}
+
+
+/***/ }),
+
 /***/ 523:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -539,7 +664,6 @@ exports.createLanguageSwitcher = createLanguageSwitcher;
 exports.switchLanguage = switchLanguage;
 exports.getStoredOrDetectedLocale = getStoredOrDetectedLocale;
 exports.pluralizeTranslated = pluralizeTranslated;
-exports.shareReportText = shareReportText;
 // translations/index.ts - Translation registry and utilities
 const en_1 = __webpack_require__(685);
 const de_1 = __webpack_require__(177);
@@ -632,88 +756,6 @@ function getStoredOrDetectedLocale() {
 // Pluralization helper that works with translations
 function pluralizeTranslated(singular, plural, count) {
     return count === 1 ? singular : plural;
-}
-// Share report text using native share or clipboard
-function shareReportText(rpe) {
-    const eventuateDiv = document.getElementById('eventuate');
-    if (!eventuateDiv) {
-        console.warn('Eventuate content not found');
-        return;
-    }
-    // Build event title from extractor data
-    let eventTitle = 'parkrun Event Report';
-    if (rpe?.eventName && rpe?.eventDate && rpe?.eventNumber) {
-        eventTitle = `${rpe.eventName} ${rpe.eventDate} | ${rpe.eventNumber}`;
-    }
-    else if (rpe?.eventName) {
-        eventTitle = rpe.eventName;
-    }
-    // Get all paragraphs and process them individually
-    const paragraphs = eventuateDiv.querySelectorAll('p');
-    const reportText = Array.from(paragraphs)
-        .map((p) => {
-        // Skip the language switcher paragraph
-        if (p.id === 'languageSwitcher' ||
-            p.querySelector('.eventuate-language-switcher')) {
-            return '';
-        }
-        // Get the text content, preserving line breaks from <br> tags
-        const htmlContent = p.innerHTML;
-        const textContent = htmlContent
-            .replace(/<br\s*\/?>/gi, '\n') // Convert <br> tags to line breaks
-            .replace(/<[^>]*>/g, '') // Remove other HTML tags
-            .trim();
-        return textContent;
-    })
-        .filter((text) => text && text.length > 0)
-        .join('\n\n'); // Join paragraphs with double line breaks
-    if (reportText) {
-        // Try native share first (works on mobile devices and some desktop browsers)
-        if (navigator.share) {
-            navigator
-                .share({
-                title: eventTitle,
-                text: reportText,
-            })
-                .catch((err) => {
-                console.log('Native share cancelled or failed:', err);
-                // Fall back to clipboard if share fails
-                copyToClipboard(reportText);
-            });
-        }
-        else {
-            // Fall back to clipboard for browsers without native share
-            copyToClipboard(reportText);
-        }
-    }
-}
-// Helper function to copy text to clipboard
-function copyToClipboard(text) {
-    navigator.clipboard
-        .writeText(text)
-        .then(() => {
-        // Show success feedback
-        const shareBtn = document.querySelector('.eventuate-share-btn');
-        if (shareBtn) {
-            const originalText = shareBtn.textContent;
-            shareBtn.textContent = '✅ Copied!';
-            shareBtn.classList.add('shared');
-            setTimeout(() => {
-                shareBtn.textContent = originalText;
-                shareBtn.classList.remove('shared');
-            }, 2000);
-        }
-    })
-        .catch((err) => {
-        console.error('Failed to copy text: ', err);
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-    });
 }
 
 
@@ -1080,6 +1122,7 @@ const twoKVolunteersToMilestones_1 = __webpack_require__(184);
 const Volunteer_1 = __webpack_require__(523);
 const urlFunctions_1 = __webpack_require__(213);
 const translations_1 = __webpack_require__(536);
+const share_1 = __webpack_require__(516);
 function populate(rpe, volunteerWithCountList, message) {
     const t = (0, translations_1.getTranslations)();
     const introduction = (0, translations_1.interpolate)(t.introduction, {
@@ -1124,16 +1167,16 @@ function populate(rpe, volunteerWithCountList, message) {
             count: rpe.facts?.finishers?.toLocaleString() || '0',
         }),
         (0, translations_1.interpolate)(t.facts.grandTotal, {
-            count: rpe.facts.finishes.toLocaleString(),
+            count: rpe.facts.finishes?.toLocaleString() || '0',
         }),
         (0, translations_1.interpolate)(t.facts.coveredDistance, {
-            distance: (rpe.facts.finishes * rpe.courseLength).toLocaleString(),
+            distance: ((rpe.facts.finishes || 0) * rpe.courseLength).toLocaleString(),
         }),
         (0, translations_1.interpolate)(t.facts.celebratingPBs, {
-            count: rpe.facts.pbs.toLocaleString(),
+            count: rpe.facts.pbs?.toLocaleString() || '0',
         }),
         (0, translations_1.interpolate)(t.facts.gratefulToVolunteers, {
-            count: rpe.facts.volunteers.toLocaleString(),
+            count: rpe.facts.volunteers?.toLocaleString() || '0',
         }),
     ].join('');
     const eventuateDiv = document.getElementById('eventuate') ||
@@ -1245,7 +1288,7 @@ function populate(rpe, volunteerWithCountList, message) {
         const shareButton = eventuateDiv.querySelector('.eventuate-share-btn');
         if (shareButton) {
             shareButton.addEventListener('click', () => {
-                (0, translations_1.shareReportText)(rpe);
+                (0, share_1.shareReportText)(rpe);
             });
         }
     }
