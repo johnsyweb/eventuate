@@ -15,6 +15,10 @@ I wrote this while volunteering as a Run Director at the beautiful [Brimbank par
 
 I initially wrote this as a Firefox Add-On, as the developer tooling is pretty good in this space and Firefox Browser Add-Ons are pretty easy to distribute. However, once I worked out I could generate a userscript as part of the automated release process and run it in any browser with a userscript manager, including iOS and iPadOS devices, I switched to using that!
 
+## What about?
+
+I know there are a bunch of infographic generators out there. I wrote Eventuate because it surfaces achievements in a more egalitarian way. Achievements are celebrated regardless of participants' gender, age group or age grading. Course records appear alongside everyone else's personal bests. Volunteering is celebrated as much as finishing. And it's readable by screen-readers for those who use them. 
+
 ## How much
 
 Free. For everyone. Forever. Of course.
@@ -35,7 +39,7 @@ As soon as the latest results page loads for an event, you'll see a bunch of use
 - Reminder to bring a barcode
 - Overall event summary facts and figures
 
-![Eventuate extension output displaying Brimbank parkrun event #332 summary with yellow background. Shows participant statistics including 112 parkrunners, 8 volunteers, 3 milestone achievers, 8 first-timers, 17 personal bests, and various community statistics. Contains red notification banner indicating this is extracted data for report writing assistance.][eventuate-results-summary-image]
+![Eventuate extension output displaying an event summary with a yellow background. Shows participant statistics including finishers, volunteers, milestone achievers, first-timers,  personal bests, and various community statistics. Contains red notification banner indicating this is extracted data for report writing assistance.][eventuate-results-summary-image]
 
 ## Where
 
