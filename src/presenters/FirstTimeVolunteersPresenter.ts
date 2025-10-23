@@ -1,10 +1,6 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { VolunteerWithCount } from '../types/Volunteer';
-import {
-  getTranslations,
-  interpolate,
-  pluralizeTranslated,
-} from '../translations';
+import { getTranslations, interpolate } from '../translations';
 
 export class FirstTimeVolunteersPresenter {
   _firstTimeVolunteers: VolunteerWithCount[];
@@ -18,13 +14,24 @@ export class FirstTimeVolunteersPresenter {
 
   title(): string {
     const t = getTranslations();
-    return interpolate(t.firstTimeVolunteersTitle, {
-      count: `${this._firstTimeVolunteers.length} ${pluralizeTranslated(
-        t.parkrunner,
-        t.parkrunners,
-        this._firstTimeVolunteers.length
-      )}`,
-    });
+    const count = this._firstTimeVolunteers.length;
+
+    // Handle different grammar for different languages
+    if (t.languageName === 'Deutsch') {
+      // German: "an den Parkrunner" (singular) vs "an die Parkrunner" (plural)
+      const countText =
+        count === 1 ? `den ${t.parkrunner}` : `die ${count} ${t.parkrunners}`;
+      return interpolate(t.firstTimeVolunteersTitle, {
+        count: countText,
+      });
+    } else {
+      // English: "to the parkrunner" (singular) vs "to the 2 parkrunners" (plural)
+      const countText =
+        count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+      return interpolate(t.firstTimeVolunteersTitle, {
+        count: countText,
+      });
+    }
   }
 
   details(): string {

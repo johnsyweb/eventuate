@@ -55,7 +55,8 @@ describe('FirstTimeVolunteersPresenter', () => {
       const volunteers = [createMockVolunteer('John SMITH', 1)];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       const title = presenter.title();
-      expect(title).toContain('1 parkrunner');
+      expect(title).toContain('parkrunner');
+      expect(title).not.toContain('1 parkrunner');
       expect(title).toContain('first time');
     });
 
