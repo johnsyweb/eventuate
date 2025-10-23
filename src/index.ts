@@ -3,6 +3,7 @@ import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
 import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMilestones';
 import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
+import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
@@ -47,14 +48,10 @@ function populate(
     )}`,
   });
 
-  const firstTimersTitle = interpolate(t.firstTimersTitle, {
-    count: `${rpe.firstTimers.length} ${pluralizeTranslated(
-      t.parkrunner,
-      t.parkrunners,
-      rpe.firstTimers.length
-    )}`,
-    eventName: rpe.eventName || t.fallbackParkrunName,
-  });
+  const firstTimersPresenter = new FirstTimersPresenter(
+    rpe.firstTimers,
+    rpe.eventName
+  );
 
   const finishersWithNewPBsTitle = interpolate(t.finishersWithNewPBsTitle, {
     eventName: rpe.eventName || t.fallbackParkrunName,
@@ -134,8 +131,8 @@ function populate(
       details: sortAndConjoin(rpe.newestParkrunners),
     },
     firstTimers: {
-      title: firstTimersTitle,
-      details: sortAndConjoin(rpe.firstTimers),
+      title: firstTimersPresenter.title(),
+      details: firstTimersPresenter.details(),
     },
     newPBs: {
       title: finishersWithNewPBsTitle,
