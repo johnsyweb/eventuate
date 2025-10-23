@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/johnsyweb/eventuate/compare/v1.7.0...v1.7.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* **docs:** correct image paths and update to Material UI Edit Note icons ([7d93ef4](https://github.com/johnsyweb/eventuate/commit/7d93ef4218ee5c5864e325695c39d8f83786886c)), closes [#3E3E78](https://github.com/johnsyweb/eventuate/issues/3E3E78)
+
 # [1.7.0](https://github.com/johnsyweb/eventuate/compare/v1.6.2...v1.7.0) (2025-10-23)
 
 
