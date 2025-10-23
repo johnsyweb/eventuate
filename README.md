@@ -117,19 +117,21 @@ and adding some unit tests using `jest`.
 
 ### Prerequisites
 
-This project uses [asdf](https://asdf-vm.com/) to manage Node.js versions and
+This project uses [mise](https://mise.jdx.dev/) to manage Node.js and Ruby versions, and
 [corepack](https://nodejs.org/api/corepack.html) to manage pnpm. Here's how to
 set up your development environment:
 
 ```sh
-# Install asdf (if you haven't already)
-brew install asdf
+# Install mise (if you haven't already)
+curl https://mise.run | sh
 
-# Add the NodeJS plugin
-asdf plugin add nodejs
+# Add mise to your shell (if not already done)
+echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
+# or for bash:
+echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
-# Install NodeJS at the version specified in .tool-versions
-asdf install
+# Install all tools specified in .tool-versions
+mise install
 
 # Enable corepack (comes with NodeJS)
 corepack enable
@@ -137,7 +139,14 @@ corepack enable
 # Verify installations
 node --version
 pnpm --version
+ruby --version
+bundle --version
 ```
+
+**Note**: This project requires Ruby for Jekyll documentation builds. The `.tool-versions` file specifies:
+- Node.js 24.10.0
+- pnpm 10.5.2  
+- Ruby 3.4.7
 
 ### Building the Extension
 
@@ -176,6 +185,28 @@ like [Tampermonkey][tampermonkey], [Userscripts][userscripts], or
 [Greasemonkey][greasemonkey]. The bookmarklet can be used in any browser,
 including Safari on iOS devices, by creating a bookmark with the generated
 JavaScript code.
+
+### Building the Documentation
+
+The project includes Jekyll-based documentation that can be built locally:
+
+```sh
+# Install Jekyll dependencies
+cd docs
+bundle install
+
+# Build the documentation site
+bundle exec jekyll build --baseurl /eventuate
+
+# Serve the documentation locally
+bundle exec jekyll serve --baseurl /eventuate --port 4000
+```
+
+The documentation will be available at `http://localhost:4000/eventuate/` and includes:
+- Project overview and features
+- Installation instructions
+- Internationalization support
+- Development guidelines
 
 ## Running locally
 
