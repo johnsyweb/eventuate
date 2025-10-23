@@ -66,13 +66,20 @@ async function generateScreenshots(): Promise<void> {
       console.log(`🌐 Navigating to ${config.url}...`);
       await page.goto(config.url, { waitUntil: 'networkidle2' });
 
+      // Wait a bit for the page to fully load
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Inject the CSS styles first
       console.log('🎨 Injecting CSS styles...');
-      const cssContent = fs.readFileSync(
-        path.join(process.cwd(), 'style', 'eventuate.css'),
-        'utf8'
-      );
-      await page.addStyleTag({ content: cssContent });
+      try {
+        const cssContent = fs.readFileSync(
+          path.join(process.cwd(), 'style', 'eventuate.css'),
+          'utf8'
+        );
+        await page.addStyleTag({ content: cssContent });
+      } catch (error) {
+        console.warn('⚠️  CSS injection failed, continuing...', error);
+      }
 
       // Inject the bookmarklet script (designed to work in any context)
       console.log('💉 Injecting bookmarklet script...');
@@ -109,6 +116,57 @@ async function generateScreenshots(): Promise<void> {
           setTimeout(resolve, config.waitForTimeout)
         );
       }
+
+      // Hide or remove third-party injected content (like iframes)
+      console.log('🧹 Cleaning up third-party content...');
+      await page.evaluate(() => {
+        // Hide common third-party iframes and overlays
+        const selectorsToHide = [
+          'iframe[src*="close"]',
+          'iframe[src*="message"]',
+          'iframe[src*="popup"]',
+          'iframe[src*="overlay"]',
+          'iframe[src*="Close"]',
+          'iframe[src*="Message"]',
+          'iframe[title*="close"]',
+          'iframe[title*="Close"]',
+          'iframe[title*="message"]',
+          'iframe[title*="Message"]',
+          '.close-message',
+          '.popup-overlay',
+          '.third-party-iframe',
+          '[id*="close"]',
+          '[class*="close"]',
+          '[id*="popup"]',
+          '[class*="popup"]',
+          '[id*="Close"]',
+          '[class*="Close"]',
+          '[id*="Message"]',
+          '[class*="Message"]',
+        ];
+
+        let hiddenCount = 0;
+        selectorsToHide.forEach((selector) => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach((element) => {
+            (element as HTMLElement).style.display = 'none';
+            hiddenCount++;
+          });
+        });
+
+        // Also hide any iframes that might be positioned over the content
+        const allIframes = document.querySelectorAll('iframe');
+        allIframes.forEach((iframe) => {
+          const rect = iframe.getBoundingClientRect();
+          // Hide iframes that are positioned like overlays (small, positioned absolutely/fixed)
+          if (rect.width < 400 && rect.height < 300) {
+            (iframe as HTMLElement).style.display = 'none';
+            hiddenCount++;
+          }
+        });
+
+        console.log(`Hidden ${hiddenCount} third-party elements`);
+      });
 
       // Take screenshot of just the eventuate div
       const eventuateElement = await page.$('#eventuate');
