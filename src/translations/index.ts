@@ -120,18 +120,23 @@ export function createLanguageSwitcher(): string {
   `;
 }
 
-// Switch language function
+type WindowWithEventuate = Window & { eventuate?: () => void };
+
 export function switchLanguage(locale: string): void {
   if (!translations[locale]) {
     console.warn(`Locale ${locale} not supported`);
     return;
   }
 
-  // Store the user's language preference
   localStorage.setItem('eventuate-language', locale);
 
-  // Reload the page to apply the new language
-  window.location.reload();
+  const eventuateDiv = document.getElementById('eventuate');
+  const windowWithEventuate = window as WindowWithEventuate;
+  if (eventuateDiv && windowWithEventuate.eventuate) {
+    windowWithEventuate.eventuate();
+  } else {
+    window.location.reload();
+  }
 }
 
 // Get stored language preference or detect from browser

@@ -231,6 +231,8 @@ function populate(
   }
 }
 
+type WindowWithEventuate = Window & { eventuate?: () => void };
+
 function eventuate() {
   const rpe = new ResultsPageExtractor(document);
   const volunteerWithCountList = rpe
@@ -247,5 +249,7 @@ function eventuate() {
 
   Promise.all(waitingOn).then(() => populate(rpe, volunteerWithCountList));
 }
+
+(window as WindowWithEventuate).eventuate = eventuate;
 
 eventuate();
