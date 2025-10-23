@@ -1,8 +1,6 @@
 FROM node:25-slim AS build-stage
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
 RUN apt-get update && apt-get -y install jq zip
+RUN npm install -g pnpm
 COPY . /eventuate
 WORKDIR /eventuate
 RUN pnpm it
