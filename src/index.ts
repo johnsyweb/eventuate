@@ -67,8 +67,8 @@ function populate(
   const runningWalkingGroupsTitle = interpolate(t.runningWalkingGroupsTitle, {
     count: formatCount(
       rpe.runningWalkingGroups.length,
-      'active group',
-      'walking and running groups'
+      t.activeGroup,
+      t.walkingAndRunningGroups
     ),
   });
 

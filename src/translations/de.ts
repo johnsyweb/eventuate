@@ -52,6 +52,8 @@ export const de = {
   volunteers: 'Freiwillige',
   parkrunner: 'Parkrunner',
   parkrunners: 'Parkrunner',
+  activeGroup: 'aktive Gruppe',
+  walkingAndRunningGroups: 'Lauf- und Walkinggruppen',
   // Articles for German grammar
   parkrunnerSingularArticle: 'den',
   parkrunnerPluralArticle: 'die',

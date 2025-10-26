@@ -40,6 +40,8 @@ export interface TranslationKeys {
   volunteers: string;
   parkrunner: string;
   parkrunners: string;
+  activeGroup: string;
+  walkingAndRunningGroups: string;
   parkrunnerSingularArticle?: string;
   parkrunnerPluralArticle?: string;
   milestoneClubs: Record<string, string>;

@@ -51,6 +51,8 @@ export const en = {
   volunteers: 'volunteers',
   parkrunner: 'parkrunner',
   parkrunners: 'parkrunners',
+  activeGroup: 'active group',
+  walkingAndRunningGroups: 'walking and running groups',
   // Milestone club names
   milestoneClubs: {
     '10': '10 club',
