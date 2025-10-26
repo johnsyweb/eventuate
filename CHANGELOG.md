@@ -1,3 +1,14 @@
+## [1.7.2](https://github.com/johnsyweb/eventuate/compare/v1.7.1...v1.7.2) (2025-10-26)
+
+
+### Bug Fixes
+
+* add 'club' suffix to junior milestone club names ([ea673a4](https://github.com/johnsyweb/eventuate/commit/ea673a4c2365ffda5809b40e8cec0d4d384be57d))
+* add translations for active group and walking/running groups ([2a5b552](https://github.com/johnsyweb/eventuate/commit/2a5b552c00c5b77f811b1416c644bc01cd570672))
+* omit number '1' when pluralizing singular items ([1a55f05](https://github.com/johnsyweb/eventuate/commit/1a55f0597b66114a6949ec8ed1549047a2355bef))
+* remove 'this weekend' from firstTimeVolunteersTitle in both languages ([75c8e20](https://github.com/johnsyweb/eventuate/commit/75c8e20c98bea48ddded5e0d85f4f635cd9fdf2c))
+* use PUPPETEER_EXECUTABLE_PATH env var for Chrome in CI ([9cd3299](https://github.com/johnsyweb/eventuate/commit/9cd32990f5687fe39b107ef629875f6f8cacfaef))
+
 ## [1.7.1](https://github.com/johnsyweb/eventuate/compare/v1.7.0...v1.7.1) (2025-10-23)
 
 

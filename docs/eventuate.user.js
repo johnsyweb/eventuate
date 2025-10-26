@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.7.1
+// @version      1.7.2
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.7.1 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.7.2 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -117,7 +117,7 @@ class MilestonePresenter {
     title() {
         const t = (0, translations_1.getTranslations)();
         const count = this._milestoneCelebrationsAll.length;
-        const countText = count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+        const countText = (0, translations_1.formatCount)(count, t.parkrunner, t.parkrunners);
         return (0, translations_1.interpolate)(t.milestoneCelebrations.title, {
             count: countText,
         });
@@ -227,21 +227,12 @@ class FirstTimeVolunteersPresenter {
     title() {
         const t = (0, translations_1.getTranslations)();
         const count = this._firstTimeVolunteers.length;
-        // Handle different grammar for different languages
-        if (t.languageName === 'Deutsch') {
-            // German: "an den Parkrunner" (singular) vs "an die Parkrunner" (plural)
-            const countText = count === 1 ? `den ${t.parkrunner}` : `die ${count} ${t.parkrunners}`;
-            return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
-                count: countText,
-            });
-        }
-        else {
-            // English: "to the parkrunner" (singular) vs "to the 2 parkrunners" (plural)
-            const countText = count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
-            return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
-                count: countText,
-            });
-        }
+        const countText = t.parkrunnerSingularArticle && t.parkrunnerPluralArticle
+            ? (0, translations_1.formatCountWithArticle)(count, t.parkrunner, t.parkrunners, t.parkrunnerSingularArticle, t.parkrunnerPluralArticle)
+            : (0, translations_1.formatCount)(count, t.parkrunner, t.parkrunners);
+        return (0, translations_1.interpolate)(t.firstTimeVolunteersTitle, {
+            count: countText,
+        });
     }
     details() {
         return (0, stringFunctions_1.sortAndConjoin)(this._firstTimeVolunteers.map((v) => v.name));
@@ -273,7 +264,7 @@ exports.de = {
     finishersWithNewPBsTitle: '{eventName} ist kein Rennen, aber eine großartige Möglichkeit, sich selbst herauszufordern. Sehr gut gemacht an die {count}, die diese Woche ihre persönliche Bestzeit verbessert haben: ',
     runningWalkingGroupsTitle: 'Wir freuten uns, {count} bei dieser Veranstaltung vertreten zu sehen: ',
     volunteersTitle: 'Die folgenden Parkrunner haben sich freiwillig gemeldet, um {eventName} dieses Wochenende zu veranstalten. Unser tiefer Dank gilt:  ',
-    firstTimeVolunteersTitle: 'Ein besonderes Willkommen an {count}, die dieses Wochenende zum ersten Mal freiwillig geholfen haben: ',
+    firstTimeVolunteersTitle: 'Ein besonderes Willkommen an {count}, die zum ersten Mal freiwillig geholfen haben: ',
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
     unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, wöchentlichen, zeitgestoppten Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
@@ -300,6 +291,11 @@ exports.de = {
     volunteers: 'Freiwillige',
     parkrunner: 'Parkrunner',
     parkrunners: 'Parkrunner',
+    activeGroup: 'aktive Gruppe',
+    walkingAndRunningGroups: 'Lauf- und Walkinggruppen',
+    // Articles for German grammar
+    parkrunnerSingularArticle: 'den',
+    parkrunnerPluralArticle: 'die',
     // Milestone club names
     milestoneClubs: {
         '10': '10er Club',
@@ -319,6 +315,9 @@ exports.de = {
         'junior parkrun v5': 'Junior Parkrun v5 Club',
         'junior parkrun 100': 'Junior Parkrun 100er Club',
         'junior parkrun 250': 'Junior Parkrun 250er Club',
+        'Half marathon': 'Halbmarathon Club',
+        Marathon: 'Marathon Club',
+        'Ultra marathon': 'Ultramarathon Club',
     },
 };
 
@@ -663,7 +662,8 @@ exports.interpolate = interpolate;
 exports.createLanguageSwitcher = createLanguageSwitcher;
 exports.switchLanguage = switchLanguage;
 exports.getStoredOrDetectedLocale = getStoredOrDetectedLocale;
-exports.pluralizeTranslated = pluralizeTranslated;
+exports.formatCount = formatCount;
+exports.formatCountWithArticle = formatCountWithArticle;
 // translations/index.ts - Translation registry and utilities
 const en_1 = __webpack_require__(685);
 const de_1 = __webpack_require__(177);
@@ -753,9 +753,15 @@ function getStoredOrDetectedLocale() {
     }
     return detectLocale();
 }
-// Pluralization helper that works with translations
-function pluralizeTranslated(singular, plural, count) {
-    return count === 1 ? singular : plural;
+function formatCount(count, singular, plural) {
+    const word = count === 1 ? singular : plural;
+    return count === 1 ? word : `${count} ${word}`;
+}
+function formatCountWithArticle(count, singular, plural, singularArticle, pluralArticle) {
+    if (count === 1) {
+        return `${singularArticle} ${singular}`;
+    }
+    return `${pluralArticle} ${count} ${plural}`;
 }
 
 
@@ -804,7 +810,7 @@ class FirstTimersPresenter {
     title() {
         const t = (0, translations_1.getTranslations)();
         return (0, translations_1.interpolate)(t.firstTimersTitle, {
-            count: `${this._firstTimers.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, this._firstTimers.length)}`,
+            count: (0, translations_1.formatCount)(this._firstTimers.length, t.parkrunner, t.parkrunners),
             eventName: this._eventName || t.fallbackParkrunName,
         });
     }
@@ -873,7 +879,7 @@ exports.en = {
     finishersWithNewPBsTitle: "{eventName} is not a race, but it's a great way to challenge yourself. Very well done to the {count} who improved their personal best this week: ",
     runningWalkingGroupsTitle: 'We were pleased to see {count} represented at this event: ',
     volunteersTitle: 'The following parkrunners volunteered to host {eventName} this weekend. Our deep thanks to:  ',
-    firstTimeVolunteersTitle: 'A special welcome to the {count} who volunteered for the first time this weekend: ',
+    firstTimeVolunteersTitle: 'A special welcome to the {count} who volunteered for the first time: ',
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
     unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, weekly, timed events all over the world and also carry contact details in case of an emergency at an event",
@@ -900,6 +906,8 @@ exports.en = {
     volunteers: 'volunteers',
     parkrunner: 'parkrunner',
     parkrunners: 'parkrunners',
+    activeGroup: 'active group',
+    walkingAndRunningGroups: 'walking and running groups',
     // Milestone club names
     milestoneClubs: {
         '10': '10 club',
@@ -919,6 +927,9 @@ exports.en = {
         'junior parkrun v5': 'junior parkrun v5 club',
         'junior parkrun 100': 'junior parkrun 100 club',
         'junior parkrun 250': 'junior parkrun 250 club',
+        'Half marathon': 'Half marathon club',
+        Marathon: 'Marathon club',
+        'Ultra marathon': 'Ultra marathon club',
     },
 };
 
@@ -1126,24 +1137,22 @@ const share_1 = __webpack_require__(516);
 function populate(rpe, volunteerWithCountList, message) {
     const t = (0, translations_1.getTranslations)();
     const introduction = (0, translations_1.interpolate)(t.introduction, {
-        finisherCount: `${rpe.finishers.length} ${(0, translations_1.pluralizeTranslated)(t.finisher, t.finishers, rpe.finishers.length)}`,
-        volunteerCount: `${volunteerWithCountList.length} ${(0, translations_1.pluralizeTranslated)(t.volunteer, t.volunteers, volunteerWithCountList.length)}`,
+        finisherCount: (0, translations_1.formatCount)(rpe.finishers.length, t.finisher, t.finishers),
+        volunteerCount: (0, translations_1.formatCount)(volunteerWithCountList.length, t.volunteer, t.volunteers),
         eventName: rpe.eventName || t.fallbackParkrunName,
         eventNumber: rpe.eventNumber || '',
     });
     const newestParkrunnersTitle = (0, translations_1.interpolate)(t.newestParkrunnersTitle, {
-        count: `${rpe.newestParkrunners.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.newestParkrunners.length)}`,
+        count: (0, translations_1.formatCount)(rpe.newestParkrunners.length, t.parkrunner, t.parkrunners),
     });
     const firstTimersPresenter = new FirstTimersPresenter_1.FirstTimersPresenter(rpe.firstTimers, rpe.eventName);
     const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter_1.FirstTimeVolunteersPresenter(volunteerWithCountList, rpe.eventName);
     const finishersWithNewPBsTitle = (0, translations_1.interpolate)(t.finishersWithNewPBsTitle, {
         eventName: rpe.eventName || t.fallbackParkrunName,
-        count: `${rpe.finishersWithNewPBs.length} ${(0, translations_1.pluralizeTranslated)(t.parkrunner, t.parkrunners, rpe.finishersWithNewPBs.length)}`,
+        count: (0, translations_1.formatCount)(rpe.finishersWithNewPBs.length, t.parkrunner, t.parkrunners),
     });
     const runningWalkingGroupsTitle = (0, translations_1.interpolate)(t.runningWalkingGroupsTitle, {
-        count: `${rpe.runningWalkingGroups.length} ${rpe.runningWalkingGroups.length === 1
-            ? 'active group'
-            : 'walking and running groups'}`,
+        count: (0, translations_1.formatCount)(rpe.runningWalkingGroups.length, t.activeGroup, t.walkingAndRunningGroups),
     });
     const volunteersTitle = (0, translations_1.interpolate)(t.volunteersTitle, {
         eventName: rpe.eventName || t.fallbackParkrunName,
