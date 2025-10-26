@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/johnsyweb/eventuate/compare/v1.7.2...v1.7.3) (2025-10-26)
+
+
+### Bug Fixes
+
+* specify Ruby version in GitHub Actions workflow ([7eeb15c](https://github.com/johnsyweb/eventuate/commit/7eeb15c5f5e2cba7929c1d9bf77b8059f5ec5b70))
+
 ## [1.7.2](https://github.com/johnsyweb/eventuate/compare/v1.7.1...v1.7.2) (2025-10-26)
 
 
