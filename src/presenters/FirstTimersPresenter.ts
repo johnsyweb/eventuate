@@ -2,7 +2,7 @@ import { sortAndConjoin } from '../stringFunctions';
 import {
   getTranslations,
   interpolate,
-  pluralizeTranslated,
+  formatCount,
 } from '../translations';
 
 export class FirstTimersPresenter {
@@ -17,11 +17,11 @@ export class FirstTimersPresenter {
   title(): string {
     const t = getTranslations();
     return interpolate(t.firstTimersTitle, {
-      count: `${this._firstTimers.length} ${pluralizeTranslated(
+      count: formatCount(
+        this._firstTimers.length,
         t.parkrunner,
-        t.parkrunners,
-        this._firstTimers.length
-      )}`,
+        t.parkrunners
+      ),
       eventName: this._eventName || t.fallbackParkrunName,
     });
   }

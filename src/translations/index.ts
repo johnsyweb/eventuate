@@ -157,3 +157,13 @@ export function pluralizeTranslated(
 ): string {
   return count === 1 ? singular : plural;
 }
+
+// Format count with proper pluralization, omitting "1" when singular
+export function formatCount(
+  count: number,
+  singular: string,
+  plural: string
+): string {
+  const word = pluralizeTranslated(singular, plural, count);
+  return count === 1 ? word : `${count} ${word}`;
+}

@@ -13,7 +13,7 @@ import { canonicalResultsPageUrl, futureRosterUrl } from './urlFunctions';
 import {
   getTranslations,
   interpolate,
-  pluralizeTranslated,
+  formatCount,
   createLanguageSwitcher,
   switchLanguage,
 } from './translations';
@@ -27,26 +27,26 @@ function populate(
   const t = getTranslations();
 
   const introduction = interpolate(t.introduction, {
-    finisherCount: `${rpe.finishers.length} ${pluralizeTranslated(
+    finisherCount: formatCount(
+      rpe.finishers.length,
       t.finisher,
-      t.finishers,
-      rpe.finishers.length
-    )}`,
-    volunteerCount: `${volunteerWithCountList.length} ${pluralizeTranslated(
+      t.finishers
+    ),
+    volunteerCount: formatCount(
+      volunteerWithCountList.length,
       t.volunteer,
-      t.volunteers,
-      volunteerWithCountList.length
-    )}`,
+      t.volunteers
+    ),
     eventName: rpe.eventName || t.fallbackParkrunName,
     eventNumber: rpe.eventNumber || '',
   });
 
   const newestParkrunnersTitle = interpolate(t.newestParkrunnersTitle, {
-    count: `${rpe.newestParkrunners.length} ${pluralizeTranslated(
+    count: formatCount(
+      rpe.newestParkrunners.length,
       t.parkrunner,
-      t.parkrunners,
-      rpe.newestParkrunners.length
-    )}`,
+      t.parkrunners
+    ),
   });
 
   const firstTimersPresenter = new FirstTimersPresenter(
@@ -61,19 +61,18 @@ function populate(
 
   const finishersWithNewPBsTitle = interpolate(t.finishersWithNewPBsTitle, {
     eventName: rpe.eventName || t.fallbackParkrunName,
-    count: `${rpe.finishersWithNewPBs.length} ${pluralizeTranslated(
+    count: formatCount(
+      rpe.finishersWithNewPBs.length,
       t.parkrunner,
-      t.parkrunners,
-      rpe.finishersWithNewPBs.length
-    )}`,
+      t.parkrunners
+    ),
   });
 
   const runningWalkingGroupsTitle = interpolate(t.runningWalkingGroupsTitle, {
-    count: `${rpe.runningWalkingGroups.length} ${
+    count:
       rpe.runningWalkingGroups.length === 1
         ? 'active group'
-        : 'walking and running groups'
-    }`,
+        : `${rpe.runningWalkingGroups.length} walking and running groups`,
   });
 
   const volunteersTitle = interpolate(t.volunteersTitle, {

@@ -8,7 +8,8 @@ describe('FirstTimersPresenter', () => {
         'Test parkrun'
       );
       const title = presenter.title();
-      expect(title).toContain('1 parkrunner');
+      expect(title).toContain('parkrunner');
+      expect(title).not.toContain('1 parkrunner');
       expect(title).toContain('Test parkrun');
     });
 
