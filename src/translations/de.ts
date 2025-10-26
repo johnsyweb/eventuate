@@ -71,5 +71,8 @@ export const de = {
     'junior parkrun v5': 'Junior Parkrun v5 Club',
     'junior parkrun 100': 'Junior Parkrun 100er Club',
     'junior parkrun 250': 'Junior Parkrun 250er Club',
+    'Half marathon': 'Halbmarathon Club',
+    'Marathon': 'Marathon Club',
+    'Ultra marathon': 'Ultramarathon Club',
   },
 };
