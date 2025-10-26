@@ -1,6 +1,6 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { VolunteerWithCount } from '../types/Volunteer';
-import { getTranslations, interpolate } from '../translations';
+import { getTranslations, interpolate, formatCount } from '../translations';
 
 export class FirstTimeVolunteersPresenter {
   _firstTimeVolunteers: VolunteerWithCount[];
@@ -26,8 +26,7 @@ export class FirstTimeVolunteersPresenter {
       });
     } else {
       // English: "to the parkrunner" (singular) vs "to the 2 parkrunners" (plural)
-      const countText =
-        count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+      const countText = formatCount(count, t.parkrunner, t.parkrunners);
       return interpolate(t.firstTimeVolunteersTitle, {
         count: countText,
       });

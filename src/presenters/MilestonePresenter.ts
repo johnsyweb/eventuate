@@ -1,6 +1,6 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { MilestoneCelebrations } from '../types/Milestones';
-import { getTranslations, interpolate } from '../translations';
+import { getTranslations, interpolate, formatCount } from '../translations';
 
 export class MilestonePresenter {
   _milestoneCelebrations: MilestoneCelebrations[];
@@ -16,7 +16,7 @@ export class MilestonePresenter {
   title(): string {
     const t = getTranslations();
     const count = this._milestoneCelebrationsAll.length;
-    const countText = count === 1 ? t.parkrunner : `${count} ${t.parkrunners}`;
+    const countText = formatCount(count, t.parkrunner, t.parkrunners);
     return interpolate(t.milestoneCelebrations.title, {
       count: countText,
     });
