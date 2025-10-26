@@ -41,7 +41,6 @@ jobs:
         with:
           bundler-cache: true
           working-directory: docs
-          ruby-version: '3.4.7'
 
       - name: Build project
         run: pnpm build
