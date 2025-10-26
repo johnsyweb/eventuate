@@ -1,4 +1,7 @@
-import { formatCount, formatCountWithArticle } from '../../src/translations/index';
+import {
+  formatCount,
+  formatCountWithArticle,
+} from '../../src/translations/index';
 
 describe('formatCount', () => {
   describe('singular cases', () => {

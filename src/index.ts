@@ -65,10 +65,11 @@ function populate(
   });
 
   const runningWalkingGroupsTitle = interpolate(t.runningWalkingGroupsTitle, {
-    count:
-      rpe.runningWalkingGroups.length === 1
-        ? 'active group'
-        : `${rpe.runningWalkingGroups.length} walking and running groups`,
+    count: formatCount(
+      rpe.runningWalkingGroups.length,
+      'active group',
+      'walking and running groups'
+    ),
   });
 
   const volunteersTitle = interpolate(t.volunteersTitle, {
