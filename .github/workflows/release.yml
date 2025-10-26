@@ -52,6 +52,8 @@ jobs:
         run: |
           # Set display for headless browser
           export DISPLAY=:99
+          # Use system-installed Chrome
+          export PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
           # Start virtual display
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
           # Wait for display to start
