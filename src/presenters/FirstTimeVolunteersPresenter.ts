@@ -1,6 +1,11 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { VolunteerWithCount } from '../types/Volunteer';
-import { getTranslations, interpolate, formatCountWithArticle } from '../translations';
+import {
+  getTranslations,
+  interpolate,
+  formatCount,
+  formatCountWithArticle,
+} from '../translations';
 
 export class FirstTimeVolunteersPresenter {
   _firstTimeVolunteers: VolunteerWithCount[];
@@ -16,12 +21,17 @@ export class FirstTimeVolunteersPresenter {
     const t = getTranslations();
     const count = this._firstTimeVolunteers.length;
 
-    // Handle different grammar for different languages
-    const countText =
-      t.languageName === 'Deutsch'
-        ? formatCountWithArticle(count, t.parkrunner, t.parkrunners, 'den', 'die')
-        : formatCountWithArticle(count, t.parkrunner, t.parkrunners);
-    
+    // Use articles from translation module if available, otherwise use plain formatCount
+    const countText = t.parkrunnerSingularArticle && t.parkrunnerPluralArticle
+      ? formatCountWithArticle(
+          count,
+          t.parkrunner,
+          t.parkrunners,
+          t.parkrunnerSingularArticle,
+          t.parkrunnerPluralArticle
+        )
+      : formatCount(count, t.parkrunner, t.parkrunners);
+
     return interpolate(t.firstTimeVolunteersTitle, {
       count: countText,
     });

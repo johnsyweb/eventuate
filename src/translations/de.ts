@@ -52,6 +52,9 @@ export const de = {
   volunteers: 'Freiwillige',
   parkrunner: 'Parkrunner',
   parkrunners: 'Parkrunner',
+  // Articles for German grammar
+  parkrunnerSingularArticle: 'den',
+  parkrunnerPluralArticle: 'die',
   // Milestone club names
   milestoneClubs: {
     '10': '10er Club',

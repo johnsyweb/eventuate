@@ -40,6 +40,8 @@ export interface TranslationKeys {
   volunteers: string;
   parkrunner: string;
   parkrunners: string;
+  parkrunnerSingularArticle?: string;
+  parkrunnerPluralArticle?: string;
   milestoneClubs: Record<string, string>;
 }
 
@@ -150,6 +152,7 @@ export function getStoredOrDetectedLocale(): string {
 }
 
 // Format count with proper pluralization, omitting "1" when singular
+// Returns: "parkrunner" (singular) or "2 parkrunners" (plural)
 export function formatCount(
   count: number,
   singular: string,
@@ -159,17 +162,17 @@ export function formatCount(
   return count === 1 ? word : `${count} ${word}`;
 }
 
-// Format count with optional article prefix for languages that need it
-// For German: returns "den parkrunner" (singular) or "die 2 parkrunners" (plural)
+// Format count with article prefix for languages that need it
+// Returns: "den parkrunner" (singular) or "die 2 parkrunners" (plural)
 export function formatCountWithArticle(
   count: number,
   singular: string,
   plural: string,
-  singularArticle?: string,
-  pluralArticle?: string
+  singularArticle: string,
+  pluralArticle: string
 ): string {
   if (count === 1) {
-    return singularArticle ? `${singularArticle} ${singular}` : singular;
+    return `${singularArticle} ${singular}`;
   }
-  return pluralArticle ? `${pluralArticle} ${count} ${plural}` : `${count} ${plural}`;
+  return `${pluralArticle} ${count} ${plural}`;
 }
