@@ -21,16 +21,16 @@ export class FirstTimeVolunteersPresenter {
     const t = getTranslations();
     const count = this._firstTimeVolunteers.length;
 
-    // Use articles from translation module if available, otherwise use plain formatCount
-    const countText = t.parkrunnerSingularArticle && t.parkrunnerPluralArticle
-      ? formatCountWithArticle(
-          count,
-          t.parkrunner,
-          t.parkrunners,
-          t.parkrunnerSingularArticle,
-          t.parkrunnerPluralArticle
-        )
-      : formatCount(count, t.parkrunner, t.parkrunners);
+    const countText =
+      t.parkrunnerSingularArticle && t.parkrunnerPluralArticle
+        ? formatCountWithArticle(
+            count,
+            t.parkrunner,
+            t.parkrunners,
+            t.parkrunnerSingularArticle,
+            t.parkrunnerPluralArticle
+          )
+        : formatCount(count, t.parkrunner, t.parkrunners);
 
     return interpolate(t.firstTimeVolunteersTitle, {
       count: countText,

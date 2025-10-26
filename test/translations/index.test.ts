@@ -1,4 +1,4 @@
-import { formatCount } from '../../src/translations/index';
+import { formatCount, formatCountWithArticle } from '../../src/translations/index';
 
 describe('formatCount', () => {
   describe('singular cases', () => {
@@ -49,6 +49,80 @@ describe('formatCount', () => {
     it('should handle very large numbers', () => {
       const result = formatCount(1000000, 'parkrunner', 'parkrunners');
       expect(result).toBe('1000000 parkrunners');
+    });
+  });
+});
+
+describe('formatCountWithArticle', () => {
+  describe('singular cases', () => {
+    it('should return singular word with article for count of 1', () => {
+      const result = formatCountWithArticle(
+        1,
+        'parkrunner',
+        'parkrunners',
+        'den',
+        'die'
+      );
+      expect(result).toBe('den parkrunner');
+    });
+
+    it('should return singular word with different article', () => {
+      const result = formatCountWithArticle(
+        1,
+        'parkrunner',
+        'parkrunners',
+        'der',
+        'die'
+      );
+      expect(result).toBe('der parkrunner');
+    });
+  });
+
+  describe('plural cases', () => {
+    it('should return plural word with article and number for count of 2', () => {
+      const result = formatCountWithArticle(
+        2,
+        'parkrunner',
+        'parkrunners',
+        'den',
+        'die'
+      );
+      expect(result).toBe('die 2 parkrunners');
+    });
+
+    it('should return plural word with article and number for count of 100', () => {
+      const result = formatCountWithArticle(
+        100,
+        'parkrunner',
+        'parkrunners',
+        'den',
+        'die'
+      );
+      expect(result).toBe('die 100 parkrunners');
+    });
+
+    it('should work with different articles', () => {
+      const result = formatCountWithArticle(
+        5,
+        'finisher',
+        'finishers',
+        'der',
+        'die'
+      );
+      expect(result).toBe('die 5 finishers');
+    });
+  });
+
+  describe('edge cases', () => {
+    it('should return plural with article for count of 0', () => {
+      const result = formatCountWithArticle(
+        0,
+        'parkrunner',
+        'parkrunners',
+        'den',
+        'die'
+      );
+      expect(result).toBe('die 0 parkrunners');
     });
   });
 });

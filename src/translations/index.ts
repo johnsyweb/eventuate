@@ -151,8 +151,6 @@ export function getStoredOrDetectedLocale(): string {
   return detectLocale();
 }
 
-// Format count with proper pluralization, omitting "1" when singular
-// Returns: "parkrunner" (singular) or "2 parkrunners" (plural)
 export function formatCount(
   count: number,
   singular: string,
@@ -162,8 +160,6 @@ export function formatCount(
   return count === 1 ? word : `${count} ${word}`;
 }
 
-// Format count with article prefix for languages that need it
-// Returns: "den parkrunner" (singular) or "die 2 parkrunners" (plural)
 export function formatCountWithArticle(
   count: number,
   singular: string,
