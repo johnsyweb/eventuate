@@ -158,3 +158,18 @@ export function formatCount(
   const word = count === 1 ? singular : plural;
   return count === 1 ? word : `${count} ${word}`;
 }
+
+// Format count with optional article prefix for languages that need it
+// For German: returns "den parkrunner" (singular) or "die 2 parkrunners" (plural)
+export function formatCountWithArticle(
+  count: number,
+  singular: string,
+  plural: string,
+  singularArticle?: string,
+  pluralArticle?: string
+): string {
+  if (count === 1) {
+    return singularArticle ? `${singularArticle} ${singular}` : singular;
+  }
+  return pluralArticle ? `${pluralArticle} ${count} ${plural}` : `${count} ${plural}`;
+}

@@ -1,6 +1,6 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { VolunteerWithCount } from '../types/Volunteer';
-import { getTranslations, interpolate, formatCount } from '../translations';
+import { getTranslations, interpolate, formatCountWithArticle } from '../translations';
 
 export class FirstTimeVolunteersPresenter {
   _firstTimeVolunteers: VolunteerWithCount[];
@@ -17,20 +17,14 @@ export class FirstTimeVolunteersPresenter {
     const count = this._firstTimeVolunteers.length;
 
     // Handle different grammar for different languages
-    if (t.languageName === 'Deutsch') {
-      // German: "an den Parkrunner" (singular) vs "an die Parkrunner" (plural)
-      const countText =
-        count === 1 ? `den ${t.parkrunner}` : `die ${count} ${t.parkrunners}`;
-      return interpolate(t.firstTimeVolunteersTitle, {
-        count: countText,
-      });
-    } else {
-      // English: "to the parkrunner" (singular) vs "to the 2 parkrunners" (plural)
-      const countText = formatCount(count, t.parkrunner, t.parkrunners);
-      return interpolate(t.firstTimeVolunteersTitle, {
-        count: countText,
-      });
-    }
+    const countText =
+      t.languageName === 'Deutsch'
+        ? formatCountWithArticle(count, t.parkrunner, t.parkrunners, 'den', 'die')
+        : formatCountWithArticle(count, t.parkrunner, t.parkrunners);
+    
+    return interpolate(t.firstTimeVolunteersTitle, {
+      count: countText,
+    });
   }
 
   details(): string {
