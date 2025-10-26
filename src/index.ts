@@ -27,11 +27,7 @@ function populate(
   const t = getTranslations();
 
   const introduction = interpolate(t.introduction, {
-    finisherCount: formatCount(
-      rpe.finishers.length,
-      t.finisher,
-      t.finishers
-    ),
+    finisherCount: formatCount(rpe.finishers.length, t.finisher, t.finishers),
     volunteerCount: formatCount(
       volunteerWithCountList.length,
       t.volunteer,

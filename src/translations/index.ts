@@ -149,21 +149,12 @@ export function getStoredOrDetectedLocale(): string {
   return detectLocale();
 }
 
-// Pluralization helper that works with translations
-export function pluralizeTranslated(
-  singular: string,
-  plural: string,
-  count: number
-): string {
-  return count === 1 ? singular : plural;
-}
-
 // Format count with proper pluralization, omitting "1" when singular
 export function formatCount(
   count: number,
   singular: string,
   plural: string
 ): string {
-  const word = pluralizeTranslated(singular, plural, count);
+  const word = count === 1 ? singular : plural;
   return count === 1 ? word : `${count} ${word}`;
 }

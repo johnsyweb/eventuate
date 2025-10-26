@@ -1,9 +1,5 @@
 import { sortAndConjoin } from '../stringFunctions';
-import {
-  getTranslations,
-  interpolate,
-  formatCount,
-} from '../translations';
+import { getTranslations, interpolate, formatCount } from '../translations';
 
 export class FirstTimersPresenter {
   _firstTimers: string[];
@@ -17,11 +13,7 @@ export class FirstTimersPresenter {
   title(): string {
     const t = getTranslations();
     return interpolate(t.firstTimersTitle, {
-      count: formatCount(
-        this._firstTimers.length,
-        t.parkrunner,
-        t.parkrunners
-      ),
+      count: formatCount(this._firstTimers.length, t.parkrunner, t.parkrunners),
       eventName: this._eventName || t.fallbackParkrunName,
     });
   }
