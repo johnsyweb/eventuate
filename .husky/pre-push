@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Get the current branch name
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+remote_branch="origin/$current_branch"
+
+# Try to get the remote tracking branch, fall back to origin/main if not found
+if ! git rev-parse --verify "$remote_branch" >/dev/null 2>&1; then
+  remote_branch="origin/main"
+fi
+
+# Get list of changed files between HEAD and remote branch
+changed_files=$(git diff --name-only HEAD "$remote_branch" 2>/dev/null || echo "")
+
+# If no remote branch found or no changes, also check what's staged
+if [ -z "$changed_files" ]; then
+  changed_files=$(git diff --cached --name-only)
+fi
+
+# Patterns for userscript-related files
+userscript_patterns="src/.*\.ts$|src/.*\.js$|src/userscript\.template\.js$|src/bookmarklet\.template\.js$|webpack\.userscript\.config\.js$|webpack\.bookmarklet\.config\.js$|style/eventuate\.css$"
+
+# Check if any userscript-related files have changed
+userscript_changed=$(echo "$changed_files" | grep -E "$userscript_patterns" || echo "")
+
+if [ -n "$userscript_changed" ]; then
+  echo "📸 Userscript files have been modified. Generating screenshots..."
+  if ! pnpm build; then
+    echo "❌ Build failed. Please fix build errors before pushing."
+    exit 1
+  fi
+  if ! pnpm screenshots; then
+    echo "⚠️  Screenshot generation failed. Push will continue, but please generate screenshots manually."
+  fi
+fi
+
+exit 0
