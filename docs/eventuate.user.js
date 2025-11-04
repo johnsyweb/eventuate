@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://johnsy.com/eventuate/eventuate.user.js
-// @version      1.7.3
+// @version      1.8.0
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.7.3 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.8.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -267,7 +267,7 @@ exports.de = {
     firstTimeVolunteersTitle: 'Ein besonderes Willkommen an {count}, die zum ersten Mal freiwillig geholfen haben: ',
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
-    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, wöchentlichen, zeitgestoppten Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
+    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, spaßigen und freundlichen wöchentlichen Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
     facts: {
         sinceStarted: 'Seit {eventName} begonnen hat ',
         brilliantParkrunners: 'haben {count} brillante Parkrunner ihre Barcodes scannen lassen, ',
@@ -882,7 +882,7 @@ exports.en = {
     firstTimeVolunteersTitle: 'A special welcome to the {count} who volunteered for the first time: ',
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
-    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, weekly, timed events all over the world and also carry contact details in case of an emergency at an event",
+    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
     facts: {
         sinceStarted: 'Since {eventName} started ',
         brilliantParkrunners: '{count} brilliant parkrunners have had their barcodes scanned, ',

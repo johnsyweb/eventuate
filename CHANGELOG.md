@@ -1,3 +1,15 @@
+# [1.8.0](https://github.com/johnsyweb/eventuate/compare/v1.7.3...v1.8.0) (2025-11-04)
+
+
+### Bug Fixes
+
+* **translations:** update event description to match parkrun website ([ef44788](https://github.com/johnsyweb/eventuate/commit/ef44788715255bbbcf479e3283834ef3695e6d2c))
+
+
+### Features
+
+* hyperlegible font ([d9d5086](https://github.com/johnsyweb/eventuate/commit/d9d5086043c6570a63c649b541e5b5097692801f))
+
 ## [1.7.3](https://github.com/johnsyweb/eventuate/compare/v1.7.2...v1.7.3) (2025-10-26)
 
 
