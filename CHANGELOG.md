@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/johnsyweb/eventuate/compare/v1.8.0...v1.8.1) (2025-11-04)
+
+
+### Bug Fixes
+
+* remove deprecated husky lines from pre-push hook ([7e69d03](https://github.com/johnsyweb/eventuate/commit/7e69d039989eba60256238c3831ea49666e7443d))
+
 # [1.8.0](https://github.com/johnsyweb/eventuate/compare/v1.7.3...v1.8.0) (2025-11-04)
 
 
