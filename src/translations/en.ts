@@ -24,7 +24,7 @@ export const en = {
   volunteerInvitation:
     'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
   unknowns:
-    "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, weekly, timed events all over the world and also carry contact details in case of an emergency at an event",
+    "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
   facts: {
     sinceStarted: 'Since {eventName} started ',
     brilliantParkrunners:
