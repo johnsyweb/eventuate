@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/johnsyweb/eventuate/compare/v1.8.1...v1.8.2) (2025-11-09)
+
+
+### Bug Fixes
+
+* **docs:** render bookmarklet warning and use base urls ([b7c8e93](https://github.com/johnsyweb/eventuate/commit/b7c8e939c717b74fc7fb7766561a5493e2e7a92e))
+
 ## [1.8.1](https://github.com/johnsyweb/eventuate/compare/v1.8.0...v1.8.1) (2025-11-04)
 
 
