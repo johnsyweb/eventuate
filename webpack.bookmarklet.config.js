@@ -74,7 +74,7 @@ module.exports = {
             .replaceAll(
               '${warning}',
               sizeKB > 30
-                ? ' ** Warning:** This bookmarklet may not work in Chrome due to size limitations.\n'
+                ? '> **Warning:** This bookmarklet may not work in Chrome due to size limitations.\n{: .warning}\n\n'
                 : ''
             )
             .replaceAll('${sizeKB}', sizeKB.toFixed(2));

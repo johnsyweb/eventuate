@@ -10,7 +10,7 @@
     {% include enhanced-meta.html %}
     {% include meta.html %} 
     {% include styles.html %}
-    <link rel="canonical" href="{{ site.url }}{{ page.url }}" />
+    <link rel="canonical" href="{{ page.url | absolute_url }}" />
     <title>
       {{ page.title | default: "Eventuate - A tool for parkrun report writers" }} | johnsy.com/eventuate/
     </title>

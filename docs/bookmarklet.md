@@ -28,5 +28,9 @@ javascript:(function%20()%20%7B%0A%20%20%2F%2F%20Version%201.8.1%0A%20%20(()%3D%
 - Tap the address bar and then your bookmark
 - Your report information should appear
 
- ** Warning:** This bookmarklet may not work in Chrome due to size limitations.
- Size: 33.54KB
+> **Warning:** This bookmarklet may not work in Chrome due to size limitations.
+{: .warning}
+
+
+
+Size: 33.54KB

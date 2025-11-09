@@ -28,4 +28,6 @@ javascript:${encodedScript}
 - Tap the address bar and then your bookmark
 - Your report information should appear
 
-${warning} Size: ${sizeKB}KB
+${warning}
+
+Size: ${sizeKB}KB
