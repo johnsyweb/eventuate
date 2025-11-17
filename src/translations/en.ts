@@ -26,7 +26,7 @@ export const en = {
   unknowns:
     "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
   juniorSupervisionReminder:
-    'A reminder that at all 5km parkrun events, children under the age of 11 must be within arm\'s reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun\'s policy on children participating: https://support.parkrun.com/hc/articles/20038963108754',
+    "A reminder that at all 5km parkrun events, children under the age of 11 must be within arm's reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun's policy on children participating: https://support.parkrun.com/hc/articles/20038963108754",
   facts: {
     sinceStarted: 'Since {eventName} started ',
     brilliantParkrunners:

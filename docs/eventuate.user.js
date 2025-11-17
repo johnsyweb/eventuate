@@ -1032,7 +1032,7 @@ exports.en = {
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
     unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
-    juniorSupervisionReminder: 'A reminder that at all 5km parkrun events, children under the age of 11 must be within arm\'s reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun\'s policy on children participating: https://support.parkrun.com/hc/articles/20038963108754',
+    juniorSupervisionReminder: "A reminder that at all 5km parkrun events, children under the age of 11 must be within arm's reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun's policy on children participating: https://support.parkrun.com/hc/articles/20038963108754",
     facts: {
         sinceStarted: 'Since {eventName} started ',
         brilliantParkrunners: '{count} brilliant parkrunners have had their barcodes scanned, ',
@@ -1114,12 +1114,7 @@ class ResultsPageExtractor {
         this.eventName =
             resultsPageDocument.querySelector('.Results-header > h1')?.textContent ??
                 undefined;
-        // Check both event name and URL for junior parkrun indicators
-        const isJunior = this.eventName?.toLowerCase().includes('junior parkrun') ||
-            this.eventName?.toLowerCase().includes('juniors parkrun') ||
-            window.location.pathname.toLowerCase().includes('-juniors/') ||
-            window.location.pathname.toLowerCase().includes('/juniors/');
-        this.courseLength = isJunior ? 2 : 5;
+        this.courseLength = this.eventName?.includes('junior parkrun') ? 2 : 5;
         const rowElements = resultsPageDocument.querySelectorAll('.Results-table-row');
         this.finishers = Array.from(rowElements).map((d) => new Finisher_1.Finisher(this.removeSurnameFromJunior(d.dataset.name), d.dataset.agegroup, d.dataset.club, d.dataset.gender, d.dataset.position, d.dataset.runs, d.dataset.vols, d.dataset.agegrade, d.dataset.achievement, d.querySelector('.Results-table-td--time .compact')?.textContent ??
             undefined, athleteIDFromURI(d.querySelector('.Results-table-td--name a')
