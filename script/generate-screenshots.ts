@@ -15,7 +15,7 @@ interface ScreenshotConfig {
 const screenshotConfigs: ScreenshotConfig[] = [
   {
     name: 'screenshot',
-    url: 'https://www.parkrun.com.au/aurora/results/latestresults/',
+    url: 'https://www.parkrun.com.au/aintreereserve-juniors/results/latestresults/',
     waitForSelector: '#eventuate',
     waitForTimeout: 5000,
     viewport: { width: 1200, height: 800 },

@@ -8,27 +8,27 @@
 // @homepage     https://johnsy.com/eventuate/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=parkrun.com.au
 // @license      MIT
-// @match        *://www.parkrun.ca/*/results/latestresults/
-// @match        *://www.parkrun.co.at/*/results/latestresults/
-// @match        *://www.parkrun.co.nl/*/results/latestresults/
-// @match        *://www.parkrun.co.nz/*/results/latestresults/
-// @match        *://www.parkrun.co.za/*/results/latestresults/
-// @match        *://www.parkrun.com.au/*/results/latestresults/
-// @match        *://www.parkrun.com.de/*/results/latestresults/
-// @match        *://www.parkrun.dk/*/results/latestresults/
-// @match        *://www.parkrun.fi/*/results/latestresults/
-// @match        *://www.parkrun.fr/*/results/latestresults/
-// @match        *://www.parkrun.ie/*/results/latestresults/
-// @match        *://www.parkrun.it/*/results/latestresults/
-// @match        *://www.parkrun.jp/*/results/latestresults/
-// @match        *://www.parkrun.lt/*/results/latestresults/
-// @match        *://www.parkrun.my/*/results/latestresults/
-// @match        *://www.parkrun.no/*/results/latestresults/
-// @match        *://www.parkrun.org.uk/*/results/latestresults/
-// @match        *://www.parkrun.pl/*/results/latestresults/
-// @match        *://www.parkrun.se/*/results/latestresults/
-// @match        *://www.parkrun.sg/*/results/latestresults/
-// @match        *://www.parkrun.us/*/results/latestresults/
+// @match        *://www.parkrun.ca/*/results/latestresults*
+// @match        *://www.parkrun.co.at/*/results/latestresults*
+// @match        *://www.parkrun.co.nl/*/results/latestresults*
+// @match        *://www.parkrun.co.nz/*/results/latestresults*
+// @match        *://www.parkrun.co.za/*/results/latestresults*
+// @match        *://www.parkrun.com.au/*/results/latestresults*
+// @match        *://www.parkrun.com.de/*/results/latestresults*
+// @match        *://www.parkrun.dk/*/results/latestresults*
+// @match        *://www.parkrun.fi/*/results/latestresults*
+// @match        *://www.parkrun.fr/*/results/latestresults*
+// @match        *://www.parkrun.ie/*/results/latestresults*
+// @match        *://www.parkrun.it/*/results/latestresults*
+// @match        *://www.parkrun.jp/*/results/latestresults*
+// @match        *://www.parkrun.lt/*/results/latestresults*
+// @match        *://www.parkrun.my/*/results/latestresults*
+// @match        *://www.parkrun.no/*/results/latestresults*
+// @match        *://www.parkrun.org.uk/*/results/latestresults*
+// @match        *://www.parkrun.pl/*/results/latestresults*
+// @match        *://www.parkrun.se/*/results/latestresults*
+// @match        *://www.parkrun.sg/*/results/latestresults*
+// @match        *://www.parkrun.us/*/results/latestresults*
 // @namespace    https://johnsy.com/eventuate
 // @run-at       document-end
 // @tag          parkrun
@@ -268,6 +268,7 @@ exports.de = {
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
     unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, spaßigen und freundlichen wöchentlichen Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
+    juniorSupervisionReminder: 'Eine Erinnerung, dass bei allen 5km Parkrun-Veranstaltungen Kinder unter 11 Jahren jederzeit in Reichweite eines Elternteils, Erziehungsberechtigten oder einer beauftragten erwachsenen Person sein müssen. Wir danken Ihnen für Ihre Zusammenarbeit, um die Sicherheit aller Teilnehmer zu gewährleisten. Weitere Informationen finden Sie in der Parkrun-Richtlinie zur Teilnahme von Kindern: https://support.parkrun.com/hc/articles/20038963108754',
     facts: {
         sinceStarted: 'Seit {eventName} begonnen hat ',
         brilliantParkrunners: 'haben {count} brillante Parkrunner ihre Barcodes scannen lassen, ',
@@ -384,6 +385,10 @@ function changePathSegment(url, segmentIndex, newValue, pathSegments) {
     }
     return url;
 }
+function removeQueryParams(url) {
+    url.search = '';
+    return url;
+}
 function futureRosterUrl(currentHref) {
     const url = createUrlFromCurrent(currentHref);
     if (!url)
@@ -391,7 +396,7 @@ function futureRosterUrl(currentHref) {
     const pathSegments = getPathSegments(url);
     const eventShortName = pathSegments[1];
     url.pathname = [eventShortName, 'futureroster', ''].join('/');
-    return url.toString();
+    return removeQueryParams(url).toString();
 }
 function canonicalResultsPageUrl(eventNumber, currentHref) {
     const url = createUrlFromCurrent(currentHref);
@@ -400,9 +405,9 @@ function canonicalResultsPageUrl(eventNumber, currentHref) {
         return currentHref;
     const pathSegments = getPathSegments(url);
     if (pathSegments.length > 3 && pathSegments[2] === 'results') {
-        return changePathSegment(url, 3, normalisedEventNumber, pathSegments).toString();
+        return removeQueryParams(changePathSegment(url, 3, normalisedEventNumber, pathSegments)).toString();
     }
-    return currentHref;
+    return removeQueryParams(url).toString();
 }
 
 
@@ -823,6 +828,150 @@ exports.FirstTimersPresenter = FirstTimersPresenter;
 
 /***/ }),
 
+/***/ 565:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.JuniorSupervisionPresenter = void 0;
+const translations_1 = __webpack_require__(536);
+const ARM_REACH_SECONDS = 15;
+function timeToSeconds(timeStr) {
+    if (!timeStr) {
+        return null;
+    }
+    const parts = timeStr.split(':').map((p) => parseInt(p, 10));
+    if (parts.some(isNaN) || (parts.length !== 2 && parts.length !== 3)) {
+        return null;
+    }
+    const [hours = 0, minutes, seconds] = parts.length === 2 ? [0, ...parts] : parts;
+    return hours * 3600 + minutes * 60 + seconds;
+}
+function isUnder11(agegroup) {
+    if (!agegroup) {
+        return false;
+    }
+    return agegroup === 'JM10' || agegroup === 'JW10';
+}
+function isAdult18Plus(agegroup) {
+    return !!(agegroup?.startsWith('S') || agegroup?.startsWith('V'));
+}
+function findNearestAdult(child, allFinishers) {
+    const childTime = timeToSeconds(child.time);
+    if (childTime === null) {
+        return null;
+    }
+    const adults = allFinishers.filter((f) => isAdult18Plus(f.agegroup) && timeToSeconds(f.time) !== null);
+    if (adults.length === 0) {
+        return null;
+    }
+    let nearest = null;
+    let minDelta = Infinity;
+    for (const adult of adults) {
+        const adultTime = timeToSeconds(adult.time);
+        if (adultTime === null) {
+            continue;
+        }
+        const delta = Math.abs(adultTime - childTime);
+        if (delta < minDelta) {
+            minDelta = delta;
+            nearest = { finisher: adult, timeDelta: delta };
+        }
+    }
+    return nearest;
+}
+class JuniorSupervisionPresenter {
+    _extractor;
+    _hasSupervisionIssue;
+    _childCheckResults;
+    constructor(extractor) {
+        this._extractor = extractor;
+        const result = this.checkSupervision();
+        this._hasSupervisionIssue = result.hasIssue;
+        this._childCheckResults = result.checkResults;
+    }
+    checkSupervision() {
+        if (this._extractor.courseLength !== 5) {
+            return { hasIssue: false, checkResults: [] };
+        }
+        const children = this._extractor.finishers.filter((f) => isUnder11(f.agegroup));
+        if (children.length === 0) {
+            return { hasIssue: false, checkResults: [] };
+        }
+        const checkResults = children.map((child) => ({
+            child,
+            nearest: findNearestAdult(child, this._extractor.finishers),
+        }));
+        const hasIssue = checkResults.some((result) => {
+            if (!result.nearest) {
+                return true;
+            }
+            return result.nearest.timeDelta > ARM_REACH_SECONDS;
+        });
+        if (hasIssue) {
+            this.logDiagnostics(checkResults);
+        }
+        return { hasIssue, checkResults };
+    }
+    getSearchString() {
+        return typeof window !== 'undefined' ? window.location.search : '';
+    }
+    logDiagnostics(checkResults) {
+        const urlParams = new URLSearchParams(this.getSearchString());
+        const shouldLog = urlParams.has('debug-juniors') || urlParams.has('log-juniors');
+        if (!shouldLog) {
+            return;
+        }
+        for (const result of checkResults) {
+            if (result.nearest) {
+                console.log('Junior supervision check:', {
+                    child: {
+                        name: result.child.name,
+                        agegroup: result.child.agegroup,
+                        time: result.child.time,
+                        position: result.child.position,
+                    },
+                    nearestAdult: {
+                        name: result.nearest.finisher.name,
+                        agegroup: result.nearest.finisher.agegroup,
+                        time: result.nearest.finisher.time,
+                        position: result.nearest.finisher.position,
+                    },
+                    timeDeltaSeconds: result.nearest.timeDelta,
+                });
+            }
+            else {
+                console.log('Junior supervision check:', {
+                    child: {
+                        name: result.child.name,
+                        agegroup: result.child.agegroup,
+                        time: result.child.time,
+                        position: result.child.position,
+                    },
+                    nearestAdult: null,
+                    timeDeltaSeconds: null,
+                });
+            }
+        }
+    }
+    hasSupervisionIssue() {
+        return this._hasSupervisionIssue;
+    }
+    details() {
+        if (!this._hasSupervisionIssue) {
+            return '';
+        }
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.juniorSupervisionReminder, {
+            eventName: this._extractor.eventName || t.fallbackParkrunName,
+        });
+    }
+}
+exports.JuniorSupervisionPresenter = JuniorSupervisionPresenter;
+
+
+/***/ }),
+
 /***/ 654:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -883,6 +1032,7 @@ exports.en = {
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
     unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
+    juniorSupervisionReminder: 'A reminder that at all 5km parkrun events, children under the age of 11 must be within arm\'s reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun\'s policy on children participating: https://support.parkrun.com/hc/articles/20038963108754',
     facts: {
         sinceStarted: 'Since {eventName} started ',
         brilliantParkrunners: '{count} brilliant parkrunners have had their barcodes scanned, ',
@@ -964,7 +1114,12 @@ class ResultsPageExtractor {
         this.eventName =
             resultsPageDocument.querySelector('.Results-header > h1')?.textContent ??
                 undefined;
-        this.courseLength = this.eventName?.includes('junior parkrun') ? 2 : 5;
+        // Check both event name and URL for junior parkrun indicators
+        const isJunior = this.eventName?.toLowerCase().includes('junior parkrun') ||
+            this.eventName?.toLowerCase().includes('juniors parkrun') ||
+            window.location.pathname.toLowerCase().includes('-juniors/') ||
+            window.location.pathname.toLowerCase().includes('/juniors/');
+        this.courseLength = isJunior ? 2 : 5;
         const rowElements = resultsPageDocument.querySelectorAll('.Results-table-row');
         this.finishers = Array.from(rowElements).map((d) => new Finisher_1.Finisher(this.removeSurnameFromJunior(d.dataset.name), d.dataset.agegroup, d.dataset.club, d.dataset.gender, d.dataset.position, d.dataset.runs, d.dataset.vols, d.dataset.agegrade, d.dataset.achievement, d.querySelector('.Results-table-td--time .compact')?.textContent ??
             undefined, athleteIDFromURI(d.querySelector('.Results-table-td--name a')
@@ -1127,6 +1282,7 @@ const fiveKVolunteersToMilestones_1 = __webpack_require__(448);
 const MilestonePresenter_1 = __webpack_require__(75);
 const FirstTimersPresenter_1 = __webpack_require__(545);
 const FirstTimeVolunteersPresenter_1 = __webpack_require__(169);
+const JuniorSupervisionPresenter_1 = __webpack_require__(565);
 const ResultsPageExtractor_1 = __webpack_require__(694);
 const twoKFinishersToMilestone_1 = __webpack_require__(135);
 const twoKVolunteersToMilestones_1 = __webpack_require__(184);
@@ -1168,6 +1324,7 @@ function populate(rpe, volunteerWithCountList, message) {
         ...finisherMilestoneCelebrations,
     ];
     const milestonePresenter = new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations);
+    const juniorSupervisionPresenter = new JuniorSupervisionPresenter_1.JuniorSupervisionPresenter(rpe);
     const facts = [
         (0, translations_1.interpolate)(t.facts.sinceStarted, {
             eventName: rpe.eventName || t.fallbackParkrunName,
@@ -1251,6 +1408,12 @@ function populate(rpe, volunteerWithCountList, message) {
                 ? (0, translations_1.interpolate)(t.unknowns, {
                     eventName: rpe.eventName || t.fallbackParkrunName,
                 })
+                : undefined,
+        },
+        juniorSupervision: {
+            title: '',
+            details: juniorSupervisionPresenter.hasSupervisionIssue()
+                ? juniorSupervisionPresenter.details()
                 : undefined,
         },
         facts: {

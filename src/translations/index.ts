@@ -18,6 +18,7 @@ export interface TranslationKeys {
   fullResults: string;
   volunteerInvitation: string;
   unknowns: string;
+  juniorSupervisionReminder: string;
   facts: {
     sinceStarted: string;
     brilliantParkrunners: string;

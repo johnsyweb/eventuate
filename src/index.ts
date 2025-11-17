@@ -5,6 +5,7 @@ import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMil
 import { MilestonePresenter } from './presenters/MilestonePresenter';
 import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
 import { FirstTimeVolunteersPresenter } from './presenters/FirstTimeVolunteersPresenter';
+import { JuniorSupervisionPresenter } from './presenters/JuniorSupervisionPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
@@ -88,6 +89,8 @@ function populate(
     ...finisherMilestoneCelebrations,
   ];
   const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
+
+  const juniorSupervisionPresenter = new JuniorSupervisionPresenter(rpe);
 
   const facts = [
     interpolate(t.facts.sinceStarted, {
@@ -183,6 +186,12 @@ function populate(
               eventName: rpe.eventName || t.fallbackParkrunName,
             })
           : undefined,
+    },
+    juniorSupervision: {
+      title: '',
+      details: juniorSupervisionPresenter.hasSupervisionIssue()
+        ? juniorSupervisionPresenter.details()
+        : undefined,
     },
     facts: {
       title: '',

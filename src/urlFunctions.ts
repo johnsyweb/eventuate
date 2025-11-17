@@ -34,6 +34,11 @@ function changePathSegment(
   return url;
 }
 
+function removeQueryParams(url: URL): URL {
+  url.search = '';
+  return url;
+}
+
 export function futureRosterUrl(currentHref: string): string {
   const url = createUrlFromCurrent(currentHref);
   if (!url) return currentHref;
@@ -41,7 +46,7 @@ export function futureRosterUrl(currentHref: string): string {
   const pathSegments = getPathSegments(url);
   const eventShortName = pathSegments[1];
   url.pathname = [eventShortName, 'futureroster', ''].join('/');
-  return url.toString();
+  return removeQueryParams(url).toString();
 }
 
 export function canonicalResultsPageUrl(
@@ -54,13 +59,10 @@ export function canonicalResultsPageUrl(
 
   const pathSegments = getPathSegments(url);
   if (pathSegments.length > 3 && pathSegments[2] === 'results') {
-    return changePathSegment(
-      url,
-      3,
-      normalisedEventNumber,
-      pathSegments
+    return removeQueryParams(
+      changePathSegment(url, 3, normalisedEventNumber, pathSegments)
     ).toString();
   }
 
-  return currentHref;
+  return removeQueryParams(url).toString();
 }

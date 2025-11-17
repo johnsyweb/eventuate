@@ -37,6 +37,7 @@ As soon as the latest results page loads for an event, you'll see a bunch of use
 - Gratitude to volunteers
 - Invitation to volunteer with a link to the roster
 - Reminder to bring a barcode
+- Reminder about junior supervision policy for 5km events
 - Overall event summary facts and figures
 
 ![Eventuate extension output displaying an event summary with a yellow background. Shows participant statistics including finishers, volunteers, milestone achievers, first-timers,  personal bests, and various community statistics. Contains red notification banner indicating this is extracted data for report writing assistance.][eventuate-results-summary-image]

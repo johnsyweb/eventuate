@@ -17,4 +17,19 @@ describe('URL Functions', () => {
     const result = canonicalResultsPageUrl('invalid', testHref);
     expect(result).toBe('https://www.parkrun.org.uk/beeston/results/invalid/');
   });
+
+  test('futureRosterUrl should remove query parameters', () => {
+    const result = futureRosterUrl(
+      'https://www.parkrun.org.uk/beeston/results/latestresults/?log-juniors=true'
+    );
+    expect(result).toBe('https://www.parkrun.org.uk/beeston/futureroster/');
+  });
+
+  test('canonicalResultsPageUrl should remove query parameters', () => {
+    const result = canonicalResultsPageUrl(
+      '#123',
+      'https://www.parkrun.org.uk/beeston/results/latestresults/?debug-juniors=true'
+    );
+    expect(result).toBe('https://www.parkrun.org.uk/beeston/results/123/');
+  });
 });
