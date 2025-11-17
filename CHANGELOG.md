@@ -1,3 +1,15 @@
+# [1.9.0](https://github.com/johnsyweb/eventuate/compare/v1.8.2...v1.9.0) (2025-11-17)
+
+
+### Bug Fixes
+
+* remove unused presenter variables in tests ([8aaa5ce](https://github.com/johnsyweb/eventuate/commit/8aaa5cef4cc9763910a78bf6aac06f02bb41b10f))
+
+
+### Features
+
+* add junior supervision reminder for 5km events ([f3d349b](https://github.com/johnsyweb/eventuate/commit/f3d349b0c32c18335772e71be8d94690eaeea546))
+
 ## [1.8.2](https://github.com/johnsyweb/eventuate/compare/v1.8.1...v1.8.2) (2025-11-09)
 
 
