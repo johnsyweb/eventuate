@@ -659,7 +659,7 @@ describe('JuniorSupervisionPresenter', () => {
           '20:20'
         ),
       ]);
-      const presenter = new (class extends JuniorSupervisionPresenter {
+      void new (class extends JuniorSupervisionPresenter {
         protected getSearchString() {
           return '?log-juniors=true';
         }
@@ -695,7 +695,7 @@ describe('JuniorSupervisionPresenter', () => {
           '20:20'
         ),
       ]);
-      const presenter = new (class extends JuniorSupervisionPresenter {
+      void new (class extends JuniorSupervisionPresenter {
         protected getSearchString() {
           return '';
         }
@@ -731,7 +731,7 @@ describe('JuniorSupervisionPresenter', () => {
           '20:20'
         ),
       ]);
-      const presenter = new (class extends JuniorSupervisionPresenter {
+      void new (class extends JuniorSupervisionPresenter {
         protected getSearchString() {
           return '?debug-juniors=true';
         }
@@ -771,7 +771,7 @@ describe('JuniorSupervisionPresenter', () => {
           '20:00'
         ),
       ]);
-      const presenter = new (class extends JuniorSupervisionPresenter {
+      void new (class extends JuniorSupervisionPresenter {
         protected getSearchString() {
           return '?debug-juniors=true';
         }
