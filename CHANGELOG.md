@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/johnsyweb/eventuate/compare/v1.9.0...v1.9.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* **ci:** deploy GitHub Pages only after successful release ([ae1f19e](https://github.com/johnsyweb/eventuate/commit/ae1f19e7d659d9d6c0bfee53a520e5467818e211))
+
 # [1.9.0](https://github.com/johnsyweb/eventuate/compare/v1.8.2...v1.9.0) (2025-11-17)
 
 
