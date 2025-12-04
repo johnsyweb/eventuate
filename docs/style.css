@@ -6,6 +6,17 @@ ul {
   list-style-type: none;
 }
 
+ul.badges {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul.badges li {
+  display: inline-block;
+  margin-right: 10px;
+  list-style-type: none;
+}
+
 li {
   margin-right: 10px;
 }

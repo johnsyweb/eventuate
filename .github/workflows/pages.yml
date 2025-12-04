@@ -4,6 +4,11 @@ name: Deploy GitHub Pages
 on:
   release:
     types: [published]
+  workflow_run:
+    workflows: ['Node.js CI']
+    branches: [main]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -16,7 +21,57 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check-and-deploy:
+    runs-on: ubuntu-latest
+    if:
+      ${{ github.event_name == 'release' || github.event.workflow_run.conclusion
+      == 'success' || github.event_name == 'workflow_dispatch' }}
+    outputs:
+      should-deploy: ${{ steps.check.outputs.should-deploy }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        with:
+          ref:
+            ${{ github.event.release.target_commitish ||
+            github.event.workflow_run.head_branch || github.ref || 'main' }}
+          fetch-depth: 0
+
+      - name: Check if should deploy
+        id: check
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "Release event triggered, deploying Pages"
+            echo "should-deploy=true" >> ${GITHUB_OUTPUT}
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Manual deployment triggered, deploying Pages"
+            echo "should-deploy=true" >> ${GITHUB_OUTPUT}
+          else
+            # Check if changes are docs-only (if so, deploy Pages even without release)
+            commit_sha="${{ github.event.workflow_run.head_sha }}"
+            parent_sha=$(git rev-parse ${commit_sha}^ 2>/dev/null || echo "")
+            
+            if [ -n "$parent_sha" ]; then
+              changed_files=$(git diff --name-only ${parent_sha} ${commit_sha} 2>/dev/null || echo "")
+            else
+              changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+            fi
+            
+            # Check if all changed files are in docs/ or .github/
+            non_docs_files=$(echo "$changed_files" | grep -v "^docs/" | grep -v "^\.github/" | grep -v "^$" || true)
+            
+            if [ -z "$non_docs_files" ]; then
+              echo "Docs-only changes detected, deploying Pages"
+              echo "should-deploy=true" >> ${GITHUB_OUTPUT}
+            else
+              echo "Non-docs changes detected, skipping Pages deployment (will be deployed via release event)"
+              echo "should-deploy=false" >> ${GITHUB_OUTPUT}
+            fi
+          fi
+
   deploy:
+    needs: check-and-deploy
+    if: needs.check-and-deploy.outputs.should-deploy == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -26,7 +81,8 @@ jobs:
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
         with:
           ref:
-            ${{ github.event.release.target_commitish || github.ref || 'main' }}
+            ${{ github.event.release.target_commitish ||
+            github.event.workflow_run.head_branch || github.ref || 'main' }}
           fetch-depth: 0
 
       - name: Setup Node.js

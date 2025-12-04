@@ -23,6 +23,36 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check if changes are docs-only
+        id: check-docs-only
+        run: |
+          # Get the commit SHA from the workflow run
+          commit_sha="${{ github.event.workflow_run.head_sha }}"
+
+          # Get the parent commit (the commit before this one)
+          parent_sha=$(git rev-parse ${commit_sha}^ 2>/dev/null || echo "")
+
+          if [ -n "$parent_sha" ]; then
+            # Check files changed between parent and current commit
+            changed_files=$(git diff --name-only ${parent_sha} ${commit_sha} 2>/dev/null || echo "")
+          else
+            # Fallback: check files changed in the last commit
+            changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+          fi
+
+          # Check if all changed files are in docs/ or .github/
+          non_docs_files=$(echo "$changed_files" | grep -v "^docs/" | grep -v "^\.github/" | grep -v "^$" || true)
+
+          if [ -z "$non_docs_files" ]; then
+            echo "All changes are in docs/ or .github/, skipping release"
+            echo "skip-release=true" >> ${GITHUB_OUTPUT}
+          else
+            echo "Non-docs files changed, proceeding with release"
+            echo "Changed files:"
+            echo "$changed_files"
+            echo "skip-release=false" >> ${GITHUB_OUTPUT}
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
@@ -37,25 +67,30 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Build project
+        if: steps.check-docs-only.outputs.skip-release != 'true'
         run: pnpm build
 
       - name: Version before release
+        if: steps.check-docs-only.outputs.skip-release != 'true'
         id: version-before
         run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
 
       - name: Release
+        if: steps.check-docs-only.outputs.skip-release != 'true'
         id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm semantic-release
 
       - name: Version after release
+        if: steps.check-docs-only.outputs.skip-release != 'true'
         id: version-after
         run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
 
       - name: Sign and submit to AMO
         if:
-          ${{steps.version-before.outputs.version !=
+          ${{steps.check-docs-only.outputs.skip-release != 'true' &&
+          steps.version-before.outputs.version !=
           steps.version-after.outputs.version}}
         run: |
           echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
