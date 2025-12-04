@@ -2,11 +2,8 @@
 name: Deploy GitHub Pages
 
 on:
-  workflow_run:
-    workflows: ['Release']
-    branches: [main]
-    types:
-      - completed
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -19,51 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  check-release:
-    runs-on: ubuntu-latest
-    if:
-      ${{ github.event.workflow_run.conclusion == 'success' || github.event_name
-      == 'workflow_dispatch' }}
-    outputs:
-      should-deploy: ${{ steps.check.outputs.should-deploy }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
-        with:
-          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-          fetch-depth: 0
-
-      - name: Check if release was created
-        id: check
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "Manual deployment triggered, proceeding with deployment"
-            echo "should-deploy=true" >> ${GITHUB_OUTPUT}
-          else
-            # Fetch all tags and latest commits to ensure we have the latest state
-            git fetch --tags --all --force
-            
-            # Get the latest commit on the branch (semantic-release creates a new commit)
-            branch_name="${{ github.event.workflow_run.head_branch || 'main' }}"
-            git checkout "$branch_name"
-            git pull origin "$branch_name" || true
-            
-            # Check if the latest commit has a tag (semantic-release tags releases)
-            current_sha=$(git rev-parse HEAD)
-            tag_on_commit=$(git tag --points-at HEAD 2>/dev/null | head -n 1 || echo "")
-            
-            if [ -n "$tag_on_commit" ]; then
-              echo "Release $tag_on_commit was created, proceeding with deployment"
-              echo "should-deploy=true" >> ${GITHUB_OUTPUT}
-            else
-              echo "No tag found on latest commit ($current_sha), skipping deployment (no release was created)"
-              echo "should-deploy=false" >> ${GITHUB_OUTPUT}
-            fi
-          fi
-
   deploy:
-    needs: check-release
-    if: needs.check-release.outputs.should-deploy == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -72,7 +25,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
         with:
-          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
+          ref:
+            ${{ github.event.release.target_commitish || github.ref || 'main' }}
           fetch-depth: 0
 
       - name: Setup Node.js
