@@ -1,3 +1,15 @@
+# [1.10.0](https://github.com/johnsyweb/eventuate/compare/v1.9.1...v1.10.0) (2025-12-04)
+
+
+### Bug Fixes
+
+* **docs:** correct typo in navigation - Blog not Bog ([402a698](https://github.com/johnsyweb/eventuate/commit/402a698a321d5bc81f24b61197f2d90a45d16cd5))
+
+
+### Features
+
+* **docs:** align pages with johnsy.com navigation and footer ([dd7c396](https://github.com/johnsyweb/eventuate/commit/dd7c3960c529b9a5e33e37ba6445d6a9c128438a))
+
 ## [1.9.1](https://github.com/johnsyweb/eventuate/compare/v1.9.0...v1.9.1) (2025-11-25)
 
 
