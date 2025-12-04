@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/johnsyweb/eventuate/compare/v1.10.0...v1.10.1) (2025-12-04)
+
+
+### Bug Fixes
+
+* **ci:** trigger Pages deployment on release event instead of workflow_run ([396f5b7](https://github.com/johnsyweb/eventuate/commit/396f5b7ef2e3898c767d843d5629a63eeb6f149c))
+
 # [1.10.0](https://github.com/johnsyweb/eventuate/compare/v1.9.1...v1.10.0) (2025-12-04)
 
 
