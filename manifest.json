@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Eventuate",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "author": "Pete Johns",
   "homepage_url": "https://github.com/johnsyweb/eventuate/",
   "description": "Extracts information from parkrun results pages for inclusion in reports. Supports English and German languages.",
