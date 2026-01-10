@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/johnsyweb/eventuate/compare/v1.11.0...v1.11.1) (2026-01-10)
+
+
+### Bug Fixes
+
+* ensure volunteer profile URLs end with trailing slash ([fbdb3ad](https://github.com/johnsyweb/eventuate/commit/fbdb3ad14204ad5e7f4688de43f33782680e84d2))
+
 # [1.11.0](https://github.com/johnsyweb/eventuate/compare/v1.10.1...v1.11.0) (2026-01-07)
 
 
