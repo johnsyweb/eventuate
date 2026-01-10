@@ -134,9 +134,11 @@ export class ResultsPageExtractor {
 
   volunteersList(): Volunteer[] {
     return Array.from(this.volunteerElements()).map((v) => {
+      const href = v.getAttribute('href') ?? '';
+      const link = href.endsWith('/') ? href : `${href}/`;
       return {
         name: this.removeSurnameFromJunior(v.text),
-        link: v.getAttribute('href') ?? '',
+        link,
         athleteID: Number(v.dataset.athleteid),
         agegroup: v.dataset.agegroup,
         vols: Number(v.dataset.vols),

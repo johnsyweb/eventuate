@@ -64,7 +64,7 @@ describe('ResultsPageExtractor', () => {
         // RD: Didn't finish
         expect(volunteers[2]).toEqual({
           name: 'Pete JOHNS',
-          link: '/brimbank/parkrunner/1001388',
+          link: '/brimbank/parkrunner/1001388/',
           athleteID: 1001388,
           agegroup: undefined,
           vols: NaN,
@@ -73,7 +73,7 @@ describe('ResultsPageExtractor', () => {
         // Tailwalker: Finished
         expect(volunteers[1]).toEqual({
           name: 'Robyn DOIG',
-          link: '/brimbank/parkrunner/8094033',
+          link: '/brimbank/parkrunner/8094033/',
           athleteID: 8094033,
           agegroup: 'VW70-74',
           vols: 33,
