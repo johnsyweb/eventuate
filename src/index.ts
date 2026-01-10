@@ -20,9 +20,54 @@ import {
 } from './translations';
 import { shareReportText } from './share';
 
+interface Presenters {
+  firstTimers: FirstTimersPresenter;
+  firstTimeVolunteers: FirstTimeVolunteersPresenter;
+  milestone: MilestonePresenter;
+  juniorSupervision: JuniorSupervisionPresenter;
+}
+
+function createPresenters(
+  rpe: ResultsPageExtractor,
+  volunteerWithCountList: VolunteerWithCount[]
+): Presenters {
+  const firstTimersPresenter = new FirstTimersPresenter(
+    rpe.firstTimers,
+    rpe.eventName
+  );
+
+  const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter(
+    volunteerWithCountList,
+    rpe.eventName
+  );
+
+  const finisherMilestoneCelebrations =
+    rpe.courseLength == 2
+      ? [
+          ...twoKVolunteersToMilestones(volunteerWithCountList),
+          ...twoKFinishersToMilestones(rpe.finishers),
+        ]
+      : fiveKFinishersToMilestones(rpe.finishers);
+  const milestoneCelebrations = [
+    ...fiveKVolunteersToMilestones(volunteerWithCountList),
+    ...finisherMilestoneCelebrations,
+  ];
+  const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
+
+  const juniorSupervisionPresenter = new JuniorSupervisionPresenter(rpe);
+
+  return {
+    firstTimers: firstTimersPresenter,
+    firstTimeVolunteers: firstTimeVolunteersPresenter,
+    milestone: milestonePresenter,
+    juniorSupervision: juniorSupervisionPresenter,
+  };
+}
+
 function populate(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[],
+  presenters: Presenters,
   message?: string
 ): void {
   const t = getTranslations();
@@ -46,16 +91,6 @@ function populate(
     ),
   });
 
-  const firstTimersPresenter = new FirstTimersPresenter(
-    rpe.firstTimers,
-    rpe.eventName
-  );
-
-  const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter(
-    volunteerWithCountList,
-    rpe.eventName
-  );
-
   const finishersWithNewPBsTitle = interpolate(t.finishersWithNewPBsTitle, {
     eventName: rpe.eventName || t.fallbackParkrunName,
     count: formatCount(
@@ -76,21 +111,6 @@ function populate(
   const volunteersTitle = interpolate(t.volunteersTitle, {
     eventName: rpe.eventName || t.fallbackParkrunName,
   });
-
-  const finisherMilestoneCelebrations =
-    rpe.courseLength == 2
-      ? [
-          ...twoKVolunteersToMilestones(volunteerWithCountList),
-          ...twoKFinishersToMilestones(rpe.finishers),
-        ]
-      : fiveKFinishersToMilestones(rpe.finishers);
-  const milestoneCelebrations = [
-    ...fiveKVolunteersToMilestones(volunteerWithCountList),
-    ...finisherMilestoneCelebrations,
-  ];
-  const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
-
-  const juniorSupervisionPresenter = new JuniorSupervisionPresenter(rpe);
 
   const facts = [
     interpolate(t.facts.sinceStarted, {
@@ -127,16 +147,16 @@ function populate(
     introduction: { title: '', details: introduction },
 
     milestoneCelebrations: {
-      title: milestonePresenter.title(),
-      details: milestonePresenter.details(),
+      title: presenters.milestone.title(),
+      details: presenters.milestone.details(),
     },
     newestParkrunners: {
       title: newestParkrunnersTitle,
       details: sortAndConjoin(rpe.newestParkrunners),
     },
     firstTimers: {
-      title: firstTimersPresenter.title(),
-      details: firstTimersPresenter.details(),
+      title: presenters.firstTimers.title(),
+      details: presenters.firstTimers.details(),
     },
     newPBs: {
       title: finishersWithNewPBsTitle,
@@ -165,10 +185,10 @@ function populate(
           .map((v) => v.name)
       ),
     },
-    ...(firstTimeVolunteersPresenter.hasFirstTimeVolunteers() && {
+    ...(presenters.firstTimeVolunteers.hasFirstTimeVolunteers() && {
       firstTimeVolunteers: {
-        title: firstTimeVolunteersPresenter.title(),
-        details: firstTimeVolunteersPresenter.details(),
+        title: presenters.firstTimeVolunteers.title(),
+        details: presenters.firstTimeVolunteers.details(),
       },
     }),
     volunteerInvitation: {
@@ -189,8 +209,8 @@ function populate(
     },
     juniorSupervision: {
       title: '',
-      details: juniorSupervisionPresenter.hasSupervisionIssue()
-        ? juniorSupervisionPresenter.details()
+      details: presenters.juniorSupervision.hasSupervisionIssue()
+        ? presenters.juniorSupervision.details()
         : undefined,
     },
     facts: {
@@ -262,9 +282,13 @@ function eventuate() {
     count: waitingOn.length,
   });
 
-  populate(rpe, volunteerWithCountList, loadingMessage);
+  const presenters = createPresenters(rpe, volunteerWithCountList);
 
-  Promise.all(waitingOn).then(() => populate(rpe, volunteerWithCountList));
+  populate(rpe, volunteerWithCountList, presenters, loadingMessage);
+
+  Promise.all(waitingOn).then(() =>
+    populate(rpe, volunteerWithCountList, presenters)
+  );
 }
 
 (window as WindowWithEventuate).eventuate = eventuate;
