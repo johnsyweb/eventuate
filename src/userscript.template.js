@@ -2,10 +2,10 @@
 // @name         Eventuate
 // @description  Extracts information from parkrun results pages for inclusion in reports. Supports English and German languages with automatic browser locale detection.
 // @author       Pete Johns (@johnsyweb)
-// @downloadURL  https://johnsy.com/eventuate/eventuate.user.js
+// @downloadURL  https://www.johnsy.com/eventuate/eventuate.user.js
 // @grant        GM_addStyle
 // @grant        GM.addStyle
-// @homepage     https://johnsy.com/eventuate/
+// @homepage     https://www.johnsy.com/eventuate/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=parkrun.com.au
 // @license      MIT
 // @match        *://www.parkrun.ca/*/results/latestresults*
@@ -29,11 +29,11 @@
 // @match        *://www.parkrun.se/*/results/latestresults*
 // @match        *://www.parkrun.sg/*/results/latestresults*
 // @match        *://www.parkrun.us/*/results/latestresults*
-// @namespace    https://johnsy.com/eventuate
+// @namespace    https://www.johnsy.com/eventuate
 // @run-at       document-end
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
-// @updateURL    https://johnsy.com/eventuate/eventuate.user.js
+// @updateURL    https://www.johnsy.com/eventuate/eventuate.user.js
 // @version      ${version}
 // ==/UserScript==
 
