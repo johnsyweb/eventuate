@@ -86,7 +86,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238
         with:
           node-version-file: '.tool-versions'
 
@@ -96,7 +96,7 @@ jobs:
           run_install: true
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@675dd7ba1b06c8786a1480d89c384f5620a42647
+        uses: ruby/setup-ruby@80740b3b13bf9857e28854481ca95a84e78a2bdf
         with:
           bundler-cache: true
           working-directory: docs
