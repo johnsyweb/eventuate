@@ -1,10 +1,6 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { getTranslations, interpolate } from '../translations';
-
-export interface FirstTimerWithFinishCount {
-  name: string;
-  finishes: number;
-}
+import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 
 export class FirstTimersLaunchEventPresenter {
   _firstTimersWithCounts: FirstTimerWithFinishCount[];

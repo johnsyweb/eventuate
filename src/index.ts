@@ -33,7 +33,7 @@ function createPresenters(
   volunteerWithCountList: VolunteerWithCount[]
 ): Presenters {
   const firstTimersPresenter = new FirstTimersPresenter(
-    rpe.firstTimers,
+    rpe.firstTimersWithFinishCounts,
     rpe.eventName
   );
 

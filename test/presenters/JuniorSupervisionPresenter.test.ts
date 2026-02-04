@@ -20,7 +20,7 @@ function createMockExtractor(
     eventNumber: '#1',
     unknowns: [],
     newestParkrunners: [],
-    firstTimers: [],
+    firstTimersWithFinishCounts: [],
     finishersWithNewPBs: [],
     runningWalkingGroups: [],
     facts: {

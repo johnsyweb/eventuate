@@ -1,6 +1,7 @@
 import { IResultsPageStats } from '../types/IResultsPageStats';
 import { Finisher, IFinisher } from '../types/Finisher';
 import { Volunteer } from '../types/Volunteer';
+import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 
 function athleteIDFromURI(uri: string): number {
   return Number(uri?.split('/')?.slice(-1));
@@ -14,8 +15,7 @@ export class ResultsPageExtractor {
   finishers: IFinisher[];
   unknowns: string[];
   newestParkrunners: string[];
-  firstTimers: string[];
-  firstTimersWithFinishCounts: Array<{ name: string; finishes: number }>;
+  firstTimersWithFinishCounts: FirstTimerWithFinishCount[];
   finishersWithNewPBs: string[];
   runningWalkingGroups: string[];
   facts: IResultsPageStats;
@@ -70,14 +70,6 @@ export class ResultsPageExtractor {
     this.newestParkrunners = this.finishers
       .filter((p) => Number(p.runs) === 1)
       .map((p) => p.name);
-
-    this.firstTimers = Array.from(rowElements)
-      .filter(
-        (tr) =>
-          tr.querySelector('td.Results-table-td--ft') &&
-          Number(tr.dataset.runs) > 1
-      )
-      .map((tr) => this.removeSurnameFromJunior(tr.dataset.name));
 
     this.firstTimersWithFinishCounts = Array.from(rowElements)
       .filter(

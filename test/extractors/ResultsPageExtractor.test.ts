@@ -100,8 +100,11 @@ describe('ResultsPageExtractor', () => {
     });
 
     it('identifies first timers', () => {
-      expect(extractor.firstTimers).toHaveLength(32);
-      expect(extractor.firstTimers[0]).toEqual('Tim CHIU');
+      expect(extractor.firstTimersWithFinishCounts).toHaveLength(32);
+      expect(extractor.firstTimersWithFinishCounts[0].name).toEqual('Tim CHIU');
+      expect(extractor.firstTimersWithFinishCounts[0].finishes).toBeGreaterThan(
+        1
+      );
     });
 
     it('identifies PBs', () => {
