@@ -30,7 +30,9 @@ export class FactsPresenter {
         count: this._facts.finishes?.toLocaleString() || '0',
       }),
       interpolate(t.facts.coveredDistance, {
-        distance: ((this._facts.finishes || 0) * this._courseLength).toLocaleString(),
+        distance: (
+          (this._facts.finishes || 0) * this._courseLength
+        ).toLocaleString(),
       }),
       interpolate(t.facts.celebratingPBs, {
         count: this._facts.pbs?.toLocaleString() || '0',
