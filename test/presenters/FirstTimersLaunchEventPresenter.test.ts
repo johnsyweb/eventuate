@@ -60,7 +60,7 @@ describe('FirstTimersLaunchEventPresenter', () => {
       );
       const details = presenter.details();
       expect(details).toBe(
-        'Alice BROWN (20), Bob SMITH (15) and Zoe ADAM (10). Thank you for travelling to join us at our inaugural event. With 45 finishes completed between you, we would really welcome your expertise in supporting this event in the local community over the coming weeks while we get established. Please consider returning soon to don a volunteer vest.'
+        'Alice BROWN (20), Bob SMITH (15) and Zoe ADAM (10). Thank you for travelling to join us at our inaugural event. With 45 finishes completed between you, we would really welcome your expertise in supporting this event in the local community over the coming weeks while we get established. Please consider returning soon to don a volunteer vest'
       );
     });
 

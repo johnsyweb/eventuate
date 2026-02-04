@@ -12,7 +12,7 @@ export const de = {
   firstTimersTitle:
     'Willkommen bei den {count}, die zum ersten Mal bei {eventName} mitgemacht haben: ',
   firstTimersLaunchEventClosing:
-    'Vielen Dank, dass Sie zu unserem Eröffnungsevent gereist sind. Mit {total} absolvierten Finishes wurden wir sich wirklich freuen, Ihre Erfahrung bei der Unterstützung dieses Events in der lokalen Gemeinschaft in den kommenden Wochen zu nutzen, während wir uns etablieren. Bitte erwagen Sie, bald zurückzukehren und ein Freiwilligen-Warnweste zu tragen.',
+    'Vielen Dank, dass Sie zu unserem Eröffnungsevent gereist sind. Mit {total} absolvierten Finishes wurden wir sich wirklich freuen, Ihre Erfahrung bei der Unterstützung dieses Events in der lokalen Gemeinschaft in den kommenden Wochen zu nutzen, während wir uns etablieren. Bitte erwagen Sie, bald zurückzukehren und ein Freiwilligen-Warnweste zu tragen',
   finishersWithNewPBsTitle:
     '{eventName} ist kein Rennen, aber eine großartige Möglichkeit, sich selbst herauszufordern. Sehr gut gemacht an die {count}, die diese Woche ihre persönliche Bestzeit verbessert haben: ',
   runningWalkingGroupsTitle:
