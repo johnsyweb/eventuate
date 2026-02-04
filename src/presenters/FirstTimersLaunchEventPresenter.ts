@@ -1,16 +1,8 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { getTranslations, interpolate } from '../translations';
-import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 import { FirstTimersPresenter } from './FirstTimersPresenter';
 
 export class FirstTimersLaunchEventPresenter extends FirstTimersPresenter {
-  constructor(
-    firstTimersWithCounts: FirstTimerWithFinishCount[],
-    eventName?: string
-  ) {
-    super(firstTimersWithCounts, eventName);
-  }
-
   details(): string {
     const t = getTranslations();
 
