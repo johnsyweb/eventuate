@@ -59,21 +59,6 @@
     />
     {% endfor %}
 
-    <!-- Microsoft application metadata -->
-    <meta name="application-name" content="Eventuate" />
-    <meta name="msapplication-TileColor" content="#FFFFFF" />
-    <meta
-      name="msapplication-TileImage"
-      content="{{ site.url }}/icons/mstile-144x144.png"
-    />
-
-    {% for size in site.mstile_sizes %}
-    <meta
-      name="msapplication-{{ size.type }}"
-      content="{{ site.url }}/icons/mstile-{{ size.dimensions }}.png"
-    />
-    {% endfor %}
-
     <meta property="og:description" content="{{ page_description }}" />
 
     {% assign default_image = site.url | append: '/images/banner-og-compressed.jpg' %}

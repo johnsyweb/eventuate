@@ -25,12 +25,6 @@ favicon_sizes:
   - 128
   - 196
 
-mstile_sizes:
-  - { type: square70x70logo, dimensions: "70x70" }
-  - { type: square150x150logo, dimensions: "150x150" }
-  - { type: wide310x150logo, dimensions: "310x150" }
-  - { type: square310x310logo, dimensions: "310x310" }
-
 include:
   - icons
 
