@@ -132,9 +132,6 @@ function populate(
     document.createElement('div');
   eventuateDiv.id = 'eventuate';
 
-  const firstTimersTitle = presenters.firstTimers.title();
-  const firstTimersDetails = presenters.firstTimers.details();
-
   const reportDetails = {
     languageSwitcher: {
       title: '',
@@ -152,8 +149,8 @@ function populate(
       details: sortAndConjoin(rpe.newestParkrunners),
     },
     firstTimers: {
-      title: firstTimersTitle,
-      details: firstTimersDetails,
+      title: presenters.firstTimers.title(),
+      details: presenters.firstTimers.details(),
     },
     newPBs: {
       title: finishersWithNewPBsTitle,
