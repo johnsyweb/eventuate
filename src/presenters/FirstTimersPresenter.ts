@@ -3,8 +3,8 @@ import { getTranslations, interpolate, formatCount } from '../translations';
 import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 
 export class FirstTimersPresenter {
-  _firstTimers: FirstTimerWithFinishCount[];
-  _eventName?: string;
+  protected _firstTimers: FirstTimerWithFinishCount[];
+  protected _eventName?: string;
 
   constructor(firstTimers: FirstTimerWithFinishCount[], eventName?: string) {
     this._firstTimers = firstTimers;
@@ -20,7 +20,14 @@ export class FirstTimersPresenter {
   }
 
   details(): string {
-    const names = this._firstTimers.map((firstTimer) => firstTimer.name);
-    return sortAndConjoin(names);
+    return sortAndConjoin(this.getFirstTimerNames());
+  }
+
+  protected getFirstTimerNames(): string[] {
+    return this._firstTimers.map((firstTimer) => firstTimer.name);
+  }
+
+  protected getSortedFirstTimers(): FirstTimerWithFinishCount[] {
+    return [...this._firstTimers].sort((a, b) => a.name.localeCompare(b.name));
   }
 }
