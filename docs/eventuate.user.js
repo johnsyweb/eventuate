@@ -1430,8 +1430,6 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
     const eventuateDiv = document.getElementById('eventuate') ||
         document.createElement('div');
     eventuateDiv.id = 'eventuate';
-    const firstTimersTitle = presenters.firstTimers.title();
-    const firstTimersDetails = presenters.firstTimers.details();
     const reportDetails = {
         languageSwitcher: {
             title: '',
@@ -1448,8 +1446,8 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
             details: (0, stringFunctions_1.sortAndConjoin)(rpe.newestParkrunners),
         },
         firstTimers: {
-            title: firstTimersTitle,
-            details: firstTimersDetails,
+            title: presenters.firstTimers.title(),
+            details: presenters.firstTimers.details(),
         },
         newPBs: {
             title: finishersWithNewPBsTitle,
