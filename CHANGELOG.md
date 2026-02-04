@@ -1,3 +1,17 @@
+# [1.12.0](https://github.com/johnsyweb/eventuate/compare/v1.11.1...v1.12.0) (2026-02-04)
+
+
+### Bug Fixes
+
+* remove duplicate full-stop ([c438399](https://github.com/johnsyweb/eventuate/commit/c438399f8292d7192912b298cb1a57f09b75301e))
+* use stable action version tags instead of commit hashes ([3403bc6](https://github.com/johnsyweb/eventuate/commit/3403bc6cc62c9fe928c29e6c48d83740cb2f4879))
+
+
+### Features
+
+* celebrate experienced parkrunners travelling to launch ([3ad7d44](https://github.com/johnsyweb/eventuate/commit/3ad7d44f1a92355819c989cc1a1583cd3a76c272))
+* hide facts on launch ([c80e766](https://github.com/johnsyweb/eventuate/commit/c80e766e7410a4d04e56f3602b7b4d0272e81d22))
+
 ## [1.11.1](https://github.com/johnsyweb/eventuate/compare/v1.11.0...v1.11.1) (2026-01-10)
 
 
