@@ -4,6 +4,7 @@ import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMiles
 import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
 import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
+import { FirstTimersLaunchEventPresenter } from './presenters/FirstTimersLaunchEventPresenter';
 import { FirstTimeVolunteersPresenter } from './presenters/FirstTimeVolunteersPresenter';
 import { JuniorSupervisionPresenter } from './presenters/JuniorSupervisionPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
@@ -138,6 +139,25 @@ function populate(
     document.createElement('div');
   eventuateDiv.id = 'eventuate';
 
+  // Use FirstTimersLaunchEventPresenter only if it's a launch event, otherwise use presenters.firstTimers
+  let firstTimersTitle: string;
+  let firstTimersDetails: string;
+  if (
+    rpe.eventNumber?.trim().replace('#', '') === '1' &&
+    rpe.firstTimersWithFinishCounts &&
+    rpe.firstTimersWithFinishCounts.length > 0
+  ) {
+    const launchPresenter = new FirstTimersLaunchEventPresenter(
+      rpe.firstTimersWithFinishCounts,
+      rpe.eventName
+    );
+    firstTimersTitle = launchPresenter.title();
+    firstTimersDetails = launchPresenter.details();
+  } else {
+    firstTimersTitle = presenters.firstTimers.title();
+    firstTimersDetails = presenters.firstTimers.details();
+  }
+
   const reportDetails = {
     languageSwitcher: {
       title: '',
@@ -155,8 +175,8 @@ function populate(
       details: sortAndConjoin(rpe.newestParkrunners),
     },
     firstTimers: {
-      title: presenters.firstTimers.title(),
-      details: presenters.firstTimers.details(),
+      title: firstTimersTitle,
+      details: firstTimersDetails,
     },
     newPBs: {
       title: finishersWithNewPBsTitle,

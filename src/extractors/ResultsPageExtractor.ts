@@ -15,6 +15,7 @@ export class ResultsPageExtractor {
   unknowns: string[];
   newestParkrunners: string[];
   firstTimers: string[];
+  firstTimersWithFinishCounts: Array<{ name: string; finishes: number }>;
   finishersWithNewPBs: string[];
   runningWalkingGroups: string[];
   facts: IResultsPageStats;
@@ -77,6 +78,17 @@ export class ResultsPageExtractor {
           Number(tr.dataset.runs) > 1
       )
       .map((tr) => this.removeSurnameFromJunior(tr.dataset.name));
+
+    this.firstTimersWithFinishCounts = Array.from(rowElements)
+      .filter(
+        (tr) =>
+          tr.querySelector('td.Results-table-td--ft') &&
+          Number(tr.dataset.runs) > 1
+      )
+      .map((tr) => ({
+        name: this.removeSurnameFromJunior(tr.dataset.name),
+        finishes: Number(tr.dataset.runs),
+      }));
 
     this.finishersWithNewPBs = Array.from(rowElements)
       .filter((tr) => tr.querySelector('td.Results-table-td--pb'))
