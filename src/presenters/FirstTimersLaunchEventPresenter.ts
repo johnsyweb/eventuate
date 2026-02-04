@@ -4,7 +4,10 @@ import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 import { FirstTimersPresenter } from './FirstTimersPresenter';
 
 export class FirstTimersLaunchEventPresenter extends FirstTimersPresenter {
-  constructor(firstTimersWithCounts: FirstTimerWithFinishCount[], eventName?: string) {
+  constructor(
+    firstTimersWithCounts: FirstTimerWithFinishCount[],
+    eventName?: string
+  ) {
     super(firstTimersWithCounts, eventName);
   }
 
