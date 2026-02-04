@@ -2,6 +2,7 @@ import { sortAndConjoin } from './stringFunctions';
 import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
 import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMilestones';
 import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
+import { FactsPresenter } from './presenters/FactsPresenter';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
 import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
 import { FirstTimersLaunchEventPresenter } from './presenters/FirstTimersLaunchEventPresenter';
@@ -24,6 +25,7 @@ import { shareReportText } from './share';
 interface Presenters {
   firstTimers: FirstTimersPresenter;
   firstTimeVolunteers: FirstTimeVolunteersPresenter;
+  facts: FactsPresenter;
   milestone: MilestonePresenter;
   juniorSupervision: JuniorSupervisionPresenter;
 }
@@ -33,13 +35,15 @@ function createPresenters(
   volunteerWithCountList: VolunteerWithCount[]
 ): Presenters {
   const firstTimersPresenter =
-    rpe.isLaunchEvent() &&
-    rpe.firstTimersWithFinishCounts.length > 0
+    rpe.isLaunchEvent() && rpe.firstTimersWithFinishCounts.length > 0
       ? new FirstTimersLaunchEventPresenter(
           rpe.firstTimersWithFinishCounts,
           rpe.eventName
         )
-      : new FirstTimersPresenter(rpe.firstTimersWithFinishCounts, rpe.eventName);
+      : new FirstTimersPresenter(
+          rpe.firstTimersWithFinishCounts,
+          rpe.eventName
+        );
 
   const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter(
     volunteerWithCountList,
@@ -60,10 +64,16 @@ function createPresenters(
   const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
 
   const juniorSupervisionPresenter = new JuniorSupervisionPresenter(rpe);
+  const factsPresenter = new FactsPresenter(
+    rpe.eventName,
+    rpe.courseLength,
+    rpe.facts
+  );
 
   return {
     firstTimers: firstTimersPresenter,
     firstTimeVolunteers: firstTimeVolunteersPresenter,
+    facts: factsPresenter,
     milestone: milestonePresenter,
     juniorSupervision: juniorSupervisionPresenter,
   };
@@ -116,27 +126,6 @@ function populate(
   const volunteersTitle = interpolate(t.volunteersTitle, {
     eventName: rpe.eventName || t.fallbackParkrunName,
   });
-
-  const facts = [
-    interpolate(t.facts.sinceStarted, {
-      eventName: rpe.eventName || t.fallbackParkrunName,
-    }),
-    interpolate(t.facts.brilliantParkrunners, {
-      count: rpe.facts?.finishers?.toLocaleString() || '0',
-    }),
-    interpolate(t.facts.grandTotal, {
-      count: rpe.facts.finishes?.toLocaleString() || '0',
-    }),
-    interpolate(t.facts.coveredDistance, {
-      distance: ((rpe.facts.finishes || 0) * rpe.courseLength).toLocaleString(),
-    }),
-    interpolate(t.facts.celebratingPBs, {
-      count: rpe.facts.pbs?.toLocaleString() || '0',
-    }),
-    interpolate(t.facts.gratefulToVolunteers, {
-      count: rpe.facts.volunteers?.toLocaleString() || '0',
-    }),
-  ].join('');
 
   const eventuateDiv: HTMLDivElement =
     (document.getElementById('eventuate') as HTMLDivElement) ||
@@ -223,7 +212,7 @@ function populate(
     },
     facts: {
       title: '',
-      details: facts,
+      details: presenters.facts.details(),
     },
     closing: {
       title: '&#x1f333;',
