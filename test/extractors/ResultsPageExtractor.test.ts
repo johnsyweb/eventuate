@@ -39,6 +39,10 @@ describe('ResultsPageExtractor', () => {
       expect(extractor.eventNumber).toEqual('#321');
     });
 
+    it('is not a launch event', () => {
+      expect(extractor.isLaunchEvent()).toBe(false);
+    });
+
     it('extracts finishers data', () => {
       expect(extractor.finishers).toHaveLength(138);
       expect(extractor.finishers[0]).toMatchObject({
@@ -113,6 +117,23 @@ describe('ResultsPageExtractor', () => {
     it('identifies newest parkrunners', () => {
       expect(extractor.newestParkrunners).toHaveLength(2);
       expect(extractor.newestParkrunners[0]).toEqual('Rasha MOSA');
+    });
+  });
+
+  describe('for a launch event', () => {
+    beforeEach(() => {
+      const html = `
+        <div class="Results-header">
+          <h1>Test parkrun</h1>
+          <h3><span>Event</span><span>#1</span></h3>
+        </div>
+      `;
+      document = new DOMParser().parseFromString(html, 'text/html');
+      extractor = new ResultsPageExtractor(document);
+    });
+
+    it('is a launch event', () => {
+      expect(extractor.isLaunchEvent()).toBe(true);
     });
   });
 });

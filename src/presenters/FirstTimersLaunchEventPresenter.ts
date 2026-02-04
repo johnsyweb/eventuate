@@ -52,12 +52,9 @@ export class FirstTimersLaunchEventPresenter {
       0
     );
 
-    const closingMessage = interpolate(
-      t.firstTimersLaunchEventClosing,
-      {
-        total: totalFinishes.toLocaleString(),
-      }
-    );
+    const closingMessage = interpolate(t.firstTimersLaunchEventClosing, {
+      total: totalFinishes.toLocaleString(),
+    });
 
     return `${namesText}. ${closingMessage}`;
   }

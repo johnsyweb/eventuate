@@ -143,7 +143,7 @@ function populate(
   let firstTimersTitle: string;
   let firstTimersDetails: string;
   if (
-    rpe.eventNumber?.trim().replace('#', '') === '1' &&
+    rpe.isLaunchEvent() &&
     rpe.firstTimersWithFinishCounts &&
     rpe.firstTimersWithFinishCounts.length > 0
   ) {

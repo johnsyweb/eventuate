@@ -108,6 +108,11 @@ export class ResultsPageExtractor {
     this.facts = { finishers, finishes, volunteers, pbs };
   }
 
+  isLaunchEvent(): boolean {
+    const normalizedEventNumber = this.eventNumber?.trim().replace('#', '');
+    return normalizedEventNumber === '1';
+  }
+
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
     return this.resultsPageDocument.querySelectorAll(
       '.Results + div h3:first-of-type + p:first-of-type a'
