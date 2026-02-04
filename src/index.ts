@@ -32,10 +32,14 @@ function createPresenters(
   rpe: ResultsPageExtractor,
   volunteerWithCountList: VolunteerWithCount[]
 ): Presenters {
-  const firstTimersPresenter = new FirstTimersPresenter(
-    rpe.firstTimersWithFinishCounts,
-    rpe.eventName
-  );
+  const firstTimersPresenter =
+    rpe.isLaunchEvent() &&
+    rpe.firstTimersWithFinishCounts.length > 0
+      ? new FirstTimersLaunchEventPresenter(
+          rpe.firstTimersWithFinishCounts,
+          rpe.eventName
+        )
+      : new FirstTimersPresenter(rpe.firstTimersWithFinishCounts, rpe.eventName);
 
   const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter(
     volunteerWithCountList,
@@ -139,24 +143,8 @@ function populate(
     document.createElement('div');
   eventuateDiv.id = 'eventuate';
 
-  // Use FirstTimersLaunchEventPresenter only if it's a launch event, otherwise use presenters.firstTimers
-  let firstTimersTitle: string;
-  let firstTimersDetails: string;
-  if (
-    rpe.isLaunchEvent() &&
-    rpe.firstTimersWithFinishCounts &&
-    rpe.firstTimersWithFinishCounts.length > 0
-  ) {
-    const launchPresenter = new FirstTimersLaunchEventPresenter(
-      rpe.firstTimersWithFinishCounts,
-      rpe.eventName
-    );
-    firstTimersTitle = launchPresenter.title();
-    firstTimersDetails = launchPresenter.details();
-  } else {
-    firstTimersTitle = presenters.firstTimers.title();
-    firstTimersDetails = presenters.firstTimers.details();
-  }
+  const firstTimersTitle = presenters.firstTimers.title();
+  const firstTimersDetails = presenters.firstTimers.details();
 
   const reportDetails = {
     languageSwitcher: {
