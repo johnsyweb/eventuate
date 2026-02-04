@@ -1,6 +1,7 @@
 import { IResultsPageStats } from '../types/IResultsPageStats';
 import { Finisher, IFinisher } from '../types/Finisher';
 import { Volunteer } from '../types/Volunteer';
+import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 
 function athleteIDFromURI(uri: string): number {
   return Number(uri?.split('/')?.slice(-1));
@@ -14,7 +15,7 @@ export class ResultsPageExtractor {
   finishers: IFinisher[];
   unknowns: string[];
   newestParkrunners: string[];
-  firstTimers: string[];
+  firstTimersWithFinishCounts: FirstTimerWithFinishCount[];
   finishersWithNewPBs: string[];
   runningWalkingGroups: string[];
   facts: IResultsPageStats;
@@ -70,13 +71,16 @@ export class ResultsPageExtractor {
       .filter((p) => Number(p.runs) === 1)
       .map((p) => p.name);
 
-    this.firstTimers = Array.from(rowElements)
+    this.firstTimersWithFinishCounts = Array.from(rowElements)
       .filter(
         (tr) =>
           tr.querySelector('td.Results-table-td--ft') &&
           Number(tr.dataset.runs) > 1
       )
-      .map((tr) => this.removeSurnameFromJunior(tr.dataset.name));
+      .map((tr) => ({
+        name: this.removeSurnameFromJunior(tr.dataset.name),
+        finishes: Number(tr.dataset.runs),
+      }));
 
     this.finishersWithNewPBs = Array.from(rowElements)
       .filter((tr) => tr.querySelector('td.Results-table-td--pb'))
@@ -94,6 +98,11 @@ export class ResultsPageExtractor {
     ).map((s) => this.parseNumericString(s.textContent?.trim()));
 
     this.facts = { finishers, finishes, volunteers, pbs };
+  }
+
+  isLaunchEvent(): boolean {
+    const normalizedEventNumber = this.eventNumber?.trim().replace('#', '');
+    return normalizedEventNumber === '1';
   }
 
   private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {

@@ -11,6 +11,8 @@ export const en = {
     "The first time to parkrun is something to celebrate! It's also the first step towards your first official milestone club membership. Welcome to the {count} who took this step this weekend: ",
   firstTimersTitle:
     'Welcome to the {count} who joined us at {eventName} for the first time: ',
+  firstTimersLaunchEventClosing:
+    'Thank you for travelling to join us at our inaugural event. With {total} finishes completed between you, we would really welcome your expertise in supporting this event in the local community over the coming weeks while we get established. Please consider returning soon to don a volunteer vest',
   finishersWithNewPBsTitle:
     "{eventName} is not a race, but it's a great way to challenge yourself. Very well done to the {count} who improved their personal best this week: ",
   runningWalkingGroupsTitle:

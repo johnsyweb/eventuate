@@ -11,6 +11,7 @@ export interface TranslationKeys {
   introduction: string;
   newestParkrunnersTitle: string;
   firstTimersTitle: string;
+  firstTimersLaunchEventClosing: string;
   finishersWithNewPBsTitle: string;
   runningWalkingGroupsTitle: string;
   volunteersTitle: string;

@@ -11,6 +11,8 @@ export const de = {
     'Das erste Mal bei Parkrun ist etwas zu feiern! Es ist auch der erste Schritt zu Ihrer ersten offiziellen Meilenstein-Club-Mitgliedschaft. Willkommen bei den {count}, die diesen Schritt dieses Wochenende gemacht haben: ',
   firstTimersTitle:
     'Willkommen bei den {count}, die zum ersten Mal bei {eventName} mitgemacht haben: ',
+  firstTimersLaunchEventClosing:
+    'Vielen Dank, dass Sie zu unserem Eröffnungsevent gereist sind. Mit {total} absolvierten Finishes wurden wir sich wirklich freuen, Ihre Erfahrung bei der Unterstützung dieses Events in der lokalen Gemeinschaft in den kommenden Wochen zu nutzen, während wir uns etablieren. Bitte erwagen Sie, bald zurückzukehren und ein Freiwilligen-Warnweste zu tragen',
   finishersWithNewPBsTitle:
     '{eventName} ist kein Rennen, aber eine großartige Möglichkeit, sich selbst herauszufordern. Sehr gut gemacht an die {count}, die diese Woche ihre persönliche Bestzeit verbessert haben: ',
   runningWalkingGroupsTitle:

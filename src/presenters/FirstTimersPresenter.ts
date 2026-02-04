@@ -1,11 +1,12 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { getTranslations, interpolate, formatCount } from '../translations';
+import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 
 export class FirstTimersPresenter {
-  _firstTimers: string[];
-  _eventName?: string;
+  protected _firstTimers: FirstTimerWithFinishCount[];
+  protected _eventName?: string;
 
-  constructor(firstTimers: string[], eventName?: string) {
+  constructor(firstTimers: FirstTimerWithFinishCount[], eventName?: string) {
     this._firstTimers = firstTimers;
     this._eventName = eventName;
   }
@@ -19,6 +20,14 @@ export class FirstTimersPresenter {
   }
 
   details(): string {
-    return sortAndConjoin(this._firstTimers);
+    return sortAndConjoin(this.getFirstTimerNames());
+  }
+
+  protected getFirstTimerNames(): string[] {
+    return this._firstTimers.map((firstTimer) => firstTimer.name);
+  }
+
+  protected getSortedFirstTimers(): FirstTimerWithFinishCount[] {
+    return [...this._firstTimers].sort((a, b) => a.name.localeCompare(b.name));
   }
 }
