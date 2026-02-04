@@ -212,7 +212,7 @@ function populate(
     },
     facts: {
       title: '',
-      details: presenters.facts.details(),
+      details: rpe.isLaunchEvent() ? undefined : presenters.facts.details(),
     },
     closing: {
       title: '&#x1f333;',
