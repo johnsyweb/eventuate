@@ -11,15 +11,15 @@ jobs:
 
     steps:
       - name: 'Check it out now'
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: 'Install pnpm'
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061
+        uses: pnpm/action-setup@fe02b34f77f8bc703788141512f595cb1f8c4edf
         with:
           run_install: false
 
       - name: 'Use Node.js from .tool-versions'
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
         with:
           node-version-file: '.tool-versions'
           cache: 'pnpm'
