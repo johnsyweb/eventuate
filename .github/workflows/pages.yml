@@ -30,7 +30,7 @@ jobs:
       should-deploy: ${{ steps.check.outputs.should-deploy }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           ref:
             ${{ github.event.release.target_commitish ||
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           ref:
             ${{ github.event.release.target_commitish ||
@@ -96,7 +96,7 @@ jobs:
           run_install: true
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@8d27f39a5e7ad39aebbcbd1324f7af020229645c
+        uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd
         with:
           bundler-cache: true
           working-directory: docs
