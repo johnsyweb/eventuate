@@ -8,6 +8,7 @@ import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
 import { FirstTimersLaunchEventPresenter } from './presenters/FirstTimersLaunchEventPresenter';
 import { FirstTimeVolunteersPresenter } from './presenters/FirstTimeVolunteersPresenter';
 import { JuniorSupervisionPresenter } from './presenters/JuniorSupervisionPresenter';
+import { UnknownsPresenter } from './presenters/UnknownsPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
@@ -28,6 +29,7 @@ interface Presenters {
   facts: FactsPresenter;
   milestone: MilestonePresenter;
   juniorSupervision: JuniorSupervisionPresenter;
+  unknowns: UnknownsPresenter;
 }
 
 function createPresenters(
@@ -69,6 +71,7 @@ function createPresenters(
     rpe.courseLength,
     rpe.facts
   );
+  const unknownsPresenter = new UnknownsPresenter(rpe.unknowns, rpe.eventName);
 
   return {
     firstTimers: firstTimersPresenter,
@@ -76,6 +79,7 @@ function createPresenters(
     facts: factsPresenter,
     milestone: milestonePresenter,
     juniorSupervision: juniorSupervisionPresenter,
+    unknowns: unknownsPresenter,
   };
 }
 
@@ -193,13 +197,10 @@ function populate(
       }),
     },
     unknowns: {
-      title: '',
-      details:
-        rpe.unknowns.length > 0
-          ? interpolate(t.unknowns, {
-              eventName: rpe.eventName || t.fallbackParkrunName,
-            })
-          : undefined,
+      title: presenters.unknowns.title(),
+      details: presenters.unknowns.hasUnknowns()
+        ? presenters.unknowns.details()
+        : undefined,
     },
     juniorSupervision: {
       title: '',
