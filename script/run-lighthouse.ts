@@ -58,7 +58,7 @@ const loadReport = async () => {
       {
         score?: number | null;
         title?: string;
-        details?: { items?: Array<Record<string, unknown>> };
+        details?: { items?: Record<string, unknown>[] };
       }
     >;
   };
