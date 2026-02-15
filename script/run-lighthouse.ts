@@ -1,11 +1,13 @@
-import { spawn } from 'node:child_process';
+import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
+import { createReadStream, existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-
+import { spawn } from 'node:child_process';
 const DEFAULT_PORT = '4173';
-// When serving docs/_site, the site root is at / (Jekyll outputs to _site root).
-const DEFAULT_URL = `http://localhost:${DEFAULT_PORT}/`;
+// Must match baseurl in docs/_config.yml so that /eventuate/style.css etc. resolve.
+const BASEURL = '/eventuate';
+const DEFAULT_URL = `http://localhost:${DEFAULT_PORT}${BASEURL}/`;
 
 const reportPath = path.resolve(process.cwd(), 'lighthouse-report.json');
 const lighthouseUrl = process.env.LIGHTHOUSE_URL ?? DEFAULT_URL;
@@ -13,7 +15,87 @@ const lighthousePort = process.env.LIGHTHOUSE_PORT ?? DEFAULT_PORT;
 const waitTimeoutMs = Number(process.env.LIGHTHOUSE_TIMEOUT_MS ?? '60000');
 const siteDir = path.resolve(process.cwd(), 'docs', '_site');
 
+const MIME_TYPES: Record<string, string> = {
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'application/javascript',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.xml': 'application/xml',
+  '.txt': 'text/plain',
+};
+
 const categories = ['performance', 'accessibility', 'best-practices', 'seo'];
+
+/** Serves siteDir at BASEURL (e.g. /eventuate) so built HTML asset paths resolve. */
+const createStaticServer = () => {
+  return createServer(async (req, res) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405);
+      res.end();
+      return;
+    }
+    const pathname = new URL(req.url ?? '/', `http://localhost`).pathname;
+    if (!pathname.startsWith(BASEURL)) {
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+    const subPath = pathname.slice(BASEURL.length) || '/';
+    const decoded = decodeURIComponent(subPath);
+    if (decoded.includes('..')) {
+      res.writeHead(403);
+      res.end();
+      return;
+    }
+    const filePath = path.join(siteDir, path.normalize(decoded));
+    const resolved = path.resolve(filePath);
+    if (!resolved.startsWith(siteDir)) {
+      res.writeHead(403);
+      res.end();
+      return;
+    }
+    let stat: ReturnType<typeof statSync>;
+    try {
+      stat = statSync(resolved);
+    } catch {
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+    if (stat.isDirectory()) {
+      const indexPath = path.join(resolved, 'index.html');
+      if (!existsSync(indexPath)) {
+        res.writeHead(404);
+        res.end();
+        return;
+      }
+      res.setHeader('Content-Type', 'text/html');
+      if (req.method === 'HEAD') {
+        res.writeHead(200);
+        res.end();
+        return;
+      }
+      createReadStream(indexPath).pipe(res);
+      return;
+    }
+    const ext = path.extname(resolved);
+    const contentType = MIME_TYPES[ext] ?? 'application/octet-stream';
+    res.setHeader('Content-Type', contentType);
+    if (req.method === 'HEAD') {
+      res.writeHead(200);
+      res.end();
+      return;
+    }
+    createReadStream(resolved).pipe(res);
+  });
+};
 
 const runCommand = (command: string, args: string[]) =>
   new Promise<void>((resolve, reject) => {
@@ -128,12 +210,8 @@ const logFailingAudits = (
 };
 
 const main = async () => {
-  const serveArgs = [siteDir, '-l', lighthousePort];
-
-  const serverProcess = spawn('serve', serveArgs, {
-    stdio: 'inherit',
-    cwd: process.cwd(),
-  });
+  const server = createStaticServer();
+  server.listen(Number(lighthousePort));
 
   try {
     await waitForServer(lighthouseUrl, waitTimeoutMs);
@@ -176,9 +254,7 @@ const main = async () => {
       );
     }
   } finally {
-    if (!serverProcess.killed) {
-      serverProcess.kill('SIGTERM');
-    }
+    server.close();
   }
 };
 
