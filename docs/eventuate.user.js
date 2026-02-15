@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://www.johnsy.com/eventuate/eventuate.user.js
-// @version      1.11.1
+// @version      1.12.0
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.11.1 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.12.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -256,12 +256,18 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ClosingPresenter = void 0;
 const translations_1 = __webpack_require__(154);
 class ClosingPresenter {
+    _courseLength;
+    constructor(courseLength) {
+        this._courseLength = courseLength;
+    }
     title() {
-        return '&#x1f333;';
+        return '';
     }
     details() {
         const t = (0, translations_1.getTranslations)();
-        return t.closing;
+        return (0, translations_1.interpolate)(t.closing, {
+            courseLength: this._courseLength,
+        });
     }
 }
 exports.ClosingPresenter = ClosingPresenter;
@@ -1211,7 +1217,7 @@ exports.de = {
     firstTimeVolunteersTitle: 'Ein besonderes Willkommen an {count}, die zum ersten Mal freiwillig geholfen haben: ',
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
-    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, spaßigen und freundlichen wöchentlichen Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
+    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, spaßigen und freundlichen wöchentlichen Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall. parkrun-Barcode-Armbänder haben außerdem medizinische Angaben, die Sie überall beim Sport dabei haben können.',
     juniorSupervisionReminder: 'Eine Erinnerung, dass bei allen 5km Parkrun-Veranstaltungen Kinder unter 11 Jahren jederzeit in Reichweite eines Elternteils, Erziehungsberechtigten oder einer beauftragten erwachsenen Person sein müssen. Wir danken Ihnen für Ihre Zusammenarbeit, um die Sicherheit aller Teilnehmer zu gewährleisten. Weitere Informationen finden Sie in der Parkrun-Richtlinie zur Teilnahme von Kindern: https://support.parkrun.com/hc/articles/20038963108754',
     facts: {
         sinceStarted: 'Seit {eventName} begonnen hat ',
@@ -1226,7 +1232,7 @@ exports.de = {
         joinedClub: '{names} ist dem {clubName} beigetreten',
     },
     loadingMessage: 'Lade Freiwilligendaten für {count} Parkrunner. Bitte warten',
-    closing: '#liebeparkrun',
+    closing: 'Wir sind nächste Woche wieder da für ein weiteres kostenloses, spaßiges und freundliches wöchentliches {courseLength}-km-Gemeinschaftsevent. Gehen, joggen, laufen, freiwillig helfen oder zuschauen – ganz wie Sie möchten.<br><br>&#x1f333; #liebeparkrun',
     fallbackParkrunName: 'Parkrun',
     fallbackParkrunnerName: 'ein Parkrunner',
     // Pluralization helpers
@@ -1291,7 +1297,7 @@ exports.en = {
     firstTimeVolunteersTitle: 'A special welcome to the {count} who volunteered for the first time: ',
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
-    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
+    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency. parkrun barcode wristbands also have medical information, which you can take with you wherever you work out.",
     juniorSupervisionReminder: "A reminder that at all 5km parkrun events, children under the age of 11 must be within arm's reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun's policy on children participating: https://support.parkrun.com/hc/articles/20038963108754",
     facts: {
         sinceStarted: 'Since {eventName} started ',
@@ -1306,7 +1312,7 @@ exports.en = {
         joinedClub: '{names} joined the {clubName}',
     },
     loadingMessage: 'Loading volunteer data for {count} parkrunners. Please wait',
-    closing: '#loveparkrun',
+    closing: "We'll be back next week for another free, fun, and friendly weekly {courseLength}km community event. Walk, jog, run, volunteer or spectate – it's up to you.<br><br>&#x1f333; #loveparkrun",
     fallbackParkrunName: 'parkrun',
     fallbackParkrunnerName: 'a parkrunner',
     // Pluralization helpers
@@ -1747,7 +1753,7 @@ function createPresenters(rpe, volunteerWithCountList) {
         unknowns: new UnknownsPresenter_1.UnknownsPresenter(rpe.unknowns, rpe.eventName),
         juniorSupervision: new JuniorSupervisionPresenter_1.JuniorSupervisionPresenter(rpe),
         facts: new FactsPresenter_1.FactsPresenter(rpe.eventName, rpe.courseLength, rpe.facts, rpe.isLaunchEvent()),
-        closing: new ClosingPresenter_1.ClosingPresenter(),
+        closing: new ClosingPresenter_1.ClosingPresenter(rpe.courseLength),
     };
 }
 function populate(rpe, volunteerWithCountList, presenters, message) {
