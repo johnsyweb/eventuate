@@ -111,7 +111,15 @@ async function generateScreenshots(): Promise<void> {
 
     const page = await browser.newPage();
 
-    for (const config of screenshotConfigs) {
+    const filterName = process.env.SCREENSHOT_NAME;
+    const configsToRun = filterName
+      ? screenshotConfigs.filter((c) => c.name === filterName)
+      : screenshotConfigs;
+    if (filterName && configsToRun.length === 0) {
+      throw new Error(`No screenshot config found for name: ${filterName}`);
+    }
+
+    for (const config of configsToRun) {
       console.log(`📸 Capturing screenshot: ${config.name}`);
 
       // Set viewport if specified
@@ -170,6 +178,7 @@ async function generateScreenshots(): Promise<void> {
       }
 
       // Wait for the extension to load and generate content
+      let selectorFound = true;
       if (config.waitForSelector) {
         try {
           await page.waitForSelector(config.waitForSelector, {
@@ -177,9 +186,13 @@ async function generateScreenshots(): Promise<void> {
           });
         } catch {
           console.warn(
-            `⚠️  Selector ${config.waitForSelector} not found, continuing...`
+            `⚠️  Selector ${config.waitForSelector} not found, skipping screenshot.`
           );
+          selectorFound = false;
         }
+      }
+      if (!selectorFound) {
+        continue;
       }
 
       // Additional wait if specified
