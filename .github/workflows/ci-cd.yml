@@ -243,6 +243,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache bundler gems
+        uses: actions/cache@v4
+        with:
+          path: docs/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Ruby dependencies
+        working-directory: docs
+        run: bundle install --path vendor/bundle
+
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
