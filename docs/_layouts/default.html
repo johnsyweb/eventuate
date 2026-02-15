@@ -29,7 +29,8 @@
     <link rel="canonical" href="{{ canonical_candidate | absolute_url }}" />
     {% endif %}
 
-    <!-- Default icons -->
+    {% unless site.lighthouse %}
+    <!-- Default icons (omitted in Lighthouse build; not in _site) -->
     <link rel="shortcut icon" href="{{ site.url }}/favicon.ico" />
     <link
       rel="apple-touch-icon"
@@ -58,6 +59,7 @@
       href="{{ site.url }}/icons/favicon-{{ size }}x{{ size }}.png"
     />
     {% endfor %}
+    {% endunless %}
 
     <meta property="og:description" content="{{ page_description }}" />
 
@@ -141,13 +143,15 @@
     }
     </script>
     
+    {% unless site.lighthouse %}
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Italic.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-BoldItalic.woff2" as="font" type="font/woff2" crossorigin>
+    {% endunless %}
 
     <link
-      href="{{ site.url }}/eventuate/style.css"
+      href="{{ site.url }}{{ site.baseurl }}/style.css"
       rel="stylesheet"
     />
 
@@ -174,7 +178,7 @@
         <a href="{{ site.url }}/parkrun-utility/">parkrun utility</a>
         <span aria-hidden="true">/</span>
         {% if page.url != '/' and page.url != '/eventuate/' and page.url != '/eventuate/index.html' %}
-        <a href="{{ site.url }}/eventuate/">Eventuate</a>
+        <a href="{{ site.url }}{{ site.baseurl }}/">Eventuate</a>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{{ page.title | default: 'Page' }}</span>
         {% else %}
