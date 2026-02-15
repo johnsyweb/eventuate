@@ -30,7 +30,7 @@ import { shareReportText } from './share';
 
 interface Presenters {
   introduction: IntroductionPresenter;
-  milestone: MilestonePresenter;
+  milestoneCelebrations: MilestonePresenter;
   newestParkrunners: NewestParkrunnersPresenter;
   firstTimers: FirstTimersPresenter;
   newPBs: NewPBsPresenter;
@@ -79,7 +79,7 @@ function createPresenters(
       rpe.eventName,
       rpe.eventNumber
     ),
-    milestone: new MilestonePresenter(milestoneCelebrations),
+    milestoneCelebrations: new MilestonePresenter(milestoneCelebrations),
     newestParkrunners: new NewestParkrunnersPresenter(rpe.newestParkrunners),
     firstTimers: firstTimersPresenter,
     newPBs: new NewPBsPresenter(rpe.finishersWithNewPBs, rpe.eventName),
@@ -122,7 +122,10 @@ function populate(
   eventuateDiv.id = 'eventuate';
 
   // Build reportDetails from presenters
-  const reportDetails: Record<string, { title: string; details: string | undefined }> = {
+  const reportDetails: Record<
+    string,
+    { title: string; details: string | undefined }
+  > = {
     languageSwitcher: {
       title: '',
       details: createLanguageSwitcher(),
@@ -132,9 +135,7 @@ function populate(
 
   // Iterate over presenters and add to reportDetails
   for (const [key, presenter] of Object.entries(presenters)) {
-    // milestone presenter maps to milestoneCelebrations section
-    const sectionKey = key === 'milestone' ? 'milestoneCelebrations' : key;
-    reportDetails[sectionKey] = {
+    reportDetails[key] = {
       title: presenter.title(),
       details: presenter.details(),
     };

@@ -1735,7 +1735,7 @@ function createPresenters(rpe, volunteerWithCountList) {
     ];
     return {
         introduction: new IntroductionPresenter_1.IntroductionPresenter(rpe.finishers.length, volunteerWithCountList.length, rpe.eventName, rpe.eventNumber),
-        milestone: new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations),
+        milestoneCelebrations: new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations),
         newestParkrunners: new NewestParkrunnersPresenter_1.NewestParkrunnersPresenter(rpe.newestParkrunners),
         firstTimers: firstTimersPresenter,
         newPBs: new NewPBsPresenter_1.NewPBsPresenter(rpe.finishersWithNewPBs, rpe.eventName),
@@ -1764,9 +1764,7 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
     };
     // Iterate over presenters and add to reportDetails
     for (const [key, presenter] of Object.entries(presenters)) {
-        // milestone presenter maps to milestoneCelebrations section
-        const sectionKey = key === 'milestone' ? 'milestoneCelebrations' : key;
-        reportDetails[sectionKey] = {
+        reportDetails[key] = {
             title: presenter.title(),
             details: presenter.details(),
         };
