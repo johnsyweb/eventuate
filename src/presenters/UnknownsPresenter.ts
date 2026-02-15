@@ -14,9 +14,9 @@ export class UnknownsPresenter implements Presenter {
     return '';
   }
 
-  details(): string {
+  details(): string | undefined {
     if (!this.hasData()) {
-      return '';
+      return undefined;
     }
 
     const t = getTranslations();
@@ -25,7 +25,7 @@ export class UnknownsPresenter implements Presenter {
     });
   }
 
-  hasData(): boolean {
+  private hasData(): boolean {
     return this._unknowns.length > 0;
   }
 

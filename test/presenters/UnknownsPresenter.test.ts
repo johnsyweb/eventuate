@@ -72,10 +72,10 @@ describe('UnknownsPresenter', () => {
       expect(details).toContain('scannable');
     });
 
-    it('should return empty string when there are no unknowns', () => {
+    it('should return undefined when there are no unknowns', () => {
       const presenter = new UnknownsPresenter([], 'Test parkrun');
       const details = presenter.details();
-      expect(details).toBe('');
+      expect(details).toBeUndefined();
     });
 
     it('should use fallback parkrun name when event name is not provided', () => {
@@ -86,10 +86,7 @@ describe('UnknownsPresenter', () => {
     });
 
     it('should use provided event name in message', () => {
-      const presenter = new UnknownsPresenter(
-        ['Unknown'],
-        'Brimbank parkrun'
-      );
+      const presenter = new UnknownsPresenter(['Unknown'], 'Brimbank parkrun');
       const details = presenter.details();
       expect(details).toContain('Brimbank parkrun');
     });
@@ -147,7 +144,7 @@ describe('UnknownsPresenter', () => {
         fail('hasUnknowns should return false');
       } else {
         const details = presenter.details();
-        expect(details).toBe('');
+        expect(details).toBeUndefined();
       }
     });
   });

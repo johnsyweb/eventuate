@@ -3,13 +3,13 @@ import { MilestoneCelebrations } from '../../src/types/Milestones';
 
 describe('MilestonePresenter', () => {
   it('is empty when nothing to celebrate', () => {
-    expect(new MilestonePresenter([]).details()).toBe('');
+    expect(new MilestonePresenter([]).details()).toBeUndefined();
   });
 });
 
 describe('MilestonePresenter', () => {
   it('is empty when nothing to celebrate', () => {
-    expect(new MilestonePresenter([]).details()).toBe('');
+    expect(new MilestonePresenter([]).details()).toBeUndefined();
   });
 
   it('shows one milestone celebration', () => {

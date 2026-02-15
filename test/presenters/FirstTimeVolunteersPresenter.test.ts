@@ -100,7 +100,7 @@ describe('FirstTimeVolunteersPresenter', () => {
     it('should handle empty first-time volunteers list', () => {
       const presenter = new FirstTimeVolunteersPresenter([]);
       const details = presenter.details();
-      expect(details).toBe('');
+      expect(details).toBeUndefined();
     });
   });
 

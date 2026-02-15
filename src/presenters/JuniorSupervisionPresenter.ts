@@ -169,23 +169,23 @@ export class JuniorSupervisionPresenter implements Presenter {
     }
   }
 
-  hasData(): boolean {
-    return this._hasSupervisionIssue;
-  }
-
-  hasSupervisionIssue(): boolean {
-    return this.hasData();
-  }
-
-  details(): string {
-    if (!this._hasSupervisionIssue) {
-      return '';
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
     }
 
     const t = getTranslations();
     return interpolate(t.juniorSupervisionReminder, {
       eventName: this._extractor.eventName || t.fallbackParkrunName,
     });
+  }
+
+  private hasData(): boolean {
+    return this._hasSupervisionIssue;
+  }
+
+  hasSupervisionIssue(): boolean {
+    return this.hasData();
   }
 
   title(): string {

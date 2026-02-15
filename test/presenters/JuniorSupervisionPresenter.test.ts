@@ -78,7 +78,7 @@ describe('JuniorSupervisionPresenter', () => {
       const presenter = new JuniorSupervisionPresenter(extractor);
 
       expect(presenter.hasSupervisionIssue()).toBe(false);
-      expect(presenter.details()).toBe('');
+      expect(presenter.details()).toBeUndefined();
     });
 
     it("should not show message when all children are within arm's reach (15 seconds)", () => {
@@ -124,7 +124,7 @@ describe('JuniorSupervisionPresenter', () => {
       const presenter = new JuniorSupervisionPresenter(extractor);
 
       expect(presenter.hasSupervisionIssue()).toBe(false);
-      expect(presenter.details()).toBe('');
+      expect(presenter.details()).toBeUndefined();
     });
 
     it('should show message when a child is more than 15 seconds ahead of nearest adult', () => {
@@ -585,7 +585,7 @@ describe('JuniorSupervisionPresenter', () => {
       const presenter = new JuniorSupervisionPresenter(extractor);
 
       expect(presenter.hasSupervisionIssue()).toBe(false);
-      expect(presenter.details()).toBe('');
+      expect(presenter.details()).toBeUndefined();
     });
   });
 

@@ -23,7 +23,11 @@ export class MilestonePresenter implements Presenter {
     });
   }
 
-  details(): string {
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
+    }
+
     const t = getTranslations();
     return this._milestoneCelebrations
       .map((mc) => {
@@ -36,7 +40,7 @@ export class MilestonePresenter implements Presenter {
       .join('<br>');
   }
 
-  hasData(): boolean {
+  private hasData(): boolean {
     return this._milestoneCelebrations.length > 0;
   }
 }

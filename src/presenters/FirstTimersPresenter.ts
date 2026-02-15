@@ -20,11 +20,14 @@ export class FirstTimersPresenter implements Presenter {
     });
   }
 
-  details(): string {
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
+    }
     return sortAndConjoin(this.getFirstTimerNames());
   }
 
-  hasData(): boolean {
+  protected hasData(): boolean {
     return this._firstTimers.length > 0;
   }
 

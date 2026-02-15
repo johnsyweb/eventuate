@@ -17,7 +17,8 @@ export class FactsPresenter implements Presenter {
     this._facts = facts;
   }
 
-  details(): string {
+  details(): string | undefined {
+    // Facts are always shown (unless launch event, handled externally)
     const t = getTranslations();
 
     return [
@@ -46,9 +47,5 @@ export class FactsPresenter implements Presenter {
 
   title(): string {
     return '';
-  }
-
-  hasData(): boolean {
-    return true;
   }
 }

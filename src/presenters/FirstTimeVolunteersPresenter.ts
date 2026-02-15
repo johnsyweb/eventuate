@@ -38,11 +38,14 @@ export class FirstTimeVolunteersPresenter implements Presenter {
     });
   }
 
-  details(): string {
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
+    }
     return sortAndConjoin(this._firstTimeVolunteers.map((v) => v.name));
   }
 
-  hasData(): boolean {
+  private hasData(): boolean {
     return this._firstTimeVolunteers.length > 0;
   }
 
