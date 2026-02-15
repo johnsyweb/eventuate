@@ -45,7 +45,8 @@ export const en = {
     joinedClub: '{names} joined the {clubName}',
   },
   loadingMessage: 'Loading volunteer data for {count} parkrunners. Please wait',
-  closing: '#loveparkrun',
+  closing:
+    "We'll be back next week for another free, fun, and friendly weekly {courseLength}km community event. Walk, jog, run, volunteer or spectate – it's up to you.<br><br>&#x1f333; #loveparkrun",
   fallbackParkrunName: 'parkrun',
   fallbackParkrunnerName: 'a parkrunner',
   // Pluralization helpers

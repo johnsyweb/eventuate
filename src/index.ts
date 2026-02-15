@@ -106,7 +106,7 @@ function createPresenters(
       rpe.facts,
       rpe.isLaunchEvent()
     ),
-    closing: new ClosingPresenter(),
+    closing: new ClosingPresenter(rpe.courseLength),
   };
 }
 

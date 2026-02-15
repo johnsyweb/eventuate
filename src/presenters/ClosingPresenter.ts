@@ -1,13 +1,21 @@
-import { getTranslations } from '../translations';
+import { getTranslations, interpolate } from '../translations';
 import { Presenter } from './Presenter';
 
 export class ClosingPresenter implements Presenter {
+  private _courseLength: number;
+
+  constructor(courseLength: number) {
+    this._courseLength = courseLength;
+  }
+
   title(): string {
-    return '&#x1f333;';
+    return '';
   }
 
   details(): string {
     const t = getTranslations();
-    return t.closing;
+    return interpolate(t.closing, {
+      courseLength: this._courseLength,
+    });
   }
 }
