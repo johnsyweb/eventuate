@@ -281,9 +281,70 @@ jobs:
             eventuate.user.js
           retention-days: 1
 
-  # Deploy Pages - after release or for docs-only changes
-  deploy-pages:
-    needs: [check-docs-only, lighthouse]
+  # Deploy Pages after release (when we are releasing)
+  deploy-pages-after-release:
+    needs: [release, check-docs-only, lighthouse]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      needs.check-docs-only.outputs.skip-release != 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache bundler gems
+        uses: actions/cache@v4
+        with:
+          path: docs/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Ruby dependencies
+        working-directory: docs
+        run: bundle install --path vendor/bundle
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Build docs
+        run: pnpm docs:build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artefact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './docs/_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Deploy Pages after build (when not releasing: docs-only, workflow_dispatch, or release event)
+  deploy-pages-after-build:
+    needs: [build, check-docs-only, lighthouse]
     if: |
       github.event_name == 'release' ||
       github.event_name == 'workflow_dispatch' ||
