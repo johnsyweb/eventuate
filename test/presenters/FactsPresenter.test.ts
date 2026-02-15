@@ -7,7 +7,7 @@ describe('FactsPresenter', () => {
       finishes: 34,
       volunteers: 3,
       pbs: 4,
-    });
+    }, false);
 
     const details = presenter.details();
 
@@ -22,10 +22,23 @@ describe('FactsPresenter', () => {
       finishes: 2,
       volunteers: 1,
       pbs: 0,
-    });
+    }, false);
 
     const details = presenter.details();
 
     expect(details).toContain('Since parkrun started ');
+  });
+
+  it('returns undefined for launch events', () => {
+    const presenter = new FactsPresenter('Test parkrun', 5, {
+      finishers: 12,
+      finishes: 34,
+      volunteers: 3,
+      pbs: 4,
+    }, true);
+
+    const details = presenter.details();
+
+    expect(details).toBeUndefined();
   });
 });

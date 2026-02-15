@@ -280,13 +280,18 @@ class FactsPresenter {
     _eventName;
     _courseLength;
     _facts;
-    constructor(eventName, courseLength, facts) {
+    _isLaunchEvent;
+    constructor(eventName, courseLength, facts, isLaunchEvent) {
         this._eventName = eventName;
         this._courseLength = courseLength;
         this._facts = facts;
+        this._isLaunchEvent = isLaunchEvent;
     }
     details() {
-        // Facts are always shown (unless launch event, handled externally)
+        // Don't show facts for launch events
+        if (this._isLaunchEvent) {
+            return undefined;
+        }
         const t = (0, translations_1.getTranslations)();
         return [
             (0, translations_1.interpolate)(t.facts.sinceStarted, {
@@ -1741,7 +1746,7 @@ function createPresenters(rpe, volunteerWithCountList) {
         volunteerInvitation: new VolunteerInvitationPresenter_1.VolunteerInvitationPresenter(rpe.eventName, window.location.href),
         unknowns: new UnknownsPresenter_1.UnknownsPresenter(rpe.unknowns, rpe.eventName),
         juniorSupervision: new JuniorSupervisionPresenter_1.JuniorSupervisionPresenter(rpe),
-        facts: new FactsPresenter_1.FactsPresenter(rpe.eventName, rpe.courseLength, rpe.facts),
+        facts: new FactsPresenter_1.FactsPresenter(rpe.eventName, rpe.courseLength, rpe.facts, rpe.isLaunchEvent()),
         closing: new ClosingPresenter_1.ClosingPresenter(),
     };
 }
@@ -1787,12 +1792,10 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
             title: presenters.volunteers.title(),
             details: presenters.volunteers.details(),
         },
-        ...(presenters.firstTimeVolunteers.details() !== undefined && {
-            firstTimeVolunteers: {
-                title: presenters.firstTimeVolunteers.title(),
-                details: presenters.firstTimeVolunteers.details(),
-            },
-        }),
+        firstTimeVolunteers: {
+            title: presenters.firstTimeVolunteers.title(),
+            details: presenters.firstTimeVolunteers.details(),
+        },
         volunteerInvitation: {
             title: presenters.volunteerInvitation.title(),
             details: presenters.volunteerInvitation.details(),
@@ -1807,7 +1810,7 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
         },
         facts: {
             title: presenters.facts.title(),
-            details: rpe.isLaunchEvent() ? undefined : presenters.facts.details(),
+            details: presenters.facts.details(),
         },
         closing: {
             title: presenters.closing.title(),

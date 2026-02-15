@@ -7,7 +7,11 @@ export class FullResultsPresenter implements Presenter {
   _eventNumber?: string;
   _currentUrl: string;
 
-  constructor(eventName: string | undefined, eventNumber: string | undefined, currentUrl: string) {
+  constructor(
+    eventName: string | undefined,
+    eventNumber: string | undefined,
+    currentUrl: string
+  ) {
     this._eventName = eventName;
     this._eventNumber = eventNumber;
     this._currentUrl = currentUrl;

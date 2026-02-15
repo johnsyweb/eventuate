@@ -26,11 +26,7 @@ export class IntroductionPresenter implements Presenter {
   details(): string {
     const t = getTranslations();
     return interpolate(t.introduction, {
-      finisherCount: formatCount(
-        this._finisherCount,
-        t.finisher,
-        t.finishers
-      ),
+      finisherCount: formatCount(this._finisherCount, t.finisher, t.finishers),
       volunteerCount: formatCount(
         this._volunteerCount,
         t.volunteer,

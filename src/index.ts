@@ -100,7 +100,12 @@ function createPresenters(
     ),
     unknowns: new UnknownsPresenter(rpe.unknowns, rpe.eventName),
     juniorSupervision: new JuniorSupervisionPresenter(rpe),
-    facts: new FactsPresenter(rpe.eventName, rpe.courseLength, rpe.facts),
+    facts: new FactsPresenter(
+      rpe.eventName,
+      rpe.courseLength,
+      rpe.facts,
+      rpe.isLaunchEvent()
+    ),
     closing: new ClosingPresenter(),
   };
 }
@@ -154,12 +159,10 @@ function populate(
       title: presenters.volunteers.title(),
       details: presenters.volunteers.details(),
     },
-    ...(presenters.firstTimeVolunteers.details() !== undefined && {
-      firstTimeVolunteers: {
-        title: presenters.firstTimeVolunteers.title(),
-        details: presenters.firstTimeVolunteers.details(),
-      },
-    }),
+    firstTimeVolunteers: {
+      title: presenters.firstTimeVolunteers.title(),
+      details: presenters.firstTimeVolunteers.details(),
+    },
     volunteerInvitation: {
       title: presenters.volunteerInvitation.title(),
       details: presenters.volunteerInvitation.details(),
@@ -174,7 +177,7 @@ function populate(
     },
     facts: {
       title: presenters.facts.title(),
-      details: rpe.isLaunchEvent() ? undefined : presenters.facts.details(),
+      details: presenters.facts.details(),
     },
     closing: {
       title: presenters.closing.title(),

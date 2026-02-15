@@ -6,19 +6,26 @@ export class FactsPresenter implements Presenter {
   _eventName?: string;
   _courseLength: number;
   _facts: IResultsPageStats;
+  _isLaunchEvent: boolean;
 
   constructor(
     eventName: string | undefined,
     courseLength: number,
-    facts: IResultsPageStats
+    facts: IResultsPageStats,
+    isLaunchEvent: boolean
   ) {
     this._eventName = eventName;
     this._courseLength = courseLength;
     this._facts = facts;
+    this._isLaunchEvent = isLaunchEvent;
   }
 
   details(): string | undefined {
-    // Facts are always shown (unless launch event, handled externally)
+    // Don't show facts for launch events
+    if (this._isLaunchEvent) {
+      return undefined;
+    }
+
     const t = getTranslations();
 
     return [
