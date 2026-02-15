@@ -28,7 +28,11 @@ userscript_changed=$(echo "$changed_files" | grep -E "$userscript_patterns" || e
 docs_changed=$(echo "$changed_files" | grep -E "$docs_patterns" || echo "")
 
 if [ -n "$docs_changed" ]; then
-  echo "📐 Docs or bookmarklet files have been modified. Running Lighthouse (builds docs with local URLs)..."
+  echo "📐 Docs or bookmarklet files have been modified. Building docs and running Lighthouse..."
+  if ! pnpm docs:build; then
+    echo "❌ Docs build failed. Please fix errors before pushing."
+    exit 1
+  fi
   if ! pnpm run lighthouse; then
     echo "❌ Lighthouse scores below 100 (accessibility, best-practices, or SEO). Please fix before pushing."
     exit 1

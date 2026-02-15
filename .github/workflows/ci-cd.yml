@@ -117,6 +117,12 @@ jobs:
         working-directory: docs
         run: bundle install --path vendor/bundle
 
+      - name: Build project
+        run: pnpm build
+
+      - name: Build docs
+        run: pnpm docs:build
+
       - name: Install Chromium for Lighthouse
         run: pnpm exec playwright install --with-deps chromium
 

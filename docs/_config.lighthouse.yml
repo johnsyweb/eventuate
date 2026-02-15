@@ -1,7 +1,0 @@
-# Override for local Lighthouse runs so the built site loads assets from the
-# same origin (localhost) instead of production. Use:
-#   jekyll build --config _config.yml,_config.lighthouse.yml
-url: http://localhost:4173
-baseurl: ""
-# Skip main-site assets (fonts, favicons) that aren't in _site to avoid 404s.
-lighthouse: true

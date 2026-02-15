@@ -28,34 +28,6 @@ const runCommand = (command: string, args: string[]) =>
     });
   });
 
-/** Run a command with optional cwd. */
-const runCommandWithCwd = (
-  command: string,
-  args: string[],
-  cwd: string
-): Promise<void> =>
-  new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: 'inherit', cwd });
-    child.on('error', reject);
-    child.on('close', (code) => {
-      if (code === 0) resolve();
-      else reject(new Error(`${command} exited with code ${code}`));
-    });
-  });
-
-/** Build docs with local URLs so Lighthouse loads assets from the same origin. */
-const buildDocsForLighthouse = async () => {
-  await runCommand('pnpm', ['build']);
-  const docsDir = path.resolve(process.cwd(), 'docs');
-  await runCommandWithCwd('bundle', [
-    'exec',
-    'jekyll',
-    'build',
-    '--config',
-    '_config.yml,_config.lighthouse.yml',
-  ], docsDir);
-};
-
 const waitForServer = async (url: string, timeoutMs: number) => {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
@@ -156,8 +128,6 @@ const logFailingAudits = (
 };
 
 const main = async () => {
-  await buildDocsForLighthouse();
-
   const serveArgs = [siteDir, '-l', lighthousePort];
 
   const serverProcess = spawn('serve', serveArgs, {
