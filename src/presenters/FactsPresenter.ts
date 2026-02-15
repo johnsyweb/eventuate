@@ -1,7 +1,8 @@
 import { getTranslations, interpolate } from '../translations';
 import { IResultsPageStats } from '../types/IResultsPageStats';
+import { Presenter } from './Presenter';
 
-export class FactsPresenter {
+export class FactsPresenter implements Presenter {
   _eventName?: string;
   _courseLength: number;
   _facts: IResultsPageStats;
@@ -41,5 +42,13 @@ export class FactsPresenter {
         count: this._facts.volunteers?.toLocaleString() || '0',
       }),
     ].join('');
+  }
+
+  title(): string {
+    return '';
+  }
+
+  hasData(): boolean {
+    return true;
   }
 }

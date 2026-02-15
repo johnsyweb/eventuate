@@ -1,6 +1,7 @@
 import { getTranslations, interpolate } from '../translations';
+import { Presenter } from './Presenter';
 
-export class UnknownsPresenter {
+export class UnknownsPresenter implements Presenter {
   _unknowns: string[];
   _eventName?: string;
 
@@ -14,7 +15,7 @@ export class UnknownsPresenter {
   }
 
   details(): string {
-    if (!this.hasUnknowns()) {
+    if (!this.hasData()) {
       return '';
     }
 
@@ -24,7 +25,11 @@ export class UnknownsPresenter {
     });
   }
 
-  hasUnknowns(): boolean {
+  hasData(): boolean {
     return this._unknowns.length > 0;
+  }
+
+  hasUnknowns(): boolean {
+    return this.hasData();
   }
 }

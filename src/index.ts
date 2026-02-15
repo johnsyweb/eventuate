@@ -183,7 +183,7 @@ function populate(
           .map((v) => v.name)
       ),
     },
-    ...(presenters.firstTimeVolunteers.hasFirstTimeVolunteers() && {
+    ...(presenters.firstTimeVolunteers.hasData() && {
       firstTimeVolunteers: {
         title: presenters.firstTimeVolunteers.title(),
         details: presenters.firstTimeVolunteers.details(),
@@ -198,13 +198,13 @@ function populate(
     },
     unknowns: {
       title: presenters.unknowns.title(),
-      details: presenters.unknowns.hasUnknowns()
+      details: presenters.unknowns.hasData()
         ? presenters.unknowns.details()
         : undefined,
     },
     juniorSupervision: {
       title: '',
-      details: presenters.juniorSupervision.hasSupervisionIssue()
+      details: presenters.juniorSupervision.hasData()
         ? presenters.juniorSupervision.details()
         : undefined,
     },
