@@ -131,24 +131,12 @@
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "johnsy.com",
-          "item": "https://www.johnsy.com/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "parkrun utility",
-          "item": "https://www.johnsy.com/parkrun-utility/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Eventuate",
-          "item": "https://www.johnsy.com/eventuate/"
-        }
+        {"@type":"ListItem","position":1,"name":"johnsy.com","item":"https://www.johnsy.com/"},
+        {"@type":"ListItem","position":2,"name":"parkrun utility","item":"https://www.johnsy.com/parkrun-utility/"},
+        {"@type":"ListItem","position":3,"name":"Eventuate","item":"https://www.johnsy.com/eventuate/"}
+        {% if page.url != '/' and page.url != '/eventuate/' and page.url != '/eventuate/index.html' %}
+        ,{"@type":"ListItem","position":4,"name":"{{ page.title | escape }}","item":"{{ page.url | absolute_url }}"}
+        {% endif %}
       ]
     }
     </script>
@@ -199,9 +187,15 @@
         <span aria-hidden="true">/</span>
         <a href="{{ site.url }}/parkrun-utility/">parkrun utility</a>
         <span aria-hidden="true">/</span>
+        {% if page.url != '/' and page.url != '/eventuate/' and page.url != '/eventuate/index.html' %}
+        <a href="{{ site.url }}/eventuate/">Eventuate</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ page.title | default: 'Page' }}</span>
+        {% else %}
         <span aria-current="page">Eventuate</span>
+        {% endif %}
       </nav>
-      <h1>Eventuate</h1>
+      <h1>{% if page.url != '/' and page.url != '/eventuate/' and page.url != '/eventuate/index.html' %}{{ page.title }}{% else %}Eventuate{% endif %}</h1>
     </header>
 
     <div id="page">
