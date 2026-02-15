@@ -160,7 +160,7 @@
               "label": "Userscript"
             },
             {
-              "path": "docs/bookmarklet.md",
+              "path": "docs/bookmarklet/index.md",
               "label": "Bookmarklet Installation Page"
             }
           ]

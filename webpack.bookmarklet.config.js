@@ -79,8 +79,12 @@ module.exports = {
             )
             .replaceAll('${sizeKB}', sizeKB.toFixed(2));
 
+          const bookmarkletDir = path.resolve(__dirname, 'docs/bookmarklet');
+          if (!fs.existsSync(bookmarkletDir)) {
+            fs.mkdirSync(bookmarkletDir, { recursive: true });
+          }
           fs.writeFileSync(
-            path.resolve(__dirname, 'docs/bookmarklet.md'),
+            path.resolve(__dirname, 'docs/bookmarklet/index.md'),
             markdown
           );
         });
