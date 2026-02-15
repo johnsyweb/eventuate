@@ -210,6 +210,18 @@ p img {
 
 .script-install-button:hover {
   background: #3d2f4f;
+  color: #ffffff;
+}
+
+.script-install-button:focus-visible {
+  color: #ffffff;
+  outline: 3px solid var(--parkrun-apricot);
+  outline-offset: 2px;
+}
+
+.script-install-button:active {
+  background: #1f1929;
+  color: #ffffff;
 }
 
 /* Bookmarklet CTA button (shares base style, tweaks spacing) */
