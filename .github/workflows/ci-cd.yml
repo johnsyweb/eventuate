@@ -27,7 +27,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup mise
         uses: jdx/mise-action@v3
@@ -35,7 +35,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -48,7 +48,7 @@ jobs:
   format-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup mise
         uses: jdx/mise-action@v3
@@ -56,7 +56,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -69,7 +69,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup mise
         uses: jdx/mise-action@v3
@@ -77,7 +77,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -90,7 +90,7 @@ jobs:
   lighthouse:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup mise
         uses: jdx/mise-action@v3
@@ -98,7 +98,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -106,7 +106,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache bundler gems
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
@@ -134,7 +134,7 @@ jobs:
     needs: [lint, format-check, test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup mise
         uses: jdx/mise-action@v3
@@ -142,7 +142,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -156,7 +156,7 @@ jobs:
         run: pnpm web-ext:lint
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist
           path: |
@@ -172,7 +172,7 @@ jobs:
       skip-release: ${{ steps.check.outputs.skip-release }}
       should-deploy-pages: ${{ steps.check.outputs.should-deploy-pages }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -236,7 +236,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -244,7 +244,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache bundler gems
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
@@ -284,7 +284,7 @@ jobs:
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
 
       - name: Upload release build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist-release
           path: |
@@ -306,7 +306,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
@@ -317,7 +317,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -325,7 +325,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache bundler gems
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
@@ -367,7 +367,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref:
             ${{ github.event.release.target_commitish || github.ref || 'main' }}
@@ -379,7 +379,7 @@ jobs:
           install: true
 
       - name: Setup pnpm cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
 
@@ -387,7 +387,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Cache bundler gems
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
