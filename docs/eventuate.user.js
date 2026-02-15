@@ -1754,69 +1754,23 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
     const eventuateDiv = document.getElementById('eventuate') ||
         document.createElement('div');
     eventuateDiv.id = 'eventuate';
+    // Build reportDetails from presenters
     const reportDetails = {
         languageSwitcher: {
             title: '',
             details: (0, translations_1.createLanguageSwitcher)(),
         },
         message: { title: '&#x23f3;', details: message },
-        introduction: {
-            title: presenters.introduction.title(),
-            details: presenters.introduction.details(),
-        },
-        milestoneCelebrations: {
-            title: presenters.milestone.title(),
-            details: presenters.milestone.details(),
-        },
-        newestParkrunners: {
-            title: presenters.newestParkrunners.title(),
-            details: presenters.newestParkrunners.details(),
-        },
-        firstTimers: {
-            title: presenters.firstTimers.title(),
-            details: presenters.firstTimers.details(),
-        },
-        newPBs: {
-            title: presenters.newPBs.title(),
-            details: presenters.newPBs.details(),
-        },
-        groups: {
-            title: presenters.groups.title(),
-            details: presenters.groups.details(),
-        },
-        fullResults: {
-            title: presenters.fullResults.title(),
-            details: presenters.fullResults.details(),
-        },
-        volunteers: {
-            title: presenters.volunteers.title(),
-            details: presenters.volunteers.details(),
-        },
-        firstTimeVolunteers: {
-            title: presenters.firstTimeVolunteers.title(),
-            details: presenters.firstTimeVolunteers.details(),
-        },
-        volunteerInvitation: {
-            title: presenters.volunteerInvitation.title(),
-            details: presenters.volunteerInvitation.details(),
-        },
-        unknowns: {
-            title: presenters.unknowns.title(),
-            details: presenters.unknowns.details(),
-        },
-        juniorSupervision: {
-            title: presenters.juniorSupervision.title(),
-            details: presenters.juniorSupervision.details(),
-        },
-        facts: {
-            title: presenters.facts.title(),
-            details: presenters.facts.details(),
-        },
-        closing: {
-            title: presenters.closing.title(),
-            details: presenters.closing.details(),
-        },
     };
+    // Iterate over presenters and add to reportDetails
+    for (const [key, presenter] of Object.entries(presenters)) {
+        // milestone presenter maps to milestoneCelebrations section
+        const sectionKey = key === 'milestone' ? 'milestoneCelebrations' : key;
+        reportDetails[sectionKey] = {
+            title: presenter.title(),
+            details: presenter.details(),
+        };
+    }
     const insertionPoint = document.querySelector('.Results-header');
     if (insertionPoint) {
         insertionPoint.insertAdjacentElement('afterend', eventuateDiv);
