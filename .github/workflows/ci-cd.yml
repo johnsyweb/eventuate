@@ -144,13 +144,13 @@ jobs:
             echo "should-deploy-pages=false" >> ${GITHUB_OUTPUT}
             exit 0
           fi
-          
+
           # Get the commit SHA
           commit_sha="${{ github.sha }}"
-          
+
           # Get the parent commit
           parent_sha=$(git rev-parse ${commit_sha}^ 2>/dev/null || echo "")
-          
+
           if [ -n "$parent_sha" ]; then
             # Check files changed between parent and current commit
             changed_files=$(git diff --name-only ${parent_sha} ${commit_sha} 2>/dev/null || echo "")
@@ -158,10 +158,10 @@ jobs:
             # Fallback: check files changed in the last commit
             changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
           fi
-          
+
           # Check if all changed files are in docs/ or .github/
           non_docs_files=$(echo "$changed_files" | grep -v "^docs/" | grep -v "^\.github/" | grep -v "^$" || true)
-          
+
           if [ -z "$non_docs_files" ]; then
             echo "All changes are in docs/ or .github/, skipping release but deploying Pages"
             echo "skip-release=true" >> ${GITHUB_OUTPUT}
@@ -219,7 +219,9 @@ jobs:
         run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
 
       - name: Sign and submit to AMO
-        if: steps.version-before.outputs.version != steps.version-after.outputs.version
+        if:
+          steps.version-before.outputs.version !=
+          steps.version-after.outputs.version
         run: |
           echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
           pnpm web-ext sign
@@ -252,7 +254,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.target_commitish || github.ref || 'main' }}
+          ref:
+            ${{ github.event.release.target_commitish || github.ref || 'main' }}
           fetch-depth: 0
 
       - name: Setup mise

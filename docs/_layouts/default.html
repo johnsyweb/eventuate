@@ -125,6 +125,33 @@
     />
     {% endif %}
 
+    <!-- JSON-LD Structured Data for Breadcrumbs -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "johnsy.com",
+          "item": "https://www.johnsy.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "parkrun utility",
+          "item": "https://www.johnsy.com/parkrun-utility/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Eventuate",
+          "item": "https://www.johnsy.com/eventuate/"
+        }
+      ]
+    }
+    </script>
     
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Bold.woff2" as="font" type="font/woff2" crossorigin>
@@ -145,6 +172,10 @@
       href="{{ site.url }}/assets/css/colors-dark.css"
       rel="stylesheet"
     />
+    <link
+      href="{{ site.url }}/eventuate/style.css"
+      rel="stylesheet"
+    />
 
     <link rel="Start" href="{{ site.url }}/" title="Back to the start" />
     <link
@@ -163,8 +194,14 @@
   <body>
     <a href="#content" class="skip-link">Skip to main content</a>
     <header id="header">
-      <h1><a href="{{ site.url }}/">{{ site.name }}</a></h1>
-      <p>{{ site.description_html }}</p>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="{{ site.url }}/">johnsy.com</a>
+        <span aria-hidden="true">/</span>
+        <a href="{{ site.url }}/parkrun-utility/">parkrun utility</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Eventuate</span>
+      </nav>
+      <h1>Eventuate</h1>
     </header>
 
     <div id="page">
@@ -236,22 +273,27 @@
 
     <footer id="footer">
       <p>
-        Copyright &copy; 2000-{{ site.time | date: '%Y' }}
-        <a rel="author" href="{{ site.url }}/about/"
-          ><em><acronym title="Peter Alexander Johns">paj</acronym></em></a
+        By
+        <a
+          href="{{ site.url }}/"
+          rel="author"
+          >Pete Johns</a
         >
         (<a
+          href="https://github.com/johnsyweb"
           rel="me"
-          aria-label="@pete.johnsy.com on Bluesky"
-          title="Alas, poor Twitter"
-          href="https://bsky.app/profile/pete.johnsy.com"
-          >@pete.johnsy.com</a
-        >) All rights (and some wrongs) reserved.
+          >@johnsyweb</a
+        >) • Licensed under
+        <a
+          href="https://github.com/johnsyweb/eventuate/blob/main/LICENSE"
+          >MIT</a
+        >
+        • Not officially associated with parkrun • Written by parkrun
+        volunteers for parkrun volunteers
       </p>
       <p>
         Hosted by <a href="https://github.com">GitHub</a>, powered by
-        <a href="https://jekyllrb.com">Jekyll</a>, theme by
-        <a href="https://www.webmaster-source.com">Matt Harzewski</a>.
+        <a href="https://jekyllrb.com">Jekyll</a>.
       </p>
     </footer>
 

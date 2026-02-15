@@ -1,5 +1,157 @@
+/* parkrun colour palette */
+:root {
+  --parkrun-aubergine: #4c1a57;
+  --parkrun-apricot: #f7a541;
+  --parkrun-white: #ffffff;
+  --parkrun-black: #000000;
+  --parkrun-grey: #666666;
+  --parkrun-light-grey: #f5f5f5;
+}
+
 body {
-  font-family: "Atkinson Hyperlegible", Verdana, serif;
+  font-family: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  color: var(--parkrun-black);
+  background: var(--parkrun-light-grey);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--parkrun-apricot);
+  color: var(--parkrun-black);
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+  z-index: 1000;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+#header {
+  background-color: var(--parkrun-aubergine);
+  color: var(--parkrun-white);
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#header h1 {
+  margin: 0.75rem 0 0 0;
+  color: var(--parkrun-white);
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.12);
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.breadcrumbs a {
+  color: var(--parkrun-apricot);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible {
+  text-decoration: underline;
+}
+
+.breadcrumbs span[aria-hidden="true"] {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.breadcrumbs span[aria-current="page"] {
+  color: var(--parkrun-white);
+  font-weight: 600;
+}
+
+#footer {
+  background-color: var(--parkrun-aubergine);
+  color: var(--parkrun-white);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-top: 2rem;
+}
+
+#footer p {
+  margin: 0.5rem 0;
+}
+
+#footer a {
+  color: var(--parkrun-apricot);
+  text-decoration: none;
+}
+
+#footer a:hover,
+#footer a:focus-visible {
+  text-decoration: underline;
+}
+
+#page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+#content {
+  background: var(--parkrun-white);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#content h2 {
+  color: var(--parkrun-aubergine);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#content h2:first-child {
+  margin-top: 0;
+}
+
+#content a {
+  color: var(--parkrun-aubergine);
+  text-decoration: underline;
+}
+
+#content a:hover,
+#content a:focus-visible {
+  color: var(--parkrun-apricot);
+}
+
+/* Hide sidebar navigation - Eventuate uses breadcrumbs instead */
+#sidebar {
+  display: none;
+}
+
+#page {
+  display: block;
+}
+
+#content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 ul {
