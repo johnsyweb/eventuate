@@ -6,7 +6,10 @@ redirect_from: /bookmarklet.html
 
 ## What is a bookmarklet?
 
-A bookmarklet is a bookmark whose URL is JavaScript code instead of a web page address. When you click the bookmark, it runs the JavaScript code on the current page. Bookmarklets are useful on browsers that support bookmarks but not userscript managers, such as Safari on iOS.
+A bookmarklet is a bookmark whose URL is JavaScript code instead of a web page
+address. When you click the bookmark, it runs the JavaScript code on the current
+page. Bookmarklets are useful on browsers that support bookmarks but not
+userscript managers, such as Safari on iOS.
 
 ## Installation
 
