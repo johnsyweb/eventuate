@@ -1,3 +1,16 @@
+# [1.13.0](https://github.com/johnsyweb/eventuate/compare/v1.12.0...v1.13.0) (2026-02-15)
+
+
+### Bug Fixes
+
+* **docs:** ensure script-install-button contrast in all states ([2288b59](https://github.com/johnsyweb/eventuate/commit/2288b594cbe77e34beff8b19448d00de12274edf))
+
+
+### Features
+
+* add jekyll-redirect-from plugin for bookmarklet redirect ([0b20de7](https://github.com/johnsyweb/eventuate/commit/0b20de7c74a77f83b944f0ac238c80e4b8b3c1b9))
+* **closing:** augment closing text with course length and #loveparkrun ([195b394](https://github.com/johnsyweb/eventuate/commit/195b394e2fefb28e33012be4bb12f51b211c65da)), closes [#loveparkrun](https://github.com/johnsyweb/eventuate/issues/loveparkrun)
+
 # [1.12.0](https://github.com/johnsyweb/eventuate/compare/v1.11.1...v1.12.0) (2026-02-04)
 
 
