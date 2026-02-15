@@ -145,21 +145,7 @@
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Italic.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-BoldItalic.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Mono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ site.url }}/assets/fonts/Atkinson-Hyperlegible-Mono-Bold.woff2" as="font" type="font/woff2" crossorigin>
 
-    <link
-      href="{{ site.url }}/assets/css/style.css"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ site.url }}/assets/css/colors-light.css"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ site.url }}/assets/css/colors-dark.css"
-      rel="stylesheet"
-    />
     <link
       href="{{ site.url }}/eventuate/style.css"
       rel="stylesheet"
@@ -199,63 +185,6 @@
     </header>
 
     <div id="page">
-      <div id="sidebar">
-        <nav aria-label="Main navigation">
-          <ul class="main-nav">
-            <li>
-              <a
-                href="{{ site.url }}/"
-                accesskey="h"
-                title="Home (Access key: Alt+Shift+H on Windows, Control+Option+H on macOS)"
-              ><span class="accesskey-letter">H</span><span class="accesskey-rest">ome</span></a>
-            </li>
-            <li>
-              <a
-                href="{{ site.url }}/about/"
-                accesskey="a"
-                title="About (Access key: Alt+Shift+A on Windows, Control+Option+A on macOS)"
-              ><span class="accesskey-letter">A</span><span class="accesskey-rest">bout</span></a>
-            </li>
-            <li>
-              <a
-                href="{{ site.url }}/blog/"
-                accesskey="b"
-                title="Blog (Access key: Alt+Shift+B on Windows, Control+Option+B on macOS)"
-              ><span class="accesskey-letter">B</span><span class="accesskey-rest">log</span></a>
-            </li>
-            <li>
-              <a
-                href="{{ site.url }}/contact/"
-                accesskey="c"
-                title="Contact (Access key: Alt+Shift+C on Windows, Control+Option+C on macOS)"
-              ><span class="accesskey-letter">C</span><span class="accesskey-rest">ontact</span></a>
-            </li>
-            <li>
-              <a
-                href="{{ site.url }}/parkrun-utility/"
-                accesskey="p"
-                title="parkrun utility (Access key: Alt+Shift+P on Windows, Control+Option+P on macOS)"
-              ><span class="accesskey-letter">p</span><span class="accesskey-rest">arkrun utility</span></a>
-            </li>
-            <li>
-              <a
-                href="{{ site.url }}/eventuate/"
-                accesskey="e"
-                title="Eventuate (Access key: Alt+Shift+E on Windows, Control+Option+E on macOS)"
-                {% if page.url contains '/eventuate' %}aria-current="page"{% endif %}
-              ><span class="accesskey-letter">E</span><span class="accesskey-rest">ventuate</span></a>
-            </li>
-            <li>
-              <a
-                href="{{ site.url }}/search/"
-                accesskey="s"
-                title="Search (Access key: Alt+Shift+S on Windows, Control+Option+S on macOS)"
-              ><span class="accesskey-letter">S</span><span class="accesskey-rest">earch</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
       <main
         id="content"
         role="main"
@@ -290,7 +219,5 @@
         <a href="https://jekyllrb.com">Jekyll</a>.
       </p>
     </footer>
-
-    <script src="{{ site.url }}/assets/js/mobile-menu.js"></script>
   </body>
 </html>

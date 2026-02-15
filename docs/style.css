@@ -1,3 +1,36 @@
+/* Atkinson Hyperlegible – loaded from main site assets */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* parkrun colour palette */
 :root {
   --parkrun-aubergine: #4c1a57;
@@ -34,6 +67,18 @@ body {
 .skip-link:focus,
 .skip-link:focus-visible {
   transform: translateY(0);
+}
+
+/* Full-width breakout so header/footer span viewport when main site CSS constrains the page */
+#header,
+#footer {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
 }
 
 #header {
@@ -92,10 +137,6 @@ body {
   margin-top: 2rem;
 }
 
-#footer p {
-  margin: 0.5rem 0;
-}
-
 #footer a {
   color: var(--parkrun-apricot);
   text-decoration: none;
@@ -104,6 +145,10 @@ body {
 #footer a:hover,
 #footer a:focus-visible {
   text-decoration: underline;
+}
+
+#footer p {
+  margin: 0.5rem 0;
 }
 
 #page {
@@ -139,11 +184,6 @@ body {
   color: var(--parkrun-apricot);
 }
 
-/* Hide sidebar navigation - Eventuate uses breadcrumbs instead */
-#sidebar {
-  display: none;
-}
-
 #page {
   display: block;
 }
@@ -175,6 +215,36 @@ li {
 
 a {
   text-decoration: none;
+}
+
+/* Code / pre blocks: contain long lines and scroll horizontally */
+#content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  background: var(--parkrun-light-grey);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  -webkit-overflow-scrolling: touch;
+}
+
+#content pre code {
+  display: block;
+  white-space: pre;
+  padding: 0;
+  background: none;
+  color: var(--parkrun-black);
+}
+
+.code-snippet {
+  max-width: 100%;
+}
+
+.code-snippet pre {
+  margin: 0;
 }
 
 .bookmarklet {
