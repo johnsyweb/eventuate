@@ -139,7 +139,8 @@ body {
 
 #footer a {
   color: var(--parkrun-apricot);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 #footer a:hover,
