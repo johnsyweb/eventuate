@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Eventuate Bookmarklet
-redirect_from: /eventuate/bookmarklet.html
+redirect_from: /bookmarklet.html
 ---
 
 ## Desktop Instructions

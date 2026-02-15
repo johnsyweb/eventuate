@@ -7,6 +7,8 @@ description_html: |
   <a href="https://pronouns.org/he">he/him/his</a>): Human being; just like you.
 baseurl: /eventuate
 url: https://www.johnsy.com
+plugins:
+  - jekyll-redirect-from
 
 apple_touch_icon_sizes:
   - 57
