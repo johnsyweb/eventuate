@@ -10,3 +10,4 @@
 /node_modules
 /target
 /web-ext-artifacts
+/lighthouse-report.json
