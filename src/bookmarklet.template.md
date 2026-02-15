@@ -31,12 +31,14 @@ On mobile browsers that let you edit bookmark URLs:
   <li>Copy the JavaScript code below to your clipboard.</li>
   <li>Create a new bookmark for any page.</li>
   <li>Edit the bookmark and replace its URL with the code you copied.</li>
-  <li>Navigate to a results page (_e.g._
-    <https://www.parkrun.com.au/brimbank/results/latestresults/>).</li>
+  <li>Navigate to a results page (<em>e.g.</em>
+    <a href="https://www.parkrun.com.au/brimbank/results/latestresults/">https://www.parkrun.com.au/brimbank/results/latestresults/</a>).</li>
   <li>Select the bookmark to run the script.</li>
 </ol>
 
-<pre><code class="language-js">javascript:${encodedScript}</code></pre>
+<div class="code-snippet" role="region" aria-label="Bookmarklet JavaScript code">
+  <pre><code class="language-js">javascript:${encodedScript}</code></pre>
+</div>
 
 ${warning}
 

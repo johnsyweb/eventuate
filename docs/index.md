@@ -44,21 +44,23 @@ As soon as the latest results page loads for an event, you'll see a bunch of use
 
 ## Where
 
-[The source code is freely available on GitHub][github] and [releases][releases] are available in a range of formats, including packages for your browser of choice.
+[The source code is freely available on GitHub][github] and [releases][releases] are available in a range of formats, including the [Chrome extension][chrome], the [Firefox add-on][amo], and packages for your browser of choice.
 
-Happily, Eventuate is available on [Firefox for Android][firefox-android].
+Happily, Eventuate is available on [Firefox for Android][firefox-android] via [AMO][amo].
 
 Apple charge a fee to distribute software through their App Store, so Eventuate is not available as an extension for Safari. Safari and iOS users have two options available to them, in the forms of a [bookmarklet][bookmarklet-wiki] and a [userscript][userscript-wiki].
 
 Grab your [Eventuate bookmarklet][bookmarklet] or [Eventuate userscript][userscript]!
 
-The Chromium extension for Google Chrome is compatible with other browsers including Microsoft Edge and Opera. Please [report any issues][issues] you encounter using this on other browsers.
+The [Chrome extension][chrome] is compatible with other Chromium-based browsers including Microsoft Edge and Opera. Please [report any issues][issues] you encounter using this on other browsers.
 
 <!-- Links -->
 [brimbank]: https://www.parkrun.com.au/brimbank/
 [facebook]: https://www.facebook.com/brimbankparkrun
 [github]: https://github.com/johnsyweb/eventuate
 [releases]: https://github.com/johnsyweb/eventuate/releases/
+[chrome]: https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
+[amo]: https://addons.mozilla.org/firefox/addon/eventuate/
 [firefox-android]: https://www.mozilla.org/firefox/browsers/mobile/android/
 [bookmarklet-wiki]: https://en.wikipedia.org/wiki/Bookmarklet
 [userscript-wiki]: https://en.wikipedia.org/wiki/Userscript
