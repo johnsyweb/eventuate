@@ -169,7 +169,7 @@ The userscript and bookmarklet are built automatically as part of the
 `pnpm package` command. They will be generated in:
 
 - Userscript: `target/eventuate.user.js`
-- Bookmarklet: `target/bookmarklet.md`
+- Bookmarklet: `docs/bookmarklet/index.md`
 
 To build them individually:
 

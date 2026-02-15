@@ -63,7 +63,7 @@ describe('FirstTimersPresenter', () => {
     it('should handle empty first timers list', () => {
       const presenter = new FirstTimersPresenter([]);
       const details = presenter.details();
-      expect(details).toBe('');
+      expect(details).toBeUndefined();
     });
   });
 });

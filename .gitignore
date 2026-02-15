@@ -3,10 +3,11 @@
 /chromium*
 /dist/
 /docs/_site
-/docs/bookmarklet.md
+/docs/bookmarklet/
 /docs/eventuate.bookmarklet.js
 /docs/eventuate.user.js
 /eventuate*
 /node_modules
 /target
 /web-ext-artifacts
+/lighthouse-report.json

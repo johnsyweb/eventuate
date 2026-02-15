@@ -1,6 +1,7 @@
 import { ResultsPageExtractor } from '../extractors/ResultsPageExtractor';
 import { IFinisher } from '../types/Finisher';
 import { getTranslations, interpolate } from '../translations';
+import { Presenter } from './Presenter';
 
 const ARM_REACH_SECONDS = 15;
 
@@ -76,7 +77,7 @@ interface ChildCheckResult {
   nearest: NearestAdult | null;
 }
 
-export class JuniorSupervisionPresenter {
+export class JuniorSupervisionPresenter implements Presenter {
   _extractor: ResultsPageExtractor;
   _hasSupervisionIssue: boolean;
   _childCheckResults: ChildCheckResult[];
@@ -168,18 +169,26 @@ export class JuniorSupervisionPresenter {
     }
   }
 
-  hasSupervisionIssue(): boolean {
-    return this._hasSupervisionIssue;
-  }
-
-  details(): string {
-    if (!this._hasSupervisionIssue) {
-      return '';
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
     }
 
     const t = getTranslations();
     return interpolate(t.juniorSupervisionReminder, {
       eventName: this._extractor.eventName || t.fallbackParkrunName,
     });
+  }
+
+  private hasData(): boolean {
+    return this._hasSupervisionIssue;
+  }
+
+  hasSupervisionIssue(): boolean {
+    return this.hasData();
+  }
+
+  title(): string {
+    return '';
   }
 }

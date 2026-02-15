@@ -62,7 +62,7 @@ The Chromium extension for Google Chrome is compatible with other browsers inclu
 [firefox-android]: https://www.mozilla.org/firefox/browsers/mobile/android/
 [bookmarklet-wiki]: https://en.wikipedia.org/wiki/Bookmarklet
 [userscript-wiki]: https://en.wikipedia.org/wiki/Userscript
-[bookmarklet]: ./bookmarklet.html
+[bookmarklet]: ./bookmarklet/
 [userscript]: ./eventuate.user.js
 [issues]: https://github.com/johnsyweb/eventuate/issues/new?template=bug_report.md
 

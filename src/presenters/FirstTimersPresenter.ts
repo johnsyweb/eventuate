@@ -1,8 +1,9 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { getTranslations, interpolate, formatCount } from '../translations';
 import { FirstTimerWithFinishCount } from '../types/FirstTimer';
+import { Presenter } from './Presenter';
 
-export class FirstTimersPresenter {
+export class FirstTimersPresenter implements Presenter {
   protected _firstTimers: FirstTimerWithFinishCount[];
   protected _eventName?: string;
 
@@ -19,8 +20,15 @@ export class FirstTimersPresenter {
     });
   }
 
-  details(): string {
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
+    }
     return sortAndConjoin(this.getFirstTimerNames());
+  }
+
+  protected hasData(): boolean {
+    return this._firstTimers.length > 0;
   }
 
   protected getFirstTimerNames(): string[] {

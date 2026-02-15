@@ -2,12 +2,17 @@ import { FactsPresenter } from '../../src/presenters/FactsPresenter';
 
 describe('FactsPresenter', () => {
   it('builds the facts details string', () => {
-    const presenter = new FactsPresenter('Test parkrun', 5, {
-      finishers: 12,
-      finishes: 34,
-      volunteers: 3,
-      pbs: 4,
-    });
+    const presenter = new FactsPresenter(
+      'Test parkrun',
+      5,
+      {
+        finishers: 12,
+        finishes: 34,
+        volunteers: 3,
+        pbs: 4,
+      },
+      false
+    );
 
     const details = presenter.details();
 
@@ -17,15 +22,38 @@ describe('FactsPresenter', () => {
   });
 
   it('falls back to default parkrun name when missing', () => {
-    const presenter = new FactsPresenter(undefined, 2, {
-      finishers: 1,
-      finishes: 2,
-      volunteers: 1,
-      pbs: 0,
-    });
+    const presenter = new FactsPresenter(
+      undefined,
+      2,
+      {
+        finishers: 1,
+        finishes: 2,
+        volunteers: 1,
+        pbs: 0,
+      },
+      false
+    );
 
     const details = presenter.details();
 
     expect(details).toContain('Since parkrun started ');
+  });
+
+  it('returns undefined for launch events', () => {
+    const presenter = new FactsPresenter(
+      'Test parkrun',
+      5,
+      {
+        finishers: 12,
+        finishes: 34,
+        volunteers: 3,
+        pbs: 4,
+      },
+      true
+    );
+
+    const details = presenter.details();
+
+    expect(details).toBeUndefined();
   });
 });

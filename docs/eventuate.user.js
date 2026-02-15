@@ -248,6 +248,33 @@ exports.VolunteerPageExtractor = VolunteerPageExtractor;
 
 /***/ },
 
+/***/ 838
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ClosingPresenter = void 0;
+const translations_1 = __webpack_require__(154);
+class ClosingPresenter {
+    _courseLength;
+    constructor(courseLength) {
+        this._courseLength = courseLength;
+    }
+    title() {
+        return '';
+    }
+    details() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.closing, {
+            courseLength: this._courseLength,
+        });
+    }
+}
+exports.ClosingPresenter = ClosingPresenter;
+
+
+/***/ },
+
 /***/ 278
 (__unused_webpack_module, exports, __webpack_require__) {
 
@@ -259,12 +286,18 @@ class FactsPresenter {
     _eventName;
     _courseLength;
     _facts;
-    constructor(eventName, courseLength, facts) {
+    _isLaunchEvent;
+    constructor(eventName, courseLength, facts, isLaunchEvent) {
         this._eventName = eventName;
         this._courseLength = courseLength;
         this._facts = facts;
+        this._isLaunchEvent = isLaunchEvent;
     }
     details() {
+        // Don't show facts for launch events
+        if (this._isLaunchEvent) {
+            return undefined;
+        }
         const t = (0, translations_1.getTranslations)();
         return [
             (0, translations_1.interpolate)(t.facts.sinceStarted, {
@@ -286,6 +319,9 @@ class FactsPresenter {
                 count: this._facts.volunteers?.toLocaleString() || '0',
             }),
         ].join('');
+    }
+    title() {
+        return '';
     }
 }
 exports.FactsPresenter = FactsPresenter;
@@ -320,10 +356,16 @@ class FirstTimeVolunteersPresenter {
         });
     }
     details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
         return (0, stringFunctions_1.sortAndConjoin)(this._firstTimeVolunteers.map((v) => v.name));
     }
-    hasFirstTimeVolunteers() {
+    hasData() {
         return this._firstTimeVolunteers.length > 0;
+    }
+    hasFirstTimeVolunteers() {
+        return this.hasData();
     }
 }
 exports.FirstTimeVolunteersPresenter = FirstTimeVolunteersPresenter;
@@ -382,7 +424,13 @@ class FirstTimersPresenter {
         });
     }
     details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
         return (0, stringFunctions_1.sortAndConjoin)(this.getFirstTimerNames());
+    }
+    hasData() {
+        return this._firstTimers.length > 0;
     }
     getFirstTimerNames() {
         return this._firstTimers.map((firstTimer) => firstTimer.name);
@@ -392,6 +440,110 @@ class FirstTimersPresenter {
     }
 }
 exports.FirstTimersPresenter = FirstTimersPresenter;
+
+
+/***/ },
+
+/***/ 436
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FullResultsPresenter = void 0;
+const translations_1 = __webpack_require__(154);
+const urlFunctions_1 = __webpack_require__(75);
+class FullResultsPresenter {
+    _eventName;
+    _eventNumber;
+    _currentUrl;
+    constructor(eventName, eventNumber, currentUrl) {
+        this._eventName = eventName;
+        this._eventNumber = eventNumber;
+        this._currentUrl = currentUrl;
+    }
+    title() {
+        return '';
+    }
+    details() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.fullResults, {
+            eventName: this._eventName || t.fallbackParkrunName,
+            eventNumber: this._eventNumber || '',
+            url: (0, urlFunctions_1.canonicalResultsPageUrl)(this._eventNumber ?? 'latestresults', this._currentUrl),
+        });
+    }
+}
+exports.FullResultsPresenter = FullResultsPresenter;
+
+
+/***/ },
+
+/***/ 903
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GroupsPresenter = void 0;
+const stringFunctions_1 = __webpack_require__(227);
+const translations_1 = __webpack_require__(154);
+class GroupsPresenter {
+    _runningWalkingGroups;
+    constructor(runningWalkingGroups) {
+        this._runningWalkingGroups = runningWalkingGroups;
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.runningWalkingGroupsTitle, {
+            count: (0, translations_1.formatCount)(this._runningWalkingGroups.length, t.activeGroup, t.walkingAndRunningGroups),
+        });
+    }
+    details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
+        return (0, stringFunctions_1.sortAndConjoin)(this._runningWalkingGroups);
+    }
+    hasData() {
+        return this._runningWalkingGroups.length > 0;
+    }
+}
+exports.GroupsPresenter = GroupsPresenter;
+
+
+/***/ },
+
+/***/ 99
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.IntroductionPresenter = void 0;
+const translations_1 = __webpack_require__(154);
+class IntroductionPresenter {
+    _finisherCount;
+    _volunteerCount;
+    _eventName;
+    _eventNumber;
+    constructor(finisherCount, volunteerCount, eventName, eventNumber) {
+        this._finisherCount = finisherCount;
+        this._volunteerCount = volunteerCount;
+        this._eventName = eventName;
+        this._eventNumber = eventNumber;
+    }
+    title() {
+        return '';
+    }
+    details() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.introduction, {
+            finisherCount: (0, translations_1.formatCount)(this._finisherCount, t.finisher, t.finishers),
+            volunteerCount: (0, translations_1.formatCount)(this._volunteerCount, t.volunteer, t.volunteers),
+            eventName: this._eventName || t.fallbackParkrunName,
+            eventNumber: this._eventNumber || '',
+        });
+    }
+}
+exports.IntroductionPresenter = IntroductionPresenter;
 
 
 /***/ },
@@ -522,17 +674,23 @@ class JuniorSupervisionPresenter {
             }
         }
     }
-    hasSupervisionIssue() {
-        return this._hasSupervisionIssue;
-    }
     details() {
-        if (!this._hasSupervisionIssue) {
-            return '';
+        if (!this.hasData()) {
+            return undefined;
         }
         const t = (0, translations_1.getTranslations)();
         return (0, translations_1.interpolate)(t.juniorSupervisionReminder, {
             eventName: this._extractor.eventName || t.fallbackParkrunName,
         });
+    }
+    hasData() {
+        return this._hasSupervisionIssue;
+    }
+    hasSupervisionIssue() {
+        return this.hasData();
+    }
+    title() {
+        return '';
     }
 }
 exports.JuniorSupervisionPresenter = JuniorSupervisionPresenter;
@@ -564,6 +722,9 @@ class MilestonePresenter {
         });
     }
     details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
         const t = (0, translations_1.getTranslations)();
         return this._milestoneCelebrations
             .map((mc) => {
@@ -575,8 +736,188 @@ class MilestonePresenter {
         })
             .join('<br>');
     }
+    hasData() {
+        return this._milestoneCelebrations.length > 0;
+    }
 }
 exports.MilestonePresenter = MilestonePresenter;
+
+
+/***/ },
+
+/***/ 60
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NewPBsPresenter = void 0;
+const stringFunctions_1 = __webpack_require__(227);
+const translations_1 = __webpack_require__(154);
+class NewPBsPresenter {
+    _finishersWithNewPBs;
+    _eventName;
+    constructor(finishersWithNewPBs, eventName) {
+        this._finishersWithNewPBs = finishersWithNewPBs;
+        this._eventName = eventName;
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.finishersWithNewPBsTitle, {
+            eventName: this._eventName || t.fallbackParkrunName,
+            count: (0, translations_1.formatCount)(this._finishersWithNewPBs.length, t.parkrunner, t.parkrunners),
+        });
+    }
+    details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
+        return (0, stringFunctions_1.sortAndConjoin)(this._finishersWithNewPBs);
+    }
+    hasData() {
+        return this._finishersWithNewPBs.length > 0;
+    }
+}
+exports.NewPBsPresenter = NewPBsPresenter;
+
+
+/***/ },
+
+/***/ 864
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NewestParkrunnersPresenter = void 0;
+const stringFunctions_1 = __webpack_require__(227);
+const translations_1 = __webpack_require__(154);
+class NewestParkrunnersPresenter {
+    _newestParkrunners;
+    constructor(newestParkrunners) {
+        this._newestParkrunners = newestParkrunners;
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.newestParkrunnersTitle, {
+            count: (0, translations_1.formatCount)(this._newestParkrunners.length, t.parkrunner, t.parkrunners),
+        });
+    }
+    details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
+        return (0, stringFunctions_1.sortAndConjoin)(this._newestParkrunners);
+    }
+    hasData() {
+        return this._newestParkrunners.length > 0;
+    }
+}
+exports.NewestParkrunnersPresenter = NewestParkrunnersPresenter;
+
+
+/***/ },
+
+/***/ 14
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UnknownsPresenter = void 0;
+const translations_1 = __webpack_require__(154);
+class UnknownsPresenter {
+    _unknowns;
+    _eventName;
+    constructor(unknowns, eventName) {
+        this._unknowns = unknowns;
+        this._eventName = eventName;
+    }
+    title() {
+        return '';
+    }
+    details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.unknowns, {
+            eventName: this._eventName || t.fallbackParkrunName,
+        });
+    }
+    hasData() {
+        return this._unknowns.length > 0;
+    }
+    hasUnknowns() {
+        return this.hasData();
+    }
+}
+exports.UnknownsPresenter = UnknownsPresenter;
+
+
+/***/ },
+
+/***/ 232
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.VolunteerInvitationPresenter = void 0;
+const translations_1 = __webpack_require__(154);
+const urlFunctions_1 = __webpack_require__(75);
+class VolunteerInvitationPresenter {
+    _eventName;
+    _currentUrl;
+    constructor(eventName, currentUrl) {
+        this._eventName = eventName;
+        this._currentUrl = currentUrl;
+    }
+    title() {
+        return '';
+    }
+    details() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.volunteerInvitation, {
+            eventName: this._eventName || t.fallbackParkrunName,
+            url: (0, urlFunctions_1.futureRosterUrl)(this._currentUrl),
+        });
+    }
+}
+exports.VolunteerInvitationPresenter = VolunteerInvitationPresenter;
+
+
+/***/ },
+
+/***/ 590
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.VolunteersPresenter = void 0;
+const stringFunctions_1 = __webpack_require__(227);
+const translations_1 = __webpack_require__(154);
+class VolunteersPresenter {
+    _volunteers;
+    _eventName;
+    constructor(volunteers, eventName) {
+        // Filter out first-time volunteers (they have their own section)
+        this._volunteers = volunteers.filter((v) => v.vols !== 1);
+        this._eventName = eventName;
+    }
+    title() {
+        const t = (0, translations_1.getTranslations)();
+        return (0, translations_1.interpolate)(t.volunteersTitle, {
+            eventName: this._eventName || t.fallbackParkrunName,
+        });
+    }
+    details() {
+        if (!this.hasData()) {
+            return undefined;
+        }
+        return (0, stringFunctions_1.sortAndConjoin)(this._volunteers.map((v) => v.name));
+    }
+    hasData() {
+        return this._volunteers.length > 0;
+    }
+}
+exports.VolunteersPresenter = VolunteersPresenter;
 
 
 /***/ },
@@ -876,7 +1217,7 @@ exports.de = {
     firstTimeVolunteersTitle: 'Ein besonderes Willkommen an {count}, die zum ersten Mal freiwillig geholfen haben: ',
     fullResults: 'Sie können die vollständigen Ergebnisse für {eventName} Event {eventNumber} unter {url} finden ',
     volunteerInvitation: 'Wenn Sie bei {eventName} freiwillig helfen möchten, schauen Sie bitte auf unserer zukünftigen Roster-Seite unter {url} nach. Alle unsere Rollen sind einfach zu erlernen, und wir bieten Schulung und Unterstützung. Wir würden uns freuen, Sie bei uns zu haben',
-    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, spaßigen und freundlichen wöchentlichen Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall bei einer Veranstaltung',
+    unknowns: 'Bitte vergessen Sie nicht, eine scannbare Kopie Ihres Barcodes zu {eventName} mitzubringen, wenn Sie Ihre Zeit aufgezeichnet haben möchten. Diese gestreiften kleinen Tickets sind Ihr Pass zu kostenlosen, spaßigen und freundlichen wöchentlichen Veranstaltungen auf der ganzen Welt und enthalten auch Kontaktdaten für den Notfall. parkrun-Barcode-Armbänder haben außerdem medizinische Angaben, die Sie überall beim Sport dabei haben können.',
     juniorSupervisionReminder: 'Eine Erinnerung, dass bei allen 5km Parkrun-Veranstaltungen Kinder unter 11 Jahren jederzeit in Reichweite eines Elternteils, Erziehungsberechtigten oder einer beauftragten erwachsenen Person sein müssen. Wir danken Ihnen für Ihre Zusammenarbeit, um die Sicherheit aller Teilnehmer zu gewährleisten. Weitere Informationen finden Sie in der Parkrun-Richtlinie zur Teilnahme von Kindern: https://support.parkrun.com/hc/articles/20038963108754',
     facts: {
         sinceStarted: 'Seit {eventName} begonnen hat ',
@@ -891,7 +1232,7 @@ exports.de = {
         joinedClub: '{names} ist dem {clubName} beigetreten',
     },
     loadingMessage: 'Lade Freiwilligendaten für {count} Parkrunner. Bitte warten',
-    closing: '#liebeparkrun',
+    closing: 'Wir sind nächste Woche wieder da für ein weiteres kostenloses, spaßiges und freundliches wöchentliches {courseLength}-km-Gemeinschaftsevent. Gehen, joggen, laufen, freiwillig helfen oder zuschauen – ganz wie Sie möchten.<br><br>&#x1f333; #liebeparkrun',
     fallbackParkrunName: 'Parkrun',
     fallbackParkrunnerName: 'ein Parkrunner',
     // Pluralization helpers
@@ -956,7 +1297,7 @@ exports.en = {
     firstTimeVolunteersTitle: 'A special welcome to the {count} who volunteered for the first time: ',
     fullResults: 'You can find the full results for {eventName} event {eventNumber} at {url} ',
     volunteerInvitation: 'If you would like to volunteer at {eventName}, please check out our future roster page at {url} . All of our roles are easy to learn, and we will provide training and support. We would love to have you join us',
-    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency at an event",
+    unknowns: "Please don't forget to bring a scannable copy of your barcode with you to {eventName} if you'd like to have your time recorded. These stripy little tickets are your passport to free, fun, and friendly weekly events all over the world and also carry contact details in case of an emergency. parkrun barcode wristbands also have medical information, which you can take with you wherever you work out.",
     juniorSupervisionReminder: "A reminder that at all 5km parkrun events, children under the age of 11 must be within arm's reach of a parent, guardian or designated adult at all times. We appreciate your cooperation in ensuring the safety of all participants. For more information, please see parkrun's policy on children participating: https://support.parkrun.com/hc/articles/20038963108754",
     facts: {
         sinceStarted: 'Since {eventName} started ',
@@ -971,7 +1312,7 @@ exports.en = {
         joinedClub: '{names} joined the {clubName}',
     },
     loadingMessage: 'Loading volunteer data for {count} parkrunners. Please wait',
-    closing: '#loveparkrun',
+    closing: "We'll be back next week for another free, fun, and friendly weekly {courseLength}km community event. Walk, jog, run, volunteer or spectate – it's up to you.<br><br>&#x1f333; #loveparkrun",
     fallbackParkrunName: 'parkrun',
     fallbackParkrunnerName: 'a parkrunner',
     // Pluralization helpers
@@ -1360,7 +1701,6 @@ var exports = __webpack_exports__;
 var __webpack_unused_export__;
 
 __webpack_unused_export__ = ({ value: true });
-const stringFunctions_1 = __webpack_require__(227);
 const upsertParagraph_1 = __webpack_require__(165);
 const fiveKFinishersToMilestones_1 = __webpack_require__(348);
 const fiveKVolunteersToMilestones_1 = __webpack_require__(674);
@@ -1370,18 +1710,25 @@ const FirstTimersPresenter_1 = __webpack_require__(723);
 const FirstTimersLaunchEventPresenter_1 = __webpack_require__(700);
 const FirstTimeVolunteersPresenter_1 = __webpack_require__(423);
 const JuniorSupervisionPresenter_1 = __webpack_require__(691);
+const UnknownsPresenter_1 = __webpack_require__(14);
+const IntroductionPresenter_1 = __webpack_require__(99);
+const NewestParkrunnersPresenter_1 = __webpack_require__(864);
+const NewPBsPresenter_1 = __webpack_require__(60);
+const GroupsPresenter_1 = __webpack_require__(903);
+const FullResultsPresenter_1 = __webpack_require__(436);
+const VolunteersPresenter_1 = __webpack_require__(590);
+const VolunteerInvitationPresenter_1 = __webpack_require__(232);
+const ClosingPresenter_1 = __webpack_require__(838);
 const ResultsPageExtractor_1 = __webpack_require__(964);
 const twoKFinishersToMilestone_1 = __webpack_require__(345);
 const twoKVolunteersToMilestones_1 = __webpack_require__(110);
 const Volunteer_1 = __webpack_require__(897);
-const urlFunctions_1 = __webpack_require__(75);
 const translations_1 = __webpack_require__(154);
 const share_1 = __webpack_require__(930);
 function createPresenters(rpe, volunteerWithCountList) {
     const firstTimersPresenter = rpe.isLaunchEvent() && rpe.firstTimersWithFinishCounts.length > 0
         ? new FirstTimersLaunchEventPresenter_1.FirstTimersLaunchEventPresenter(rpe.firstTimersWithFinishCounts, rpe.eventName)
         : new FirstTimersPresenter_1.FirstTimersPresenter(rpe.firstTimersWithFinishCounts, rpe.eventName);
-    const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter_1.FirstTimeVolunteersPresenter(volunteerWithCountList, rpe.eventName);
     const finisherMilestoneCelebrations = rpe.courseLength == 2
         ? [
             ...(0, twoKVolunteersToMilestones_1.twoKVolunteersToMilestones)(volunteerWithCountList),
@@ -1392,118 +1739,42 @@ function createPresenters(rpe, volunteerWithCountList) {
         ...(0, fiveKVolunteersToMilestones_1.fiveKVolunteersToMilestones)(volunteerWithCountList),
         ...finisherMilestoneCelebrations,
     ];
-    const milestonePresenter = new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations);
-    const juniorSupervisionPresenter = new JuniorSupervisionPresenter_1.JuniorSupervisionPresenter(rpe);
-    const factsPresenter = new FactsPresenter_1.FactsPresenter(rpe.eventName, rpe.courseLength, rpe.facts);
     return {
+        introduction: new IntroductionPresenter_1.IntroductionPresenter(rpe.finishers.length, volunteerWithCountList.length, rpe.eventName, rpe.eventNumber),
+        milestoneCelebrations: new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations),
+        newestParkrunners: new NewestParkrunnersPresenter_1.NewestParkrunnersPresenter(rpe.newestParkrunners),
         firstTimers: firstTimersPresenter,
-        firstTimeVolunteers: firstTimeVolunteersPresenter,
-        facts: factsPresenter,
-        milestone: milestonePresenter,
-        juniorSupervision: juniorSupervisionPresenter,
+        newPBs: new NewPBsPresenter_1.NewPBsPresenter(rpe.finishersWithNewPBs, rpe.eventName),
+        groups: new GroupsPresenter_1.GroupsPresenter(rpe.runningWalkingGroups),
+        fullResults: new FullResultsPresenter_1.FullResultsPresenter(rpe.eventName, rpe.eventNumber, window.location.href),
+        volunteers: new VolunteersPresenter_1.VolunteersPresenter(volunteerWithCountList, rpe.eventName),
+        firstTimeVolunteers: new FirstTimeVolunteersPresenter_1.FirstTimeVolunteersPresenter(volunteerWithCountList, rpe.eventName),
+        volunteerInvitation: new VolunteerInvitationPresenter_1.VolunteerInvitationPresenter(rpe.eventName, window.location.href),
+        unknowns: new UnknownsPresenter_1.UnknownsPresenter(rpe.unknowns, rpe.eventName),
+        juniorSupervision: new JuniorSupervisionPresenter_1.JuniorSupervisionPresenter(rpe),
+        facts: new FactsPresenter_1.FactsPresenter(rpe.eventName, rpe.courseLength, rpe.facts, rpe.isLaunchEvent()),
+        closing: new ClosingPresenter_1.ClosingPresenter(rpe.courseLength),
     };
 }
 function populate(rpe, volunteerWithCountList, presenters, message) {
-    const t = (0, translations_1.getTranslations)();
-    const introduction = (0, translations_1.interpolate)(t.introduction, {
-        finisherCount: (0, translations_1.formatCount)(rpe.finishers.length, t.finisher, t.finishers),
-        volunteerCount: (0, translations_1.formatCount)(volunteerWithCountList.length, t.volunteer, t.volunteers),
-        eventName: rpe.eventName || t.fallbackParkrunName,
-        eventNumber: rpe.eventNumber || '',
-    });
-    const newestParkrunnersTitle = (0, translations_1.interpolate)(t.newestParkrunnersTitle, {
-        count: (0, translations_1.formatCount)(rpe.newestParkrunners.length, t.parkrunner, t.parkrunners),
-    });
-    const finishersWithNewPBsTitle = (0, translations_1.interpolate)(t.finishersWithNewPBsTitle, {
-        eventName: rpe.eventName || t.fallbackParkrunName,
-        count: (0, translations_1.formatCount)(rpe.finishersWithNewPBs.length, t.parkrunner, t.parkrunners),
-    });
-    const runningWalkingGroupsTitle = (0, translations_1.interpolate)(t.runningWalkingGroupsTitle, {
-        count: (0, translations_1.formatCount)(rpe.runningWalkingGroups.length, t.activeGroup, t.walkingAndRunningGroups),
-    });
-    const volunteersTitle = (0, translations_1.interpolate)(t.volunteersTitle, {
-        eventName: rpe.eventName || t.fallbackParkrunName,
-    });
     const eventuateDiv = document.getElementById('eventuate') ||
         document.createElement('div');
     eventuateDiv.id = 'eventuate';
+    // Build reportDetails from presenters
     const reportDetails = {
         languageSwitcher: {
             title: '',
             details: (0, translations_1.createLanguageSwitcher)(),
         },
         message: { title: '&#x23f3;', details: message },
-        introduction: { title: '', details: introduction },
-        milestoneCelebrations: {
-            title: presenters.milestone.title(),
-            details: presenters.milestone.details(),
-        },
-        newestParkrunners: {
-            title: newestParkrunnersTitle,
-            details: (0, stringFunctions_1.sortAndConjoin)(rpe.newestParkrunners),
-        },
-        firstTimers: {
-            title: presenters.firstTimers.title(),
-            details: presenters.firstTimers.details(),
-        },
-        newPBs: {
-            title: finishersWithNewPBsTitle,
-            details: (0, stringFunctions_1.sortAndConjoin)(rpe.finishersWithNewPBs),
-        },
-        groups: {
-            title: runningWalkingGroupsTitle,
-            details: (0, stringFunctions_1.sortAndConjoin)(rpe.runningWalkingGroups),
-        },
-        fullResults: {
-            title: '',
-            details: (0, translations_1.interpolate)(t.fullResults, {
-                eventName: rpe.eventName || t.fallbackParkrunName,
-                eventNumber: rpe.eventNumber || '',
-                url: (0, urlFunctions_1.canonicalResultsPageUrl)(rpe.eventNumber ?? 'latestresults', window.location.href),
-            }),
-        },
-        volunteers: {
-            title: volunteersTitle,
-            details: (0, stringFunctions_1.sortAndConjoin)(volunteerWithCountList
-                .filter((v) => v.vols !== 1) // Exclude first-time volunteers
-                .map((v) => v.name)),
-        },
-        ...(presenters.firstTimeVolunteers.hasFirstTimeVolunteers() && {
-            firstTimeVolunteers: {
-                title: presenters.firstTimeVolunteers.title(),
-                details: presenters.firstTimeVolunteers.details(),
-            },
-        }),
-        volunteerInvitation: {
-            title: '',
-            details: (0, translations_1.interpolate)(t.volunteerInvitation, {
-                eventName: rpe.eventName || t.fallbackParkrunName,
-                url: (0, urlFunctions_1.futureRosterUrl)(window.location.href),
-            }),
-        },
-        unknowns: {
-            title: '',
-            details: rpe.unknowns.length > 0
-                ? (0, translations_1.interpolate)(t.unknowns, {
-                    eventName: rpe.eventName || t.fallbackParkrunName,
-                })
-                : undefined,
-        },
-        juniorSupervision: {
-            title: '',
-            details: presenters.juniorSupervision.hasSupervisionIssue()
-                ? presenters.juniorSupervision.details()
-                : undefined,
-        },
-        facts: {
-            title: '',
-            details: rpe.isLaunchEvent() ? undefined : presenters.facts.details(),
-        },
-        closing: {
-            title: '&#x1f333;',
-            details: t.closing,
-        },
     };
+    // Iterate over presenters and add to reportDetails
+    for (const [key, presenter] of Object.entries(presenters)) {
+        reportDetails[key] = {
+            title: presenter.title(),
+            details: presenter.details(),
+        };
+    }
     const insertionPoint = document.querySelector('.Results-header');
     if (insertionPoint) {
         insertionPoint.insertAdjacentElement('afterend', eventuateDiv);

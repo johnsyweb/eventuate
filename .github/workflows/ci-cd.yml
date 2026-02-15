@@ -1,0 +1,405 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  # Validation jobs - run in parallel
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Format check
+        run: pnpm run format:check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm run test
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache bundler gems
+        uses: actions/cache@v4
+        with:
+          path: docs/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Ruby dependencies
+        working-directory: docs
+        run: bundle install --path vendor/bundle
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Build docs
+        run: pnpm docs:build
+
+      - name: Install Chromium for Lighthouse
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run Lighthouse
+        run: pnpm run lighthouse
+
+  # Build after all validation passes
+  build:
+    needs: [lint, format-check, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Verify package for Firefox
+        run: pnpm web-ext:lint
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            eventuate.js
+            eventuate.bookmarklet.js
+            eventuate.user.js
+          retention-days: 1
+
+  # Check if changes are docs-only (for release and pages deployment)
+  check-docs-only:
+    runs-on: ubuntu-latest
+    outputs:
+      skip-release: ${{ steps.check.outputs.skip-release }}
+      should-deploy-pages: ${{ steps.check.outputs.should-deploy-pages }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if changes are docs-only
+        id: check
+        run: |
+          if [ "${{ github.event_name }}" != "push" ] || [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            # Not a push to main, return defaults
+            echo "Not a push to main, using defaults"
+            echo "skip-release=false" >> ${GITHUB_OUTPUT}
+            echo "should-deploy-pages=false" >> ${GITHUB_OUTPUT}
+            exit 0
+          fi
+
+          # Get the commit SHA
+          commit_sha="${{ github.sha }}"
+
+          # Get the parent commit
+          parent_sha=$(git rev-parse ${commit_sha}^ 2>/dev/null || echo "")
+
+          if [ -n "$parent_sha" ]; then
+            # Check files changed between parent and current commit
+            changed_files=$(git diff --name-only ${parent_sha} ${commit_sha} 2>/dev/null || echo "")
+          else
+            # Fallback: check files changed in the last commit
+            changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+          fi
+
+          # Check if all changed files are in docs/ or .github/
+          non_docs_files=$(echo "$changed_files" | grep -v "^docs/" | grep -v "^\.github/" | grep -v "^$" || true)
+
+          if [ -z "$non_docs_files" ]; then
+            echo "All changes are in docs/ or .github/, skipping release but deploying Pages"
+            echo "skip-release=true" >> ${GITHUB_OUTPUT}
+            echo "should-deploy-pages=true" >> ${GITHUB_OUTPUT}
+          else
+            echo "Non-docs files changed, proceeding with release"
+            echo "Changed files:"
+            echo "$changed_files"
+            echo "skip-release=false" >> ${GITHUB_OUTPUT}
+            echo "should-deploy-pages=false" >> ${GITHUB_OUTPUT}
+          fi
+
+  # Release - only on main branch push (unless docs-only)
+  release:
+    needs: [build, check-docs-only]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      needs.check-docs-only.outputs.skip-release != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Version before release
+        id: version-before
+        run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
+
+      - name: Semantic Release
+        id: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm release
+
+      - name: Version after release
+        id: version-after
+        run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
+
+      - name: Sign and submit to AMO
+        if:
+          steps.version-before.outputs.version !=
+          steps.version-after.outputs.version
+        run: |
+          echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
+          pnpm web-ext sign
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
+
+      - name: Upload release build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-release
+          path: |
+            eventuate.js
+            eventuate.bookmarklet.js
+            eventuate.user.js
+          retention-days: 1
+
+  # Deploy Pages after release (when we are releasing)
+  deploy-pages-after-release:
+    needs: [release, check-docs-only, lighthouse]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      needs.check-docs-only.outputs.skip-release != 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache bundler gems
+        uses: actions/cache@v4
+        with:
+          path: docs/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Ruby dependencies
+        working-directory: docs
+        run: bundle install --path vendor/bundle
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Build docs
+        run: pnpm docs:build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artefact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './docs/_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Deploy Pages after build (when not releasing: docs-only, workflow_dispatch, or release event)
+  deploy-pages-after-build:
+    needs: [build, check-docs-only, lighthouse]
+    if: |
+      github.event_name == 'release' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check-docs-only.outputs.should-deploy-pages == 'true')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref:
+            ${{ github.event.release.target_commitish || github.ref || 'main' }}
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache bundler gems
+        uses: actions/cache@v4
+        with:
+          path: docs/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Ruby dependencies
+        working-directory: docs
+        run: bundle install --path vendor/bundle
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Build docs
+        run: pnpm docs:build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artefact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './docs/_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

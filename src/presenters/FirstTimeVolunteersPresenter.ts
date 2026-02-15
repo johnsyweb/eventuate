@@ -6,8 +6,9 @@ import {
   formatCount,
   formatCountWithArticle,
 } from '../translations';
+import { Presenter } from './Presenter';
 
-export class FirstTimeVolunteersPresenter {
+export class FirstTimeVolunteersPresenter implements Presenter {
   _firstTimeVolunteers: VolunteerWithCount[];
   _eventName?: string;
 
@@ -37,11 +38,18 @@ export class FirstTimeVolunteersPresenter {
     });
   }
 
-  details(): string {
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
+    }
     return sortAndConjoin(this._firstTimeVolunteers.map((v) => v.name));
   }
 
-  hasFirstTimeVolunteers(): boolean {
+  private hasData(): boolean {
     return this._firstTimeVolunteers.length > 0;
+  }
+
+  hasFirstTimeVolunteers(): boolean {
+    return this.hasData();
   }
 }

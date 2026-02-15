@@ -1,4 +1,3 @@
-import { sortAndConjoin } from './stringFunctions';
 import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
 import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMilestones';
 import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
@@ -8,26 +7,42 @@ import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
 import { FirstTimersLaunchEventPresenter } from './presenters/FirstTimersLaunchEventPresenter';
 import { FirstTimeVolunteersPresenter } from './presenters/FirstTimeVolunteersPresenter';
 import { JuniorSupervisionPresenter } from './presenters/JuniorSupervisionPresenter';
+import { UnknownsPresenter } from './presenters/UnknownsPresenter';
+import { IntroductionPresenter } from './presenters/IntroductionPresenter';
+import { NewestParkrunnersPresenter } from './presenters/NewestParkrunnersPresenter';
+import { NewPBsPresenter } from './presenters/NewPBsPresenter';
+import { GroupsPresenter } from './presenters/GroupsPresenter';
+import { FullResultsPresenter } from './presenters/FullResultsPresenter';
+import { VolunteersPresenter } from './presenters/VolunteersPresenter';
+import { VolunteerInvitationPresenter } from './presenters/VolunteerInvitationPresenter';
+import { ClosingPresenter } from './presenters/ClosingPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
 import { VolunteerWithCount } from './types/Volunteer';
-import { canonicalResultsPageUrl, futureRosterUrl } from './urlFunctions';
 import {
   getTranslations,
   interpolate,
-  formatCount,
   createLanguageSwitcher,
   switchLanguage,
 } from './translations';
 import { shareReportText } from './share';
 
 interface Presenters {
+  introduction: IntroductionPresenter;
+  milestoneCelebrations: MilestonePresenter;
+  newestParkrunners: NewestParkrunnersPresenter;
   firstTimers: FirstTimersPresenter;
+  newPBs: NewPBsPresenter;
+  groups: GroupsPresenter;
+  fullResults: FullResultsPresenter;
+  volunteers: VolunteersPresenter;
   firstTimeVolunteers: FirstTimeVolunteersPresenter;
-  facts: FactsPresenter;
-  milestone: MilestonePresenter;
+  volunteerInvitation: VolunteerInvitationPresenter;
+  unknowns: UnknownsPresenter;
   juniorSupervision: JuniorSupervisionPresenter;
+  facts: FactsPresenter;
+  closing: ClosingPresenter;
 }
 
 function createPresenters(
@@ -45,11 +60,6 @@ function createPresenters(
           rpe.eventName
         );
 
-  const firstTimeVolunteersPresenter = new FirstTimeVolunteersPresenter(
-    volunteerWithCountList,
-    rpe.eventName
-  );
-
   const finisherMilestoneCelebrations =
     rpe.courseLength == 2
       ? [
@@ -61,21 +71,42 @@ function createPresenters(
     ...fiveKVolunteersToMilestones(volunteerWithCountList),
     ...finisherMilestoneCelebrations,
   ];
-  const milestonePresenter = new MilestonePresenter(milestoneCelebrations);
-
-  const juniorSupervisionPresenter = new JuniorSupervisionPresenter(rpe);
-  const factsPresenter = new FactsPresenter(
-    rpe.eventName,
-    rpe.courseLength,
-    rpe.facts
-  );
 
   return {
+    introduction: new IntroductionPresenter(
+      rpe.finishers.length,
+      volunteerWithCountList.length,
+      rpe.eventName,
+      rpe.eventNumber
+    ),
+    milestoneCelebrations: new MilestonePresenter(milestoneCelebrations),
+    newestParkrunners: new NewestParkrunnersPresenter(rpe.newestParkrunners),
     firstTimers: firstTimersPresenter,
-    firstTimeVolunteers: firstTimeVolunteersPresenter,
-    facts: factsPresenter,
-    milestone: milestonePresenter,
-    juniorSupervision: juniorSupervisionPresenter,
+    newPBs: new NewPBsPresenter(rpe.finishersWithNewPBs, rpe.eventName),
+    groups: new GroupsPresenter(rpe.runningWalkingGroups),
+    fullResults: new FullResultsPresenter(
+      rpe.eventName,
+      rpe.eventNumber,
+      window.location.href
+    ),
+    volunteers: new VolunteersPresenter(volunteerWithCountList, rpe.eventName),
+    firstTimeVolunteers: new FirstTimeVolunteersPresenter(
+      volunteerWithCountList,
+      rpe.eventName
+    ),
+    volunteerInvitation: new VolunteerInvitationPresenter(
+      rpe.eventName,
+      window.location.href
+    ),
+    unknowns: new UnknownsPresenter(rpe.unknowns, rpe.eventName),
+    juniorSupervision: new JuniorSupervisionPresenter(rpe),
+    facts: new FactsPresenter(
+      rpe.eventName,
+      rpe.courseLength,
+      rpe.facts,
+      rpe.isLaunchEvent()
+    ),
+    closing: new ClosingPresenter(rpe.courseLength),
   };
 }
 
@@ -85,137 +116,30 @@ function populate(
   presenters: Presenters,
   message?: string
 ): void {
-  const t = getTranslations();
-
-  const introduction = interpolate(t.introduction, {
-    finisherCount: formatCount(rpe.finishers.length, t.finisher, t.finishers),
-    volunteerCount: formatCount(
-      volunteerWithCountList.length,
-      t.volunteer,
-      t.volunteers
-    ),
-    eventName: rpe.eventName || t.fallbackParkrunName,
-    eventNumber: rpe.eventNumber || '',
-  });
-
-  const newestParkrunnersTitle = interpolate(t.newestParkrunnersTitle, {
-    count: formatCount(
-      rpe.newestParkrunners.length,
-      t.parkrunner,
-      t.parkrunners
-    ),
-  });
-
-  const finishersWithNewPBsTitle = interpolate(t.finishersWithNewPBsTitle, {
-    eventName: rpe.eventName || t.fallbackParkrunName,
-    count: formatCount(
-      rpe.finishersWithNewPBs.length,
-      t.parkrunner,
-      t.parkrunners
-    ),
-  });
-
-  const runningWalkingGroupsTitle = interpolate(t.runningWalkingGroupsTitle, {
-    count: formatCount(
-      rpe.runningWalkingGroups.length,
-      t.activeGroup,
-      t.walkingAndRunningGroups
-    ),
-  });
-
-  const volunteersTitle = interpolate(t.volunteersTitle, {
-    eventName: rpe.eventName || t.fallbackParkrunName,
-  });
-
   const eventuateDiv: HTMLDivElement =
     (document.getElementById('eventuate') as HTMLDivElement) ||
     document.createElement('div');
   eventuateDiv.id = 'eventuate';
 
-  const reportDetails = {
+  // Build reportDetails from presenters
+  const reportDetails: Record<
+    string,
+    { title: string; details: string | undefined }
+  > = {
     languageSwitcher: {
       title: '',
       details: createLanguageSwitcher(),
     },
     message: { title: '&#x23f3;', details: message },
-    introduction: { title: '', details: introduction },
-
-    milestoneCelebrations: {
-      title: presenters.milestone.title(),
-      details: presenters.milestone.details(),
-    },
-    newestParkrunners: {
-      title: newestParkrunnersTitle,
-      details: sortAndConjoin(rpe.newestParkrunners),
-    },
-    firstTimers: {
-      title: presenters.firstTimers.title(),
-      details: presenters.firstTimers.details(),
-    },
-    newPBs: {
-      title: finishersWithNewPBsTitle,
-      details: sortAndConjoin(rpe.finishersWithNewPBs),
-    },
-    groups: {
-      title: runningWalkingGroupsTitle,
-      details: sortAndConjoin(rpe.runningWalkingGroups),
-    },
-    fullResults: {
-      title: '',
-      details: interpolate(t.fullResults, {
-        eventName: rpe.eventName || t.fallbackParkrunName,
-        eventNumber: rpe.eventNumber || '',
-        url: canonicalResultsPageUrl(
-          rpe.eventNumber ?? 'latestresults',
-          window.location.href
-        ),
-      }),
-    },
-    volunteers: {
-      title: volunteersTitle,
-      details: sortAndConjoin(
-        volunteerWithCountList
-          .filter((v) => v.vols !== 1) // Exclude first-time volunteers
-          .map((v) => v.name)
-      ),
-    },
-    ...(presenters.firstTimeVolunteers.hasFirstTimeVolunteers() && {
-      firstTimeVolunteers: {
-        title: presenters.firstTimeVolunteers.title(),
-        details: presenters.firstTimeVolunteers.details(),
-      },
-    }),
-    volunteerInvitation: {
-      title: '',
-      details: interpolate(t.volunteerInvitation, {
-        eventName: rpe.eventName || t.fallbackParkrunName,
-        url: futureRosterUrl(window.location.href),
-      }),
-    },
-    unknowns: {
-      title: '',
-      details:
-        rpe.unknowns.length > 0
-          ? interpolate(t.unknowns, {
-              eventName: rpe.eventName || t.fallbackParkrunName,
-            })
-          : undefined,
-    },
-    juniorSupervision: {
-      title: '',
-      details: presenters.juniorSupervision.hasSupervisionIssue()
-        ? presenters.juniorSupervision.details()
-        : undefined,
-    },
-    facts: {
-      title: '',
-      details: rpe.isLaunchEvent() ? undefined : presenters.facts.details(),
-    },
-    closing: {
-      title: '&#x1f333;',
-      details: t.closing,
-    },
   };
+
+  // Iterate over presenters and add to reportDetails
+  for (const [key, presenter] of Object.entries(presenters)) {
+    reportDetails[key] = {
+      title: presenter.title(),
+      details: presenter.details(),
+    };
+  }
 
   const insertionPoint: HTMLDivElement | null =
     document.querySelector('.Results-header');

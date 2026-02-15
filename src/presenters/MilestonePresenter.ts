@@ -1,8 +1,9 @@
 import { sortAndConjoin } from '../stringFunctions';
 import { MilestoneCelebrations } from '../types/Milestones';
 import { getTranslations, interpolate, formatCount } from '../translations';
+import { Presenter } from './Presenter';
 
-export class MilestonePresenter {
+export class MilestonePresenter implements Presenter {
   _milestoneCelebrations: MilestoneCelebrations[];
   _milestoneCelebrationsAll: string[];
 
@@ -22,7 +23,11 @@ export class MilestonePresenter {
     });
   }
 
-  details(): string {
+  details(): string | undefined {
+    if (!this.hasData()) {
+      return undefined;
+    }
+
     const t = getTranslations();
     return this._milestoneCelebrations
       .map((mc) => {
@@ -33,5 +38,9 @@ export class MilestonePresenter {
         })}`;
       })
       .join('<br>');
+  }
+
+  private hasData(): boolean {
+    return this._milestoneCelebrations.length > 0;
   }
 }
