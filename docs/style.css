@@ -265,11 +265,11 @@ p img {
 }
 
 /* Install button styling (matches tampermonkey-parkrun CTA) */
-.script-install-button {
+#content a.script-install-button {
   display: inline-block;
   padding: 0.75em 1.75em;
   background: var(--parkrun-aubergine);
-  color: var(--parkrun-white);
+  color: #ffffff;
   border-radius: 999px;
   font-weight: 700;
   text-decoration: none;
@@ -279,20 +279,20 @@ p img {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.script-install-button:hover {
+#content a.script-install-button:hover {
   background: #3d2f4f;
-  color: var(--parkrun-white);
+  color: #ffffff;
 }
 
-.script-install-button:focus-visible {
-  color: var(--parkrun-white);
+#content a.script-install-button:focus-visible {
+  color: #ffffff;
   outline: 3px solid var(--parkrun-apricot);
   outline-offset: 2px;
 }
 
-.script-install-button:active {
+#content a.script-install-button:active {
   background: #1f1929;
-  color: var(--parkrun-white);
+  color: #ffffff;
 }
 
 /* Bookmarklet CTA button (shares base style, tweaks spacing) */
