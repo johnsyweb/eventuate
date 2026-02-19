@@ -57,7 +57,7 @@ export class VolunteerWithCount implements Volunteer {
 
   fetchdata(): Promise<VolunteerPageExtractor> | undefined {
     const cacheKey = VolunteerWithCount.getCacheKey(this.athleteID);
-    let cached: string | null = null;
+    let cached: string | null;
 
     try {
       cached = localStorage.getItem(cacheKey);
