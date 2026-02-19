@@ -36,20 +36,6 @@
 
     <meta property="og:description" content="{{ page_description }}" />
 
-    {% assign default_image = site.url | append: '/images/banner-og-compressed.jpg' %}
-    {% if page.og_image %}
-      {% if page.og_image contains '//' %}
-        {% assign image_url = page.og_image %}
-      {% else %}
-        {% assign image_url = site.url | append: page.og_image %}
-      {% endif %}
-    {% elsif page.content contains '<img' %} {% assign first_img_block =
-    page.content | split: '<img' | last %} {% assign raw_src = first_img_block |
-    split:'src="' | last | split:'"' | first %} {% if raw_src contains '//' %}
-    {% assign image_url = raw_src %} {% else %} {% assign image_url = site.url |
-    append: raw_src %} {% endif %} {% else %} {% assign image_url =
-    default_image %} {% endif %}
-
     <meta property="og:title" content="{{ page.title | default: 'Eventuate' }}" />
     <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
     {% if page.date %}
@@ -58,10 +44,8 @@
     <meta property="og:type" content="website" />
     {% endif %}
     <meta property="og:site_name" content="johnsy.com" />
-    <meta property="og:image" content="{{ image_url }}" />
-    {% if page.og_image_alt %}
-    <meta property="og:image:alt" content="{{ page.og_image_alt }}" />
-    {% endif %}
+    <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/images/eventuate-results-summary.png" />
+    <meta property="og:image:alt" content="Eventuate extension showing parkrun event summary with statistics, milestone celebrations, and community data" />
 
     {% if page.date %}
     <meta
@@ -82,7 +66,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ page.title | default: 'Eventuate' }}" />
     <meta name="twitter:description" content="{{ page_description }}" />
-    <meta name="twitter:image" content="{{ image_url }}" />
+    <meta name="twitter:image" content="{{ site.url }}{{ site.baseurl }}/images/eventuate-results-summary.png" />
 
     {% if page.date %}
     <meta
