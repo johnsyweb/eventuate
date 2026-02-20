@@ -1,3 +1,14 @@
+## [1.13.1](https://github.com/johnsyweb/eventuate/compare/v1.13.0...v1.13.1) (2026-02-20)
+
+
+### Bug Fixes
+
+* **ci:** install docs bundler in release job so pre-push hook can run Jekyll ([a61f18c](https://github.com/johnsyweb/eventuate/commit/a61f18c1eb6eb489fae118d99504cd2b471e4f0f))
+* **docs:** footer link a11y; run Lighthouse on pre-push when docs change ([7fb6285](https://github.com/johnsyweb/eventuate/commit/7fb6285a46389c3757dbc0044d52cab93672e4fd))
+* **lighthouse:** build docs with local URLs so Lighthouse uses built CSS ([6650d6c](https://github.com/johnsyweb/eventuate/commit/6650d6cc110950dbc6112438bee95a177b7f206a))
+* remove useless initialiser in VolunteerWithCount.fetchdata ([d73dfa7](https://github.com/johnsyweb/eventuate/commit/d73dfa70812902608467a565543a54cd1369e6ca))
+* serve docs at baseurl for Lighthouse, relative stylesheet ([1ddc7d3](https://github.com/johnsyweb/eventuate/commit/1ddc7d3b38170e3cf590009d16d726fd7c12f8ca))
+
 # [1.13.0](https://github.com/johnsyweb/eventuate/compare/v1.12.0...v1.13.0) (2026-02-15)
 
 
