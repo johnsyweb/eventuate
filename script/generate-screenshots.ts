@@ -195,6 +195,17 @@ async function generateScreenshots(): Promise<void> {
         continue;
       }
 
+      // Scroll the waited-for element into view before screenshot
+      if (config.waitForSelector) {
+        await page.evaluate((selector) => {
+          const el = document.querySelector(selector);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, config.waitForSelector);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+
       // Additional wait if specified
       if (config.waitForTimeout) {
         await new Promise((resolve) =>
