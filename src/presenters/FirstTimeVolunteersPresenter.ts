@@ -1,5 +1,5 @@
 import { sortAndConjoin } from '../stringFunctions';
-import { VolunteerWithCount } from '../types/Volunteer';
+import { VolunteerWithCount } from '../types/VolunteerWithCount';
 import {
   getTranslations,
   interpolate,
@@ -13,7 +13,6 @@ export class FirstTimeVolunteersPresenter implements Presenter {
   _eventName?: string;
 
   constructor(volunteers: VolunteerWithCount[], eventName?: string) {
-    // Filter volunteers with exactly 1 volunteer count
     this._firstTimeVolunteers = volunteers.filter((v) => v.vols === 1);
     this._eventName = eventName;
   }

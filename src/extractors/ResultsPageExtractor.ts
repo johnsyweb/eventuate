@@ -1,6 +1,6 @@
 import { IResultsPageStats } from '../types/IResultsPageStats';
 import { Finisher, IFinisher } from '../types/Finisher';
-import { Volunteer } from '../types/Volunteer';
+import { VolunteerWithCount } from '../types/VolunteerWithCount';
 import { FirstTimerWithFinishCount } from '../types/FirstTimer';
 
 function athleteIDFromURI(uri: string): number {
@@ -51,8 +51,6 @@ export class ResultsPageExtractor {
           )
         )
     );
-
-    this.populateVolunteerData();
 
     this.eventDate =
       resultsPageDocument.querySelector('.format-date')?.textContent ??
@@ -105,10 +103,8 @@ export class ResultsPageExtractor {
     return normalizedEventNumber === '1';
   }
 
-  private volunteerElements(): NodeListOf<HTMLAnchorElement> | [] {
-    return this.resultsPageDocument.querySelectorAll(
-      '.Results + div h3:first-of-type + p:first-of-type a'
-    );
+  private volunteerElements(): NodeListOf<HTMLTableRowElement> | [] {
+    return this.resultsPageDocument.querySelectorAll('.Volunteers-table-row');
   }
 
   removeSurnameFromJunior(name?: string): string {
@@ -124,35 +120,23 @@ export class ResultsPageExtractor {
     return name.replace(/[-' A-Z]+$/, '');
   }
 
-  private populateVolunteerData() {
-    this.volunteerElements().forEach((v) => {
-      const athleteID = athleteIDFromURI(v.href);
-
-      v.dataset.athleteid ??= athleteID.toString();
-
-      if (!v.dataset.vols || !v.dataset.agegroup) {
-        const finisher = this.finishers.find((f) => f.athleteID === athleteID);
-        if (finisher) {
-          v.dataset.vols = finisher?.vols?.toString();
-          v.dataset.agegroup = finisher?.agegroup;
-          v.dataset.vols_source = 'finisher';
-        }
-      }
+  volunteersList(): VolunteerWithCount[] {
+    return Array.from(this.volunteerElements()).map((row) => {
+      return {
+        name: this.removeSurnameFromJunior(row.dataset.name),
+        vols: Number(row.dataset.volunteercredits),
+        vClub: this.volunteerClubFromRow(row),
+      };
     });
   }
 
-  volunteersList(): Volunteer[] {
-    return Array.from(this.volunteerElements()).map((v) => {
-      const href = v.getAttribute('href') ?? '';
-      const link = href.endsWith('/') ? href : `${href}/`;
-      return {
-        name: this.removeSurnameFromJunior(v.text),
-        link,
-        athleteID: Number(v.dataset.athleteid),
-        agegroup: v.dataset.agegroup,
-        vols: Number(v.dataset.vols),
-      };
-    });
+  private volunteerClubFromRow(row: HTMLTableRowElement): number | undefined {
+    const anchor = row.querySelector(
+      'a.Results-table--clubIcon[class*="milestone-v"]'
+    );
+    const text = anchor?.textContent?.trim() ?? '';
+    const match = text?.match(/^v(\d+)$/);
+    return match ? Number(match[1]) : undefined;
   }
 
   private parseNumericString(value?: string): number {

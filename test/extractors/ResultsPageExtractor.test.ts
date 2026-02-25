@@ -32,11 +32,11 @@ describe('ResultsPageExtractor', () => {
     });
 
     it('extracts event date', () => {
-      expect(extractor.eventDate).toEqual('22/02/2025');
+      expect(extractor.eventDate).toEqual('2026-02-21');
     });
 
     it('extracts event number', () => {
-      expect(extractor.eventNumber).toEqual('#321');
+      expect(extractor.eventNumber).toEqual('#374');
     });
 
     it('is not a launch event', () => {
@@ -44,13 +44,13 @@ describe('ResultsPageExtractor', () => {
     });
 
     it('extracts finishers data', () => {
-      expect(extractor.finishers).toHaveLength(138);
+      expect(extractor.finishers).toHaveLength(118);
       expect(extractor.finishers[0]).toMatchObject({
-        name: 'Shane MALLIA',
-        agegroup: 'SM30-34',
+        name: 'Felix ALLEN',
+        agegroup: 'JM15-17',
         position: '1',
-        time: '18:22',
-        athleteID: 917370,
+        time: '21:26',
+        athleteID: 10317928,
       });
     });
 
@@ -63,63 +63,79 @@ describe('ResultsPageExtractor', () => {
     describe('volunteersList', () => {
       it('extracts volunteers data', () => {
         const volunteers = extractor.volunteersList();
-        expect(volunteers).toHaveLength(7);
+        expect(volunteers).toHaveLength(8);
 
         // RD: Didn't finish
-        expect(volunteers[2]).toEqual({
-          name: 'Pete JOHNS',
-          link: '/brimbank/parkrunner/1001388/',
-          athleteID: 1001388,
-          agegroup: undefined,
-          vols: NaN,
+        expect(volunteers).toContainEqual({
+          name: 'Amanda SHINTON',
+          vols: 234,
+          vClub: 100,
         });
 
         // Tailwalker: Finished
-        expect(volunteers[1]).toEqual({
-          name: 'Robyn DOIG',
-          link: '/brimbank/parkrunner/8094033/',
-          athleteID: 8094033,
-          agegroup: 'VW70-74',
-          vols: 33,
+        expect(volunteers).toContainEqual({
+          name: 'Zoran PETROVSKI',
+          vols: 46,
+          vClub: 25,
+        });
+
+        // New volunteer
+        expect(volunteers).toContainEqual({
+          name: 'Charles GAVRIEL',
+          vols: 2,
+          vClub: undefined,
         });
       });
     });
 
     it('extracts facts', () => {
       expect(extractor.facts).toMatchObject({
-        finishers: 4884,
-        finishes: 23299,
-        pbs: 3264,
-        volunteers: 398,
+        finishers: 6025,
+        finishes: 29013,
+        pbs: 3975,
+        volunteers: 438,
       });
     });
 
     it('extracts running/walking groups', () => {
-      expect(extractor.runningWalkingGroups).toHaveLength(9);
-      expect(extractor.runningWalkingGroups[0]).toEqual('Keilor Running Club');
+      expect(extractor.runningWalkingGroups).toHaveLength(6);
+      expect(extractor.runningWalkingGroups).toEqual(
+        expect.arrayContaining([
+          'Crosbie Crew',
+          'Aberfeldie Masters Running Team',
+          'Keilor Running Club',
+          'Red and Black Running',
+          'RUN THE WORLD',
+          'Macedon Ranges Running Club',
+        ])
+      );
     });
 
     it('identifies first timers', () => {
-      expect(extractor.firstTimersWithFinishCounts).toHaveLength(32);
-      expect(extractor.firstTimersWithFinishCounts[0].name).toEqual('Tim CHIU');
+      expect(extractor.firstTimersWithFinishCounts).toHaveLength(20);
+      expect(extractor.firstTimersWithFinishCounts[0].name).toEqual(
+        'Felix ALLEN'
+      );
       expect(extractor.firstTimersWithFinishCounts[0].finishes).toBeGreaterThan(
         1
       );
     });
 
     it('identifies PBs', () => {
-      expect(extractor.finishersWithNewPBs).toHaveLength(21);
-      expect(extractor.finishersWithNewPBs[0]).toEqual('Luke SOL (18:52)');
+      expect(extractor.finishersWithNewPBs).toHaveLength(19);
+      expect(extractor.finishersWithNewPBs[0]).toEqual('Hayden WEST (21:47)');
     });
 
     it('identifies unknown parkrunners', () => {
-      expect(extractor.unknowns).toHaveLength(1);
+      expect(extractor.unknowns).toHaveLength(3);
       expect(extractor.unknowns[0]).toEqual('Unknown');
     });
 
     it('identifies newest parkrunners', () => {
       expect(extractor.newestParkrunners).toHaveLength(2);
-      expect(extractor.newestParkrunners[0]).toEqual('Rasha MOSA');
+      expect(extractor.newestParkrunners).toEqual(
+        expect.arrayContaining(['Brayden RIZZO', 'Jake MARRA'])
+      );
     });
   });
 
