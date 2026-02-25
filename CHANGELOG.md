@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/johnsyweb/eventuate/compare/v1.13.1...v1.14.0) (2026-02-25)
+
+
+### Features
+
+* **eventuate:** extract volunteer data from new table ([b1b9d36](https://github.com/johnsyweb/eventuate/commit/b1b9d36a4ad3f62210aeef7481ff11333b717d5b))
+
 ## [1.13.1](https://github.com/johnsyweb/eventuate/compare/v1.13.0...v1.13.1) (2026-02-20)
 
 

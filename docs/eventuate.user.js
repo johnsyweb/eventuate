@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://www.johnsy.com/eventuate/eventuate.user.js
-// @version      1.13.1
+// @version      1.14.0
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.13.1 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.14.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -142,7 +142,6 @@ class ResultsPageExtractor {
         this.finishers = Array.from(rowElements).map((d) => new Finisher_1.Finisher(this.removeSurnameFromJunior(d.dataset.name), d.dataset.agegroup, d.dataset.club, d.dataset.gender, d.dataset.position, d.dataset.runs, d.dataset.vols, d.dataset.agegrade, d.dataset.achievement, d.querySelector('.Results-table-td--time .compact')?.textContent ??
             undefined, athleteIDFromURI(d.querySelector('.Results-table-td--name a')
             ?.href)));
-        this.populateVolunteerData();
         this.eventDate =
             resultsPageDocument.querySelector('.format-date')?.textContent ??
                 undefined;
@@ -173,7 +172,7 @@ class ResultsPageExtractor {
         return normalizedEventNumber === '1';
     }
     volunteerElements() {
-        return this.resultsPageDocument.querySelectorAll('.Results + div h3:first-of-type + p:first-of-type a');
+        return this.resultsPageDocument.querySelectorAll('.Volunteers-table-row');
     }
     removeSurnameFromJunior(name) {
         if (!name || this.courseLength == 5) {
@@ -187,32 +186,20 @@ class ResultsPageExtractor {
         }
         return name.replace(/[-' A-Z]+$/, '');
     }
-    populateVolunteerData() {
-        this.volunteerElements().forEach((v) => {
-            const athleteID = athleteIDFromURI(v.href);
-            v.dataset.athleteid ??= athleteID.toString();
-            if (!v.dataset.vols || !v.dataset.agegroup) {
-                const finisher = this.finishers.find((f) => f.athleteID === athleteID);
-                if (finisher) {
-                    v.dataset.vols = finisher?.vols?.toString();
-                    v.dataset.agegroup = finisher?.agegroup;
-                    v.dataset.vols_source = 'finisher';
-                }
-            }
-        });
-    }
     volunteersList() {
-        return Array.from(this.volunteerElements()).map((v) => {
-            const href = v.getAttribute('href') ?? '';
-            const link = href.endsWith('/') ? href : `${href}/`;
+        return Array.from(this.volunteerElements()).map((row) => {
             return {
-                name: this.removeSurnameFromJunior(v.text),
-                link,
-                athleteID: Number(v.dataset.athleteid),
-                agegroup: v.dataset.agegroup,
-                vols: Number(v.dataset.vols),
+                name: this.removeSurnameFromJunior(row.dataset.name),
+                vols: Number(row.dataset.volunteercredits),
+                vClub: this.volunteerClubFromRow(row),
             };
         });
+    }
+    volunteerClubFromRow(row) {
+        const anchor = row.querySelector('a.Results-table--clubIcon[class*="milestone-v"]');
+        const text = anchor?.textContent?.trim() ?? '';
+        const match = text?.match(/^v(\d+)$/);
+        return match ? Number(match[1]) : undefined;
     }
     parseNumericString(value) {
         if (!value) {
@@ -222,28 +209,6 @@ class ResultsPageExtractor {
     }
 }
 exports.ResultsPageExtractor = ResultsPageExtractor;
-
-
-/***/ },
-
-/***/ 218
-(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VolunteerPageExtractor = void 0;
-class VolunteerPageExtractor {
-    vols;
-    agegroup;
-    constructor(doc) {
-        const ageGroupData = doc.querySelector('#content > p:last-of-type')?.textContent ?? '';
-        this.vols = Number(doc.querySelector('h3#volunteer-summary + table tfoot td:last-child')
-            ?.textContent);
-        this.agegroup =
-            ageGroupData.trim().split(' ').slice(-1)[0] ?? 'Not found on page';
-    }
-}
-exports.VolunteerPageExtractor = VolunteerPageExtractor;
 
 
 /***/ },
@@ -341,7 +306,6 @@ class FirstTimeVolunteersPresenter {
     _firstTimeVolunteers;
     _eventName;
     constructor(volunteers, eventName) {
-        // Filter volunteers with exactly 1 volunteer count
         this._firstTimeVolunteers = volunteers.filter((v) => v.vols === 1);
         this._eventName = eventName;
     }
@@ -1105,7 +1069,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.fiveKVolunteersToMilestones = fiveKVolunteersToMilestones;
 function fiveKVolunteersToMilestones(volunteers) {
     const milestones = {
-        10: { icon: '&#x1F90D;', restricted_age: 'J' },
+        10: { icon: '&#x1F90D;' },
         25: { icon: '&#x1F49C;' },
         50: { icon: '&#x2764;' },
         100: { icon: '&#x1F5A4;' },
@@ -1117,9 +1081,7 @@ function fiveKVolunteersToMilestones(volunteers) {
     for (const n in milestones) {
         const milestone = milestones[n];
         const names = volunteers
-            .filter((v) => v.vols === Number(n) &&
-            (!milestone.restricted_age ||
-                v.agegroup?.startsWith(milestone.restricted_age)))
+            .filter((v) => v.vols === Number(n) && v.vClub === Number(n))
             .map((v) => v.name);
         if (names.length > 0) {
             milestoneCelebrations.push({
@@ -1179,7 +1141,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.twoKVolunteersToMilestones = twoKVolunteersToMilestones;
 function twoKVolunteersToMilestones(volunteers) {
     const names = volunteers
-        .filter((v) => v.vols === 5 && v.agegroup?.startsWith('J'))
+        .filter((v) => v.vols === 5 && v.vClub === 5)
         .map((v) => v.name);
     return names.length
         ? [
@@ -1511,98 +1473,6 @@ exports.Finisher = Finisher;
 
 /***/ },
 
-/***/ 795
-(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VolunteerWithCount = void 0;
-const VolunteerPageExtractor_1 = __webpack_require__(218);
-class VolunteerWithCount {
-    name;
-    link;
-    athleteID;
-    vols;
-    agegroup;
-    volunteerDataSource;
-    promisedVols;
-    static CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    constructor(volunteer, origin) {
-        this.name = volunteer.name;
-        this.link = volunteer.link;
-        const url = new URL(volunteer.link, origin);
-        this.volunteerDataSource = new URL(url.pathname.split('/').slice(2).join('/'), url.origin);
-        this.athleteID = volunteer.athleteID;
-        this.vols = volunteer.vols ?? 0;
-        this.agegroup = volunteer.agegroup ?? '';
-        if (!this.vols) {
-            this.promisedVols = this.fetchdata();
-        }
-    }
-    static getCacheKey(athleteID) {
-        return `volunteer_${athleteID}`;
-    }
-    static isValidCache(data) {
-        return Date.now() - data.timestamp < VolunteerWithCount.CACHE_EXPIRY;
-    }
-    fetchAndExtractData() {
-        return fetch(this.volunteerDataSource)
-            .then((r) => r.text())
-            .then((doc) => this.volsFromHtml(doc));
-    }
-    fetchdata() {
-        const cacheKey = VolunteerWithCount.getCacheKey(this.athleteID);
-        let cached;
-        try {
-            cached = localStorage.getItem(cacheKey);
-        }
-        catch (err) {
-            console.error('localStorage.getItem failed:', err);
-            return this.fetchAndExtractData();
-        }
-        if (!cached) {
-            return this.fetchAndExtractData();
-        }
-        let data;
-        try {
-            data = JSON.parse(cached);
-        }
-        catch (err) {
-            console.error('JSON.parse failed:', err);
-            localStorage.removeItem(cacheKey);
-            return this.fetchAndExtractData();
-        }
-        if (!VolunteerWithCount.isValidCache(data)) {
-            localStorage.removeItem(cacheKey);
-            return this.fetchAndExtractData();
-        }
-        this.vols = data.vols;
-        this.agegroup = data.agegroup;
-        return undefined;
-    }
-    volsFromHtml(html) {
-        const vpe = new VolunteerPageExtractor_1.VolunteerPageExtractor(new DOMParser().parseFromString(html, 'text/html'));
-        this.vols = vpe.vols;
-        this.agegroup = vpe.agegroup;
-        try {
-            const cacheData = {
-                vols: vpe.vols,
-                agegroup: vpe.agegroup,
-                timestamp: Date.now(),
-            };
-            localStorage.setItem(VolunteerWithCount.getCacheKey(this.athleteID), JSON.stringify(cacheData));
-        }
-        catch (err) {
-            console.error('localStorage.setItem failed:', err);
-        }
-        return vpe;
-    }
-}
-exports.VolunteerWithCount = VolunteerWithCount;
-
-
-/***/ },
-
 /***/ 717
 (__unused_webpack_module, exports) {
 
@@ -1722,33 +1592,32 @@ const ClosingPresenter_1 = __webpack_require__(476);
 const ResultsPageExtractor_1 = __webpack_require__(910);
 const twoKFinishersToMilestone_1 = __webpack_require__(775);
 const twoKVolunteersToMilestones_1 = __webpack_require__(768);
-const Volunteer_1 = __webpack_require__(795);
 const translations_1 = __webpack_require__(72);
 const share_1 = __webpack_require__(292);
-function createPresenters(rpe, volunteerWithCountList) {
+function createPresenters(rpe) {
     const firstTimersPresenter = rpe.isLaunchEvent() && rpe.firstTimersWithFinishCounts.length > 0
         ? new FirstTimersLaunchEventPresenter_1.FirstTimersLaunchEventPresenter(rpe.firstTimersWithFinishCounts, rpe.eventName)
         : new FirstTimersPresenter_1.FirstTimersPresenter(rpe.firstTimersWithFinishCounts, rpe.eventName);
     const finisherMilestoneCelebrations = rpe.courseLength == 2
         ? [
-            ...(0, twoKVolunteersToMilestones_1.twoKVolunteersToMilestones)(volunteerWithCountList),
+            ...(0, twoKVolunteersToMilestones_1.twoKVolunteersToMilestones)(rpe.volunteersList()),
             ...(0, twoKFinishersToMilestone_1.twoKFinishersToMilestones)(rpe.finishers),
         ]
         : (0, fiveKFinishersToMilestones_1.fiveKFinishersToMilestones)(rpe.finishers);
     const milestoneCelebrations = [
-        ...(0, fiveKVolunteersToMilestones_1.fiveKVolunteersToMilestones)(volunteerWithCountList),
+        ...(0, fiveKVolunteersToMilestones_1.fiveKVolunteersToMilestones)(rpe.volunteersList()),
         ...finisherMilestoneCelebrations,
     ];
     return {
-        introduction: new IntroductionPresenter_1.IntroductionPresenter(rpe.finishers.length, volunteerWithCountList.length, rpe.eventName, rpe.eventNumber),
+        introduction: new IntroductionPresenter_1.IntroductionPresenter(rpe.finishers.length, rpe.volunteersList().length, rpe.eventName, rpe.eventNumber),
         milestoneCelebrations: new MilestonePresenter_1.MilestonePresenter(milestoneCelebrations),
         newestParkrunners: new NewestParkrunnersPresenter_1.NewestParkrunnersPresenter(rpe.newestParkrunners),
         firstTimers: firstTimersPresenter,
         newPBs: new NewPBsPresenter_1.NewPBsPresenter(rpe.finishersWithNewPBs, rpe.eventName),
         groups: new GroupsPresenter_1.GroupsPresenter(rpe.runningWalkingGroups),
         fullResults: new FullResultsPresenter_1.FullResultsPresenter(rpe.eventName, rpe.eventNumber, window.location.href),
-        volunteers: new VolunteersPresenter_1.VolunteersPresenter(volunteerWithCountList, rpe.eventName),
-        firstTimeVolunteers: new FirstTimeVolunteersPresenter_1.FirstTimeVolunteersPresenter(volunteerWithCountList, rpe.eventName),
+        volunteers: new VolunteersPresenter_1.VolunteersPresenter(rpe.volunteersList(), rpe.eventName),
+        firstTimeVolunteers: new FirstTimeVolunteersPresenter_1.FirstTimeVolunteersPresenter(rpe.volunteersList(), rpe.eventName),
         volunteerInvitation: new VolunteerInvitationPresenter_1.VolunteerInvitationPresenter(rpe.eventName, window.location.href),
         unknowns: new UnknownsPresenter_1.UnknownsPresenter(rpe.unknowns, rpe.eventName),
         juniorSupervision: new JuniorSupervisionPresenter_1.JuniorSupervisionPresenter(rpe),
@@ -1756,7 +1625,7 @@ function createPresenters(rpe, volunteerWithCountList) {
         closing: new ClosingPresenter_1.ClosingPresenter(rpe.courseLength),
     };
 }
-function populate(rpe, volunteerWithCountList, presenters, message) {
+function populate(rpe, presenters, message) {
     const eventuateDiv = document.getElementById('eventuate') ||
         document.createElement('div');
     eventuateDiv.id = 'eventuate';
@@ -1817,18 +1686,8 @@ function populate(rpe, volunteerWithCountList, presenters, message) {
 }
 function eventuate() {
     const rpe = new ResultsPageExtractor_1.ResultsPageExtractor(document);
-    const volunteerWithCountList = rpe
-        .volunteersList()
-        .map((vol) => new Volunteer_1.VolunteerWithCount(vol, window.location.origin));
-    const waitingOn = volunteerWithCountList
-        .map((v) => v.promisedVols)
-        .filter((v) => !!v);
-    const loadingMessage = (0, translations_1.interpolate)((0, translations_1.getTranslations)().loadingMessage, {
-        count: waitingOn.length,
-    });
-    const presenters = createPresenters(rpe, volunteerWithCountList);
-    populate(rpe, volunteerWithCountList, presenters, loadingMessage);
-    Promise.all(waitingOn).then(() => populate(rpe, volunteerWithCountList, presenters));
+    const presenters = createPresenters(rpe);
+    populate(rpe, presenters);
 }
 window.eventuate = eventuate;
 eventuate();
