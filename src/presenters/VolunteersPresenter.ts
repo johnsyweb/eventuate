@@ -1,5 +1,5 @@
 import { sortAndConjoin } from '../stringFunctions';
-import { VolunteerWithCount } from '../types/Volunteer';
+import { VolunteerWithCount } from '../types/VolunteerWithCount';
 import { getTranslations, interpolate } from '../translations';
 import { Presenter } from './Presenter';
 

@@ -19,13 +19,7 @@ import { ClosingPresenter } from './presenters/ClosingPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
-import { VolunteerWithCount } from './types/Volunteer';
-import {
-  getTranslations,
-  interpolate,
-  createLanguageSwitcher,
-  switchLanguage,
-} from './translations';
+import { createLanguageSwitcher, switchLanguage } from './translations';
 import { shareReportText } from './share';
 
 interface Presenters {
@@ -45,10 +39,7 @@ interface Presenters {
   closing: ClosingPresenter;
 }
 
-function createPresenters(
-  rpe: ResultsPageExtractor,
-  volunteerWithCountList: VolunteerWithCount[]
-): Presenters {
+function createPresenters(rpe: ResultsPageExtractor): Presenters {
   const firstTimersPresenter =
     rpe.isLaunchEvent() && rpe.firstTimersWithFinishCounts.length > 0
       ? new FirstTimersLaunchEventPresenter(
@@ -63,19 +54,19 @@ function createPresenters(
   const finisherMilestoneCelebrations =
     rpe.courseLength == 2
       ? [
-          ...twoKVolunteersToMilestones(volunteerWithCountList),
+          ...twoKVolunteersToMilestones(rpe.volunteersList()),
           ...twoKFinishersToMilestones(rpe.finishers),
         ]
       : fiveKFinishersToMilestones(rpe.finishers);
   const milestoneCelebrations = [
-    ...fiveKVolunteersToMilestones(volunteerWithCountList),
+    ...fiveKVolunteersToMilestones(rpe.volunteersList()),
     ...finisherMilestoneCelebrations,
   ];
 
   return {
     introduction: new IntroductionPresenter(
       rpe.finishers.length,
-      volunteerWithCountList.length,
+      rpe.volunteersList().length,
       rpe.eventName,
       rpe.eventNumber
     ),
@@ -89,9 +80,9 @@ function createPresenters(
       rpe.eventNumber,
       window.location.href
     ),
-    volunteers: new VolunteersPresenter(volunteerWithCountList, rpe.eventName),
+    volunteers: new VolunteersPresenter(rpe.volunteersList(), rpe.eventName),
     firstTimeVolunteers: new FirstTimeVolunteersPresenter(
-      volunteerWithCountList,
+      rpe.volunteersList(),
       rpe.eventName
     ),
     volunteerInvitation: new VolunteerInvitationPresenter(
@@ -112,7 +103,6 @@ function createPresenters(
 
 function populate(
   rpe: ResultsPageExtractor,
-  volunteerWithCountList: VolunteerWithCount[],
   presenters: Presenters,
   message?: string
 ): void {
@@ -190,23 +180,8 @@ type WindowWithEventuate = Window & { eventuate?: () => void };
 
 function eventuate() {
   const rpe = new ResultsPageExtractor(document);
-  const volunteerWithCountList = rpe
-    .volunteersList()
-    .map((vol) => new VolunteerWithCount(vol, window.location.origin));
-  const waitingOn = volunteerWithCountList
-    .map((v) => v.promisedVols)
-    .filter((v) => !!v);
-  const loadingMessage = interpolate(getTranslations().loadingMessage, {
-    count: waitingOn.length,
-  });
-
-  const presenters = createPresenters(rpe, volunteerWithCountList);
-
-  populate(rpe, volunteerWithCountList, presenters, loadingMessage);
-
-  Promise.all(waitingOn).then(() =>
-    populate(rpe, volunteerWithCountList, presenters)
-  );
+  const presenters = createPresenters(rpe);
+  populate(rpe, presenters);
 }
 
 (window as WindowWithEventuate).eventuate = eventuate;

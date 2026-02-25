@@ -1,32 +1,13 @@
 import { FirstTimeVolunteersPresenter } from '../../src/presenters/FirstTimeVolunteersPresenter';
-import { VolunteerWithCount } from '../../src/types/Volunteer';
-
-// Create a simple mock volunteer for testing
-function createMockVolunteer(name: string, vols: number): VolunteerWithCount {
-  const mockVolunteer = {
-    name,
-    link: `https://example.com/athlete/${name}`,
-    athleteID: Math.floor(Math.random() * 1000),
-    vols,
-    agegroup: 'SM',
-    volunteerDataSource: new URL(`https://example.com/athlete/${name}`),
-    promisedVols: undefined,
-    fetchAndExtractData: jest.fn(),
-    fetchdata: jest.fn(),
-    volsFromHtml: jest.fn(),
-  } as unknown as VolunteerWithCount;
-
-  return mockVolunteer;
-}
 
 describe('FirstTimeVolunteersPresenter', () => {
   describe('constructor', () => {
     it('should filter volunteers with exactly 1 volunteer count', () => {
       const volunteers = [
-        createMockVolunteer('John SMITH', 1),
-        createMockVolunteer('Jane DOE', 2),
-        createMockVolunteer('Alice BROWN', 1),
-        createMockVolunteer('Bob WILSON', 0),
+        { name: 'John SMITH', vols: 1, vClub: undefined },
+        { name: 'Jane DOE', vols: 2, vClub: undefined },
+        { name: 'Alice BROWN', vols: 1, vClub: undefined },
+        { name: 'Bob WILSON', vols: 0, vClub: undefined },
       ];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       expect(presenter['_firstTimeVolunteers']).toHaveLength(2);
@@ -41,9 +22,9 @@ describe('FirstTimeVolunteersPresenter', () => {
 
     it('should handle volunteers with no first-time volunteers', () => {
       const volunteers = [
-        createMockVolunteer('John SMITH', 2),
-        createMockVolunteer('Jane DOE', 5),
-        createMockVolunteer('Alice BROWN', 3),
+        { name: 'John SMITH', vols: 2, vClub: undefined },
+        { name: 'Jane DOE', vols: 5, vClub: undefined },
+        { name: 'Alice BROWN', vols: 3, vClub: undefined },
       ];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       expect(presenter['_firstTimeVolunteers']).toHaveLength(0);
@@ -52,7 +33,7 @@ describe('FirstTimeVolunteersPresenter', () => {
 
   describe('title', () => {
     it('should return singular title for one first-time volunteer', () => {
-      const volunteers = [createMockVolunteer('John SMITH', 1)];
+      const volunteers = [{ name: 'John SMITH', vols: 1, vClub: undefined }];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       const title = presenter.title();
       expect(title).toContain('parkrunner');
@@ -62,8 +43,8 @@ describe('FirstTimeVolunteersPresenter', () => {
 
     it('should return plural title for multiple first-time volunteers', () => {
       const volunteers = [
-        createMockVolunteer('John SMITH', 1),
-        createMockVolunteer('Jane DOE', 1),
+        { name: 'John SMITH', vols: 1, vClub: undefined },
+        { name: 'Jane DOE', vols: 1, vClub: undefined },
       ];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       const title = presenter.title();
@@ -80,7 +61,7 @@ describe('FirstTimeVolunteersPresenter', () => {
 
   describe('details', () => {
     it('should return sorted and conjoined names for single first-time volunteer', () => {
-      const volunteers = [createMockVolunteer('John SMITH', 1)];
+      const volunteers = [{ name: 'John SMITH', vols: 1, vClub: undefined }];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       const details = presenter.details();
       expect(details).toBe('John SMITH');
@@ -88,9 +69,9 @@ describe('FirstTimeVolunteersPresenter', () => {
 
     it('should return sorted and conjoined names for multiple first-time volunteers', () => {
       const volunteers = [
-        createMockVolunteer('Jane DOE', 1),
-        createMockVolunteer('John SMITH', 1),
-        createMockVolunteer('Alice BROWN', 1),
+        { name: 'Jane DOE', vols: 1, vClub: undefined },
+        { name: 'John SMITH', vols: 1, vClub: undefined },
+        { name: 'Alice BROWN', vols: 1, vClub: undefined },
       ];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       const details = presenter.details();
@@ -106,15 +87,15 @@ describe('FirstTimeVolunteersPresenter', () => {
 
   describe('hasFirstTimeVolunteers', () => {
     it('should return true when there are first-time volunteers', () => {
-      const volunteers = [createMockVolunteer('John SMITH', 1)];
+      const volunteers = [{ name: 'John SMITH', vols: 1, vClub: undefined }];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       expect(presenter.hasFirstTimeVolunteers()).toBe(true);
     });
 
     it('should return false when there are no first-time volunteers', () => {
       const volunteers = [
-        createMockVolunteer('John SMITH', 2),
-        createMockVolunteer('Jane DOE', 3),
+        { name: 'John SMITH', vols: 2, vClub: undefined },
+        { name: 'Jane DOE', vols: 3, vClub: undefined },
       ];
       const presenter = new FirstTimeVolunteersPresenter(volunteers);
       expect(presenter.hasFirstTimeVolunteers()).toBe(false);
