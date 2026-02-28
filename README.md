@@ -143,7 +143,7 @@ node --version && pnpm --version && ruby --version
 **Requirements**:
 
 - Node.js 24.10.0
-- pnpm 10.5.2 (via corepack or `npm install -g pnpm`)
+- pnpm 10.5.2 (via mise and corepack)
 - Ruby 3.4.7 (for Jekyll documentation builds)
 
 ### Building the Extension
@@ -212,11 +212,12 @@ includes:
 
 #### pnpm command not found
 
-Try these solutions in order:
+Use mise to provide pnpm:
 
-1. **Enable corepack**: `corepack enable`
-2. **Install pnpm globally**: `npm install -g pnpm`
-3. **Use npm instead**: Replace `pnpm` commands with `npm run` equivalents
+1. **Install tools**: `mise install` (uses `.mise.toml` to install Node and
+   enable pnpm via corepack)
+2. **Run via mise**: `mise exec -- pnpm <command>` if your shell doesn’t
+   auto-activate mise
 
 ## Running locally
 
