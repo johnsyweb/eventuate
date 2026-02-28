@@ -4,8 +4,7 @@
 function createUrlFromCurrent(currentHref: string): URL | null {
   try {
     return new URL(currentHref);
-  } catch (error) {
-    console.error('Invalid URL:', error);
+  } catch {
     return null;
   }
 }
@@ -37,6 +36,32 @@ function changePathSegment(
 function removeQueryParams(url: URL): URL {
   url.search = '';
   return url;
+}
+
+const RESULTS_SEGMENT_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+function resultsSegmentAfterResults(href: string): string | null {
+  const url = createUrlFromCurrent(href);
+  if (!url) return null;
+  const segments = getPathSegments(url);
+  const resultsIndex = segments.indexOf('results');
+  if (resultsIndex === -1 || resultsIndex === segments.length - 1) {
+    return null;
+  }
+  return segments[resultsIndex + 1].replace(/\/$/, '');
+}
+
+export function isSupportedResultsPageUrl(href: string): boolean {
+  const segment = resultsSegmentAfterResults(href);
+  return segment !== null && RESULTS_SEGMENT_DATE.test(segment);
+}
+
+export function eventDateFromResultsPageUrl(href: string): string | undefined {
+  const segment = resultsSegmentAfterResults(href);
+  if (segment === null || !RESULTS_SEGMENT_DATE.test(segment)) {
+    return undefined;
+  }
+  return segment;
 }
 
 export function futureRosterUrl(currentHref: string): string {

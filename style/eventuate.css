@@ -1,6 +1,9 @@
 #eventuate::before {
+  display: block;
+  margin-bottom: clamp(6px, 1.5vw, 12px);
+  padding: clamp(6px, 1.5vw, 12px);
   background-color: lightcoral;
-  content: '\26A0\FE0F This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself. \26A0\FE0F';
+  content: '\26A0\FE0F This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself.';
   color: whitesmoke;
   font-weight: bold;
 }
@@ -12,6 +15,16 @@
   box-sizing: border-box;
   font-size: clamp(14px, 1.5vw, 16px);
   line-height: 1.5;
+}
+
+#eventuate.eventuate-stale-results::before {
+  margin-bottom: clamp(6px, 1.5vw, 12px);
+  padding: clamp(6px, 1.5vw, 12px);
+  background-color: lightcoral;
+  color: whitesmoke;
+  font-weight: bold;
+  line-height: 1.4;
+  white-space: pre-line;
 }
 
 #eventuate #message {

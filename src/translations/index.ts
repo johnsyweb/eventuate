@@ -34,6 +34,7 @@ export interface TranslationKeys {
   };
   loadingMessage: string;
   closing: string;
+  staleResultsWarning: string;
   fallbackParkrunName: string;
   fallbackParkrunnerName: string;
   finisher: string;

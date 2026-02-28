@@ -16,7 +16,6 @@ function createMockExtractor(
     courseLength,
     finishers,
     eventName: eventName || 'Test parkrun',
-    eventDate: '01/01/2025',
     eventNumber: '#1',
     unknowns: [],
     newestParkrunners: [],
