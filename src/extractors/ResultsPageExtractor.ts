@@ -10,7 +10,6 @@ function athleteIDFromURI(uri: string): number {
 export class ResultsPageExtractor {
   eventName?: string;
   courseLength: number;
-  eventDate?: string;
   eventNumber?: string;
   finishers: IFinisher[];
   unknowns: string[];
@@ -51,10 +50,6 @@ export class ResultsPageExtractor {
           )
         )
     );
-
-    this.eventDate =
-      resultsPageDocument.querySelector('.format-date')?.textContent ??
-      undefined;
 
     this.eventNumber =
       resultsPageDocument.querySelector(

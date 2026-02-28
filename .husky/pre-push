@@ -29,11 +29,11 @@ docs_changed=$(echo "$changed_files" | grep -E "$docs_patterns" || echo "")
 
 if [ -n "$docs_changed" ]; then
   echo "📐 Docs or bookmarklet files have been modified. Building docs and running Lighthouse..."
-  if ! pnpm docs:build; then
+  if ! mise exec -- pnpm docs:build; then
     echo "❌ Docs build failed. Please fix errors before pushing."
     exit 1
   fi
-  if ! pnpm run lighthouse; then
+  if ! mise exec -- pnpm run lighthouse; then
     echo "❌ Lighthouse scores below 100 (accessibility, best-practices, or SEO). Please fix before pushing."
     exit 1
   fi
@@ -42,11 +42,11 @@ fi
 
 if [ -n "$userscript_changed" ]; then
   echo "📸 Userscript files have been modified. Generating screenshots..."
-  if ! pnpm build; then
+  if ! mise exec -- pnpm build; then
     echo "❌ Build failed. Please fix build errors before pushing."
     exit 1
   fi
-  if ! pnpm screenshots; then
+  if ! mise exec -- pnpm screenshots; then
     echo "⚠️  Screenshot generation failed. Push will continue, but please generate screenshots manually."
   fi
 fi

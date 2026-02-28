@@ -19,8 +19,57 @@ import { ClosingPresenter } from './presenters/ClosingPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
 import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
-import { createLanguageSwitcher, switchLanguage } from './translations';
+import {
+  createLanguageSwitcher,
+  getTranslations,
+  switchLanguage,
+} from './translations';
 import { shareReportText } from './share';
+import {
+  isSupportedResultsPageUrl,
+  eventDateFromResultsPageUrl,
+} from './urlFunctions';
+import { getCurrentHref } from './currentUrl';
+
+const MS_PER_DAY = 86400000;
+const STALE_DAYS = 7;
+const STALE_STYLE_ID = 'eventuate-stale-results-style';
+
+const DISCLAIMER_TOP =
+  '\u26A0\uFE0F This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself.';
+
+function escapeCssContent(s: string): string {
+  return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, ' ');
+}
+
+export function upsertStaleResultsInCss(
+  eventuateDiv: HTMLDivElement,
+  message: string | null
+): void {
+  const existing = document.getElementById(STALE_STYLE_ID);
+  if (existing) {
+    existing.remove();
+  }
+  eventuateDiv.classList.toggle('eventuate-stale-results', message !== null);
+  if (message !== null) {
+    const style = document.createElement('style');
+    style.id = STALE_STYLE_ID;
+    style.textContent = `#eventuate.eventuate-stale-results::before{content:"${escapeCssContent(DISCLAIMER_TOP)} \\A ${escapeCssContent(message)}";}`;
+    document.head.appendChild(style);
+  }
+}
+
+export function isStaleResults(eventDate: string | undefined): boolean {
+  if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) {
+    return false;
+  }
+  const [y, m, d] = eventDate.split('-').map(Number);
+  const eventAtLocalMidnight = new Date(y, m - 1, d).getTime();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const daysDiff = (today.getTime() - eventAtLocalMidnight) / MS_PER_DAY;
+  return daysDiff > STALE_DAYS;
+}
 
 interface Presenters {
   introduction: IntroductionPresenter;
@@ -78,7 +127,7 @@ function createPresenters(rpe: ResultsPageExtractor): Presenters {
     fullResults: new FullResultsPresenter(
       rpe.eventName,
       rpe.eventNumber,
-      window.location.href
+      getCurrentHref()
     ),
     volunteers: new VolunteersPresenter(rpe.volunteersList(), rpe.eventName),
     firstTimeVolunteers: new FirstTimeVolunteersPresenter(
@@ -87,7 +136,7 @@ function createPresenters(rpe: ResultsPageExtractor): Presenters {
     ),
     volunteerInvitation: new VolunteerInvitationPresenter(
       rpe.eventName,
-      window.location.href
+      getCurrentHref()
     ),
     unknowns: new UnknownsPresenter(rpe.unknowns, rpe.eventName),
     juniorSupervision: new JuniorSupervisionPresenter(rpe),
@@ -123,6 +172,11 @@ function populate(
     message: { title: '&#x23f3;', details: message },
   };
 
+  const eventDate = eventDateFromResultsPageUrl(getCurrentHref());
+  const staleMessage = isStaleResults(eventDate)
+    ? `\u2139\uFE0F ${getTranslations().staleResultsWarning}`
+    : null;
+
   // Iterate over presenters and add to reportDetails
   for (const [key, presenter] of Object.entries(presenters)) {
     reportDetails[key] = {
@@ -131,54 +185,65 @@ function populate(
     };
   }
 
-  const insertionPoint: HTMLDivElement | null =
-    document.querySelector('.Results-header');
-  if (insertionPoint) {
+  const insertionPoint: Element | null =
+    document.querySelector('.Results-header') ?? document.body;
+  if (insertionPoint === document.body) {
+    insertionPoint.insertAdjacentElement('afterbegin', eventuateDiv);
+  } else {
     insertionPoint.insertAdjacentElement('afterend', eventuateDiv);
+  }
 
-    for (const [section, content] of Object.entries(reportDetails)) {
-      if (content.details) {
-        if (section === 'languageSwitcher') {
-          // Handle language switcher specially - no title, no period
-          upsertParagraph(eventuateDiv, section, content.details);
-        } else {
-          // Check if title ends with <br> to avoid extra space
-          const separator = content.title.endsWith('<br>') ? '' : ' ';
-          const paragraphText = `${content.title}${separator}${content.details}.`;
-          upsertParagraph(eventuateDiv, section, paragraphText);
-        }
+  for (const [section, content] of Object.entries(reportDetails)) {
+    if (content.details) {
+      if (section === 'languageSwitcher') {
+        // Handle language switcher specially - no title, no period
+        upsertParagraph(eventuateDiv, section, content.details);
       } else {
-        deleteParagraph(eventuateDiv, section);
+        // Check if title ends with <br> to avoid extra space
+        const separator = content.title.endsWith('<br>') ? '' : ' ';
+        const paragraphText = `${content.title}${separator}${content.details}.`;
+        upsertParagraph(eventuateDiv, section, paragraphText);
       }
+    } else {
+      deleteParagraph(eventuateDiv, section);
     }
+  }
 
-    // Add event listeners for language switcher and copy button
-    const languageButtons = eventuateDiv.querySelectorAll(
-      '.eventuate-language-btn'
-    );
-    languageButtons.forEach((button) => {
-      button.addEventListener('click', (e) => {
-        const target = e.target as HTMLButtonElement;
-        const locale = target.getAttribute('data-locale');
-        if (locale) {
-          switchLanguage(locale);
-        }
+  upsertStaleResultsInCss(eventuateDiv, staleMessage);
+
+  // Add event listeners for language switcher and copy button
+  const languageButtons = eventuateDiv.querySelectorAll(
+    '.eventuate-language-btn'
+  );
+  languageButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      const target = e.target as HTMLButtonElement;
+      const locale = target.getAttribute('data-locale');
+      if (locale) {
+        switchLanguage(locale);
+      }
+    });
+  });
+
+  // Add event listener for share button
+  const shareButton = eventuateDiv.querySelector('.eventuate-share-btn');
+  if (shareButton) {
+    shareButton.addEventListener('click', () => {
+      shareReportText({
+        eventName: rpe.eventName,
+        eventDate: eventDateFromResultsPageUrl(getCurrentHref()),
+        eventNumber: rpe.eventNumber,
       });
     });
-
-    // Add event listener for share button
-    const shareButton = eventuateDiv.querySelector('.eventuate-share-btn');
-    if (shareButton) {
-      shareButton.addEventListener('click', () => {
-        shareReportText(rpe);
-      });
-    }
   }
 }
 
 type WindowWithEventuate = Window & { eventuate?: () => void };
 
-function eventuate() {
+export function eventuate(): void {
+  if (!isSupportedResultsPageUrl(getCurrentHref())) {
+    return;
+  }
   const rpe = new ResultsPageExtractor(document);
   const presenters = createPresenters(rpe);
   populate(rpe, presenters);

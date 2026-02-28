@@ -31,10 +31,6 @@ describe('ResultsPageExtractor', () => {
       expect(extractor.courseLength).toBe(5);
     });
 
-    it('extracts event date', () => {
-      expect(extractor.eventDate).toEqual('2026-02-21');
-    });
-
     it('extracts event number', () => {
       expect(extractor.eventNumber).toEqual('#374');
     });

@@ -47,6 +47,8 @@ export const en = {
   loadingMessage: 'Loading volunteer data for {count} parkrunners. Please wait',
   closing:
     "We'll be back next week for another free, fun, and friendly weekly {courseLength}km community event. Walk, jog, run, volunteer or spectate – it's up to you.<br><br>&#x1f333; #loveparkrun",
+  staleResultsWarning:
+    'These results are more than a week old. Milestones may have been reached since this event took place.',
   fallbackParkrunName: 'parkrun',
   fallbackParkrunnerName: 'a parkrunner',
   // Pluralization helpers
