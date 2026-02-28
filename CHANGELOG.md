@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/johnsyweb/eventuate/compare/v1.14.0...v1.15.0) (2026-02-28)
+
+
+### Features
+
+* support parkrun date-based results URLs and warn on older results ([417dd81](https://github.com/johnsyweb/eventuate/commit/417dd817691f24785ce8f9edb231c6fd39dc2481))
+
 # [1.14.0](https://github.com/johnsyweb/eventuate/compare/v1.13.1...v1.14.0) (2026-02-25)
 
 
