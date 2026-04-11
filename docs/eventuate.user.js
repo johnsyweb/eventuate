@@ -77,7 +77,7 @@ addStyle(`
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 353
+/***/ 831
 (__unused_webpack_module, exports) {
 
 
@@ -90,7 +90,7 @@ function getCurrentHref() {
 
 /***/ },
 
-/***/ 219
+/***/ 133
 (__unused_webpack_module, exports) {
 
 
@@ -122,13 +122,13 @@ function deleteParagraph(div, id) {
 
 /***/ },
 
-/***/ 518
+/***/ 692
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ResultsPageExtractor = void 0;
-const Finisher_1 = __webpack_require__(709);
+const Finisher_1 = __webpack_require__(751);
 function athleteIDFromURI(uri) {
     return Number(uri?.split('/')?.slice(-1));
 }
@@ -222,13 +222,13 @@ exports.ResultsPageExtractor = ResultsPageExtractor;
 
 /***/ },
 
-/***/ 700
+/***/ 686
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ClosingPresenter = void 0;
-const translations_1 = __webpack_require__(344);
+const translations_1 = __webpack_require__(682);
 class ClosingPresenter {
     _courseLength;
     constructor(courseLength) {
@@ -249,13 +249,13 @@ exports.ClosingPresenter = ClosingPresenter;
 
 /***/ },
 
-/***/ 916
+/***/ 870
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FactsPresenter = void 0;
-const translations_1 = __webpack_require__(344);
+const translations_1 = __webpack_require__(682);
 class FactsPresenter {
     _eventName;
     _courseLength;
@@ -303,14 +303,14 @@ exports.FactsPresenter = FactsPresenter;
 
 /***/ },
 
-/***/ 617
+/***/ 871
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FirstTimeVolunteersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class FirstTimeVolunteersPresenter {
     _firstTimeVolunteers;
     _eventName;
@@ -346,15 +346,15 @@ exports.FirstTimeVolunteersPresenter = FirstTimeVolunteersPresenter;
 
 /***/ },
 
-/***/ 742
+/***/ 532
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FirstTimersLaunchEventPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
-const FirstTimersPresenter_1 = __webpack_require__(129);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
+const FirstTimersPresenter_1 = __webpack_require__(163);
 class FirstTimersLaunchEventPresenter extends FirstTimersPresenter_1.FirstTimersPresenter {
     details() {
         const t = (0, translations_1.getTranslations)();
@@ -374,14 +374,14 @@ exports.FirstTimersLaunchEventPresenter = FirstTimersLaunchEventPresenter;
 
 /***/ },
 
-/***/ 129
+/***/ 163
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FirstTimersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class FirstTimersPresenter {
     _firstTimers;
     _eventName;
@@ -417,14 +417,14 @@ exports.FirstTimersPresenter = FirstTimersPresenter;
 
 /***/ },
 
-/***/ 198
+/***/ 436
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FullResultsPresenter = void 0;
-const translations_1 = __webpack_require__(344);
-const urlFunctions_1 = __webpack_require__(237);
+const translations_1 = __webpack_require__(682);
+const urlFunctions_1 = __webpack_require__(179);
 class FullResultsPresenter {
     _eventName;
     _eventNumber;
@@ -451,14 +451,14 @@ exports.FullResultsPresenter = FullResultsPresenter;
 
 /***/ },
 
-/***/ 925
+/***/ 95
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GroupsPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class GroupsPresenter {
     _runningWalkingGroups;
     constructor(runningWalkingGroups) {
@@ -485,13 +485,13 @@ exports.GroupsPresenter = GroupsPresenter;
 
 /***/ },
 
-/***/ 265
+/***/ 251
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.IntroductionPresenter = void 0;
-const translations_1 = __webpack_require__(344);
+const translations_1 = __webpack_require__(682);
 class IntroductionPresenter {
     _finisherCount;
     _volunteerCount;
@@ -521,13 +521,13 @@ exports.IntroductionPresenter = IntroductionPresenter;
 
 /***/ },
 
-/***/ 717
+/***/ 707
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JuniorSupervisionPresenter = void 0;
-const translations_1 = __webpack_require__(344);
+const translations_1 = __webpack_require__(682);
 const ARM_REACH_SECONDS = 15;
 function timeToSeconds(timeStr) {
     if (!timeStr) {
@@ -671,14 +671,14 @@ exports.JuniorSupervisionPresenter = JuniorSupervisionPresenter;
 
 /***/ },
 
-/***/ 651
+/***/ 893
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MilestonePresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class MilestonePresenter {
     _milestoneCelebrations;
     _milestoneCelebrationsAll;
@@ -718,14 +718,14 @@ exports.MilestonePresenter = MilestonePresenter;
 
 /***/ },
 
-/***/ 162
+/***/ 44
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.NewPBsPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class NewPBsPresenter {
     _finishersWithNewPBs;
     _eventName;
@@ -755,14 +755,14 @@ exports.NewPBsPresenter = NewPBsPresenter;
 
 /***/ },
 
-/***/ 682
+/***/ 680
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.NewestParkrunnersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class NewestParkrunnersPresenter {
     _newestParkrunners;
     constructor(newestParkrunners) {
@@ -789,13 +789,13 @@ exports.NewestParkrunnersPresenter = NewestParkrunnersPresenter;
 
 /***/ },
 
-/***/ 816
+/***/ 854
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UnknownsPresenter = void 0;
-const translations_1 = __webpack_require__(344);
+const translations_1 = __webpack_require__(682);
 class UnknownsPresenter {
     _unknowns;
     _eventName;
@@ -827,14 +827,14 @@ exports.UnknownsPresenter = UnknownsPresenter;
 
 /***/ },
 
-/***/ 738
+/***/ 712
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VolunteerInvitationPresenter = void 0;
-const translations_1 = __webpack_require__(344);
-const urlFunctions_1 = __webpack_require__(237);
+const translations_1 = __webpack_require__(682);
+const urlFunctions_1 = __webpack_require__(179);
 class VolunteerInvitationPresenter {
     _eventName;
     _currentUrl;
@@ -858,14 +858,14 @@ exports.VolunteerInvitationPresenter = VolunteerInvitationPresenter;
 
 /***/ },
 
-/***/ 320
+/***/ 318
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VolunteersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(509);
-const translations_1 = __webpack_require__(344);
+const stringFunctions_1 = __webpack_require__(731);
+const translations_1 = __webpack_require__(682);
 class VolunteersPresenter {
     _volunteers;
     _eventName;
@@ -895,7 +895,7 @@ exports.VolunteersPresenter = VolunteersPresenter;
 
 /***/ },
 
-/***/ 764
+/***/ 522
 (__unused_webpack_module, exports) {
 
 
@@ -1007,7 +1007,7 @@ function fallbackCopyToClipboard(text) {
 
 /***/ },
 
-/***/ 509
+/***/ 731
 (__unused_webpack_module, exports) {
 
 
@@ -1032,7 +1032,7 @@ function sortAndConjoin(names) {
 
 /***/ },
 
-/***/ 614
+/***/ 804
 (__unused_webpack_module, exports) {
 
 
@@ -1070,7 +1070,7 @@ function fiveKFinishersToMilestones(finishers) {
 
 /***/ },
 
-/***/ 640
+/***/ 930
 (__unused_webpack_module, exports) {
 
 
@@ -1106,7 +1106,7 @@ function fiveKVolunteersToMilestones(volunteers) {
 
 /***/ },
 
-/***/ 791
+/***/ 617
 (__unused_webpack_module, exports) {
 
 
@@ -1142,7 +1142,7 @@ function twoKFinishersToMilestones(finishers) {
 
 /***/ },
 
-/***/ 120
+/***/ 798
 (__unused_webpack_module, exports) {
 
 
@@ -1166,7 +1166,7 @@ function twoKVolunteersToMilestones(volunteers) {
 
 /***/ },
 
-/***/ 17
+/***/ 283
 (__unused_webpack_module, exports) {
 
 
@@ -1247,7 +1247,7 @@ exports.de = {
 
 /***/ },
 
-/***/ 893
+/***/ 67
 (__unused_webpack_module, exports) {
 
 
@@ -1325,7 +1325,7 @@ exports.en = {
 
 /***/ },
 
-/***/ 344
+/***/ 682
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1340,8 +1340,8 @@ exports.getStoredOrDetectedLocale = getStoredOrDetectedLocale;
 exports.formatCount = formatCount;
 exports.formatCountWithArticle = formatCountWithArticle;
 // translations/index.ts - Translation registry and utilities
-const en_1 = __webpack_require__(893);
-const de_1 = __webpack_require__(17);
+const en_1 = __webpack_require__(67);
+const de_1 = __webpack_require__(283);
 exports.translations = {
     en: en_1.en,
     de: de_1.de,
@@ -1442,13 +1442,13 @@ function formatCountWithArticle(count, singular, plural, singularArticle, plural
 
 /***/ },
 
-/***/ 709
+/***/ 751
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Finisher = void 0;
-const translations_1 = __webpack_require__(344);
+const translations_1 = __webpack_require__(682);
 class Finisher {
     name;
     agegroup;
@@ -1484,7 +1484,7 @@ exports.Finisher = Finisher;
 
 /***/ },
 
-/***/ 237
+/***/ 179
 (__unused_webpack_module, exports) {
 
 
@@ -1609,31 +1609,31 @@ __webpack_unused_export__ = ({ value: true });
 __webpack_unused_export__ = upsertStaleResultsInCss;
 __webpack_unused_export__ = isStaleResults;
 __webpack_unused_export__ = eventuate;
-const upsertParagraph_1 = __webpack_require__(219);
-const fiveKFinishersToMilestones_1 = __webpack_require__(614);
-const fiveKVolunteersToMilestones_1 = __webpack_require__(640);
-const FactsPresenter_1 = __webpack_require__(916);
-const MilestonePresenter_1 = __webpack_require__(651);
-const FirstTimersPresenter_1 = __webpack_require__(129);
-const FirstTimersLaunchEventPresenter_1 = __webpack_require__(742);
-const FirstTimeVolunteersPresenter_1 = __webpack_require__(617);
-const JuniorSupervisionPresenter_1 = __webpack_require__(717);
-const UnknownsPresenter_1 = __webpack_require__(816);
-const IntroductionPresenter_1 = __webpack_require__(265);
-const NewestParkrunnersPresenter_1 = __webpack_require__(682);
-const NewPBsPresenter_1 = __webpack_require__(162);
-const GroupsPresenter_1 = __webpack_require__(925);
-const FullResultsPresenter_1 = __webpack_require__(198);
-const VolunteersPresenter_1 = __webpack_require__(320);
-const VolunteerInvitationPresenter_1 = __webpack_require__(738);
-const ClosingPresenter_1 = __webpack_require__(700);
-const ResultsPageExtractor_1 = __webpack_require__(518);
-const twoKFinishersToMilestone_1 = __webpack_require__(791);
-const twoKVolunteersToMilestones_1 = __webpack_require__(120);
-const translations_1 = __webpack_require__(344);
-const share_1 = __webpack_require__(764);
-const urlFunctions_1 = __webpack_require__(237);
-const currentUrl_1 = __webpack_require__(353);
+const upsertParagraph_1 = __webpack_require__(133);
+const fiveKFinishersToMilestones_1 = __webpack_require__(804);
+const fiveKVolunteersToMilestones_1 = __webpack_require__(930);
+const FactsPresenter_1 = __webpack_require__(870);
+const MilestonePresenter_1 = __webpack_require__(893);
+const FirstTimersPresenter_1 = __webpack_require__(163);
+const FirstTimersLaunchEventPresenter_1 = __webpack_require__(532);
+const FirstTimeVolunteersPresenter_1 = __webpack_require__(871);
+const JuniorSupervisionPresenter_1 = __webpack_require__(707);
+const UnknownsPresenter_1 = __webpack_require__(854);
+const IntroductionPresenter_1 = __webpack_require__(251);
+const NewestParkrunnersPresenter_1 = __webpack_require__(680);
+const NewPBsPresenter_1 = __webpack_require__(44);
+const GroupsPresenter_1 = __webpack_require__(95);
+const FullResultsPresenter_1 = __webpack_require__(436);
+const VolunteersPresenter_1 = __webpack_require__(318);
+const VolunteerInvitationPresenter_1 = __webpack_require__(712);
+const ClosingPresenter_1 = __webpack_require__(686);
+const ResultsPageExtractor_1 = __webpack_require__(692);
+const twoKFinishersToMilestone_1 = __webpack_require__(617);
+const twoKVolunteersToMilestones_1 = __webpack_require__(798);
+const translations_1 = __webpack_require__(682);
+const share_1 = __webpack_require__(522);
+const urlFunctions_1 = __webpack_require__(179);
+const currentUrl_1 = __webpack_require__(831);
 const STALE_DAYS = 7;
 const STALE_STYLE_ID = 'eventuate-stale-results-style';
 function civilDayNumber(year, month, day) {
