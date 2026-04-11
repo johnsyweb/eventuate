@@ -216,8 +216,26 @@ async function generateScreenshots(): Promise<void> {
       // Hide or remove third-party injected content (like iframes)
       console.log('🧹 Cleaning up third-party content...');
       await page.evaluate(() => {
+        const reciteMeSelectors = [
+          'iframe[src*="recite"]',
+          'iframe[src*="Recite"]',
+          '[id*="recite"]',
+          '[class*="recite"]',
+          '[id*="Recite"]',
+          '[class*="Recite"]',
+          '[aria-label*="Recite"]',
+          '[title*="Recite"]',
+        ];
+
+        let reciteMeFound = 0;
+        reciteMeSelectors.forEach((selector) => {
+          reciteMeFound += document.querySelectorAll(selector).length;
+        });
+
         // Hide common third-party iframes and overlays
         const selectorsToHide = [
+          // Recite Me accessibility toolbar/overlay elements
+          ...reciteMeSelectors,
           'iframe[src*="close"]',
           'iframe[src*="message"]',
           'iframe[src*="popup"]',
@@ -261,6 +279,11 @@ async function generateScreenshots(): Promise<void> {
           }
         });
 
+        if (reciteMeFound > 0) {
+          console.log(`Recite Me elements found: ${reciteMeFound}`);
+        } else {
+          console.log('Recite Me elements found: 0');
+        }
         console.log(`Hidden ${hiddenCount} third-party elements`);
       });
 
