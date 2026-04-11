@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node
 
-import puppeteer, { Browser } from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -10,6 +10,43 @@ interface ScreenshotConfig {
   waitForSelector?: string;
   waitForTimeout?: number;
   viewport?: { width: number; height: number };
+}
+
+async function resolveResultsUrlForScreenshot(
+  page: Page,
+  url: string
+): Promise<string> {
+  if (!url.includes('/results/latestresults/')) {
+    return url;
+  }
+
+  const datedUrl = await page.evaluate(() => {
+    const datePathPattern = /\/results\/\d{4}-\d{2}-\d{2}\/$/;
+
+    // Some latestresults pages immediately redirect to a dated results URL.
+    if (datePathPattern.test(window.location.href)) {
+      return window.location.href;
+    }
+
+    const links = Array.from(document.querySelectorAll('a[href]'));
+
+    for (const link of links) {
+      const href = (link as HTMLAnchorElement).href;
+      if (datePathPattern.test(href)) {
+        return href;
+      }
+    }
+
+    return null;
+  });
+
+  if (datedUrl) {
+    console.log(`🔀 Resolved latestresults to dated URL: ${datedUrl}`);
+    return datedUrl;
+  }
+
+  console.warn('⚠️  Could not resolve latestresults to a dated URL.');
+  return url;
 }
 
 const screenshotConfigs: ScreenshotConfig[] = [
@@ -130,6 +167,15 @@ async function generateScreenshots(): Promise<void> {
       // Navigate to the parkrun results page
       console.log(`🌐 Navigating to ${config.url}...`);
       await page.goto(config.url, { waitUntil: 'networkidle2' });
+
+      const resolvedUrl = await resolveResultsUrlForScreenshot(
+        page,
+        config.url
+      );
+      if (resolvedUrl !== config.url) {
+        console.log(`🌐 Navigating to resolved URL ${resolvedUrl}...`);
+        await page.goto(resolvedUrl, { waitUntil: 'networkidle2' });
+      }
 
       // Wait a bit for the page to fully load
       await new Promise((resolve) => setTimeout(resolve, 2000));
