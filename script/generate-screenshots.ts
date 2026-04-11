@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node
 
-import puppeteer, { Browser } from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -10,6 +10,43 @@ interface ScreenshotConfig {
   waitForSelector?: string;
   waitForTimeout?: number;
   viewport?: { width: number; height: number };
+}
+
+async function resolveResultsUrlForScreenshot(
+  page: Page,
+  url: string
+): Promise<string> {
+  if (!url.includes('/results/latestresults/')) {
+    return url;
+  }
+
+  const datedUrl = await page.evaluate(() => {
+    const datePathPattern = /\/results\/\d{4}-\d{2}-\d{2}\/$/;
+
+    // Some latestresults pages immediately redirect to a dated results URL.
+    if (datePathPattern.test(window.location.href)) {
+      return window.location.href;
+    }
+
+    const links = Array.from(document.querySelectorAll('a[href]'));
+
+    for (const link of links) {
+      const href = (link as HTMLAnchorElement).href;
+      if (datePathPattern.test(href)) {
+        return href;
+      }
+    }
+
+    return null;
+  });
+
+  if (datedUrl) {
+    console.log(`🔀 Resolved latestresults to dated URL: ${datedUrl}`);
+    return datedUrl;
+  }
+
+  console.warn('⚠️  Could not resolve latestresults to a dated URL.');
+  return url;
 }
 
 const screenshotConfigs: ScreenshotConfig[] = [
@@ -131,6 +168,15 @@ async function generateScreenshots(): Promise<void> {
       console.log(`🌐 Navigating to ${config.url}...`);
       await page.goto(config.url, { waitUntil: 'networkidle2' });
 
+      const resolvedUrl = await resolveResultsUrlForScreenshot(
+        page,
+        config.url
+      );
+      if (resolvedUrl !== config.url) {
+        console.log(`🌐 Navigating to resolved URL ${resolvedUrl}...`);
+        await page.goto(resolvedUrl, { waitUntil: 'networkidle2' });
+      }
+
       // Wait a bit for the page to fully load
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -216,8 +262,26 @@ async function generateScreenshots(): Promise<void> {
       // Hide or remove third-party injected content (like iframes)
       console.log('🧹 Cleaning up third-party content...');
       await page.evaluate(() => {
+        const reciteMeSelectors = [
+          'iframe[src*="recite"]',
+          'iframe[src*="Recite"]',
+          '[id*="recite"]',
+          '[class*="recite"]',
+          '[id*="Recite"]',
+          '[class*="Recite"]',
+          '[aria-label*="Recite"]',
+          '[title*="Recite"]',
+        ];
+
+        let reciteMeFound = 0;
+        reciteMeSelectors.forEach((selector) => {
+          reciteMeFound += document.querySelectorAll(selector).length;
+        });
+
         // Hide common third-party iframes and overlays
         const selectorsToHide = [
+          // Recite Me accessibility toolbar/overlay elements
+          ...reciteMeSelectors,
           'iframe[src*="close"]',
           'iframe[src*="message"]',
           'iframe[src*="popup"]',
@@ -261,6 +325,11 @@ async function generateScreenshots(): Promise<void> {
           }
         });
 
+        if (reciteMeFound > 0) {
+          console.log(`Recite Me elements found: ${reciteMeFound}`);
+        } else {
+          console.log('Recite Me elements found: 0');
+        }
         console.log(`Hidden ${hiddenCount} third-party elements`);
       });
 
