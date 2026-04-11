@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/johnsyweb/eventuate/compare/v1.15.0...v1.15.1) (2026-04-11)
+
+
+### Bug Fixes
+
+* **ci:** stabilize date checks and test typings ([59fb62d](https://github.com/johnsyweb/eventuate/commit/59fb62d89161b796fe8b44e1bea850f301b0ee34))
+
 # [1.15.0](https://github.com/johnsyweb/eventuate/compare/v1.14.0...v1.15.0) (2026-02-28)
 
 
