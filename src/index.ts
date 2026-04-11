@@ -31,9 +31,19 @@ import {
 } from './urlFunctions';
 import { getCurrentHref } from './currentUrl';
 
-const MS_PER_DAY = 86400000;
 const STALE_DAYS = 7;
 const STALE_STYLE_ID = 'eventuate-stale-results-style';
+
+function civilDayNumber(year: number, month: number, day: number): number {
+  // Convert a Gregorian calendar date to a stable day number.
+  const y = month <= 2 ? year - 1 : year;
+  const m = month <= 2 ? month + 12 : month;
+  const era = Math.floor(y / 400);
+  const yoe = y - era * 400;
+  const doy = Math.floor((153 * (m - 3) + 2) / 5) + day - 1;
+  const doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
+  return era * 146097 + doe;
+}
 
 const DISCLAIMER_TOP =
   '\u26A0\uFE0F This information is drawn by the Eventuate Web Extension from the results table to facilitate writing a report. It is not a report in itself.';
@@ -64,10 +74,14 @@ export function isStaleResults(eventDate: string | undefined): boolean {
     return false;
   }
   const [y, m, d] = eventDate.split('-').map(Number);
-  const eventAtLocalMidnight = new Date(y, m - 1, d).getTime();
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const daysDiff = (today.getTime() - eventAtLocalMidnight) / MS_PER_DAY;
+  const now = new Date();
+  const eventDay = civilDayNumber(y, m, d);
+  const todayDay = civilDayNumber(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    now.getDate()
+  );
+  const daysDiff = todayDay - eventDay;
   return daysDiff > STALE_DAYS;
 }
 
