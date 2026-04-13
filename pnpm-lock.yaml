@@ -8,6 +8,8 @@ overrides:
   basic-ftp: 5.2.2
   lodash: 4.18.1
   lodash-es: 4.18.1
+  '@actions/http-client>undici': 6.24.1
+  '@semantic-release/github>undici': 7.24.8
 
 importers:
 
@@ -4890,12 +4892,12 @@ packages:
     resolution: {integrity: sha512-sC+b0tB1whOCzbtlx20fx3WgCXwkW627p4EA9uM+/tNNPkSS+eSEld6pAs9nDv7WbY1UUljBMYPtu9BCOrCWKA==}
     engines: {node: '>=18.17'}
 
-  undici@7.22.0:
-    resolution: {integrity: sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==}
-    engines: {node: '>=20.18.1'}
-
   undici@7.24.7:
     resolution: {integrity: sha512-H/nlJ/h0ggGC+uRL3ovD+G0i4bqhvsDOpbDv7At5eFLlj2b41L8QliGbnl2H7SnDiYhENphh1tQFJZf+MyfLsQ==}
+    engines: {node: '>=20.18.1'}
+
+  undici@7.24.8:
+    resolution: {integrity: sha512-6KQ/+QxK49Z/p3HO6E5ZCZWNnCasyZLa5ExaVYyvPxUwKtbCPMKELJOqh7EqOle0t9cH/7d2TaaTRRa6Nhs4YQ==}
     engines: {node: '>=20.18.1'}
 
   unicode-emoji-modifier-base@1.0.0:
@@ -6535,7 +6537,7 @@ snapshots:
       p-filter: 4.1.0
       semantic-release: 25.0.3(typescript@6.0.2)
       tinyglobby: 0.2.15
-      undici: 7.22.0
+      undici: 7.24.8
       url-join: 5.0.0
     transitivePeerDependencies:
       - supports-color
@@ -10643,9 +10645,9 @@ snapshots:
 
   undici@6.24.1: {}
 
-  undici@7.22.0: {}
-
   undici@7.24.7: {}
+
+  undici@7.24.8: {}
 
   unicode-emoji-modifier-base@1.0.0: {}
 
