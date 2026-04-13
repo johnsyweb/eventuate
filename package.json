@@ -86,7 +86,8 @@
       "@actions/http-client>undici": "6.24.1",
       "@semantic-release/github>undici": "7.24.8",
       "tinyglobby>picomatch": "4.0.4",
-      "fdir>picomatch": "4.0.4"
+      "fdir>picomatch": "4.0.4",
+      "external-editor>tmp": "0.2.5"
     }
   },
   "packageManager": "pnpm@10.5.2",
