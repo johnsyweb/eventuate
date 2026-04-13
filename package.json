@@ -84,7 +84,9 @@
       "lodash": "4.18.1",
       "lodash-es": "4.18.1",
       "@actions/http-client>undici": "6.24.1",
-      "@semantic-release/github>undici": "7.24.8"
+      "@semantic-release/github>undici": "7.24.8",
+      "tinyglobby>picomatch": "4.0.4",
+      "fdir>picomatch": "4.0.4"
     }
   },
   "packageManager": "pnpm@10.5.2",
