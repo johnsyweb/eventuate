@@ -146,6 +146,10 @@ node --version && pnpm --version && ruby --version
 - pnpm 10.5.2 (via mise and corepack)
 - Ruby 3.4.7 (for Jekyll documentation builds)
 
+Transitive development dependencies sometimes lag behind security patches. Where
+needed, patched versions are pinned in `package.json` under `pnpm.overrides`
+until upstream packages release compatible updates.
+
 ### Building the Extension
 
 Once the tools are installed:
@@ -214,8 +218,8 @@ includes:
 
 Use mise to provide pnpm:
 
-1. **Install tools**: `mise install` (uses `.mise.toml` to install Node and
-   enable pnpm via corepack)
+1. **Install tools**: `mise install` (reads `.tool-versions` for Node, pnpm, and
+   Ruby; enable pnpm via corepack where applicable)
 2. **Run via mise**: `mise exec -- pnpm <command>` if your shell doesn’t
    auto-activate mise
 
