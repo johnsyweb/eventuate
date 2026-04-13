@@ -1,3 +1,14 @@
+## [1.15.2](https://github.com/johnsyweb/eventuate/compare/v1.15.1...v1.15.2) (2026-04-13)
+
+
+### Bug Fixes
+
+* **deps:** override basic-ftp for transitive FTP CRLF advisories ([2c3242a](https://github.com/johnsyweb/eventuate/commit/2c3242a0bb62dae0861f16d54af8074d1704aa14))
+* **deps:** override lodash and lodash-es for security patches ([6dc8180](https://github.com/johnsyweb/eventuate/commit/6dc8180d07a935316239bc1a16d2a7ca2aae8e09))
+* **deps:** override picomatch for glob matching advisories ([2b02d99](https://github.com/johnsyweb/eventuate/commit/2b02d99f7eefe509e474792959762db0a3bd653a))
+* **deps:** override tmp for symlink temp file advisory ([1f7eadd](https://github.com/johnsyweb/eventuate/commit/1f7eadd046f1e75eb743358a80a6e60580d89682))
+* **deps:** override undici for semantic-release and GitHub Actions ([f1e4bb4](https://github.com/johnsyweb/eventuate/commit/f1e4bb42249a1ca49cd7ebe5fe2c64f004c358e8))
+
 ## [1.15.1](https://github.com/johnsyweb/eventuate/compare/v1.15.0...v1.15.1) (2026-04-11)
 
 
