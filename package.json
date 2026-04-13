@@ -78,6 +78,11 @@
     "webpack": "^5.106.1",
     "webpack-cli": "^7.0.2"
   },
+  "pnpm": {
+    "overrides": {
+      "basic-ftp": "5.2.2"
+    }
+  },
   "packageManager": "pnpm@10.5.2",
   "engines": {
     "node": ">=24.10.0",
