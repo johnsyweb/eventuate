@@ -124,6 +124,14 @@ describe('UnknownsPresenter', () => {
       expect(details).toContain('contact details');
       expect(details).toContain('emergency');
     });
+
+    it('should use the updated wristband wording without a trailing full stop', () => {
+      const presenter = new UnknownsPresenter(['Unknown'], 'Test parkrun');
+      const details = presenter.details();
+      expect(details).toContain('wherever you exercise');
+      expect(details).not.toContain('wherever you work out');
+      expect(details?.endsWith('.')).toBe(false);
+    });
   });
 
   describe('integration', () => {
