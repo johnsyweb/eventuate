@@ -1,3 +1,10 @@
+## [1.15.3](https://github.com/johnsyweb/eventuate/compare/v1.15.2...v1.15.3) (2026-04-25)
+
+
+### Bug Fixes
+
+* **translations:** update unknowns wristband wording (en) ([d6b4620](https://github.com/johnsyweb/eventuate/commit/d6b46205cc778120ad5ea11542d0645705a8e418))
+
 ## [1.15.2](https://github.com/johnsyweb/eventuate/compare/v1.15.1...v1.15.2) (2026-04-13)
 
 
