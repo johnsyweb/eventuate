@@ -1,4 +1,4 @@
-FROM node:25-slim AS build-stage
+FROM node:26-slim AS build-stage
 RUN apt-get update && apt-get -y install jq zip
 RUN npm install -g pnpm
 COPY . /eventuate
