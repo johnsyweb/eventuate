@@ -1,6 +1,6 @@
 import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
-import { fiveKFinishersToMilestones } from './transformers/fiveKFinishersToMilestones';
-import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
+import { milestoneCelebrationsForEvent } from './milestones/milestoneCelebrationsForEvent';
+import { showPreviewMilestonesDisclaimer } from './milestones/milestoneMode';
 import { FactsPresenter } from './presenters/FactsPresenter';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
 import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
@@ -17,8 +17,6 @@ import { VolunteersPresenter } from './presenters/VolunteersPresenter';
 import { VolunteerInvitationPresenter } from './presenters/VolunteerInvitationPresenter';
 import { ClosingPresenter } from './presenters/ClosingPresenter';
 import { ResultsPageExtractor } from './extractors/ResultsPageExtractor';
-import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
-import { twoKVolunteersToMilestones } from './transformers/twoKVolunteersToMilestones';
 import {
   createLanguageSwitcher,
   getTranslations,
@@ -50,6 +48,35 @@ const DISCLAIMER_TOP =
 
 function escapeCssContent(s: string): string {
   return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, ' ');
+}
+
+function getSearchString(): string {
+  const href = getCurrentHref();
+  if (!href) {
+    return typeof window !== 'undefined' ? window.location.search : '';
+  }
+  try {
+    return new URL(href).search;
+  } catch {
+    return typeof window !== 'undefined' ? window.location.search : '';
+  }
+}
+
+export function upsertPreviewMilestonesBanner(
+  eventuateDiv: HTMLDivElement,
+  message: string | null
+): void {
+  if (message === null) {
+    deleteParagraph(eventuateDiv, 'previewMilestones');
+    return;
+  }
+
+  const previewParagraph = upsertParagraph(
+    eventuateDiv,
+    'previewMilestones',
+    message
+  );
+  eventuateDiv.insertBefore(previewParagraph, eventuateDiv.firstChild);
 }
 
 export function upsertStaleResultsInCss(
@@ -114,17 +141,10 @@ function createPresenters(rpe: ResultsPageExtractor): Presenters {
           rpe.eventName
         );
 
-  const finisherMilestoneCelebrations =
-    rpe.courseLength == 2
-      ? [
-          ...twoKVolunteersToMilestones(rpe.volunteersList()),
-          ...twoKFinishersToMilestones(rpe.finishers),
-        ]
-      : fiveKFinishersToMilestones(rpe.finishers);
-  const milestoneCelebrations = [
-    ...fiveKVolunteersToMilestones(rpe.volunteersList()),
-    ...finisherMilestoneCelebrations,
-  ];
+  const milestoneCelebrations = milestoneCelebrationsForEvent(
+    rpe,
+    getSearchString()
+  );
 
   return {
     introduction: new IntroductionPresenter(
@@ -190,6 +210,12 @@ function populate(
   const staleMessage = isStaleResults(eventDate)
     ? `\u2139\uFE0F ${getTranslations().staleResultsWarning}`
     : null;
+  const previewMilestonesMessage = showPreviewMilestonesDisclaimer(
+    rpe.courseLength,
+    getSearchString()
+  )
+    ? `\u26A0\uFE0F ${getTranslations().previewMilestonesWarning}`
+    : null;
 
   // Iterate over presenters and add to reportDetails
   for (const [key, presenter] of Object.entries(presenters)) {
@@ -224,6 +250,7 @@ function populate(
   }
 
   upsertStaleResultsInCss(eventuateDiv, staleMessage);
+  upsertPreviewMilestonesBanner(eventuateDiv, previewMilestonesMessage);
 
   // Add event listeners for language switcher and copy button
   const languageButtons = eventuateDiv.querySelectorAll(

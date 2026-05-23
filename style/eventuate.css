@@ -27,6 +27,16 @@
   white-space: pre-line;
 }
 
+#eventuate #previewMilestones {
+  display: block;
+  margin-bottom: clamp(6px, 1.5vw, 12px);
+  padding: clamp(6px, 1.5vw, 12px);
+  background-color: #4c1a57;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
 #eventuate #message {
   color: lightcoral;
   font-weight: bold;
