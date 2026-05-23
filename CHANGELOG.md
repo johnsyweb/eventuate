@@ -1,3 +1,15 @@
+# [1.16.0](https://github.com/johnsyweb/eventuate/compare/v1.15.3...v1.16.0) (2026-05-23)
+
+
+### Features
+
+* **i18n:** add preview milestone club labels and disclaimer ([a5fa04f](https://github.com/johnsyweb/eventuate/commit/a5fa04f381b07f935b3cd6b8903e1b343f1bac6f))
+* **milestones:** add explicit icon lookup tables ([cab8429](https://github.com/johnsyweb/eventuate/commit/cab8429dc8d784914ee7ec08dcd9e0443608e7d5))
+* **milestones:** add preview mode detection and go-live dates ([7a04b74](https://github.com/johnsyweb/eventuate/commit/7a04b7499236438034f0025de39253d6911c97c4))
+* **milestones:** add shared build and sort helpers ([e9c029c](https://github.com/johnsyweb/eventuate/commit/e9c029ce8238dbffd82e5124b6c55af312113ca9))
+* **milestones:** assemble celebrations per event with preview rules ([ed342a0](https://github.com/johnsyweb/eventuate/commit/ed342a09f80dfbf389ff7877b49c7b92ae6b4635))
+* **ui:** show preview milestones banner on results pages ([95cee7e](https://github.com/johnsyweb/eventuate/commit/95cee7e5caacdc0b3e51a77be6fffdfe0860463d))
+
 ## [1.15.3](https://github.com/johnsyweb/eventuate/compare/v1.15.2...v1.15.3) (2026-04-25)
 
 
