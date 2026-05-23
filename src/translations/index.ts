@@ -35,6 +35,7 @@ export interface TranslationKeys {
   loadingMessage: string;
   closing: string;
   staleResultsWarning: string;
+  previewMilestonesWarning: string;
   fallbackParkrunName: string;
   fallbackParkrunnerName: string;
   finisher: string;
