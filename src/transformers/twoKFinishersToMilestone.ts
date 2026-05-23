@@ -1,3 +1,8 @@
+import { buildFinisherMilestoneCelebrations } from '../milestones/buildMilestoneCelebrations';
+import {
+  JUNIOR_FINISHER_MILESTONE_NUMBERS,
+  juniorFinisherIcon,
+} from '../milestones/preview/juniorFinisherIconLookup';
 import { IFinisher } from '../types/Finisher';
 import { IconHex, MilestoneCelebrations } from '../types/Milestones';
 
@@ -7,21 +12,21 @@ export interface JuniorMilestoneDefinition {
   name: string;
 }
 
-export function twoKFinishersToMilestones(
+const LEGACY_JUNIOR_MILESTONES: Record<number, JuniorMilestoneDefinition> = {
+  11: { icon: '&#x1F7E6;', restricted_age: 'J', name: 'Half marathon' },
+  21: { icon: '&#x1F7E9;', restricted_age: 'J', name: 'Marathon' },
+  50: { icon: '&#x1F7E7;', restricted_age: 'J', name: 'Ultra marathon' },
+  100: { icon: '&#x2B1C;', restricted_age: 'J', name: 'junior parkrun 100' },
+  250: { icon: '&#x1F7E8;', restricted_age: 'J', name: 'junior parkrun 250' },
+};
+
+function legacyTwoKFinishersToMilestones(
   finishers: IFinisher[]
 ): MilestoneCelebrations[] {
-  const milestones: Record<number, JuniorMilestoneDefinition> = {
-    11: { icon: '&#x1F7E6;', restricted_age: 'J', name: 'Half marathon' },
-    21: { icon: '&#x1F7E9;', restricted_age: 'J', name: 'Marathon' },
-    50: { icon: '&#x1F7E7;', restricted_age: 'J', name: 'Ultra marathon' },
-    100: { icon: '&#x2B1C;', restricted_age: 'J', name: 'junior parkrun 100' },
-    250: { icon: '&#x1F7E8;', restricted_age: 'J', name: 'junior parkrun 250' },
-  };
-
   const milestoneCelebrations: MilestoneCelebrations[] = [];
 
-  for (const n in milestones) {
-    const milestone: JuniorMilestoneDefinition = milestones[n];
+  for (const n in LEGACY_JUNIOR_MILESTONES) {
+    const milestone = LEGACY_JUNIOR_MILESTONES[Number(n)];
     const names: string[] = finishers
       .filter(
         (f) =>
@@ -40,4 +45,26 @@ export function twoKFinishersToMilestones(
     }
   }
   return milestoneCelebrations;
+}
+
+export function twoKFinishersToMilestones(
+  finishers: IFinisher[],
+  usePreviewMilestones = false
+): MilestoneCelebrations[] {
+  if (!usePreviewMilestones) {
+    return legacyTwoKFinishersToMilestones(finishers);
+  }
+
+  const milestones = Object.fromEntries(
+    JUNIOR_FINISHER_MILESTONE_NUMBERS.map((milestone) => [
+      milestone,
+      { icon: juniorFinisherIcon(milestone), restricted_age: 'J' as const },
+    ])
+  );
+
+  return buildFinisherMilestoneCelebrations(
+    finishers,
+    milestones,
+    (milestone) => String(milestone)
+  );
 }

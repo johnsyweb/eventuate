@@ -53,4 +53,16 @@ describe(fiveKFinishersToMilestones, () => {
     mickey.runs = '51';
     expect(fiveKFinishersToMilestones([mickey])).toEqual([]);
   });
+
+  test('200 when milestone extensions are enabled', () => {
+    mickey.runs = '200';
+    expect(fiveKFinishersToMilestones([mickey], true)).toEqual([
+      { clubName: '200', icon: '&#x26AB;', names: ['Mickey'] },
+    ]);
+  });
+
+  test('200 when milestone extensions are disabled', () => {
+    mickey.runs = '200';
+    expect(fiveKFinishersToMilestones([mickey], false)).toEqual([]);
+  });
 });
