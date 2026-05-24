@@ -163,6 +163,9 @@
       [
         "@semantic-release/github",
         {
+          "successComment": false,
+          "failComment": false,
+          "releasedLabels": false,
           "assets": [
             {
               "path": "web-ext-artifacts/*.zip",
