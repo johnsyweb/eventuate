@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/johnsyweb/eventuate/compare/v1.16.0...v1.16.1) (2026-05-24)
+
+
+### Bug Fixes
+
+* **ci:** stop semantic-release success hook failing releases ([e7dc7f0](https://github.com/johnsyweb/eventuate/commit/e7dc7f00c8655bdabda22f4395e06d46b9d9cf0b))
+
 # [1.16.0](https://github.com/johnsyweb/eventuate/compare/v1.15.3...v1.16.0) (2026-05-23)
 
 
