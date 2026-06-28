@@ -7,7 +7,7 @@ settings:
 overrides:
   '@actions/http-client>undici': 6.24.1
   '@semantic-release/github>undici': 7.24.8
-  basic-ftp: 5.2.2
+  basic-ftp: 6.0.1
   external-editor>tmp: 0.2.5
   fdir>picomatch: 4.0.4
   lodash: 4.18.1
@@ -1905,8 +1905,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  basic-ftp@5.2.2:
-    resolution: {integrity: sha512-1tDrzKsdCg70WGvbFss/ulVAxupNauGnOlgpyjKzeQxzyllBLS0CGLV7tjIXTK3ZQA9/FBEm9qyFFN1bciA6pw==}
+  basic-ftp@6.0.1:
+    resolution: {integrity: sha512-3ilxa3n4276wGQp/ImRAuz4ALdsj/2Wd3FqoZBZlajDYnByCZ0JMb4+26Rde0wGXIbM0G2HWSfr/Fi8b21KX8g==}
     engines: {node: '>=10.0.0'}
 
   before-after-hook@4.0.0:
@@ -7407,7 +7407,7 @@ snapshots:
 
   baseline-browser-mapping@2.10.20: {}
 
-  basic-ftp@5.2.2: {}
+  basic-ftp@6.0.1: {}
 
   before-after-hook@4.0.0: {}
 
@@ -8510,7 +8510,7 @@ snapshots:
 
   get-uri@6.0.5:
     dependencies:
-      basic-ftp: 5.2.2
+      basic-ftp: 6.0.1
       data-uri-to-buffer: 6.0.2
       debug: 4.4.3
     transitivePeerDependencies:
