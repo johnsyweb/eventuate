@@ -8,7 +8,7 @@
 /eventuate*
 /manifest.json
 /node_modules
-/pnpm-lock.yaml
+/aube-lock.yaml
 /src/*template.js
 /target
 /test/fixtures/*

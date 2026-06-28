@@ -1,0 +1,33 @@
+# Security: paranoid mode enables jailBuilds, strictDepBuilds, strictStoreIntegrity,
+# advisoryCheck=required, trustPolicy=no-downgrade, and minimumReleaseAgeStrict.
+paranoid: true
+
+# Transitive dependency version pins for known security patches.
+# Migrated from package.json pnpm.overrides.
+overrides:
+  basic-ftp: 5.2.2
+  lodash: 4.18.1
+  lodash-es: 4.18.1
+  '@actions/http-client>undici': 6.24.1
+  '@semantic-release/github>undici': 7.24.8
+  tinyglobby>picomatch: 4.0.4
+  fdir>picomatch: 4.0.4
+  external-editor>tmp: 0.2.5
+
+# Curated build-script approvals. Run `aube approve-builds` after dependency changes.
+allowBuilds:
+  # Bundled by webpack/ts-loader for TypeScript compilation.
+  esbuild: true
+  # Downloads Chromium for screenshot generation in script/screenshots.
+  puppeteer: true
+  # Native sync spawn helper used by pre-commit tooling transitive deps.
+  spawn-sync: true
+  # Native module resolver used by eslint/typescript-eslint.
+  unrs-resolver: true
+
+# Puppeteer downloads Chromium during postinstall; network required inside the jail.
+jailBuildPermissions:
+  puppeteer:
+    network: true
+    write:
+      - ~/.cache/puppeteer
