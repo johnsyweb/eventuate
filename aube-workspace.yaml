@@ -16,6 +16,7 @@ overrides:
   external-editor>tmp: 0.2.7
   tmp: 0.2.7
   shell-quote: 1.8.4
+  ws: 8.21.0
 
 # Curated build-script approvals. Run `aube approve-builds` after dependency changes.
 allowBuilds:
