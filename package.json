@@ -65,6 +65,7 @@
     "puppeteer": "^25.2.0",
     "semantic-release": "^25.0.5",
     "serve": "^14.2.6",
+    "terser-webpack-plugin": "^5.6.1",
     "ts-jest": "^29.4.11",
     "ts-loader": "^9.6.2",
     "ts-node": "^10.9.2",
