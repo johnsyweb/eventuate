@@ -126,12 +126,17 @@ tools and tasks. [aube](https://aube.jdx.dev/) manages Node dependencies with
 # Prerequisites: mise (https://mise.jdx.dev)
 curl https://mise.run | sh
 
-mise install          # node, aube, ruby (from mise.toml)
+mise install          # node, aube, ruby, hk (from mise.toml)
 mise trust            # first time only
 mise run setup        # install dependencies
 mise run test         # lint + unit tests
 mise tasks            # discover all available tasks
 ```
+
+Git hooks (format, lint, unit tests, commitlint, and conditional pre-push
+checks) are managed by [hk](https://hk.jdx.dev/) and installed automatically
+when you run `mise install`. Bypass hooks for a single command with
+`HK=0 git commit`. Run a hook manually with `hk run pre-commit`.
 
 ### Task reference
 
@@ -157,6 +162,7 @@ Tool versions are defined in [`mise.toml`](mise.toml):
 - Node.js (latest via mise)
 - aube 1.25.1
 - Ruby 3.4.7 (for Jekyll documentation builds)
+- hk 1.48.0 (git hooks)
 
 Security overrides and build-script approvals live in
 [`aube-workspace.yaml`](aube-workspace.yaml) (`paranoid: true`, `overrides`,
