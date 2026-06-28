@@ -8,12 +8,13 @@ overrides:
   '@actions/http-client>undici': 6.24.1
   '@semantic-release/github>undici': 7.24.8
   basic-ftp: 6.0.1
-  external-editor>tmp: 0.2.5
+  external-editor>tmp: 0.2.7
   fdir>picomatch: 4.0.4
   lodash: 4.18.1
   lodash-es: 4.18.1
   shell-quote: 1.8.4
   tinyglobby>picomatch: 4.0.4
+  tmp: 0.2.7
 
 importers:
 
@@ -4811,8 +4812,8 @@ packages:
     resolution: {integrity: sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==}
     hasBin: true
 
-  tmp@0.2.5:
-    resolution: {integrity: sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==}
+  tmp@0.2.7:
+    resolution: {integrity: sha512-e0votIpp4Uo2AJYSzVHV6xCcawuiez3DzqDAbrTc3YxBkplN6e+dM13ZeIcZnDg/QpSuU2zfZ3rzwY8ukEnaXw==}
     engines: {node: '>=14.14'}
 
   tmpl@1.0.5:
@@ -8315,7 +8316,7 @@ snapshots:
     dependencies:
       chardet: 0.7.0
       iconv-lite: 0.4.24
-      tmp: 0.2.5
+      tmp: 0.2.7
 
   extract-zip@2.0.1:
     dependencies:
@@ -10690,7 +10691,7 @@ snapshots:
     dependencies:
       tldts-core: 6.1.86
 
-  tmp@0.2.5: {}
+  tmp@0.2.7: {}
 
   tmpl@1.0.5: {}
 
@@ -10951,7 +10952,7 @@ snapshots:
       source-map-support: 0.5.21
       strip-bom: 5.0.0
       strip-json-comments: 5.0.3
-      tmp: 0.2.5
+      tmp: 0.2.7
       update-notifier: 7.3.1
       watchpack: 2.5.1
       yargs: 17.7.2
