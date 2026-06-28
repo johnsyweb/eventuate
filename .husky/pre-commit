@@ -1,1 +1,0 @@
-mise exec -- sh -c 'aube run format && aube run lint && aube run test:units'
