@@ -89,7 +89,7 @@ add a new language:
 
    ```sh
    mise run test
-   aube run build
+   mise run build
    ```
 
 5. **Submit a pull request** with your translation.
@@ -140,20 +140,26 @@ when you run `mise install`. Bypass hooks for a single command with
 
 ### Task reference
 
-| Task                   | Description                                        |
-| ---------------------- | -------------------------------------------------- |
-| `mise run setup`       | First-time project bootstrap                       |
-| `mise run bootstrap`   | Install Node and Ruby dependencies                 |
-| `mise run update`      | Refresh dependencies after pulling                 |
-| `mise run test`        | Lint and unit tests                                |
-| `mise run test:lint`   | ESLint and Prettier format check                   |
-| `mise run test:format` | Prettier format check only                         |
-| `mise run test:units`  | Jest unit tests                                    |
-| `mise run cibuild`     | All CI checks locally (includes audit)             |
-| `mise run package`     | Package Firefox, Chromium, userscript, bookmarklet |
-| `mise run lighthouse`  | Build docs and run Lighthouse audits               |
-| `mise run screenshots` | Regenerate Chrome Web Store screenshots            |
-| `mise run server`      | Run the extension in Firefox                       |
+| Task                       | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `mise run setup`           | First-time project bootstrap                       |
+| `mise run bootstrap`       | Install Node and Ruby dependencies                 |
+| `mise run update`          | Refresh dependencies after pulling                 |
+| `mise run build`           | Build extension, userscript, and bookmarklet       |
+| `mise run watch`           | Build bundles in watch mode for local development  |
+| `mise run test`            | Lint and unit tests                                |
+| `mise run test:lint`       | ESLint and Prettier format check                   |
+| `mise run test:format`     | Prettier format check only                         |
+| `mise run test:units`      | Jest unit tests                                    |
+| `mise run cibuild`         | All CI checks locally (includes audit)             |
+| `mise run package`         | Package Firefox, Chromium, userscript, bookmarklet |
+| `mise run docs:build`      | Build Jekyll documentation site                    |
+| `mise run docs:serve`      | Serve documentation at localhost:4000              |
+| `mise run lighthouse`      | Build docs and run Lighthouse audits               |
+| `mise run screenshots`     | Regenerate Chrome Web Store screenshots            |
+| `mise run server`          | Run the extension in Firefox                       |
+| `mise run approve-builds`  | Approve dependency build scripts in paranoid mode  |
+| `mise run release:dry-run` | Dry-run semantic-release (requires `GITHUB_TOKEN`) |
 
 ### Prerequisites
 
@@ -173,8 +179,7 @@ Security overrides and build-script approvals live in
 Once set up:
 
 ```sh
-mise run package          # Package for Firefox and Chromium
-aube run web-ext:lint     # Verify package for Firefox
+mise run package          # lint, build, and package for Firefox and Chromium
 ```
 
 Or if Docker's more your thing:
@@ -194,8 +199,7 @@ The userscript and bookmarklet are built automatically as part of
 To build them individually:
 
 ```sh
-aube exec webpack --config webpack.userscript.config.js
-aube exec webpack --config webpack.bookmarklet.config.js
+mise run build
 ```
 
 The userscript can be installed in browsers that support userscript managers
@@ -209,9 +213,8 @@ JavaScript code.
 The project includes Jekyll-based documentation that can be built locally:
 
 ```sh
-mise run bootstrap
-aube run docs:build
-aube run docs:serve
+mise run docs:build
+mise run docs:serve
 ```
 
 The documentation will be available at `http://localhost:4000/eventuate/` and
@@ -233,10 +236,10 @@ curl https://mise.run | sh
 echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
 ```
 
-#### aube install fails on build scripts
+#### Dependency build scripts blocked
 
 Dependency lifecycle scripts require explicit approval in paranoid mode. After
-adding dependencies, run `aube approve-builds` and commit the updated
+adding dependencies, run `mise run approve-builds` and commit the updated
 `allowBuilds` entries in `aube-workspace.yaml`.
 
 ## Running locally
@@ -244,7 +247,7 @@ adding dependencies, run `aube approve-builds` and commit the updated
 First, build the TypeScript in watch mode:
 
 ```sh
-aube run build:watch
+mise run watch
 ```
 
 In another terminal, start Firefox with the extension loaded:
@@ -304,7 +307,7 @@ The process will:
 To test the release process locally:
 
 ```sh
-GITHUB_TOKEN=your-token aube run release --dry-run
+GITHUB_TOKEN=your-token mise run release:dry-run
 ```
 
 The version number will be automatically incremented based on your commits:

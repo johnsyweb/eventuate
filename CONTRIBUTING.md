@@ -1,6 +1,6 @@
 # Contributing to Eventuate
 
-See the [README quickstart](README.md#quickstart) for setting up mise, aube, and
+See the [README quickstart](README.md#quickstart) for setting up mise and
 running project tasks.
 
 ## Commit Messages
