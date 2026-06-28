@@ -8,5 +8,5 @@ cd "$ROOT"
 aube install --frozen-lockfile
 
 if [[ -f docs/Gemfile ]]; then
-  (cd docs && bundle install --path vendor/bundle)
+  (cd docs && bundle install)
 fi
