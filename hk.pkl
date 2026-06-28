@@ -1,0 +1,39 @@
+amends "package://github.com/jdx/hk/releases/download/v1.48.0/hk@1.48.0#/Config.pkl"
+
+hooks {
+  ["pre-commit"] {
+    fix = true
+    stash = "git"
+    steps {
+      ["format"] {
+        fix = "aube run format"
+        exclusive = true
+      }
+      ["lint"] {
+        check = "aube run lint"
+        exclusive = true
+      }
+      ["units"] {
+        check = "aube run test:units"
+        exclusive = true
+      }
+    }
+  }
+  ["commit-msg"] {
+    steps {
+      ["commitlint"] {
+        check = "aube exec commitlint --edit {{commit_msg_file}}"
+        exclusive = true
+      }
+    }
+  }
+  ["pre-push"] {
+    steps {
+      ["checks"] {
+        check = "bash script/lib/pre-push"
+        shell = "bash -o errexit -c"
+        exclusive = true
+      }
+    }
+  }
+}

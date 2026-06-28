@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+remote_branch="origin/$current_branch"
+
+if ! git rev-parse --verify "$remote_branch" >/dev/null 2>&1; then
+  remote_branch="origin/main"
+fi
+
+changed_files=$(git diff --name-only HEAD "$remote_branch" 2>/dev/null || echo "")
+
+if [ -z "$changed_files" ]; then
+  changed_files=$(git diff --cached --name-only)
+fi
+
+userscript_patterns="src/.*\.ts$|src/.*\.js$|src/userscript\.template\.js$|src/bookmarklet\.template\.js$|webpack\.userscript\.config\.js$|webpack\.bookmarklet\.config\.js$|style/eventuate\.css$"
+docs_patterns="^docs/|^src/bookmarklet\.template\.md$"
+
+userscript_changed=$(echo "$changed_files" | grep -E "$userscript_patterns" || echo "")
+docs_changed=$(echo "$changed_files" | grep -E "$docs_patterns" || echo "")
+
+if [ -n "$docs_changed" ]; then
+  echo "📐 Docs or bookmarklet files have been modified. Building docs and running Lighthouse..."
+  if ! mise run lighthouse; then
+    echo "❌ Lighthouse scores below 100 (accessibility, best-practices, or SEO). Please fix before pushing."
+    exit 1
+  fi
+  echo "✅ Lighthouse passed."
+fi
+
+if [ -n "$userscript_changed" ]; then
+  echo "📸 Userscript files have been modified. Generating screenshots..."
+  if ! mise run screenshots; then
+    echo "⚠️  Screenshot generation failed. Push will continue, but please generate screenshots manually."
+  fi
+fi
