@@ -34,6 +34,17 @@ describe('Manifest validation', () => {
     expect(manifest.content_scripts[0].run_at).toBe('document_end');
   });
 
+  it('should declare no Firefox data transmission', () => {
+    const manifestPath = path.join(__dirname, '../manifest.json');
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+    expect(
+      manifest.browser_specific_settings.gecko.data_collection_permissions
+    ).toEqual({
+      required: ['none'],
+    });
+  });
+
   it('should have valid icon files', () => {
     const manifestPath = path.join(__dirname, '../manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
