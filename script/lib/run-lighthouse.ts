@@ -187,11 +187,9 @@ const logFailingAudits = (
     for (const item of items) {
       const description = item.description as string | undefined;
       const sourceLocation = item.sourceLocation as
-        | { url?: string; line?: number; column?: number }
-        | undefined;
+        { url?: string; line?: number; column?: number } | undefined;
       const node = item.node as
-        | { selector?: string; snippet?: string }
-        | undefined;
+        { selector?: string; snippet?: string } | undefined;
       const url = (item.url as string | undefined) ?? '';
       const source = node?.selector || node?.snippet || url;
       if (description) {
