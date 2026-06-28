@@ -54,6 +54,15 @@ describe('Manifest validation', () => {
     );
   });
 
+  it('should require Firefox Android 142+ for gecko_android settings', () => {
+    const manifestPath = path.join(__dirname, '../manifest.json');
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+    expect(
+      manifest.browser_specific_settings.gecko_android.strict_min_version
+    ).toBe('142.0');
+  });
+
   it('should have valid icon files', () => {
     const manifestPath = path.join(__dirname, '../manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
