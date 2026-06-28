@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Build extension, userscript, and bookmarklet bundles"
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+aube run build

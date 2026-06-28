@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Approve dependency build scripts for paranoid aube mode"
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+aube approve-builds
