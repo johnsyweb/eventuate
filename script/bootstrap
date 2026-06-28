@@ -7,6 +7,14 @@ cd "$ROOT"
 
 aube install --frozen-lockfile
 
+if command -v hk >/dev/null; then
+  hooks_path="$(git config --local core.hooksPath 2>/dev/null || true)"
+  if [[ "$hooks_path" == ".husky/_" || "$hooks_path" == ".husky" ]]; then
+    git config --unset core.hooksPath
+  fi
+  hk install --mise
+fi
+
 if [[ -f docs/Gemfile ]]; then
   (cd docs && bundle install)
 fi
