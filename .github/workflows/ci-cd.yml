@@ -37,7 +37,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -61,7 +61,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -85,7 +85,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -109,7 +109,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -117,7 +117,7 @@ jobs:
             ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
@@ -143,7 +143,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -241,7 +241,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -249,7 +249,7 @@ jobs:
             ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
@@ -321,7 +321,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -329,7 +329,7 @@ jobs:
             ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
@@ -379,7 +379,7 @@ jobs:
           install: true
 
       - name: Cache aube store
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: ~/.local/share/aube/store/v1
           key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
@@ -387,7 +387,7 @@ jobs:
             ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
         with:
           path: docs/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('docs/Gemfile.lock') }}
