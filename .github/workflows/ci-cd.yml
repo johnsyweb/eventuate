@@ -36,16 +36,19 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Lint
-        run: pnpm run lint
+        run: mise run test:lint
 
   format-check:
     runs-on: ubuntu-latest
@@ -57,16 +60,19 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Format check
-        run: pnpm run format:check
+        run: mise run test:format
 
   test:
     runs-on: ubuntu-latest
@@ -78,16 +84,19 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Test
-        run: pnpm run test
+        run: mise run test:units
 
   lighthouse:
     runs-on: ubuntu-latest
@@ -99,13 +108,13 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
@@ -115,21 +124,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Install Ruby dependencies
-        working-directory: docs
-        run: bundle install --path vendor/bundle
-
-      - name: Build project
-        run: pnpm build
-
-      - name: Build docs
-        run: pnpm docs:build
-
-      - name: Install Chromium for Lighthouse
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Run Lighthouse
-        run: pnpm run lighthouse
+        run: mise run lighthouse
 
   # Build after all validation passes
   build:
@@ -143,19 +142,22 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Build
-        run: pnpm run build
+        run: aube run build
 
       - name: Verify package for Firefox
-        run: pnpm web-ext:lint
+        run: aube run web-ext:lint
 
       - name: Upload build artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -238,13 +240,13 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
@@ -254,9 +256,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Install Ruby dependencies
-        working-directory: docs
-        run: bundle install --path vendor/bundle
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
@@ -269,7 +270,7 @@ jobs:
         id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm release
+        run: aube run release
 
       - name: Version after release
         id: version-after
@@ -281,7 +282,7 @@ jobs:
           steps.version-after.outputs.version
         run: |
           echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
-          pnpm web-ext sign
+          aube exec web-ext sign
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
@@ -319,13 +320,13 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
@@ -335,15 +336,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Install Ruby dependencies
-        working-directory: docs
-        run: bundle install --path vendor/bundle
-
-      - name: Build project
-        run: pnpm build
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Build docs
-        run: pnpm docs:build
+        run: aube run docs:build
 
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
@@ -381,13 +378,13 @@ jobs:
         with:
           install: true
 
-      - name: Setup pnpm cache
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      - name: Cache aube store
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
 
       - name: Cache bundler gems
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
@@ -397,15 +394,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Install Ruby dependencies
-        working-directory: docs
-        run: bundle install --path vendor/bundle
-
-      - name: Build project
-        run: pnpm build
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
 
       - name: Build docs
-        run: pnpm docs:build
+        run: aube run docs:build
 
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6

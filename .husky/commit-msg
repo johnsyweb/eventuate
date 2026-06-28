@@ -1,1 +1,1 @@
-mise exec -- pnpm dlx commitlint --edit $1
+mise exec -- aube exec commitlint --edit $1

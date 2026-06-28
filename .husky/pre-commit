@@ -1,1 +1,1 @@
-mise exec -- sh -c 'pnpm format && pnpm lint && pnpm test'
+mise exec -- sh -c 'aube run format && aube run lint && aube run test:units'
