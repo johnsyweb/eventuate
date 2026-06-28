@@ -45,6 +45,15 @@ describe('Manifest validation', () => {
     });
   });
 
+  it('should require Firefox 140+ for data collection consent', () => {
+    const manifestPath = path.join(__dirname, '../manifest.json');
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+    expect(manifest.browser_specific_settings.gecko.strict_min_version).toBe(
+      '140.0'
+    );
+  });
+
   it('should have valid icon files', () => {
     const manifestPath = path.join(__dirname, '../manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
