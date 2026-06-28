@@ -84,6 +84,7 @@
     "ignoreFiles": [
       "*.config.js",
       "mise.toml",
+      "hk.pkl",
       ".web-extension-id",
       "CODE_OF_CONDUCT.md",
       "Dockerfile",
