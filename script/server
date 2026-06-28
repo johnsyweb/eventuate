@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Run the extension in Firefox for local development"
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+aube run start

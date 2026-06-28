@@ -26,21 +26,20 @@
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "commit": "cz",
     "commitlint": "commitlint --edit",
-    "docs:build": "pnpm build && cd docs && bundle exec jekyll build",
-    "docs:install": "pnpm build && cd docs && bundle install",
-    "docs:serve": "pnpm build && cd docs && bundle exec jekyll serve",
-    "lighthouse": "tsx script/run-lighthouse.ts",
+    "docs:build": "aube run build && cd docs && bundle exec jekyll build",
+    "docs:install": "aube run build && cd docs && bundle install",
+    "docs:serve": "aube run build && cd docs && bundle exec jekyll serve",
+    "lighthouse": "tsx script/lib/run-lighthouse.ts",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "lint": "eslint . && pnpm format:check",
-    "package": "pnpm lint && pnpm build && pnpm web-ext:lint && pnpm web-ext:build && pnpm repack-for-chromium",
+    "lint": "eslint . && aube run format:check",
     "prepare": "husky",
     "release": "semantic-release",
-    "repack-for-chromium": "bash './script/repack-for-chromium'",
-    "screenshots": "ts-node script/generate-screenshots.ts",
+    "repack-for-chromium": "bash './script/lib/repack-for-chromium'",
+    "screenshots": "ts-node script/lib/generate-screenshots.ts",
     "start": "web-ext run -v -u https://www.parkrun.com.au/brimbank/results/latestresults/",
-    "test": "jest",
-    "version": "pnpm changelog && git add CHANGELOG.md",
+    "test:units": "jest",
+    "version": "aube run changelog && git add CHANGELOG.md",
     "web-ext:build": "web-ext build -o",
     "web-ext:lint": "web-ext lint"
   },
@@ -78,28 +77,15 @@
     "webpack": "^5.107.2",
     "webpack-cli": "^7.0.3"
   },
-  "pnpm": {
-    "overrides": {
-      "basic-ftp": "5.2.2",
-      "lodash": "4.18.1",
-      "lodash-es": "4.18.1",
-      "@actions/http-client>undici": "6.24.1",
-      "@semantic-release/github>undici": "7.24.8",
-      "tinyglobby>picomatch": "4.0.4",
-      "fdir>picomatch": "4.0.4",
-      "external-editor>tmp": "0.2.5"
-    }
-  },
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "aube@1.25.1",
   "engines": {
-    "node": ">=24.10.0",
-    "pnpm": ">=10.5.2"
+    "node": ">=24.10.0"
   },
   "webExt": {
     "verbose": true,
     "ignoreFiles": [
       "*.config.js",
-      ".tool-versions",
+      "mise.toml",
       ".web-extension-id",
       "CODE_OF_CONDUCT.md",
       "Dockerfile",
@@ -112,7 +98,7 @@
       "eslint.config.mjs",
       "jest.config.ts",
       "package.json",
-      "pnpm-lock.yaml",
+      "aube-lock.yaml",
       "script",
       "src",
       "target",
@@ -144,7 +130,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "./script/release \"${nextRelease.version}\""
+          "prepareCmd": "./script/lib/release \"${nextRelease.version}\""
         }
       ],
       [

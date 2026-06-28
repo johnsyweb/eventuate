@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Update dependencies after pulling latest changes"
+set -euo pipefail
+
+"$(dirname "${BASH_SOURCE[0]}")/bootstrap"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Set up the project for first-time use"
+set -euo pipefail
+
+"$(dirname "${BASH_SOURCE[0]}")/bootstrap"
+
+echo "Setup complete. Run 'mise run test' to verify."

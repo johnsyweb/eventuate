@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Package extensions, userscript, and bookmarklet"
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+aube run lint
+aube run build
+aube run web-ext:lint
+aube run web-ext:build
+aube run repack-for-chromium

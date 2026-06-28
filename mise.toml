@@ -1,0 +1,7 @@
+[tools]
+node = "latest"
+"aube" = "1.25.1"
+ruby = "3.4.7"
+
+[task_config]
+includes = ["./script"]

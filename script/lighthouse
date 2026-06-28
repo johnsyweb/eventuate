@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Build docs and run Lighthouse audits"
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+aube run docs:build
+aube exec playwright install --with-deps chromium
+aube run lighthouse

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Run unit tests with Jest"
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+
+aube run test:units

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Run all CI validation checks locally"
+set -euo pipefail
+
+DIR="$(dirname "${BASH_SOURCE[0]}")"
+ROOT="$(cd "$DIR/.." && pwd)"
+cd "$ROOT"
+
+"$DIR/test/_default"
+aube run build
+aube run web-ext:lint
+aube audit

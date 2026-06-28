@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#MISE hide=true
 set -euxo pipefail
 
 VERSION="$1"
@@ -14,4 +14,4 @@ bump_version_string amo.json
 bump_version_string manifest.json
 bump_version_string package.json
 
-pnpm package
+"$(dirname "${BASH_SOURCE[0]}")/../package"
