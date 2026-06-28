@@ -18,6 +18,7 @@ overrides:
   shell-quote: 1.8.4
   ws: 8.21.0
   '@opentelemetry/core': 2.8.0
+  js-yaml: 4.3.0
 
 # Curated build-script approvals. Run `aube approve-builds` after dependency changes.
 allowBuilds:
