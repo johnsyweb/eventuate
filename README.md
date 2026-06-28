@@ -88,8 +88,8 @@ add a new language:
 4. **Test your translation**:
 
    ```sh
-   pnpm test
-   pnpm build
+   mise run test
+   aube run build
    ```
 
 5. **Submit a pull request** with your translation.
@@ -116,49 +116,59 @@ and adding some unit tests using `jest`.
 
 ## Building locally
 
-### Prerequisites
+### Quickstart
 
-This project uses [mise](https://mise.jdx.dev/) to manage tool versions from
-`.tool-versions`.
+This project uses [mise](https://mise.jdx.dev/) as the single entry point for
+tools and tasks. [aube](https://aube.jdx.dev/) manages Node dependencies with
+[paranoid mode](https://aube.jdx.dev/security) enabled.
 
 ```sh
-# Install mise (if you haven't already)
+# Prerequisites: mise (https://mise.jdx.dev)
 curl https://mise.run | sh
 
-# Add mise to your shell (if not already done)
-echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
-# or for bash:
-echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
-
-# Install all tools
-mise install
-
-# Enable corepack for pnpm (if available)
-corepack enable
-
-# Verify installations
-node --version && pnpm --version && ruby --version
+mise install          # node, aube, ruby (from mise.toml)
+mise trust            # first time only
+mise run setup        # install dependencies
+mise run test         # lint + unit tests
+mise tasks            # discover all available tasks
 ```
 
-**Requirements**:
+### Task reference
 
-- Node.js 24.10.0
-- pnpm 10.5.2 (via mise and corepack)
+| Task                   | Description                                        |
+| ---------------------- | -------------------------------------------------- |
+| `mise run setup`       | First-time project bootstrap                       |
+| `mise run bootstrap`   | Install Node and Ruby dependencies                 |
+| `mise run update`      | Refresh dependencies after pulling                 |
+| `mise run test`        | Lint and unit tests                                |
+| `mise run test:lint`   | ESLint and Prettier format check                   |
+| `mise run test:format` | Prettier format check only                         |
+| `mise run test:units`  | Jest unit tests                                    |
+| `mise run cibuild`     | All CI checks locally (includes audit)             |
+| `mise run package`     | Package Firefox, Chromium, userscript, bookmarklet |
+| `mise run lighthouse`  | Build docs and run Lighthouse audits               |
+| `mise run screenshots` | Regenerate Chrome Web Store screenshots            |
+| `mise run server`      | Run the extension in Firefox                       |
+
+### Prerequisites
+
+Tool versions are defined in [`mise.toml`](mise.toml):
+
+- Node.js (latest via mise)
+- aube 1.25.1
 - Ruby 3.4.7 (for Jekyll documentation builds)
 
-Transitive development dependencies sometimes lag behind security patches. Where
-needed, patched versions are pinned in `package.json` under `pnpm.overrides`
-until upstream packages release compatible updates.
+Security overrides and build-script approvals live in
+[`aube-workspace.yaml`](aube-workspace.yaml) (`paranoid: true`, `overrides`,
+`allowBuilds`).
 
 ### Building the Extension
 
-Once the tools are installed:
+Once set up:
 
 ```sh
-pnpm i        # Install the development dependencies
-pnpm t        # Run unit tests
-pnpm package  # Package up all the things for Firefox and Chromium browsers
-pnpm web-ext:lint  # Verify package for Firefox
+mise run package          # Package for Firefox and Chromium
+aube run web-ext:lint     # Verify package for Firefox
 ```
 
 Or if Docker's more your thing:
@@ -169,8 +179,8 @@ docker buildx build . -o target
 
 ### Building the Userscript and Bookmarklet
 
-The userscript and bookmarklet are built automatically as part of the
-`pnpm package` command. They will be generated in:
+The userscript and bookmarklet are built automatically as part of
+`mise run package`. They will be generated in:
 
 - Userscript: `target/eventuate.user.js`
 - Bookmarklet: `docs/bookmarklet/index.md`
@@ -178,8 +188,8 @@ The userscript and bookmarklet are built automatically as part of the
 To build them individually:
 
 ```sh
-pnpm webpack --config webpack.userscript.config.js
-pnpm webpack --config webpack.bookmarklet.config.js
+aube exec webpack --config webpack.userscript.config.js
+aube exec webpack --config webpack.bookmarklet.config.js
 ```
 
 The userscript can be installed in browsers that support userscript managers
@@ -193,15 +203,9 @@ JavaScript code.
 The project includes Jekyll-based documentation that can be built locally:
 
 ```sh
-# Install Jekyll dependencies
-cd docs
-bundle install
-
-# Build the documentation site
-bundle exec jekyll build --baseurl /eventuate
-
-# Serve the documentation locally
-bundle exec jekyll serve --baseurl /eventuate --port 4000
+mise run bootstrap
+aube run docs:build
+aube run docs:serve
 ```
 
 The documentation will be available at `http://localhost:4000/eventuate/` and
@@ -209,37 +213,38 @@ includes:
 
 - Project overview and features
 - Installation instructions
-- Internationalization support
+- Internationalisation support
 - Development guidelines
 
 ### Troubleshooting
 
-#### pnpm command not found
+#### mise command not found
 
-Use mise to provide pnpm:
+Install mise from <https://mise.jdx.dev> and activate it in your shell:
 
-1. **Install tools**: `mise install` (reads `.tool-versions` for Node, pnpm, and
-   Ruby; enable pnpm via corepack where applicable)
-2. **Run via mise**: `mise exec -- pnpm <command>` if your shell doesn’t
-   auto-activate mise
+```sh
+curl https://mise.run | sh
+echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
+```
+
+#### aube install fails on build scripts
+
+Dependency lifecycle scripts require explicit approval in paranoid mode. After
+adding dependencies, run `aube approve-builds` and commit the updated
+`allowBuilds` entries in `aube-workspace.yaml`.
 
 ## Running locally
 
-First, let's turn the TypeScript files into a single JavaScript file to be
-consumed by `web-ext`...
+First, build the TypeScript in watch mode:
 
 ```sh
-pnpm build:watch
+aube run build:watch
 ```
 
-...`:watch` means we can edit the `.ts` files and have our change reflected in
-an instant.
-
-Second, in another terminal, let's start up Firefox and see our code in
-action...
+In another terminal, start Firefox with the extension loaded:
 
 ```sh
-pnpm start
+mise run server
 ```
 
 ## Installing in a browser from source
@@ -293,7 +298,7 @@ The process will:
 To test the release process locally:
 
 ```sh
-GITHUB_TOKEN=your-token pnpm semantic-release --dry-run
+GITHUB_TOKEN=your-token aube run release --dry-run
 ```
 
 The version number will be automatically incremented based on your commits:

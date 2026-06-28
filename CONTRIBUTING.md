@@ -1,5 +1,8 @@
 # Contributing to Eventuate
 
+See the [README quickstart](README.md#quickstart) for setting up mise, aube, and
+running project tasks.
+
 ## Commit Messages
 
 We use semantic commits to make our commit messages more meaningful. Each commit
