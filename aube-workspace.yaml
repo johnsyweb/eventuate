@@ -40,3 +40,7 @@ jailBuildPermissions:
     network: true
     write:
       - ~/.cache/puppeteer
+
+# Puppeteer postinstall cannot spawn under Landlock/seccomp on Linux; keep build approval.
+jailBuildExclusions:
+  - puppeteer
