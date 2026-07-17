@@ -1,3 +1,30 @@
+# [1.17.0](https://github.com/johnsyweb/eventuate/compare/v1.16.1...v1.17.0) (2026-07-17)
+
+
+### Bug Fixes
+
+* **aube:** exclude puppeteer from build jail on Linux ([d31c5b8](https://github.com/johnsyweb/eventuate/commit/d31c5b8b0922f1e2f5acba3b421772244a6a1123))
+* **deps:** add terser-webpack-plugin for bookmarklet build ([8b73163](https://github.com/johnsyweb/eventuate/commit/8b73163a95aac3b584147cbec5889f42e64171b9))
+* **deps:** override @babel/core to 7.29.7 for source map advisory ([a495f52](https://github.com/johnsyweb/eventuate/commit/a495f5245503beeb9853fe3a182c06347d101cf7))
+* **deps:** override @opentelemetry/core to 2.8.0 ([a276948](https://github.com/johnsyweb/eventuate/commit/a27694846606ac241ab5a561e7ddc443ec172d3f))
+* **deps:** override basic-ftp to 6.0.1 for DoS advisories ([9036cac](https://github.com/johnsyweb/eventuate/commit/9036cac55f3db2a749d74246268b137d007fa466))
+* **deps:** override esbuild to 0.28.1 for dev server advisory ([761f638](https://github.com/johnsyweb/eventuate/commit/761f63831b52e2ec753ee9954aaddaa8de630f1d))
+* **deps:** override js-yaml to 4.3.0 for merge-key DoS advisory ([733bdab](https://github.com/johnsyweb/eventuate/commit/733bdabed105e139f894c87b807a473d205264d5))
+* **deps:** override shell-quote to 1.8.4 for CVE-2026-9277 ([38ad143](https://github.com/johnsyweb/eventuate/commit/38ad1430878359eef9045de26083c32f2db8f26e))
+* **deps:** override tmp to 0.2.7 for path traversal advisory ([0208b2f](https://github.com/johnsyweb/eventuate/commit/0208b2f4667a3c42366eb3835584649bc52ebaac))
+* **deps:** override undici to patched 6.27.0 and 7.28.0 ([430dfc8](https://github.com/johnsyweb/eventuate/commit/430dfc8dac23a0bff52b3fb17122e6d4e919c9fb))
+* **deps:** override uuid to 11.1.1 for buffer bounds check advisory ([7a075b7](https://github.com/johnsyweb/eventuate/commit/7a075b73fe1f731a845cecde99a1b75a8307f671))
+* **deps:** override ws to 8.21.0 for memory exhaustion advisories ([7cc113a](https://github.com/johnsyweb/eventuate/commit/7cc113aee1ca0771e648ab3b964678480cdac46f))
+* **firefox:** declare no data collection in manifest ([96bd49e](https://github.com/johnsyweb/eventuate/commit/96bd49ec10eb8d057f32db86f48f635d796b22c4))
+* **firefox:** require Firefox 140+ for data collection consent ([1eadcfc](https://github.com/johnsyweb/eventuate/commit/1eadcfc4be6df51a8dd873005b40a0f162dbff5e))
+* **firefox:** require Firefox Android 142+ for gecko_android ([675db90](https://github.com/johnsyweb/eventuate/commit/675db90122a2706f8b5858a281c701c129c72e32))
+* **scripts:** use bundle config instead of deprecated --path flag ([8cc3f24](https://github.com/johnsyweb/eventuate/commit/8cc3f24b178d65c5384495d5765596be69a0a589))
+
+
+### Features
+
+* **milestones:** ship live junior finisher milestone clubs ([0312730](https://github.com/johnsyweb/eventuate/commit/0312730616d5c1f2579fec99307336011e30e2bc))
+
 ## [1.16.1](https://github.com/johnsyweb/eventuate/compare/v1.16.0...v1.16.1) (2026-05-24)
 
 

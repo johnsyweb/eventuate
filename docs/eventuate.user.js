@@ -34,7 +34,7 @@
 // @tag          parkrun
 // @supportURL   https://github.com/johnsyweb/eventuate/issues
 // @updateURL    https://www.johnsy.com/eventuate/eventuate.user.js
-// @version      1.16.1
+// @version      1.17.0
 // ==/UserScript==
 
 // Polyfill for cross-compatibility between Userscripts and Tampermonkey
@@ -57,7 +57,7 @@ const addStyle = (css) => {
 addStyle(`
 #eventuate::before {
   background-color: lightcoral;
-  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.16.1 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
+  content: "\\26A0\\FE0F This information is drawn by Eventuate 1.17.0 from the results table to facilitate writing a report. It is not a report in itself. \\26A0\\FE0F";
   color: whitesmoke;
   font-weight: bold;
 }
@@ -77,11 +77,12 @@ addStyle(`
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 389
+/***/ 904
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.getCurrentHref = getCurrentHref;
 function getCurrentHref() {
     return typeof window !== 'undefined' ? window.location.href : '';
@@ -90,11 +91,12 @@ function getCurrentHref() {
 
 /***/ },
 
-/***/ 943
+/***/ 44
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.upsertParagraph = upsertParagraph;
 exports.deleteParagraph = deleteParagraph;
 function upsertParagraph(div, id, content) {
@@ -122,13 +124,14 @@ function deleteParagraph(div, id) {
 
 /***/ },
 
-/***/ 530
+/***/ 817
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.ResultsPageExtractor = void 0;
-const Finisher_1 = __webpack_require__(329);
+const Finisher_1 = __webpack_require__(696);
 function athleteIDFromURI(uri) {
     return Number(uri?.split('/')?.slice(-1));
 }
@@ -222,11 +225,12 @@ exports.ResultsPageExtractor = ResultsPageExtractor;
 
 /***/ },
 
-/***/ 172
+/***/ 391
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.buildFinisherMilestoneCelebrations = buildFinisherMilestoneCelebrations;
 exports.buildVolunteerMilestoneCelebrations = buildVolunteerMilestoneCelebrations;
 exports.sortMilestoneCelebrations = sortMilestoneCelebrations;
@@ -279,6 +283,10 @@ function sortMilestoneCelebrations(celebrations) {
         if (/^Volunteer /.test(clubName)) {
             return null;
         }
+        const juniorMatch = /^junior parkrun (\d+)$/.exec(clubName);
+        if (juniorMatch) {
+            return Number(juniorMatch[1]);
+        }
         const asNumber = Number(clubName);
         return Number.isNaN(asNumber) ? null : asNumber;
     };
@@ -301,11 +309,12 @@ function sortMilestoneCelebrations(celebrations) {
 
 /***/ },
 
-/***/ 161
+/***/ 952
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.fiveKFinisherIcon = fiveKFinisherIcon;
 exports.fiveKFinisherMilestoneNumbers = fiveKFinisherMilestoneNumbers;
 /** Explicit finisher circle icons; update when parkrun publishes new colours. */
@@ -340,11 +349,12 @@ function fiveKFinisherMilestoneNumbers(useExtensions) {
 
 /***/ },
 
-/***/ 73
+/***/ 978
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.fiveKVolunteerIcon = fiveKVolunteerIcon;
 exports.fiveKVolunteerMilestoneNumbers = fiveKVolunteerMilestoneNumbers;
 /** Explicit volunteer heart icons; update when parkrun publishes new colours. */
@@ -379,25 +389,58 @@ function fiveKVolunteerMilestoneNumbers(useExtensions) {
 
 /***/ },
 
-/***/ 817
+/***/ 102
+(__unused_webpack_module, exports) {
+
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+exports.JUNIOR_FINISHER_MILESTONE_NUMBERS = void 0;
+exports.juniorFinisherIcon = juniorFinisherIcon;
+exports.juniorFinisherClubName = juniorFinisherClubName;
+/**
+ * Junior finisher square icons approximating parkrun wristband colours.
+ * Unicode has no teal/peach/pink/grey squares; nearest colours are used.
+ */
+const JUNIOR_FINISHER_ICONS = {
+    10: '&#x1F7E6;', // teal → blue
+    25: '&#x1F7E7;', // peach → orange
+    50: '&#x1F7E6;', // dark blue → blue
+    75: '&#x1F7E9;', // green
+    100: '&#x1F7E7;', // orange
+    150: '&#x1F7EA;', // pink → purple
+    200: '&#x1F7E8;', // yellow
+    250: '&#x2B1C;', // pale blue → white
+    300: '&#x2B1B;', // grey → black
+};
+exports.JUNIOR_FINISHER_MILESTONE_NUMBERS = [
+    10, 25, 50, 75, 100, 150, 200, 250, 300,
+];
+function juniorFinisherIcon(milestone) {
+    return JUNIOR_FINISHER_ICONS[milestone];
+}
+function juniorFinisherClubName(milestone) {
+    return `junior parkrun ${milestone}`;
+}
+
+
+/***/ },
+
+/***/ 380
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.milestoneCelebrationsForEvent = milestoneCelebrationsForEvent;
-const fiveKFinishersToMilestones_1 = __webpack_require__(946);
-const fiveKVolunteersToMilestones_1 = __webpack_require__(700);
-const twoKFinishersToMilestone_1 = __webpack_require__(683);
-const twoKVolunteersToMilestones_1 = __webpack_require__(220);
-const buildMilestoneCelebrations_1 = __webpack_require__(172);
-const milestoneMode_1 = __webpack_require__(498);
+const fiveKFinishersToMilestones_1 = __webpack_require__(549);
+const fiveKVolunteersToMilestones_1 = __webpack_require__(377);
+const twoKFinishersToMilestone_1 = __webpack_require__(388);
+const buildMilestoneCelebrations_1 = __webpack_require__(391);
+const milestoneMode_1 = __webpack_require__(543);
 function milestoneCelebrationsForEvent(extractor, search, referenceDate = new Date()) {
     if (extractor.courseLength === 2) {
-        const finisherMilestones = (0, twoKFinishersToMilestone_1.twoKFinishersToMilestones)(extractor.finishers, (0, milestoneMode_1.useJuniorFinisherMilestones)(search, referenceDate));
-        return (0, buildMilestoneCelebrations_1.sortMilestoneCelebrations)([
-            ...(0, twoKVolunteersToMilestones_1.twoKVolunteersToMilestones)(extractor.volunteersList()),
-            ...finisherMilestones,
-        ]);
+        return (0, buildMilestoneCelebrations_1.sortMilestoneCelebrations)((0, twoKFinishersToMilestone_1.twoKFinishersToMilestones)(extractor.finishers));
     }
     const useExtensions = (0, milestoneMode_1.useFiveKMilestoneExtensions)(search, referenceDate);
     return (0, buildMilestoneCelebrations_1.sortMilestoneCelebrations)([
@@ -409,19 +452,18 @@ function milestoneCelebrationsForEvent(extractor, search, referenceDate = new Da
 
 /***/ },
 
-/***/ 498
+/***/ 543
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.FIVE_K_MILESTONE_EXTENSIONS_GO_LIVE = exports.JUNIOR_FINISHER_MILESTONES_GO_LIVE = void 0;
-exports.isPreviewMilestonesParamEnabled = isPreviewMilestonesParamEnabled;
-exports.useJuniorFinisherMilestones = useJuniorFinisherMilestones;
+__webpack_unused_export__ = ({ value: true });
+exports.F9 = void 0;
+__webpack_unused_export__ = isPreviewMilestonesParamEnabled;
 exports.useFiveKMilestoneExtensions = useFiveKMilestoneExtensions;
 exports.showPreviewMilestonesDisclaimer = showPreviewMilestonesDisclaimer;
 const PREVIEW_MILESTONES_PARAM = 'eventuate-preview-milestones';
-exports.JUNIOR_FINISHER_MILESTONES_GO_LIVE = new Date(2026, 6, 1);
-exports.FIVE_K_MILESTONE_EXTENSIONS_GO_LIVE = new Date(2026, 8, 1);
+exports.F9 = new Date(2026, 8, 1);
 function startOfLocalDay(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -431,14 +473,8 @@ function isOnOrAfterGoLive(referenceDate, goLive) {
 function isPreviewMilestonesParamEnabled(search) {
     return new URLSearchParams(search).get(PREVIEW_MILESTONES_PARAM) === 'true';
 }
-function useJuniorFinisherMilestones(search, referenceDate = new Date()) {
-    if (isOnOrAfterGoLive(referenceDate, exports.JUNIOR_FINISHER_MILESTONES_GO_LIVE)) {
-        return true;
-    }
-    return isPreviewMilestonesParamEnabled(search);
-}
 function useFiveKMilestoneExtensions(search, referenceDate = new Date()) {
-    if (isOnOrAfterGoLive(referenceDate, exports.FIVE_K_MILESTONE_EXTENSIONS_GO_LIVE)) {
+    if (isOnOrAfterGoLive(referenceDate, exports.F9)) {
         return true;
     }
     return isPreviewMilestonesParamEnabled(search);
@@ -447,12 +483,8 @@ function showPreviewMilestonesDisclaimer(courseLength, search, referenceDate = n
     if (!isPreviewMilestonesParamEnabled(search)) {
         return false;
     }
-    if (courseLength === 2 &&
-        !isOnOrAfterGoLive(referenceDate, exports.JUNIOR_FINISHER_MILESTONES_GO_LIVE)) {
-        return true;
-    }
     if (courseLength === 5 &&
-        !isOnOrAfterGoLive(referenceDate, exports.FIVE_K_MILESTONE_EXTENSIONS_GO_LIVE)) {
+        !isOnOrAfterGoLive(referenceDate, exports.F9)) {
         return true;
     }
     return false;
@@ -461,45 +493,14 @@ function showPreviewMilestonesDisclaimer(courseLength, search, referenceDate = n
 
 /***/ },
 
-/***/ 564
-(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.JUNIOR_FINISHER_MILESTONE_NUMBERS = void 0;
-exports.juniorFinisherIcon = juniorFinisherIcon;
-/**
- * Junior finisher square icons for the numerical milestone system.
- * Placeholder colours for milestones without a legacy club; update when parkrun releases official colours.
- */
-const JUNIOR_FINISHER_ICONS = {
-    10: '&#x1F7E6;',
-    25: '&#x1F7E9;',
-    50: '&#x1F7E7;',
-    75: '&#x1F7E6;',
-    100: '&#x2B1C;',
-    150: '&#x1F7E8;',
-    200: '&#x1F7E9;',
-    250: '&#x1F7E8;',
-    300: '&#x2B1C;',
-};
-exports.JUNIOR_FINISHER_MILESTONE_NUMBERS = [
-    10, 25, 50, 75, 100, 150, 200, 250, 300,
-];
-function juniorFinisherIcon(milestone) {
-    return JUNIOR_FINISHER_ICONS[milestone];
-}
-
-
-/***/ },
-
-/***/ 896
+/***/ 127
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.ClosingPresenter = void 0;
-const translations_1 = __webpack_require__(572);
+const translations_1 = __webpack_require__(413);
 class ClosingPresenter {
     _courseLength;
     constructor(courseLength) {
@@ -520,13 +521,14 @@ exports.ClosingPresenter = ClosingPresenter;
 
 /***/ },
 
-/***/ 664
+/***/ 519
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.FactsPresenter = void 0;
-const translations_1 = __webpack_require__(572);
+const translations_1 = __webpack_require__(413);
 class FactsPresenter {
     _eventName;
     _courseLength;
@@ -574,14 +576,15 @@ exports.FactsPresenter = FactsPresenter;
 
 /***/ },
 
-/***/ 5
+/***/ 405
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.FirstTimeVolunteersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class FirstTimeVolunteersPresenter {
     _firstTimeVolunteers;
     _eventName;
@@ -617,15 +620,16 @@ exports.FirstTimeVolunteersPresenter = FirstTimeVolunteersPresenter;
 
 /***/ },
 
-/***/ 170
+/***/ 455
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.FirstTimersLaunchEventPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
-const FirstTimersPresenter_1 = __webpack_require__(853);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
+const FirstTimersPresenter_1 = __webpack_require__(458);
 class FirstTimersLaunchEventPresenter extends FirstTimersPresenter_1.FirstTimersPresenter {
     details() {
         const t = (0, translations_1.getTranslations)();
@@ -645,14 +649,15 @@ exports.FirstTimersLaunchEventPresenter = FirstTimersLaunchEventPresenter;
 
 /***/ },
 
-/***/ 853
+/***/ 458
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.FirstTimersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class FirstTimersPresenter {
     _firstTimers;
     _eventName;
@@ -688,14 +693,15 @@ exports.FirstTimersPresenter = FirstTimersPresenter;
 
 /***/ },
 
-/***/ 826
+/***/ 29
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.FullResultsPresenter = void 0;
-const translations_1 = __webpack_require__(572);
-const urlFunctions_1 = __webpack_require__(745);
+const translations_1 = __webpack_require__(413);
+const urlFunctions_1 = __webpack_require__(0);
 class FullResultsPresenter {
     _eventName;
     _eventNumber;
@@ -722,14 +728,15 @@ exports.FullResultsPresenter = FullResultsPresenter;
 
 /***/ },
 
-/***/ 225
+/***/ 932
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.GroupsPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class GroupsPresenter {
     _runningWalkingGroups;
     constructor(runningWalkingGroups) {
@@ -756,13 +763,14 @@ exports.GroupsPresenter = GroupsPresenter;
 
 /***/ },
 
-/***/ 341
+/***/ 160
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.IntroductionPresenter = void 0;
-const translations_1 = __webpack_require__(572);
+const translations_1 = __webpack_require__(413);
 class IntroductionPresenter {
     _finisherCount;
     _volunteerCount;
@@ -792,13 +800,14 @@ exports.IntroductionPresenter = IntroductionPresenter;
 
 /***/ },
 
-/***/ 281
+/***/ 542
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.JuniorSupervisionPresenter = void 0;
-const translations_1 = __webpack_require__(572);
+const translations_1 = __webpack_require__(413);
 const ARM_REACH_SECONDS = 15;
 function timeToSeconds(timeStr) {
     if (!timeStr) {
@@ -942,14 +951,15 @@ exports.JuniorSupervisionPresenter = JuniorSupervisionPresenter;
 
 /***/ },
 
-/***/ 511
+/***/ 684
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.MilestonePresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class MilestonePresenter {
     _milestoneCelebrations;
     _milestoneCelebrationsAll;
@@ -989,14 +999,15 @@ exports.MilestonePresenter = MilestonePresenter;
 
 /***/ },
 
-/***/ 214
+/***/ 155
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.NewPBsPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class NewPBsPresenter {
     _finishersWithNewPBs;
     _eventName;
@@ -1026,14 +1037,15 @@ exports.NewPBsPresenter = NewPBsPresenter;
 
 /***/ },
 
-/***/ 150
+/***/ 613
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.NewestParkrunnersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class NewestParkrunnersPresenter {
     _newestParkrunners;
     constructor(newestParkrunners) {
@@ -1060,13 +1072,14 @@ exports.NewestParkrunnersPresenter = NewestParkrunnersPresenter;
 
 /***/ },
 
-/***/ 140
+/***/ 97
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.UnknownsPresenter = void 0;
-const translations_1 = __webpack_require__(572);
+const translations_1 = __webpack_require__(413);
 class UnknownsPresenter {
     _unknowns;
     _eventName;
@@ -1098,14 +1111,15 @@ exports.UnknownsPresenter = UnknownsPresenter;
 
 /***/ },
 
-/***/ 726
+/***/ 213
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.VolunteerInvitationPresenter = void 0;
-const translations_1 = __webpack_require__(572);
-const urlFunctions_1 = __webpack_require__(745);
+const translations_1 = __webpack_require__(413);
+const urlFunctions_1 = __webpack_require__(0);
 class VolunteerInvitationPresenter {
     _eventName;
     _currentUrl;
@@ -1129,14 +1143,15 @@ exports.VolunteerInvitationPresenter = VolunteerInvitationPresenter;
 
 /***/ },
 
-/***/ 372
+/***/ 161
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.VolunteersPresenter = void 0;
-const stringFunctions_1 = __webpack_require__(249);
-const translations_1 = __webpack_require__(572);
+const stringFunctions_1 = __webpack_require__(470);
+const translations_1 = __webpack_require__(413);
 class VolunteersPresenter {
     _volunteers;
     _eventName;
@@ -1166,11 +1181,12 @@ exports.VolunteersPresenter = VolunteersPresenter;
 
 /***/ },
 
-/***/ 824
+/***/ 215
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.shareReportText = shareReportText;
 // Share report text using native share or clipboard
 function shareReportText(options) {
@@ -1278,13 +1294,14 @@ function fallbackCopyToClipboard(text) {
 
 /***/ },
 
-/***/ 249
+/***/ 470
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.conjoin = conjoin;
-exports.alphabetize = alphabetize;
+__webpack_unused_export__ = ({ value: true });
+__webpack_unused_export__ = conjoin;
+__webpack_unused_export__ = alphabetize;
 exports.sortAndConjoin = sortAndConjoin;
 function conjoin(elements) {
     if (elements.length === 0)
@@ -1303,14 +1320,15 @@ function sortAndConjoin(names) {
 
 /***/ },
 
-/***/ 946
+/***/ 549
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.fiveKFinishersToMilestones = fiveKFinishersToMilestones;
-const buildMilestoneCelebrations_1 = __webpack_require__(172);
-const fiveKFinisherIconLookup_1 = __webpack_require__(161);
+const buildMilestoneCelebrations_1 = __webpack_require__(391);
+const fiveKFinisherIconLookup_1 = __webpack_require__(952);
 function fiveKFinishersToMilestones(finishers, useExtensions = false) {
     const milestones = Object.fromEntries((0, fiveKFinisherIconLookup_1.fiveKFinisherMilestoneNumbers)(useExtensions).map((milestone) => [
         milestone,
@@ -1325,14 +1343,15 @@ function fiveKFinishersToMilestones(finishers, useExtensions = false) {
 
 /***/ },
 
-/***/ 700
+/***/ 377
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.fiveKVolunteersToMilestones = fiveKVolunteersToMilestones;
-const buildMilestoneCelebrations_1 = __webpack_require__(172);
-const fiveKVolunteerIconLookup_1 = __webpack_require__(73);
+const buildMilestoneCelebrations_1 = __webpack_require__(391);
+const fiveKVolunteerIconLookup_1 = __webpack_require__(978);
 function fiveKVolunteersToMilestones(volunteers, useExtensions = false) {
     const milestones = Object.fromEntries((0, fiveKVolunteerIconLookup_1.fiveKVolunteerMilestoneNumbers)(useExtensions).map((milestone) => [
         milestone,
@@ -1344,83 +1363,32 @@ function fiveKVolunteersToMilestones(volunteers, useExtensions = false) {
 
 /***/ },
 
-/***/ 683
+/***/ 388
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.twoKFinishersToMilestones = twoKFinishersToMilestones;
-const buildMilestoneCelebrations_1 = __webpack_require__(172);
-const juniorFinisherIconLookup_1 = __webpack_require__(564);
-const LEGACY_JUNIOR_MILESTONES = {
-    11: { icon: '&#x1F7E6;', restricted_age: 'J', name: 'Half marathon' },
-    21: { icon: '&#x1F7E9;', restricted_age: 'J', name: 'Marathon' },
-    50: { icon: '&#x1F7E7;', restricted_age: 'J', name: 'Ultra marathon' },
-    100: { icon: '&#x2B1C;', restricted_age: 'J', name: 'junior parkrun 100' },
-    250: { icon: '&#x1F7E8;', restricted_age: 'J', name: 'junior parkrun 250' },
-};
-function legacyTwoKFinishersToMilestones(finishers) {
-    const milestoneCelebrations = [];
-    for (const n in LEGACY_JUNIOR_MILESTONES) {
-        const milestone = LEGACY_JUNIOR_MILESTONES[Number(n)];
-        const names = finishers
-            .filter((f) => Number(f.runs) === Number(n) &&
-            (!milestone.restricted_age ||
-                f.agegroup?.startsWith(milestone.restricted_age)))
-            .map((f) => f.name);
-        if (names.length > 0) {
-            milestoneCelebrations.push({
-                clubName: milestone.name,
-                icon: milestone.icon,
-                names,
-            });
-        }
-    }
-    return milestoneCelebrations;
-}
-function twoKFinishersToMilestones(finishers, usePreviewMilestones = false) {
-    if (!usePreviewMilestones) {
-        return legacyTwoKFinishersToMilestones(finishers);
-    }
+const buildMilestoneCelebrations_1 = __webpack_require__(391);
+const juniorFinisherIconLookup_1 = __webpack_require__(102);
+function twoKFinishersToMilestones(finishers) {
     const milestones = Object.fromEntries(juniorFinisherIconLookup_1.JUNIOR_FINISHER_MILESTONE_NUMBERS.map((milestone) => [
         milestone,
         { icon: (0, juniorFinisherIconLookup_1.juniorFinisherIcon)(milestone), restricted_age: 'J' },
     ]));
-    return (0, buildMilestoneCelebrations_1.buildFinisherMilestoneCelebrations)(finishers, milestones, (milestone) => String(milestone));
+    return (0, buildMilestoneCelebrations_1.buildFinisherMilestoneCelebrations)(finishers, milestones, juniorFinisherIconLookup_1.juniorFinisherClubName);
 }
 
 
 /***/ },
 
-/***/ 220
+/***/ 786
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.twoKVolunteersToMilestones = twoKVolunteersToMilestones;
-function twoKVolunteersToMilestones(volunteers) {
-    const names = volunteers
-        .filter((v) => v.vols === 5 && v.vClub === 5)
-        .map((v) => v.name);
-    return names.length
-        ? [
-            {
-                clubName: 'junior parkrun v5',
-                icon: '&#x1F49E;',
-                names,
-            },
-        ]
-        : [];
-}
-
-
-/***/ },
-
-/***/ 581
-(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.de = void 0;
 // translations/de.ts - German translations
 exports.de = {
@@ -1502,23 +1470,27 @@ exports.de = {
         'Volunteer 700': 'Freiwilligen 700er Club',
         'Volunteer 800': 'Freiwilligen 800er Club',
         'Volunteer 900': 'Freiwilligen 900er Club',
-        'junior parkrun v5': 'Junior Parkrun v5 Club',
-        'junior parkrun 100': 'Junior Parkrun 100er Club',
-        'junior parkrun 250': 'Junior Parkrun 250er Club',
-        'Half marathon': 'Halbmarathon Club',
-        Marathon: 'Marathon Club',
-        'Ultra marathon': 'Ultramarathon Club',
+        'junior parkrun 10': 'junior parkrun 10 club',
+        'junior parkrun 25': 'junior parkrun 25 club',
+        'junior parkrun 50': 'junior parkrun 50 club',
+        'junior parkrun 75': 'junior parkrun 75 club',
+        'junior parkrun 100': 'junior parkrun 100 club',
+        'junior parkrun 150': 'junior parkrun 150 club',
+        'junior parkrun 200': 'junior parkrun 200 club',
+        'junior parkrun 250': 'junior parkrun 250 club',
+        'junior parkrun 300': 'junior parkrun 300 club',
     },
 };
 
 
 /***/ },
 
-/***/ 497
+/***/ 346
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.en = void 0;
 // translations/en.ts - British English translations
 exports.en = {
@@ -1597,36 +1569,40 @@ exports.en = {
         'Volunteer 700': 'Volunteer 700 club',
         'Volunteer 800': 'Volunteer 800 club',
         'Volunteer 900': 'Volunteer 900 club',
-        'junior parkrun v5': 'junior parkrun v5 club',
+        'junior parkrun 10': 'junior parkrun 10 club',
+        'junior parkrun 25': 'junior parkrun 25 club',
+        'junior parkrun 50': 'junior parkrun 50 club',
+        'junior parkrun 75': 'junior parkrun 75 club',
         'junior parkrun 100': 'junior parkrun 100 club',
+        'junior parkrun 150': 'junior parkrun 150 club',
+        'junior parkrun 200': 'junior parkrun 200 club',
         'junior parkrun 250': 'junior parkrun 250 club',
-        'Half marathon': 'Half marathon club',
-        Marathon: 'Marathon club',
-        'Ultra marathon': 'Ultra marathon club',
+        'junior parkrun 300': 'junior parkrun 300 club',
     },
 };
 
 
 /***/ },
 
-/***/ 572
+/***/ 413
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.translations = void 0;
-exports.detectLocale = detectLocale;
+__webpack_unused_export__ = ({ value: true });
+exports.P9 = void 0;
+__webpack_unused_export__ = detectLocale;
 exports.getTranslations = getTranslations;
 exports.interpolate = interpolate;
 exports.createLanguageSwitcher = createLanguageSwitcher;
 exports.switchLanguage = switchLanguage;
-exports.getStoredOrDetectedLocale = getStoredOrDetectedLocale;
+__webpack_unused_export__ = getStoredOrDetectedLocale;
 exports.formatCount = formatCount;
 exports.formatCountWithArticle = formatCountWithArticle;
 // translations/index.ts - Translation registry and utilities
-const en_1 = __webpack_require__(497);
-const de_1 = __webpack_require__(581);
-exports.translations = {
+const en_1 = __webpack_require__(346);
+const de_1 = __webpack_require__(786);
+exports.P9 = {
     en: en_1.en,
     de: de_1.de,
 };
@@ -1634,17 +1610,17 @@ exports.translations = {
 function detectLocale() {
     // First check for stored user preference
     const stored = localStorage.getItem('eventuate-language');
-    if (stored && exports.translations[stored]) {
+    if (stored && exports.P9[stored]) {
         return stored;
     }
     const browserLocale = navigator.language || navigator.languages?.[0] || 'en';
     // Check for exact match first (e.g., en-GB, de-DE)
-    if (exports.translations[browserLocale]) {
+    if (exports.P9[browserLocale]) {
         return browserLocale;
     }
     // Check for language match (e.g., en, de)
     const language = browserLocale.split('-')[0].toLowerCase();
-    if (exports.translations[language]) {
+    if (exports.P9[language]) {
         return language;
     }
     // Default to English
@@ -1653,7 +1629,7 @@ function detectLocale() {
 // Get translations for current locale
 function getTranslations(locale) {
     const targetLocale = locale || detectLocale();
-    return exports.translations[targetLocale] || exports.translations.en;
+    return exports.P9[targetLocale] || exports.P9.en;
 }
 // Simple template replacement function
 function interpolate(template, values) {
@@ -1664,7 +1640,7 @@ function interpolate(template, values) {
 // Language switcher functionality
 function createLanguageSwitcher() {
     const currentLocale = detectLocale();
-    const availableLocales = Object.keys(exports.translations);
+    const availableLocales = Object.keys(exports.P9);
     return `
     <div class="eventuate-language-switcher">
       <span class="eventuate-language-label">Language:</span>
@@ -1673,9 +1649,9 @@ function createLanguageSwitcher() {
         <button 
           class="eventuate-language-btn ${currentLocale === locale ? 'active' : ''}" 
           data-locale="${locale}"
-          title="${exports.translations[locale].languageName}"
+          title="${exports.P9[locale].languageName}"
         >
-          ${exports.translations[locale].flag} ${exports.translations[locale].languageName}
+          ${exports.P9[locale].flag} ${exports.P9[locale].languageName}
         </button>
       `)
         .join('')}
@@ -1690,7 +1666,7 @@ function createLanguageSwitcher() {
   `;
 }
 function switchLanguage(locale) {
-    if (!exports.translations[locale]) {
+    if (!exports.P9[locale]) {
         console.warn(`Locale ${locale} not supported`);
         return;
     }
@@ -1707,7 +1683,7 @@ function switchLanguage(locale) {
 // Get stored language preference or detect from browser
 function getStoredOrDetectedLocale() {
     const stored = localStorage.getItem('eventuate-language');
-    if (stored && exports.translations[stored]) {
+    if (stored && exports.P9[stored]) {
         return stored;
     }
     return detectLocale();
@@ -1726,13 +1702,14 @@ function formatCountWithArticle(count, singular, plural, singularArticle, plural
 
 /***/ },
 
-/***/ 329
+/***/ 696
 (__unused_webpack_module, exports, __webpack_require__) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.Finisher = void 0;
-const translations_1 = __webpack_require__(572);
+const translations_1 = __webpack_require__(413);
 class Finisher {
     name;
     agegroup;
@@ -1768,11 +1745,12 @@ exports.Finisher = Finisher;
 
 /***/ },
 
-/***/ 745
+/***/ 0
 (__unused_webpack_module, exports) {
 
+var __webpack_unused_export__;
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+__webpack_unused_export__ = ({ value: true });
 exports.isSupportedResultsPageUrl = isSupportedResultsPageUrl;
 exports.eventDateFromResultsPageUrl = eventDateFromResultsPageUrl;
 exports.futureRosterUrl = futureRosterUrl;
@@ -1859,17 +1837,17 @@ function canonicalResultsPageUrl(eventNumber, currentHref) {
 /******/ 	});
 /************************************************************************/
 /******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
+/******/ 	const __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		const cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
 /******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 		const module = __webpack_module_cache__[moduleId] = {
 /******/ 			// no module.id needed
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
@@ -1883,10 +1861,10 @@ function canonicalResultsPageUrl(eventNumber, currentHref) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+let __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it uses a non-standard name for the exports (exports).
 (() => {
-var exports = __webpack_exports__;
+let exports = __webpack_exports__;
 var __webpack_unused_export__;
 
 __webpack_unused_export__ = ({ value: true });
@@ -1894,29 +1872,29 @@ __webpack_unused_export__ = upsertPreviewMilestonesBanner;
 __webpack_unused_export__ = upsertStaleResultsInCss;
 __webpack_unused_export__ = isStaleResults;
 __webpack_unused_export__ = eventuate;
-const upsertParagraph_1 = __webpack_require__(943);
-const milestoneCelebrationsForEvent_1 = __webpack_require__(817);
-const milestoneMode_1 = __webpack_require__(498);
-const FactsPresenter_1 = __webpack_require__(664);
-const MilestonePresenter_1 = __webpack_require__(511);
-const FirstTimersPresenter_1 = __webpack_require__(853);
-const FirstTimersLaunchEventPresenter_1 = __webpack_require__(170);
-const FirstTimeVolunteersPresenter_1 = __webpack_require__(5);
-const JuniorSupervisionPresenter_1 = __webpack_require__(281);
-const UnknownsPresenter_1 = __webpack_require__(140);
-const IntroductionPresenter_1 = __webpack_require__(341);
-const NewestParkrunnersPresenter_1 = __webpack_require__(150);
-const NewPBsPresenter_1 = __webpack_require__(214);
-const GroupsPresenter_1 = __webpack_require__(225);
-const FullResultsPresenter_1 = __webpack_require__(826);
-const VolunteersPresenter_1 = __webpack_require__(372);
-const VolunteerInvitationPresenter_1 = __webpack_require__(726);
-const ClosingPresenter_1 = __webpack_require__(896);
-const ResultsPageExtractor_1 = __webpack_require__(530);
-const translations_1 = __webpack_require__(572);
-const share_1 = __webpack_require__(824);
-const urlFunctions_1 = __webpack_require__(745);
-const currentUrl_1 = __webpack_require__(389);
+const upsertParagraph_1 = __webpack_require__(44);
+const milestoneCelebrationsForEvent_1 = __webpack_require__(380);
+const milestoneMode_1 = __webpack_require__(543);
+const FactsPresenter_1 = __webpack_require__(519);
+const MilestonePresenter_1 = __webpack_require__(684);
+const FirstTimersPresenter_1 = __webpack_require__(458);
+const FirstTimersLaunchEventPresenter_1 = __webpack_require__(455);
+const FirstTimeVolunteersPresenter_1 = __webpack_require__(405);
+const JuniorSupervisionPresenter_1 = __webpack_require__(542);
+const UnknownsPresenter_1 = __webpack_require__(97);
+const IntroductionPresenter_1 = __webpack_require__(160);
+const NewestParkrunnersPresenter_1 = __webpack_require__(613);
+const NewPBsPresenter_1 = __webpack_require__(155);
+const GroupsPresenter_1 = __webpack_require__(932);
+const FullResultsPresenter_1 = __webpack_require__(29);
+const VolunteersPresenter_1 = __webpack_require__(161);
+const VolunteerInvitationPresenter_1 = __webpack_require__(213);
+const ClosingPresenter_1 = __webpack_require__(127);
+const ResultsPageExtractor_1 = __webpack_require__(817);
+const translations_1 = __webpack_require__(413);
+const share_1 = __webpack_require__(215);
+const urlFunctions_1 = __webpack_require__(0);
+const currentUrl_1 = __webpack_require__(904);
 const STALE_DAYS = 7;
 const STALE_STYLE_ID = 'eventuate-stale-results-style';
 function civilDayNumber(year, month, day) {
