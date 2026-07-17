@@ -26,6 +26,8 @@ finisher milestones. _Avoid_: preview junior milestone, Half marathon / Marathon
 5km parkrun. Display name is `{n} club`. Represented with coloured circle icons.
 _Avoid_: junior parkrun {n} club
 
-**Volunteer milestone**: A numerical volunteer milestone club. At 5km events,
-display name is `Volunteer {n} club` (heart icons). Junior volunteer numerical
-clubs are not yet in the model (planned separately). _Avoid_: volunteering club
+**Volunteer milestone**: A numerical volunteer milestone club at 5km events.
+Display name is `Volunteer {n} club` (heart icons). Junior events do not yet
+expose reliable volunteer-milestone icons on results pages, so Eventuate does
+not celebrate junior volunteering until that signal exists. _Avoid_: junior
+parkrun v5, volunteering club

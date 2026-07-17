@@ -2,7 +2,6 @@ import { ResultsPageExtractor } from '../extractors/ResultsPageExtractor';
 import { fiveKFinishersToMilestones } from '../transformers/fiveKFinishersToMilestones';
 import { fiveKVolunteersToMilestones } from '../transformers/fiveKVolunteersToMilestones';
 import { twoKFinishersToMilestones } from '../transformers/twoKFinishersToMilestone';
-import { twoKVolunteersToMilestones } from '../transformers/twoKVolunteersToMilestones';
 import { MilestoneCelebrations } from '../types/Milestones';
 import { sortMilestoneCelebrations } from './buildMilestoneCelebrations';
 import { useFiveKMilestoneExtensions } from './milestoneMode';
@@ -13,10 +12,9 @@ export function milestoneCelebrationsForEvent(
   referenceDate: Date = new Date()
 ): MilestoneCelebrations[] {
   if (extractor.courseLength === 2) {
-    return sortMilestoneCelebrations([
-      ...twoKVolunteersToMilestones(extractor.volunteersList()),
-      ...twoKFinishersToMilestones(extractor.finishers),
-    ]);
+    return sortMilestoneCelebrations(
+      twoKFinishersToMilestones(extractor.finishers)
+    );
   }
 
   const useExtensions = useFiveKMilestoneExtensions(search, referenceDate);

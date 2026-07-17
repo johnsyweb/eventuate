@@ -94,7 +94,6 @@ export const en = {
     'Volunteer 700': 'Volunteer 700 club',
     'Volunteer 800': 'Volunteer 800 club',
     'Volunteer 900': 'Volunteer 900 club',
-    'junior parkrun v5': 'junior parkrun v5 club',
     'junior parkrun 10': 'junior parkrun 10 club',
     'junior parkrun 25': 'junior parkrun 25 club',
     'junior parkrun 50': 'junior parkrun 50 club',
