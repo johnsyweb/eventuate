@@ -17,16 +17,16 @@ function juniorDocument(): Document {
 }
 
 describe(milestoneCelebrationsForEvent, () => {
-  it('uses preview junior finisher milestones when the preview param is set before go-live', () => {
+  it('celebrates live junior finisher milestones for junior participants', () => {
     const extractor = new ResultsPageExtractor(juniorDocument());
-    const celebrations = milestoneCelebrationsForEvent(
-      extractor,
-      '?eventuate-preview-milestones=true',
-      new Date(2026, 5, 30)
-    );
+    const celebrations = milestoneCelebrationsForEvent(extractor, '');
 
     expect(celebrations).toEqual([
-      { clubName: '25', icon: '&#x1F7E9;', names: ['Alex'] },
+      {
+        clubName: 'junior parkrun 25',
+        icon: '&#x1F7E7;',
+        names: ['Alex'],
+      },
     ]);
   });
 });

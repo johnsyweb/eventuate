@@ -20,13 +20,18 @@ describe(twoKFinishersToMilestones, () => {
     );
   });
 
-  it('uses legacy named clubs by default', () => {
-    expect(twoKFinishersToMilestones([finisher])).toEqual([]);
+  it('celebrates numerical junior finisher milestones for junior participants', () => {
+    expect(twoKFinishersToMilestones([finisher])).toEqual([
+      {
+        clubName: 'junior parkrun 25',
+        icon: '&#x1F7E7;',
+        names: ['Alex'],
+      },
+    ]);
   });
 
-  it('celebrates numerical preview milestones when enabled', () => {
-    expect(twoKFinishersToMilestones([finisher], true)).toEqual([
-      { clubName: '25', icon: '&#x1F7E9;', names: ['Alex'] },
-    ]);
+  it('ignores finishers without a junior age group', () => {
+    finisher.agegroup = 'VM40';
+    expect(twoKFinishersToMilestones([finisher])).toEqual([]);
   });
 });

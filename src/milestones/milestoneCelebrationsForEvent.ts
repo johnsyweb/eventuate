@@ -5,10 +5,7 @@ import { twoKFinishersToMilestones } from '../transformers/twoKFinishersToMilest
 import { twoKVolunteersToMilestones } from '../transformers/twoKVolunteersToMilestones';
 import { MilestoneCelebrations } from '../types/Milestones';
 import { sortMilestoneCelebrations } from './buildMilestoneCelebrations';
-import {
-  useFiveKMilestoneExtensions,
-  useJuniorFinisherMilestones,
-} from './milestoneMode';
+import { useFiveKMilestoneExtensions } from './milestoneMode';
 
 export function milestoneCelebrationsForEvent(
   extractor: ResultsPageExtractor,
@@ -16,13 +13,9 @@ export function milestoneCelebrationsForEvent(
   referenceDate: Date = new Date()
 ): MilestoneCelebrations[] {
   if (extractor.courseLength === 2) {
-    const finisherMilestones = twoKFinishersToMilestones(
-      extractor.finishers,
-      useJuniorFinisherMilestones(search, referenceDate)
-    );
     return sortMilestoneCelebrations([
       ...twoKVolunteersToMilestones(extractor.volunteersList()),
-      ...finisherMilestones,
+      ...twoKFinishersToMilestones(extractor.finishers),
     ]);
   }
 

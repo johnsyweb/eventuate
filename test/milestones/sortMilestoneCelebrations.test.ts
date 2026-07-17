@@ -8,13 +8,17 @@ describe(sortMilestoneCelebrations, () => {
       { clubName: 'Volunteer 50', icon: '&#x2764;', names: ['B'] },
       { clubName: '25', icon: '&#x1F7E3;', names: ['C'] },
       { clubName: 'Volunteer 100', icon: '&#x1F5A4;', names: ['D'] },
+      { clubName: 'junior parkrun 100', icon: '&#x1F7E7;', names: ['E'] },
+      { clubName: 'junior parkrun 25', icon: '&#x1F7E7;', names: ['F'] },
     ];
 
     expect(sortMilestoneCelebrations(input).map((m) => m.clubName)).toEqual([
       'Volunteer 50',
       'Volunteer 100',
       '25',
+      'junior parkrun 25',
       '100',
+      'junior parkrun 100',
     ]);
   });
 });

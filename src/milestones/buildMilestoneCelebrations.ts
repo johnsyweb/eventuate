@@ -81,6 +81,10 @@ export function sortMilestoneCelebrations(
     if (/^Volunteer /.test(clubName)) {
       return null;
     }
+    const juniorMatch = /^junior parkrun (\d+)$/.exec(clubName);
+    if (juniorMatch) {
+      return Number(juniorMatch[1]);
+    }
     const asNumber = Number(clubName);
     return Number.isNaN(asNumber) ? null : asNumber;
   };
