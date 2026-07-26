@@ -2,6 +2,7 @@ import { IFinisher } from '../types/Finisher';
 import { MilestoneCelebrations } from '../types/Milestones';
 import { VolunteerWithCount } from '../types/VolunteerWithCount';
 import { FetchLike } from './fetchParkrunnerAgeCategory';
+import { fiveKVolunteerMilestoneNumbers } from './fiveKVolunteerIconLookup';
 import {
   isJuniorVolunteerMilestoneTotal,
   juniorVolunteerClubName,
@@ -17,8 +18,16 @@ export interface JuniorVolunteerCandidate {
   usedCreditFallback: boolean;
 }
 
+function isVolunteerLadderMilestone(
+  milestone: number,
+  useExtensions: boolean
+): boolean {
+  return fiveKVolunteerMilestoneNumbers(useExtensions).includes(milestone);
+}
+
 export function juniorVolunteerMilestoneCandidates(
-  volunteers: VolunteerWithCount[]
+  volunteers: VolunteerWithCount[],
+  useExtensions = false
 ): JuniorVolunteerCandidate[] {
   const candidates: JuniorVolunteerCandidate[] = [];
 
@@ -28,6 +37,13 @@ export function juniorVolunteerMilestoneCandidates(
     }
     const milestone = volunteer.vols;
     const hasMatchingIcon = volunteer.vClub === milestone;
+    if (
+      hasMatchingIcon &&
+      isVolunteerLadderMilestone(milestone, useExtensions)
+    ) {
+      // Overlap totals with a volunteer-club icon are Volunteer milestones.
+      continue;
+    }
     if (!hasMatchingIcon) {
       console.log(
         `Eventuate: junior volunteer milestone credit fallback for ${volunteer.name} (${milestone} credits, no matching volunteer club icon)`
@@ -50,12 +66,24 @@ export async function twoKVolunteersToJuniorMilestones(
     fetchImpl?: FetchLike;
     storage?: ParkrunnerAgeStorage;
     now?: number;
+    useExtensions?: boolean;
   } = {}
 ): Promise<MilestoneCelebrations[]> {
-  const candidates = juniorVolunteerMilestoneCandidates(volunteers);
+  const useExtensions = options.useExtensions ?? false;
+  const candidates = juniorVolunteerMilestoneCandidates(
+    volunteers,
+    useExtensions
+  );
   const eligible: { milestone: number; name: string }[] = [];
 
   for (const candidate of candidates) {
+    if (!candidate.usedCreditFallback) {
+      eligible.push({
+        milestone: candidate.milestone,
+        name: candidate.volunteer.name,
+      });
+      continue;
+    }
     const isJunior = await volunteerIsJuniorParticipant(
       candidate.volunteer,
       finishers,

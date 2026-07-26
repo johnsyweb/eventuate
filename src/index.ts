@@ -1,8 +1,12 @@
 import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
 import { milestoneCelebrationsForEvent } from './milestones/milestoneCelebrationsForEvent';
-import { showPreviewMilestonesDisclaimer } from './milestones/milestoneMode';
+import {
+  showPreviewMilestonesDisclaimer,
+  useFiveKMilestoneExtensions,
+} from './milestones/milestoneMode';
 import { sortMilestoneCelebrations } from './milestones/buildMilestoneCelebrations';
 import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
+import { fiveKVolunteersToMilestones } from './transformers/fiveKVolunteersToMilestones';
 import { twoKVolunteersToJuniorMilestones } from './milestones/twoKVolunteersToJuniorMilestones';
 import { FactsPresenter } from './presenters/FactsPresenter';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
@@ -313,14 +317,17 @@ async function enrichJuniorVolunteerMilestones(
   if (rpe.courseLength !== 2) {
     return;
   }
+  const useExtensions = useFiveKMilestoneExtensions(getSearchString());
   const juniorVolunteerCelebrations = await twoKVolunteersToJuniorMilestones(
     rpe.volunteersList(),
-    rpe.finishers
+    rpe.finishers,
+    { useExtensions }
   );
   if (juniorVolunteerCelebrations.length === 0) {
     return;
   }
   const celebrations = sortMilestoneCelebrations([
+    ...fiveKVolunteersToMilestones(rpe.volunteersList(), useExtensions),
     ...juniorVolunteerCelebrations,
     ...twoKFinishersToMilestones(rpe.finishers),
   ]);

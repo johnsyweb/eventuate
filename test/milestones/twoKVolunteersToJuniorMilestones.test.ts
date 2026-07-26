@@ -27,14 +27,22 @@ describe(juniorVolunteerMilestoneCandidates, () => {
     logSpy.mockRestore();
   });
 
-  it('includes icon-matched volunteers without logging fallback', () => {
+  it('skips overlap totals that already have a volunteer-club icon', () => {
     const volunteers: VolunteerWithCount[] = [
       { name: 'Alex', vols: 25, vClub: 25, athleteID: 1 },
+    ];
+    expect(juniorVolunteerMilestoneCandidates(volunteers)).toEqual([]);
+    expect(logSpy).not.toHaveBeenCalled();
+  });
+
+  it('includes junior-only icon matches without logging fallback', () => {
+    const volunteers: VolunteerWithCount[] = [
+      { name: 'Alex', vols: 75, vClub: 75, athleteID: 1 },
     ];
     expect(juniorVolunteerMilestoneCandidates(volunteers)).toEqual([
       {
         volunteer: volunteers[0],
-        milestone: 25,
+        milestone: 75,
         usedCreditFallback: false,
       },
     ]);
@@ -67,12 +75,11 @@ describe(twoKVolunteersToJuniorMilestones, () => {
     logSpy.mockRestore();
   });
 
-  it('celebrates when age is on the finisher list', async () => {
+  it('celebrates credit-only juniors when age is on the finisher list', async () => {
     const volunteers: VolunteerWithCount[] = [
       {
         name: 'Alex',
         vols: 25,
-        vClub: 25,
         athleteID: 7,
         profileUrl: 'https://example.test/parkrunner/7',
       },
@@ -94,6 +101,56 @@ describe(twoKVolunteersToJuniorMilestones, () => {
         names: ['Alex'],
       },
     ]);
+  });
+
+  it('celebrates junior-only icon matches without resolving age', async () => {
+    const volunteers: VolunteerWithCount[] = [
+      {
+        name: 'Alex',
+        vols: 75,
+        vClub: 75,
+        athleteID: 7,
+        profileUrl: 'https://example.test/parkrunner/7',
+      },
+    ];
+
+    await expect(
+      twoKVolunteersToJuniorMilestones(volunteers, [], {
+        storage: memoryStorage(),
+        fetchImpl: async () => {
+          throw new Error('should not fetch');
+        },
+      })
+    ).resolves.toEqual([
+      {
+        clubName: 'junior parkrun volunteer 75',
+        icon: '&#x1F49A;',
+        names: ['Alex'],
+      },
+    ]);
+  });
+
+  it('does not celebrate overlap icon matches as junior volunteer clubs', async () => {
+    const volunteers: VolunteerWithCount[] = [
+      {
+        name: 'Alex',
+        vols: 100,
+        vClub: 100,
+        athleteID: 7,
+        profileUrl: 'https://example.test/parkrunner/7',
+      },
+    ];
+    const finishers = [new Finisher('Alex', 'JW10', '', '', '', '10', '25')];
+    finishers[0].athleteID = 7;
+
+    await expect(
+      twoKVolunteersToJuniorMilestones(volunteers, finishers, {
+        storage: memoryStorage(),
+        fetchImpl: async () => {
+          throw new Error('should not fetch');
+        },
+      })
+    ).resolves.toEqual([]);
   });
 
   it('fetches and caches profile age when not on the finisher list', async () => {

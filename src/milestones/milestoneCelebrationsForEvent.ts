@@ -11,15 +11,21 @@ export function milestoneCelebrationsForEvent(
   search: string,
   referenceDate: Date = new Date()
 ): MilestoneCelebrations[] {
+  const useExtensions = useFiveKMilestoneExtensions(search, referenceDate);
+  const volunteerCelebrations = fiveKVolunteersToMilestones(
+    extractor.volunteersList(),
+    useExtensions
+  );
+
   if (extractor.courseLength === 2) {
-    return sortMilestoneCelebrations(
-      twoKFinishersToMilestones(extractor.finishers)
-    );
+    return sortMilestoneCelebrations([
+      ...volunteerCelebrations,
+      ...twoKFinishersToMilestones(extractor.finishers),
+    ]);
   }
 
-  const useExtensions = useFiveKMilestoneExtensions(search, referenceDate);
   return sortMilestoneCelebrations([
-    ...fiveKVolunteersToMilestones(extractor.volunteersList(), useExtensions),
+    ...volunteerCelebrations,
     ...fiveKFinishersToMilestones(extractor.finishers, useExtensions),
   ]);
 }
