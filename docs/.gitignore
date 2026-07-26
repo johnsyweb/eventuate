@@ -1,3 +1,8 @@
 /node_modules
 /target
-/vendor/
+
+# Repo vendors x86_64-linux gems for CI. Ignore other host-platform installs.
+**/*-darwin*
+**/extensions/arm64-darwin-*/
+**/*.bundle
+/vendor/bundle/ruby/4.0.0/
