@@ -31,19 +31,26 @@ _Avoid_: preview junior milestone, Half marathon / Marathon / Ultra marathon
 volunteers (ages 4–14) at the same intervals (10, 25, 50, 75, 100, 150, 200,
 250, 300). Volunteer credits from any parkrun (2k and 5k) count. Parallel to
 junior finisher milestones — not the same club. In Eventuate reports, celebrated
-only on junior parkrun results pages when credits hit one of those totals and
-the person is a junior participant. A volunteer-milestone icon on the row is
-preferred when present; otherwise credits alone may qualify after age is proven.
-Club key basename `junior parkrun volunteer {n}`; UI shows
-`junior parkrun volunteer {n} club`. Represented with coloured heart icons
-approximating the same wristband colours as junior finisher squares. _Avoid_:
-junior parkrun {n} (finisher club), Volunteer {n} (5km adult volunteer ladder),
-junior parkrun v5
+only on junior parkrun results pages. When a volunteer-club icon marks a total
+that is only on the junior volunteer ladder (e.g. 75, 150), celebrate
+synchronously from the icon. When credits hit a junior total with no matching
+icon, celebrate after age is proven as a junior participant. Overlap totals that
+already show a volunteer-club icon (e.g. 100) are celebrated as Volunteer
+milestones instead — see below. Club key basename
+`junior parkrun volunteer {n}`; UI shows `junior parkrun volunteer {n} club`.
+Represented with coloured heart icons approximating the same wristband colours
+as junior finisher squares. _Avoid_: junior parkrun {n} (finisher club),
+Volunteer {n} (volunteer ladder), junior parkrun v5
 
 **5km finisher milestone**: A numerical finisher milestone club at a standard
 5km parkrun. Display name is `{n} club`. Represented with coloured circle icons.
 _Avoid_: junior parkrun {n} club
 
-**Volunteer milestone**: A numerical volunteer milestone club on the 5km ladder.
-Display name is `Volunteer {n} club` (heart icons). Distinct from junior
-volunteer milestones. _Avoid_: junior parkrun volunteer {n}, volunteering club
+**Volunteer milestone**: A numerical volunteer milestone club on the volunteer
+ladder (shared by 5km and junior parkrun events for over-14s, and whenever
+parkrun shows the volunteer-club icon). Display name is `Volunteer {n} club`
+(heart icons). On junior parkrun results pages, celebrate synchronously from
+credits plus matching volunteer-club icon — the same rule as 5km — including
+when the parkrunner is a junior participant and the total also exists on the
+junior volunteer ladder. Distinct from junior volunteer milestones. _Avoid_:
+junior parkrun volunteer {n}, volunteering club
