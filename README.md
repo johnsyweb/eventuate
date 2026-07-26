@@ -190,18 +190,18 @@ docker buildx build . -o target
 
 ### Building the Userscript and Bookmarklet
 
-The userscript and bookmarklet are built automatically as part of
-`mise run package`. They will be generated in:
+`mise run build` generates the userscript and bookmarklet (also run as part of
+`mise run package` and `mise run docs:build`). Outputs are build artefacts and
+are not checked into git:
 
-- Userscript: `target/eventuate.user.js`
+- Userscript: `docs/eventuate.user.js`
 - Bookmarklet: `docs/bookmarklet/index.md`
-
-To build them individually:
 
 ```sh
 mise run build
 ```
 
+CI publishes those files on GitHub Pages and attaches them to GitHub Releases.
 The userscript can be installed in browsers that support userscript managers
 like [Tampermonkey][tampermonkey], [Userscripts][userscripts], or
 [Greasemonkey][greasemonkey]. The bookmarklet can be used in any browser,
