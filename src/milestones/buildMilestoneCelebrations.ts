@@ -1,6 +1,7 @@
 import { IFinisher } from '../types/Finisher';
 import { IconHex, MilestoneCelebrations } from '../types/Milestones';
 import { VolunteerWithCount } from '../types/VolunteerWithCount';
+import { isJuniorParticipantAgeCategory } from './juniorAgeCategory';
 
 export interface FinisherMilestoneDefinition {
   icon: IconHex;
@@ -23,12 +24,15 @@ export function buildFinisherMilestoneCelebrations(
     .sort((a, b) => a - b)) {
     const definition = milestones[milestone];
     const names = finishers
-      .filter(
-        (f) =>
-          Number(f.runs) === milestone &&
-          (!definition.restricted_age ||
-            f.agegroup?.startsWith(definition.restricted_age))
-      )
+      .filter((f) => {
+        if (Number(f.runs) !== milestone) {
+          return false;
+        }
+        if (!definition.restricted_age) {
+          return true;
+        }
+        return isJuniorParticipantAgeCategory(f.agegroup);
+      })
       .map((f) => f.name);
 
     if (names.length > 0) {
@@ -73,12 +77,19 @@ export function sortMilestoneCelebrations(
   celebrations: MilestoneCelebrations[]
 ): MilestoneCelebrations[] {
   const volunteerNumeric = (clubName: string): number | null => {
+    const juniorVolunteer = /^junior parkrun volunteer (\d+)$/.exec(clubName);
+    if (juniorVolunteer) {
+      return Number(juniorVolunteer[1]);
+    }
     const match = /^Volunteer (\d+)$/.exec(clubName);
     return match ? Number(match[1]) : null;
   };
 
   const finisherNumeric = (clubName: string): number | null => {
-    if (/^Volunteer /.test(clubName)) {
+    if (
+      /^Volunteer /.test(clubName) ||
+      /^junior parkrun volunteer /.test(clubName)
+    ) {
       return null;
     }
     const juniorMatch = /^junior parkrun (\d+)$/.exec(clubName);
