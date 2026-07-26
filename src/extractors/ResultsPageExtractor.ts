@@ -117,10 +117,16 @@ export class ResultsPageExtractor {
 
   volunteersList(): VolunteerWithCount[] {
     return Array.from(this.volunteerElements()).map((row) => {
+      const profileAnchor = row.querySelector(
+        '.Volunteers-table-td--name a'
+      ) as HTMLAnchorElement | null;
+      const profileUrl = profileAnchor?.href;
       return {
         name: this.removeSurnameFromJunior(row.dataset.name),
         vols: Number(row.dataset.volunteercredits),
         vClub: this.volunteerClubFromRow(row),
+        athleteID: profileUrl ? athleteIDFromURI(profileUrl) : undefined,
+        profileUrl: profileUrl || undefined,
       };
     });
   }

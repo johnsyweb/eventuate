@@ -66,6 +66,8 @@ describe('ResultsPageExtractor', () => {
           name: 'Amanda SHINTON',
           vols: 234,
           vClub: 100,
+          athleteID: 4144103,
+          profileUrl: expect.stringContaining('/brimbank/parkrunner/4144103'),
         });
 
         // Tailwalker: Finished
@@ -73,6 +75,8 @@ describe('ResultsPageExtractor', () => {
           name: 'Zoran PETROVSKI',
           vols: 46,
           vClub: 25,
+          athleteID: expect.any(Number),
+          profileUrl: expect.stringMatching(/parkrunner\/\d+/),
         });
 
         // New volunteer
@@ -80,6 +84,8 @@ describe('ResultsPageExtractor', () => {
           name: 'Charles GAVRIEL',
           vols: 2,
           vClub: undefined,
+          athleteID: 10296588,
+          profileUrl: expect.stringContaining('/brimbank/parkrunner/10296588'),
         });
       });
     });
