@@ -163,12 +163,8 @@ when you run `mise install`. Bypass hooks for a single command with
 
 ### Prerequisites
 
-Tool versions are defined in [`mise.toml`](mise.toml):
-
-- Node.js (latest via mise)
-- aube 1.25.1
-- Ruby 3.4.7 (for Jekyll documentation builds)
-- hk 1.48.0 (git hooks)
+Install tools with mise; versions are defined only in [`mise.toml`](mise.toml)
+(Node.js, aube, Ruby for Jekyll, and hk for git hooks).
 
 Security overrides and build-script approvals live in
 [`aube-workspace.yaml`](aube-workspace.yaml) (`paranoid: true`, `overrides`,
