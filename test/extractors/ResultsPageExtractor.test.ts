@@ -157,4 +157,35 @@ describe('ResultsPageExtractor', () => {
       expect(extractor.isLaunchEvent()).toBe(true);
     });
   });
+
+  describe('volunteer club icons', () => {
+    it('reads the club number from the milestone-v class when link text is not vN', () => {
+      const html = `<!DOCTYPE html><html><body>
+        <div class="Results-header"><h1>Example junior parkrun</h1><h3><span>#1</span></h3></div>
+        <div class="aStat"><span class="num">1</span></div>
+        <div class="aStat"><span class="num">1</span></div>
+        <div class="aStat"><span class="num">1</span></div>
+        <div class="aStat"><span class="num">0</span></div>
+        <div class="aStat"><span class="num">0</span></div>
+        <table><tr class="Volunteers-table-row" data-name="Rachel SINGLETON"
+          data-volunteercredits="100">
+          <td class="Volunteers-table-td Volunteers-table-td--name">
+            <a href="/event/parkrunner/540657">Rachel SINGLETON</a>
+            <a href="https://parkrun.me/milestone-clubs"
+              class="milestone-v100 Results-table--clubIcon Results-table--v100club">100 volunteer milestone</a>
+          </td>
+        </tr></table>
+      </body></html>`;
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const volunteers = new ResultsPageExtractor(doc).volunteersList();
+      expect(volunteers).toContainEqual(
+        expect.objectContaining({
+          name: 'Rachel',
+          vols: 100,
+          vClub: 100,
+          athleteID: 540657,
+        })
+      );
+    });
+  });
 });

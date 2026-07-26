@@ -135,9 +135,18 @@ export class ResultsPageExtractor {
     const anchor = row.querySelector(
       'a.Results-table--clubIcon[class*="milestone-v"]'
     );
-    const text = anchor?.textContent?.trim() ?? '';
-    const match = text?.match(/^v(\d+)$/);
-    return match ? Number(match[1]) : undefined;
+    if (!anchor) {
+      return undefined;
+    }
+    for (const className of Array.from(anchor.classList)) {
+      const fromClass = /^milestone-v(\d+)$/.exec(className);
+      if (fromClass) {
+        return Number(fromClass[1]);
+      }
+    }
+    const text = anchor.textContent?.trim() ?? '';
+    const fromText = /^v(\d+)$/.exec(text);
+    return fromText ? Number(fromText[1]) : undefined;
   }
 
   private parseNumericString(value?: string): number {
