@@ -1,6 +1,9 @@
 import { deleteParagraph, upsertParagraph } from './dom/upsertParagraph';
 import { milestoneCelebrationsForEvent } from './milestones/milestoneCelebrationsForEvent';
 import { showPreviewMilestonesDisclaimer } from './milestones/milestoneMode';
+import { sortMilestoneCelebrations } from './milestones/buildMilestoneCelebrations';
+import { twoKFinishersToMilestones } from './transformers/twoKFinishersToMilestone';
+import { twoKVolunteersToJuniorMilestones } from './milestones/twoKVolunteersToJuniorMilestones';
 import { FactsPresenter } from './presenters/FactsPresenter';
 import { MilestonePresenter } from './presenters/MilestonePresenter';
 import { FirstTimersPresenter } from './presenters/FirstTimersPresenter';
@@ -28,6 +31,7 @@ import {
   eventDateFromResultsPageUrl,
 } from './urlFunctions';
 import { getCurrentHref } from './currentUrl';
+import { MilestoneCelebrations } from './types/Milestones';
 
 const STALE_DAYS = 7;
 const STALE_STYLE_ID = 'eventuate-stale-results-style';
@@ -281,6 +285,48 @@ function populate(
 
 type WindowWithEventuate = Window & { eventuate?: () => void };
 
+function upsertMilestoneCelebrationsParagraph(
+  celebrations: MilestoneCelebrations[]
+): void {
+  const eventuateDiv = document.getElementById('eventuate') as HTMLDivElement;
+  if (!eventuateDiv) {
+    return;
+  }
+  const presenter = new MilestonePresenter(celebrations);
+  const details = presenter.details();
+  if (!details) {
+    deleteParagraph(eventuateDiv, 'milestoneCelebrations');
+    return;
+  }
+  const title = presenter.title();
+  const separator = title.endsWith('<br>') ? '' : ' ';
+  upsertParagraph(
+    eventuateDiv,
+    'milestoneCelebrations',
+    `${title}${separator}${details}.`
+  );
+}
+
+async function enrichJuniorVolunteerMilestones(
+  rpe: ResultsPageExtractor
+): Promise<void> {
+  if (rpe.courseLength !== 2) {
+    return;
+  }
+  const juniorVolunteerCelebrations = await twoKVolunteersToJuniorMilestones(
+    rpe.volunteersList(),
+    rpe.finishers
+  );
+  if (juniorVolunteerCelebrations.length === 0) {
+    return;
+  }
+  const celebrations = sortMilestoneCelebrations([
+    ...juniorVolunteerCelebrations,
+    ...twoKFinishersToMilestones(rpe.finishers),
+  ]);
+  upsertMilestoneCelebrationsParagraph(celebrations);
+}
+
 export function eventuate(): void {
   if (!isSupportedResultsPageUrl(getCurrentHref())) {
     return;
@@ -288,6 +334,7 @@ export function eventuate(): void {
   const rpe = new ResultsPageExtractor(document);
   const presenters = createPresenters(rpe);
   populate(rpe, presenters);
+  void enrichJuniorVolunteerMilestones(rpe);
 }
 
 (window as WindowWithEventuate).eventuate = eventuate;
