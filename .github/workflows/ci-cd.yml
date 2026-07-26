@@ -32,10 +32,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -56,10 +56,10 @@ jobs:
   format-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -80,10 +80,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -104,10 +104,10 @@ jobs:
   lighthouse:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -138,10 +138,10 @@ jobs:
     needs: [lint, format-check, test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -179,7 +179,7 @@ jobs:
       skip-release: ${{ steps.check.outputs.skip-release }}
       should-deploy-pages: ${{ steps.check.outputs.should-deploy-pages }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -233,13 +233,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -313,13 +313,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
@@ -370,14 +370,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref:
             ${{ github.event.release.target_commitish || github.ref || 'main' }}
           fetch-depth: 0
 
       - name: Setup mise
-        uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4
+        uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4
         with:
           install: true
 
