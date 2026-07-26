@@ -10,9 +10,15 @@ describe(sortMilestoneCelebrations, () => {
       { clubName: 'Volunteer 100', icon: '&#x1F5A4;', names: ['D'] },
       { clubName: 'junior parkrun 100', icon: '&#x1F7E7;', names: ['E'] },
       { clubName: 'junior parkrun 25', icon: '&#x1F7E7;', names: ['F'] },
+      {
+        clubName: 'junior parkrun volunteer 25',
+        icon: '&#x1F9E1;',
+        names: ['G'],
+      },
     ];
 
     expect(sortMilestoneCelebrations(input).map((m) => m.clubName)).toEqual([
+      'junior parkrun volunteer 25',
       'Volunteer 50',
       'Volunteer 100',
       '25',
