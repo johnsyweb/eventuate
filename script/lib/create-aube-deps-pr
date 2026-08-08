@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#MISE hide=true
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+
+BRANCH=chore/aube-deps-update
+TITLE='chore(deps): update npm dependencies'
+BODY=$'Weekly automated dependency update via aube.\n\nRequires manual review for allowBuilds changes and security advisories.'
+
+git config user.name "github-actions[bot]"
+git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+git checkout -B "$BRANCH"
+git add aube-lock.yaml package.json aube-workspace.yaml
+if git diff --staged --quiet; then
+  echo "No changes detected, skipping PR creation"
+  exit 0
+fi
+git commit -m "$TITLE"
+git push origin "$BRANCH" --force
+gh pr view "$BRANCH" >/dev/null 2>&1 || gh pr create \
+  --title "$TITLE" \
+  --body "$BODY" \
+  --base main \
+  --head "$BRANCH"

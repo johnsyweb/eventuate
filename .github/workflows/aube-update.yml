@@ -44,21 +44,4 @@ jobs:
       - name: Create pull request
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B chore/aube-deps-update
-          git add aube-lock.yaml package.json aube-workspace.yaml
-          if git diff --staged --quiet; then
-            echo "No changes detected, skipping PR creation"
-            exit 0
-          fi
-          git commit -m 'chore(deps): update npm dependencies'
-          git push origin chore/aube-deps-update --force
-          body=$'Weekly automated dependency update via aube.\n\nRequires manual review for allowBuilds changes and security advisories.'
-          gh pr view chore/aube-deps-update >/dev/null 2>&1 || gh pr create \
-            --title 'chore(deps): update npm dependencies' \
-            --body "$body" \
-            --base main \
-            --head chore/aube-deps-update
+        run: bash script/lib/create-aube-deps-pr
