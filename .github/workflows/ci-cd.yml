@@ -166,7 +166,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dist
-          path: |
+          path: &build-artefact-paths |
             dist/eventuate.js
             dist/eventuate.bookmarklet.js
             docs/eventuate.user.js
@@ -294,10 +294,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dist-release
-          path: |
-            dist/eventuate.js
-            dist/eventuate.bookmarklet.js
-            docs/eventuate.user.js
+          path: *build-artefact-paths
           retention-days: 1
 
   # Deploy Pages after release (when we are releasing)
