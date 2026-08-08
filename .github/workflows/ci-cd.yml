@@ -167,9 +167,9 @@ jobs:
         with:
           name: dist
           path: |
-            eventuate.js
-            eventuate.bookmarklet.js
-            eventuate.user.js
+            dist/eventuate.js
+            dist/eventuate.bookmarklet.js
+            docs/eventuate.user.js
           retention-days: 1
 
   # Check if changes are docs-only (for release and pages deployment)
@@ -295,9 +295,9 @@ jobs:
         with:
           name: dist-release
           path: |
-            eventuate.js
-            eventuate.bookmarklet.js
-            eventuate.user.js
+            dist/eventuate.js
+            dist/eventuate.bookmarklet.js
+            docs/eventuate.user.js
           retention-days: 1
 
   # Deploy Pages after release (when we are releasing)
