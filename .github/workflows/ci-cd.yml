@@ -269,10 +269,17 @@ jobs:
         id: version-before
         run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
 
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Semantic Release
         id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Release prepare builds ignored artefacts; hk must not stash them.
+          HK_STASH: none
         run: aube run release
 
       - name: Version after release
