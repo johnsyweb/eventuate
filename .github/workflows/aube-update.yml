@@ -42,13 +42,6 @@ jobs:
         run: mise run test
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@271a8d4a0803a34955dd159102031f8e62f55259 # v7
-        with:
-          commit-message: 'chore(deps): update npm dependencies'
-          title: 'chore(deps): update npm dependencies'
-          body: |
-            Weekly automated dependency update via aube.
-
-            Requires manual review for allowBuilds changes and security advisories.
-          branch: chore/aube-deps-update
-          delete-branch: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash script/lib/create-aube-deps-pr
