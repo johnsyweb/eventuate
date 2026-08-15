@@ -1,351 +1,154 @@
-# Eventuate [![Mozilla / Firefox][mozilla-image]][Mozilla] [![Google Chrome / Chromium][chromewebstore-image]][Google Chrome]
+# Eventuate
 
 Extracts information from parkrun event result pages for inclusion in reports.
-It's not a run report generator, but will help you write a weekly report for an
-event.
 
-## Introduction
+[![CI][ci-badge]][ci] [![Mozilla Add-ons][mozilla-badge]][mozilla]
+[![Chrome Web Store][chrome-badge]][chrome]
+[![License: MIT][license-badge]][license]
 
-I wrote this while volunteering as a Run Director at the beautiful [Brimbank
-parkrun][brimbank], to make it easy to celebrate our community's achievements on
-the [Brimbank parkrun Facebook page][facebook]. I am sharing it so that you get
-to enjoy it too.
+It is not a run report generator, but it helps you write a weekly parkrun event
+report — milestones, first-timers, personal bests, volunteers, and community
+facts — as soon as the results page loads.
 
-I initially wrote this as a Firefox Add-On, as the developer tooling is pretty
-good in this space and Firefox Browser Add-Ons are pretty easy to distribute.
-However, once I worked out I could generate a userscript as part of the
-automated release process and run it in any browser with a userscript manager,
-including iOS and iPadOS devices, I switched to using that!
+I wrote it while volunteering as a Run Director at [Brimbank parkrun][brimbank],
+to celebrate our community on the [Facebook page][facebook], and shared it so
+other events can use it too. Install it as a browser extension, or use the
+[userscript][userscript] or [bookmarklet][bookmarklet] (including on Safari /
+iOS).
 
-## Description
+## Getting started
 
-If you volunteer at [parkrun] and produce an event report to celebrate
-achievements, this addon will make your life easier!
+1. Install Eventuate from the [Firefox Add-ons][mozilla] site or the [Chrome Web
+   Store][chrome] (Safari and iOS: use the [userscript][userscript] or
+   [bookmarklet][bookmarklet] instead).
+2. Open a parkrun **latest results** page, for example
+   <https://www.parkrun.com.au/timboon/results/latestresults/>.
+3. Read the Eventuate summary inserted above the results table — ready to paste
+   into your event report.
 
-As soon as the latest results page loads for an event, you'll see a bunch of
-useful text before the results table is displayed, including:
+![Eventuate output on a Brimbank parkrun results page, showing summary
+statistics and celebration text above the results table.][eventuate-results-summary-image]
 
-- Weekly event summary
-- New milestone club members
-- Kudos for new parkrunners
-- Welcome for first-time visitors
-- Celebrating personal bests
-- Acknowledgement of walking and running groups
-- Link to the full results
-- Gratitude to volunteers
-- Invitation to volunteer with a link to the roster
-- Reminder to bring a barcode
-- Reminder about junior supervision policy for 5km events
-- Overall event summary facts and figures
+Eventuate detects your browser language (English and German today) and lets you
+switch with the flag buttons on the output. Preference is remembered across
+sessions.
 
-![Eventuate extension output displaying Brimbank parkrun event #332 summary with yellow background. Shows participant statistics including 112 parkrunners, 8 volunteers, 3 milestone achievers, 8 first-timers, 17 personal bests, and various community statistics. Contains red notification banner indicating this is extracted data for report writing assistance.][eventuate-results-summary-image]
+## Help
 
-## Internationalisation
+- Project site and install options: <https://www.johnsy.com/eventuate/>
+- Bugs and questions: [GitHub Issues][github-issues]
 
-Eventuate automatically detects your browser's language and displays reports in
-the appropriate language. Currently supported languages:
+## Maintainers
 
-- **English** 🇬🇧 (default)
-- **German** 🇩🇪 (Deutsch)
+Maintained by [Pete Johns][pete] ([@johnsyweb][github]).
 
-You can easily switch between languages using the flag buttons that appear at
-the top of the Eventuate output. Your language preference is saved and will be
-remembered across browser sessions.
+## Development status
 
-### Adding a New Language
+Maintained. Started as a personal afternoon project for Brimbank parkrun, then
+grown with TypeScript, tests, and automated releases. Current version is in
+[`package.json`](package.json); history is in [`CHANGELOG.md`](CHANGELOG.md).
 
-We welcome contributions to add support for additional languages! Here's how to
-add a new language:
+## Local development
 
-1. **Create a new translation file**:
-
-   ```sh
-   # Copy the English template
-   cp src/translations/en.ts src/translations/[language-code].ts
-   ```
-
-2. **Translate all strings** in the new file. Each translation file contains:
-   - Language metadata (flag emoji and language name)
-   - Event summaries and introductions
-   - Milestone celebration messages
-   - Volunteer acknowledgments
-   - Personal best celebrations
-   - Loading messages and fallback text
-   - Milestone club names (e.g., "10 club", "25 club", etc.)
-
-3. **Register the new language** in `src/translations/index.ts`:
-
-   ```typescript
-   import { [language-code] } from './[language-code]';
-
-   export const translations: Record<string, TranslationKeys> = {
-     en,
-     de,
-     [language-code], // Add your new language here
-   };
-   ```
-
-4. **Test your translation**:
-
-   ```sh
-   mise run test
-   mise run build
-   ```
-
-5. **Submit a pull request** with your translation.
-
-### Translation Guidelines
-
-- Use British English spelling conventions (e.g., "colour" not "color")
-- Maintain the friendly, celebratory tone of parkrun reports
-- Keep milestone club names consistent with parkrun terminology
-- Test with real parkrun data to ensure translations work correctly
-- Consider cultural differences in how achievements are celebrated
-
-### Supported parkrun Countries
-
-Eventuate works with parkrun results pages from all countries. Adding
-translations helps make the tool more accessible to parkrun communities
-worldwide.
-
-## Development status [![CI][ci-badge]][ci]
-
-I wrote this for myself in an afternoon to see if I could do it and figured it
-may be useful to others. I then spent a while over-engineering it in TypeScript
-and adding some unit tests using `jest`.
-
-## Building locally
-
-### Quickstart
-
-This project uses [mise](https://mise.jdx.dev/) as the single entry point for
-tools and tasks. [aube](https://aube.jdx.dev/) manages Node dependencies with
-[paranoid mode](https://aube.jdx.dev/security) enabled.
+This project uses [mise](https://mise.jdx.dev/) for tools and tasks, and
+[aube](https://aube.jdx.dev/) for Node dependencies (paranoid mode).
 
 ```sh
-# Prerequisites: mise (https://mise.jdx.dev)
-curl https://mise.run | sh
-
-mise install          # node, aube, ruby, hk (from mise.toml)
-mise trust            # first time only
-mise run setup        # install dependencies
-mise run test         # lint + unit tests
-mise tasks            # discover all available tasks
+curl https://mise.run | sh   # if you do not already have mise
+mise install                 # tools from mise.toml
+mise trust                   # first time only
+mise run setup               # install dependencies
+mise run test                # lint + unit tests
+mise tasks                   # list available tasks
 ```
 
-Git hooks (format, lint, unit tests, commitlint, and conditional pre-push
-checks) are managed by [hk](https://hk.jdx.dev/) and installed automatically
-when you run `mise install`. Bypass hooks for a single command with
-`HK=0 git commit`. Run a hook manually with `hk run pre-commit`.
+Git hooks are managed by [hk](https://hk.jdx.dev/) and installed with
+`mise install`. Bypass for one command with `HK=0 git commit`.
 
-### Task reference
+Useful tasks:
 
-| Task                       | Description                                        |
-| -------------------------- | -------------------------------------------------- |
-| `mise run setup`           | First-time project bootstrap                       |
-| `mise run bootstrap`       | Install Node and Ruby dependencies                 |
-| `mise run update`          | Refresh dependencies after pulling                 |
-| `mise run build`           | Build extension, userscript, and bookmarklet       |
-| `mise run watch`           | Build bundles in watch mode for local development  |
-| `mise run test`            | Lint and unit tests                                |
-| `mise run test:lint`       | ESLint and Prettier format check                   |
-| `mise run test:format`     | Prettier format check only                         |
-| `mise run test:units`      | Jest unit tests                                    |
-| `mise run cibuild`         | All CI checks locally (includes audit)             |
-| `mise run package`         | Package Firefox, Chromium, userscript, bookmarklet |
-| `mise run docs:build`      | Build Jekyll documentation site                    |
-| `mise run docs:serve`      | Serve documentation at localhost:4000              |
-| `mise run lighthouse`      | Build docs and run Lighthouse audits               |
-| `mise run screenshots`     | Regenerate Chrome Web Store screenshots            |
-| `mise run server`          | Run the extension in Firefox                       |
-| `mise run approve-builds`  | Approve dependency build scripts in paranoid mode  |
-| `mise run release:dry-run` | Dry-run semantic-release (requires `GITHUB_TOKEN`) |
+| Task                  | Description                                |
+| --------------------- | ------------------------------------------ |
+| `mise run build`      | Extension, userscript, and bookmarklet     |
+| `mise run watch`      | Rebuild bundles while developing           |
+| `mise run server`     | Run the extension in Firefox               |
+| `mise run package`    | Package Firefox and Chromium zips          |
+| `mise run docs:serve` | Jekyll docs at `localhost:4000/eventuate/` |
+| `mise run cibuild`    | Full CI checks locally (includes audit)    |
 
-### Prerequisites
-
-Install tools with mise; versions are defined only in [`mise.toml`](mise.toml)
-(Node.js, aube, Ruby for Jekyll, and hk for git hooks).
-
-Security overrides and build-script approvals live in
-[`aube-workspace.yaml`](aube-workspace.yaml) (`paranoid: true`, `overrides`,
-`allowBuilds`).
-
-### Building the Extension
-
-Once set up:
-
-```sh
-mise run package          # lint, build, and package for Firefox and Chromium
-```
-
-Or if Docker's more your thing:
-
-```sh
-docker buildx build . -o target
-```
-
-### Building the Userscript and Bookmarklet
-
-`mise run build` generates the userscript and bookmarklet (also run as part of
-`mise run package` and `mise run docs:build`). Outputs are build artefacts and
-are not checked into git:
+`mise run build` writes artefacts that are not checked into git:
 
 - Userscript: `docs/eventuate.user.js`
 - Bookmarklet: `docs/bookmarklet/index.md`
 
-```sh
-mise run build
-```
+CI publishes those on GitHub Pages and GitHub Releases.
 
-CI publishes those files on GitHub Pages and attaches them to GitHub Releases.
-The userscript can be installed in browsers that support userscript managers
-like [Tampermonkey][tampermonkey], [Userscripts][userscripts], or
-[Greasemonkey][greasemonkey]. The bookmarklet can be used in any browser,
-including Safari on iOS devices, by creating a bookmark with the generated
-JavaScript code.
+Tool versions live only in [`mise.toml`](mise.toml). Dependency security
+overrides and build-script approvals live in
+[`aube-workspace.yaml`](aube-workspace.yaml).
 
-### Building the Documentation
-
-The project includes Jekyll-based documentation that can be built locally:
-
-```sh
-mise run docs:build
-mise run docs:serve
-```
-
-The documentation will be available at `http://localhost:4000/eventuate/` and
-includes:
-
-- Project overview and features
-- Installation instructions
-- Internationalisation support
-- Development guidelines
-
-### Troubleshooting
-
-#### mise command not found
-
-Install mise from <https://mise.jdx.dev> and activate it in your shell:
-
-```sh
-curl https://mise.run | sh
-echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
-```
-
-#### Dependency build scripts blocked
-
-Dependency lifecycle scripts require explicit approval in paranoid mode. After
-adding dependencies, run `mise run approve-builds` and commit the updated
-`allowBuilds` entries in `aube-workspace.yaml`.
-
-## Running locally
-
-First, build the TypeScript in watch mode:
-
-```sh
-mise run watch
-```
-
-In another terminal, start Firefox with the extension loaded:
-
-```sh
-mise run server
-```
-
-## Installing in a browser from source
-
-1. Download this repository to a suitable location on your computer.
-1. In Firefox, navigate to "about:debugging#/runtime/this-firefox"
-1. Use the "Load Temporary Add-on..." button.
-1. Browse to and open the file `manifest.json` from the location where it was
-   saved.
-1. The add-on will now appear in the add-on manager’s list of installed add-ons
-   and be ready to use
-1. Navigate to a results page such as:
-   - **English**: <https://www.parkrun.com.au/timboon/results/latestresults/>
-   - **German**:
-     <https://www.parkrun.com.de/priessnitzgrund/results/latestresults/>
-
-Observe the additional details between the title and the event table.
-
-## Requirements
-
-This was built with [Firefox][firefox] in mind but also works in Chromium-based
-browsers, using the `chromium` artefacts. Enjoy!
+Load a temporary add-on from source: open
+`about:debugging#/runtime/this-firefox` in Firefox, choose **Load Temporary
+Add-on…**, and select `manifest.json` from this repo.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on [GitHub]. Everyone interacting in
-the eventuate project's codebases, issue trackers, _etcetera_ is expected to
-follow the [code of conduct].
+Bug reports and pull requests are welcome on [GitHub][github]. See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for semantic commit conventions. To add a
+language, copy `src/translations/en.ts`, translate it, register it in
+`src/translations/index.ts`, and open a PR (use Australian English spelling in
+English strings).
 
-We use semantic commits in this project. Please see our [contibution
-guidelines][contributing] for more information about the preferred commit
-message format.
+## Code of conduct
+
+Everyone interacting in this project is expected to follow the
+[code of conduct](CODE_OF_CONDUCT.md).
 
 ## Releasing
 
-This project uses [semantic-release][semantic-release] to automate version
-management and package releases. The release process is triggered automatically
-when changes are pushed to the `main` branch.
+Releases are automated with [semantic-release][semantic-release] on pushes to
+`main`. The pipeline analyses commits, updates `CHANGELOG.md`, creates a GitHub
+release, and attaches Firefox and Chromium zips plus the userscript and
+bookmarklet page.
 
-The process will:
-
-1. Analyze commits to determine the next version number
-2. Update the CHANGELOG.md
-3. Create a new GitHub release
-4. Build and attach extension packages:
-   - Firefox extension (`.zip`)
-   - Chrome extension (`.zip`)
-   - Userscript (`.user.js`)
-   - Bookmarklet installation page (`.html`)
-
-To test the release process locally:
+Dry-run locally:
 
 ```sh
 GITHUB_TOKEN=your-token mise run release:dry-run
 ```
 
-The version number will be automatically incremented based on your commits:
+Version bumps follow conventional commits: `fix:` → patch, `feat:` → minor,
+`BREAKING CHANGE:` → major.
 
-- `fix:` → patch (0.0.x)
-- `feat:` → minor (0.x.0)
-- `BREAKING CHANGE:` → major (x.0.0)
+## Security
 
-## License [![license][license-image]][licence]
+See [`.github/SECURITY.md`](.github/SECURITY.md) for how to report
+vulnerabilities. Pull requests also run automated security scanning (including
+CodeQL); dependencies are updated via Dependabot and aube.
 
-The addon is available as open source under the terms of the [MIT License].
+## License
 
-<!-- Links -->
+Available under the [MIT License](LICENSE.txt).
 
-[chromewebstore-image]:
-  https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
+<!-- Badges and links -->
+
 [ci-badge]:
   https://github.com/johnsyweb/eventuate/actions/workflows/ci-cd.yml/badge.svg
 [ci]: https://github.com/johnsyweb/eventuate/actions/workflows/ci-cd.yml
-[code of conduct]:
-  https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md
-[GitHub]: https://github.com/johnsyweb/eventuate/
-[Google Chrome]:
+[mozilla-badge]: https://img.shields.io/amo/v/eventuate?logo=mozilla
+[mozilla]: https://addons.mozilla.org/firefox/addon/eventuate/
+[chrome-badge]:
+  https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
+[chrome]:
   https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
-[licence]: https://github.com/johnsyweb/eventuate/blob/HEAD/LICENSE.txt
-[license-image]:
-  https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
-[MIT License]: https://opensource.org/licenses/MIT
-[mozilla-image]: https://img.shields.io/amo/v/eventuate?logo=mozilla
-[Mozilla]:
-  https://addons.mozilla.org/firefox/addon/eventuate/
-  'Mozilla / Firefox'
-[parkrun]: https://www.parkrun.com/
+[license-badge]: https://img.shields.io/github/license/johnsyweb/eventuate
+[license]: LICENSE.txt
+[github]: https://github.com/johnsyweb/eventuate/
+[github-issues]: https://github.com/johnsyweb/eventuate/issues
+[pete]: https://www.johnsy.com/
 [brimbank]: https://www.parkrun.com.au/brimbank/
 [facebook]: https://www.facebook.com/brimbankparkrun
-[firefox]: https://mozilla.org/firefox
-[contributing]: CONTRIBUTING.md
+[userscript]: https://www.johnsy.com/eventuate/eventuate.user.js
+[bookmarklet]: https://www.johnsy.com/eventuate/bookmarklet/
 [semantic-release]: https://github.com/semantic-release/semantic-release
-[tampermonkey]: https://www.tampermonkey.net/
-[userscripts]: https://github.com/quoid/userscripts
-[greasemonkey]: https://www.greasespot.net/
-
-<!-- Images -->
-
 [eventuate-results-summary-image]: ./docs/images/eventuate-results-summary.png
