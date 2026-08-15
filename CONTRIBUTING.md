@@ -1,7 +1,7 @@
 # Contributing to Eventuate
 
-See the [README quickstart](README.md#quickstart) for setting up mise and
-running project tasks.
+See the [README local development](README.md#local-development) section for
+setting up mise and running project tasks.
 
 ## Commit Messages
 
