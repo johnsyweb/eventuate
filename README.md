@@ -108,7 +108,7 @@ Eventuate works with parkrun results pages from all countries. Adding
 translations helps make the tool more accessible to parkrun communities
 worldwide.
 
-## Development status [![Node.js CI][ci-badge]][Node.js CI]
+## Development status [![CI][ci-badge]][ci]
 
 I wrote this for myself in an afternoon to see if I could do it and figured it
 may be useful to others. I then spent a while over-engineering it in TypeScript
@@ -321,7 +321,8 @@ The addon is available as open source under the terms of the [MIT License].
 [chromewebstore-image]:
   https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
 [ci-badge]:
-  https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml/badge.svg
+  https://github.com/johnsyweb/eventuate/actions/workflows/ci-cd.yml/badge.svg
+[ci]: https://github.com/johnsyweb/eventuate/actions/workflows/ci-cd.yml
 [code of conduct]:
   https://github.com/johnsyweb/eventuate/blob/main/CODE_OF_CONDUCT.md
 [GitHub]: https://github.com/johnsyweb/eventuate/
@@ -335,13 +336,11 @@ The addon is available as open source under the terms of the [MIT License].
 [Mozilla]:
   https://addons.mozilla.org/firefox/addon/eventuate/
   'Mozilla / Firefox'
-[Node.js CI]:
-  https://github.com/johnsyweb/eventuate/actions/workflows/node.js.yml
 [parkrun]: https://www.parkrun.com/
 [brimbank]: https://www.parkrun.com.au/brimbank/
 [facebook]: https://www.facebook.com/brimbankparkrun
 [firefox]: https://mozilla.org/firefox
-[contributing]: docs/CONTRIBUTING.md
+[contributing]: CONTRIBUTING.md
 [semantic-release]: https://github.com/semantic-release/semantic-release
 [tampermonkey]: https://www.tampermonkey.net/
 [userscripts]: https://github.com/quoid/userscripts
