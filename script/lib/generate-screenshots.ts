@@ -221,7 +221,6 @@ async function generateScreenshots(): Promise<void> {
 
         await page.evaluate((code: string) => {
           // Bookmarklet bundle is a full script, not a function body.
-          // eslint-disable-next-line no-eval
           eval(code);
         }, bookmarkletScript);
       } catch (error) {
