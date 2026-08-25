@@ -148,6 +148,10 @@ async function generateScreenshots(): Promise<void> {
 
     const page = await browser.newPage();
 
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    );
+
     const filterName = process.env.SCREENSHOT_NAME;
     const configsToRun = filterName
       ? screenshotConfigs.filter((c) => c.name === filterName)
@@ -215,7 +219,11 @@ async function generateScreenshots(): Promise<void> {
           }
         });
 
-        await page.evaluate(bookmarkletScript);
+        await page.evaluate((code: string) => {
+          // Bookmarklet bundle is a full script, not a function body.
+          // eslint-disable-next-line no-eval
+          eval(code);
+        }, bookmarkletScript);
       } catch (error) {
         console.warn(
           '⚠️  Bookmarklet script had an error, but continuing...',
