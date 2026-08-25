@@ -24,7 +24,7 @@ iOS).
 2. Open a parkrun **latest results** page, for example
    <https://www.parkrun.com.au/timboon/results/latestresults/>.
 3. Read the Eventuate summary inserted above the results table — ready to paste
-   into your event report.
+   into your event report. Drafts use given names only, keeping reports simple.
 
 ![Eventuate output on a Brimbank parkrun results page, showing summary
 statistics and celebration text above the results table.][eventuate-results-summary-image]

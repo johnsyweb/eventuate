@@ -5,6 +5,11 @@ Store listing.
 
 ## Current Description
 
+The Chrome Web Store listing should match the English `description` in
+[`amo.json`](amo.json), including the bullet:
+
+- Given names only in drafts, keeping reports simple
+
 Add the following section to the end of the Chrome Web Store description:
 
 ---
