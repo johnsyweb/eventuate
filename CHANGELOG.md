@@ -1,3 +1,25 @@
+# [1.18.0](https://github.com/johnsyweb/eventuate/compare/v1.17.0...v1.18.0) (2026-08-25)
+
+
+### Bug Fixes
+
+* **ci:** let semantic-release commit under hk hooks ([4a0fb38](https://github.com/johnsyweb/eventuate/commit/4a0fb38355172a85cb4cee63342d54d82e6d0df1))
+* **ci:** upload build artefacts from their webpack output paths ([d6c171f](https://github.com/johnsyweb/eventuate/commit/d6c171fdff2243c2f3eb5c9b7cd62dc1d07528d7))
+* **extractors:** read volunteer club from milestone-v class ([dce5c55](https://github.com/johnsyweb/eventuate/commit/dce5c556cfc4d8c0830e59f4477fd59f9d174369))
+* **screenshots:** drop unused eslint-disable for eval ([7441b66](https://github.com/johnsyweb/eventuate/commit/7441b6625af6e38b54cebcb13b2ef90ae5fe7925))
+* **screenshots:** use a browser user agent for parkrun pages ([94efa22](https://github.com/johnsyweb/eventuate/commit/94efa2297a80e82e7470300f009245b369b75e80))
+
+
+### Features
+
+* **extractors:** capture volunteer athlete ID and profile URL ([0173ac0](https://github.com/johnsyweb/eventuate/commit/0173ac0090cf7d206ea74f8f11f5026627d4497b))
+* **extractor:** use given names in drafts for all events ([cbd34a9](https://github.com/johnsyweb/eventuate/commit/cbd34a99d1db5acf1cdc80cb4062de845d993d61))
+* **i18n:** add junior parkrun volunteer club labels ([8b23b27](https://github.com/johnsyweb/eventuate/commit/8b23b27a02b7359c8217a732d69aee0628b6d147))
+* **milestones:** resolve junior volunteer milestone celebrations ([f3ece4f](https://github.com/johnsyweb/eventuate/commit/f3ece4f39d04f040e0ea747c077274dd4521b1f0))
+* **milestones:** restrict junior clubs to age categories ≤14 ([680f12d](https://github.com/johnsyweb/eventuate/commit/680f12d98733ad0118ed511cd2617704fb0d8cb0))
+* **milestones:** sync Volunteer celebrations on junior results ([62e8be7](https://github.com/johnsyweb/eventuate/commit/62e8be717590d2c21d6038e461027ccfcd5e78b3))
+* **ui:** progressively add junior volunteer milestones to the report ([5ff4d0a](https://github.com/johnsyweb/eventuate/commit/5ff4d0a20613b0175c1dac68e3736379f2a82f96))
+
 # [1.17.0](https://github.com/johnsyweb/eventuate/compare/v1.16.1...v1.17.0) (2026-07-17)
 
 
