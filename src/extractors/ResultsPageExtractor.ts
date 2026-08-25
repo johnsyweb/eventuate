@@ -33,7 +33,7 @@ export class ResultsPageExtractor {
     this.finishers = Array.from(rowElements).map(
       (d) =>
         new Finisher(
-          this.removeSurnameFromJunior(d.dataset.name),
+          this.removeSurname(d.dataset.name),
           d.dataset.agegroup,
           d.dataset.club,
           d.dataset.gender,
@@ -71,7 +71,7 @@ export class ResultsPageExtractor {
           Number(tr.dataset.runs) > 1
       )
       .map((tr) => ({
-        name: this.removeSurnameFromJunior(tr.dataset.name),
+        name: this.removeSurname(tr.dataset.name),
         finishes: Number(tr.dataset.runs),
       }));
 
@@ -79,7 +79,7 @@ export class ResultsPageExtractor {
       .filter((tr) => tr.querySelector('td.Results-table-td--pb'))
       .map(
         (tr) =>
-          `${this.removeSurnameFromJunior(tr.dataset.name)} (${tr.querySelector('.Results-table-td--time .compact')?.textContent})`
+          `${this.removeSurname(tr.dataset.name)} (${tr.querySelector('.Results-table-td--time .compact')?.textContent})`
       );
 
     this.runningWalkingGroups = Array.from(
@@ -102,14 +102,14 @@ export class ResultsPageExtractor {
     return this.resultsPageDocument.querySelectorAll('.Volunteers-table-row');
   }
 
-  removeSurnameFromJunior(name?: string): string {
-    if (!name || this.courseLength == 5) {
-      return name ?? '';
-    } else {
-      const parts = name.split(' ');
-      if (parts.length === 2) {
-        return parts[0];
-      }
+  removeSurname(name?: string): string {
+    if (!name) {
+      return '';
+    }
+
+    const parts = name.split(' ');
+    if (parts.length === 2) {
+      return parts[0];
     }
 
     return name.replace(/[-' A-Z]+$/, '');
@@ -122,7 +122,7 @@ export class ResultsPageExtractor {
       ) as HTMLAnchorElement | null;
       const profileUrl = profileAnchor?.href;
       return {
-        name: this.removeSurnameFromJunior(row.dataset.name),
+        name: this.removeSurname(row.dataset.name),
         vols: Number(row.dataset.volunteercredits),
         vClub: this.volunteerClubFromRow(row),
         athleteID: profileUrl ? athleteIDFromURI(profileUrl) : undefined,

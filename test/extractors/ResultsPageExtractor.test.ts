@@ -42,7 +42,7 @@ describe('ResultsPageExtractor', () => {
     it('extracts finishers data', () => {
       expect(extractor.finishers).toHaveLength(118);
       expect(extractor.finishers[0]).toMatchObject({
-        name: 'Felix ALLEN',
+        name: 'Felix',
         agegroup: 'JM15-17',
         position: '1',
         time: '21:26',
@@ -50,9 +50,9 @@ describe('ResultsPageExtractor', () => {
       });
     });
 
-    describe('removeSurnameFromJunior', () => {
-      it('returns full name for 5k events', () => {
-        expect(extractor.removeSurnameFromJunior('John DOE')).toBe('John DOE');
+    describe('removeSurname', () => {
+      it('returns given name for 5k events', () => {
+        expect(extractor.removeSurname('John DOE')).toBe('John');
       });
     });
 
@@ -63,7 +63,7 @@ describe('ResultsPageExtractor', () => {
 
         // RD: Didn't finish
         expect(volunteers).toContainEqual({
-          name: 'Amanda SHINTON',
+          name: 'Amanda',
           vols: 234,
           vClub: 100,
           athleteID: 4144103,
@@ -72,7 +72,7 @@ describe('ResultsPageExtractor', () => {
 
         // Tailwalker: Finished
         expect(volunteers).toContainEqual({
-          name: 'Zoran PETROVSKI',
+          name: 'Zoran',
           vols: 46,
           vClub: 25,
           athleteID: expect.any(Number),
@@ -81,7 +81,7 @@ describe('ResultsPageExtractor', () => {
 
         // New volunteer
         expect(volunteers).toContainEqual({
-          name: 'Charles GAVRIEL',
+          name: 'Charles',
           vols: 2,
           vClub: undefined,
           athleteID: 10296588,
@@ -115,9 +115,7 @@ describe('ResultsPageExtractor', () => {
 
     it('identifies first timers', () => {
       expect(extractor.firstTimersWithFinishCounts).toHaveLength(20);
-      expect(extractor.firstTimersWithFinishCounts[0].name).toEqual(
-        'Felix ALLEN'
-      );
+      expect(extractor.firstTimersWithFinishCounts[0].name).toEqual('Felix');
       expect(extractor.firstTimersWithFinishCounts[0].finishes).toBeGreaterThan(
         1
       );
@@ -125,7 +123,7 @@ describe('ResultsPageExtractor', () => {
 
     it('identifies PBs', () => {
       expect(extractor.finishersWithNewPBs).toHaveLength(19);
-      expect(extractor.finishersWithNewPBs[0]).toEqual('Hayden WEST (21:47)');
+      expect(extractor.finishersWithNewPBs[0]).toEqual('Hayden (21:47)');
     });
 
     it('identifies unknown parkrunners', () => {
@@ -136,7 +134,7 @@ describe('ResultsPageExtractor', () => {
     it('identifies newest parkrunners', () => {
       expect(extractor.newestParkrunners).toHaveLength(2);
       expect(extractor.newestParkrunners).toEqual(
-        expect.arrayContaining(['Brayden RIZZO', 'Jake MARRA'])
+        expect.arrayContaining(['Brayden', 'Jake'])
       );
     });
   });
