@@ -6,15 +6,15 @@ const FIVE_K_VOLUNTEER_ICONS: Record<number, IconHex> = {
   25: '&#x1F49C;',
   50: '&#x2764;',
   100: '&#x1F5A4;',
-  200: '&#x1F5A4;',
+  200: '&#x1FA75;', // Sky
   250: '&#x1F49A;',
-  300: '&#x1F49A;',
-  400: '&#x1F49A;',
+  300: '&#x1F9E1;', // Deep Orange
+  400: '&#x1F90E;', // Burgundy
   500: '&#x1F499;',
-  600: '&#x1F499;',
-  700: '&#x1F499;',
-  800: '&#x1F499;',
-  900: '&#x1F499;',
+  600: '&#x1F49B;', // Lime
+  700: '&#x1F5A4;', // Navy
+  800: '&#x1F49C;', // Grape
+  900: '&#x1F49A;', // Grass Green
   1000: '&#x1F49B;',
 };
 

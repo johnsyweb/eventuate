@@ -100,7 +100,7 @@ describe('milestoneCelebrationsForEvent on 5k events', () => {
     const celebrations = milestoneCelebrationsForEvent(extractor);
 
     expect(celebrations).toEqual([
-      { clubName: '200', icon: '&#x26AB;', names: ['Sam'] },
+      { clubName: '200', icon: '&#x1F535;', names: ['Sam'] },
     ]);
   });
 });

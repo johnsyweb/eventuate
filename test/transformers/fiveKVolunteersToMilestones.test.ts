@@ -10,7 +10,7 @@ describe(fiveKVolunteersToMilestones, () => {
     };
 
     expect(fiveKVolunteersToMilestones([volunteer])).toEqual([
-      { clubName: 'Volunteer 200', icon: '&#x1F5A4;', names: ['Sam'] },
+      { clubName: 'Volunteer 200', icon: '&#x1FA75;', names: ['Sam'] },
     ]);
   });
 });

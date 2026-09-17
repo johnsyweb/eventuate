@@ -6,15 +6,15 @@ const FIVE_K_FINISHER_ICONS: Record<number, IconHex> = {
   25: '&#x1F7E3;',
   50: '&#x1F534;',
   100: '&#x26AB;',
-  200: '&#x26AB;',
+  200: '&#x1F535;', // Sky
   250: '&#x1F7E2;',
-  300: '&#x1F7E2;',
-  400: '&#x1F7E2;',
+  300: '&#x1F7E0;', // Deep Orange
+  400: '&#x1F7E4;', // Burgundy
   500: '&#x1F535;',
-  600: '&#x1F535;',
-  700: '&#x1F535;',
-  800: '&#x1F535;',
-  900: '&#x1F535;',
+  600: '&#x1F7E1;', // Lime
+  700: '&#x26AB;', // Navy
+  800: '&#x1F7E3;', // Grape
+  900: '&#x1F7E2;', // Grass Green
   1000: '&#x1F7E1;',
 };
 

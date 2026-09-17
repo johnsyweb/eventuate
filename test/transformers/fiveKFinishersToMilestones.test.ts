@@ -57,7 +57,7 @@ describe(fiveKFinishersToMilestones, () => {
   test('200', () => {
     mickey.runs = '200';
     expect(fiveKFinishersToMilestones([mickey])).toEqual([
-      { clubName: '200', icon: '&#x26AB;', names: ['Mickey'] },
+      { clubName: '200', icon: '&#x1F535;', names: ['Mickey'] },
     ]);
   });
 });
