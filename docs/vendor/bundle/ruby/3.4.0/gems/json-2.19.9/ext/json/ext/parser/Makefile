@@ -13,12 +13,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /Users/paj/.local/share/mise/installs/ruby/3.4.7/include/ruby-3.4.0
+topdir = /home/runner/.local/share/mise/installs/ruby/3.4.7/include/ruby-3.4.0
 hdrdir = $(topdir)
-arch_hdrdir = /Users/paj/.local/share/mise/installs/ruby/3.4.7/include/ruby-3.4.0/arm64-darwin25
+arch_hdrdir = /home/runner/.local/share/mise/installs/ruby/3.4.7/include/ruby-3.4.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/Users/paj/.local/share/mise/installs/ruby/3.4.7
+prefix = $(DESTDIR)/home/runner/.local/share/mise/installs/ruby/3.4.7
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -53,7 +53,7 @@ htmldir = $(docdir)
 infodir = $(datarootdir)/info
 docdir = $(datarootdir)/doc/$(PACKAGE)
 oldincludedir = $(DESTDIR)/usr/include
-includedir = $(SDKROOT)$(prefix)/include
+includedir = $(prefix)/include
 runstatedir = $(localstatedir)/run
 localstatedir = $(prefix)/var
 sharedstatedir = $(prefix)/com
@@ -67,49 +67,49 @@ archdir = $(rubyarchdir)
 
 
 CC_WRAPPER = 
-CC = clang
-CXX = clang++
+CC = gcc
+CXX = g++
 LIBRUBY = $(LIBRUBY_SO)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
-LIBRUBYARG_SHARED = -l$(RUBY_SO_NAME)
-LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static -framework CoreFoundation $(MAINLIBS)
+LIBRUBYARG_SHARED = -Wl,-rpath,$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)
+LIBRUBYARG_STATIC = -Wl,-rpath,$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)-static $(MAINLIBS)
 empty =
 OUTFLAG = -o $(empty)
 COUTFLAG = -o $(empty)
 CSRCFLAG = $(empty)
 
 RUBY_EXTCONF_H = 
-cflags   = $(hardenflags) -fdeclspec  $(optflags) $(debugflags) $(warnflags)
+cflags   = $(hardenflags)  $(optflags) $(debugflags) $(warnflags)
 cxxflags = 
 optflags = -O3 -fno-fast-math
 debugflags = -ggdb3
-warnflags = -Wall -Wextra -Wextra-tokens -Wdeprecated-declarations -Wdivision-by-zero -Wdiv-by-zero -Wimplicit-function-declaration -Wimplicit-int -Wpointer-arith -Wshorten-64-to-32 -Wwrite-strings -Wold-style-definition -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wunused-variable -Wmisleading-indentation -Wundef
+warnflags = -Wall -Wextra -Wdeprecated-declarations -Wdiv-by-zero -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wpointer-arith -Wwrite-strings -Wold-style-definition -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable -Wmisleading-indentation -Wundef
 cppflags = 
-CCDLFLAGS = -fno-common
-CFLAGS   = $(CCDLFLAGS) $(cflags) -fno-common -pipe $(ARCH_FLAG)
+CCDLFLAGS = -fPIC
+CFLAGS   = $(CCDLFLAGS) $(cflags)  -fPIC -std=c99 $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS = -DHAVE_RB_ENC_INTERNED_STR -DHAVE_RB_STR_TO_INTERNED_STR -DHAVE_RB_HASH_NEW_CAPA -DHAVE_RB_HASH_BULK_INSERT -DHAVE_CONST_RUBY_TYPED_EMBEDDABLE -DHAVE_ARM_NEON_H -DJSON_ENABLE_SIMD -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags)
-CXXFLAGS = $(CCDLFLAGS) -fdeclspec $(ARCH_FLAG)
-ldflags  = -L. -fstack-protector-strong -L/opt/homebrew/Cellar/gmp/6.3.0/lib
-dldflags = -L/opt/homebrew/Cellar/gmp/6.3.0/lib -Wl,-undefined,dynamic_lookup 
-ARCH_FLAG = -arch arm64
+CPPFLAGS = -DHAVE_RB_ENC_INTERNED_STR -DHAVE_RB_STR_TO_INTERNED_STR -DHAVE_RB_HASH_NEW_CAPA -DHAVE_RB_HASH_BULK_INSERT -DHAVE_CONST_RUBY_TYPED_EMBEDDABLE -DHAVE_X86INTRIN_H -DJSON_ENABLE_SIMD -DHAVE_CPUID_H  $(DEFS) $(cppflags)
+CXXFLAGS = $(CCDLFLAGS)  $(ARCH_FLAG)
+ldflags  = -L. -fstack-protector-strong -rdynamic -Wl,-export-dynamic -Wl,--no-as-needed
+dldflags = -Wl,--compress-debug-sections=zlib 
+ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
-LDSHARED = $(CC) -dynamic -bundle
-LDSHAREDXX = $(CXX) -dynamic -bundle
-POSTLINK = dsymutil $@ 2>/dev/null; { test -z '$(RUBY_CODESIGN)' || codesign -s '$(RUBY_CODESIGN)' $@; }
-AR = ar
+LDSHARED = $(CC) -shared
+LDSHAREDXX = $(CXX) -shared
+POSTLINK = :
+AR = gcc-ar
 LD = ld
 EXEEXT = 
 
 RUBY_INSTALL_NAME = $(RUBY_BASE_NAME)
-RUBY_SO_NAME = ruby.3.4
+RUBY_SO_NAME = ruby
 RUBYW_INSTALL_NAME = 
 RUBY_VERSION_NAME = $(RUBY_BASE_NAME)-$(ruby_version)
 RUBYW_BASE_NAME = rubyw
 RUBY_BASE_NAME = ruby
 
-arch = arm64-darwin25
+arch = x86_64-linux
 sitearch = $(arch)
 ruby_version = 3.4.0
 ruby = $(bindir)/$(RUBY_BASE_NAME)
@@ -119,8 +119,8 @@ ruby_headers = $(hdrdir)/ruby.h $(hdrdir)/ruby/backward.h $(hdrdir)/ruby/ruby.h 
 
 RM = rm -f
 RM_RF = rm -fr
-RMDIRS = rmdir -p
-MAKEDIRS = mkdir -p
+RMDIRS = rmdir --ignore-fail-on-non-empty -p
+MAKEDIRS = /usr/bin/mkdir -p
 INSTALL = /usr/bin/install -c
 INSTALL_PROG = $(INSTALL) -m 0755
 INSTALL_DATA = $(INSTALL) -m 644
@@ -131,7 +131,7 @@ TOUCH = exit >
 
 preload = 
 libpath = . $(libdir)
-LIBPATH = -L. -L$(libdir)
+LIBPATH = -L. -L$(libdir) -Wl,-rpath,$(libdir)
 DEFFILE = 
 
 CLEANFILES = mkmf.log
@@ -142,7 +142,7 @@ extout =
 extout_prefix = 
 target_prefix = /json/ext
 LOCAL_LIBS = 
-LIBS = $(LIBRUBYARG_SHARED)  -lpthread  
+LIBS = $(LIBRUBYARG_SHARED)  -lm -lpthread  -lc
 ORIG_SRCS = parser.c
 SRCS = $(ORIG_SRCS) 
 OBJS = parser.o
@@ -151,7 +151,7 @@ LOCAL_HDRS =
 TARGET = parser
 TARGET_NAME = parser
 TARGET_ENTRY = Init_$(TARGET_NAME)
-DLLIB = $(TARGET).bundle
+DLLIB = $(TARGET).so
 EXTSTATIC = 
 STATIC_LIB = 
 
@@ -164,7 +164,7 @@ HDRDIR        = $(sitehdrdir)$(target_prefix)
 ARCHHDRDIR    = $(sitearchhdrdir)$(target_prefix)
 TARGET_SO_DIR =
 TARGET_SO     = $(TARGET_SO_DIR)$(DLLIB)
-CLEANLIBS     = $(TARGET_SO) $(TARGET_SO:=.dSYM)
+CLEANLIBS     = $(TARGET_SO) false
 CLEANOBJS     = $(OBJS) *.bak
 TARGET_SO_DIR_TIMESTAMP = $(TIMESTAMP_DIR)/.sitearchdir.-.json.-.ext.time
 

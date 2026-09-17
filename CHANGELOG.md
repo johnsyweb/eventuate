@@ -1,3 +1,11 @@
+# [1.19.0](https://github.com/johnsyweb/eventuate/compare/v1.18.0...v1.19.0) (2026-09-17)
+
+
+### Features
+
+* **milestones:** align extension icons with shop shirt colours ([4ea1424](https://github.com/johnsyweb/eventuate/commit/4ea1424baf15b72b57e15448fe6f47c0606684e3))
+* **milestones:** retire 5km extension preview toggle ([e100379](https://github.com/johnsyweb/eventuate/commit/e100379b04828f166c175b049ca48de7708d6fdc))
+
 # [1.18.0](https://github.com/johnsyweb/eventuate/compare/v1.17.0...v1.18.0) (2026-08-25)
 
 
