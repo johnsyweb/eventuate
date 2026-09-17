@@ -123,8 +123,8 @@ Version bumps follow conventional commits: `fix:` → patch, `feat:` → minor,
 ## Security
 
 See [`.github/SECURITY.md`](.github/SECURITY.md) for how to report
-vulnerabilities. Pull requests also run automated security scanning (including
-CodeQL); dependencies are updated via Dependabot and aube.
+vulnerabilities. Dependencies are updated via Dependabot and aube;
+`mise run cibuild` includes `aube audit`.
 
 ## License
 
