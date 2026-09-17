@@ -18,20 +18,14 @@ const FIVE_K_VOLUNTEER_ICONS: Record<number, IconHex> = {
   1000: '&#x1F49B;',
 };
 
-const PRODUCTION_MILESTONES = [10, 25, 50, 100, 250, 500, 1000] as const;
-const EXTENSION_MILESTONES = [200, 300, 400, 600, 700, 800, 900] as const;
+const FIVE_K_VOLUNTEER_MILESTONES = [
+  10, 25, 50, 100, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000,
+] as const;
 
 export function fiveKVolunteerIcon(milestone: number): IconHex {
   return FIVE_K_VOLUNTEER_ICONS[milestone];
 }
 
-export function fiveKVolunteerMilestoneNumbers(
-  useExtensions: boolean
-): number[] {
-  if (!useExtensions) {
-    return [...PRODUCTION_MILESTONES];
-  }
-  return [...PRODUCTION_MILESTONES, ...EXTENSION_MILESTONES].sort(
-    (a, b) => a - b
-  );
+export function fiveKVolunteerMilestoneNumbers(): number[] {
+  return [...FIVE_K_VOLUNTEER_MILESTONES];
 }

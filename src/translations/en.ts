@@ -49,8 +49,6 @@ export const en = {
     "We'll be back next week for another free, fun, and friendly weekly {courseLength}km community event. Walk, jog, run, volunteer or spectate – it's up to you.<br><br>&#x1f333; #loveparkrun",
   staleResultsWarning:
     'These results are more than a week old. Milestones may have been reached since this event took place.',
-  previewMilestonesWarning:
-    'Preview: milestone clubs use upcoming parkrun rules. Official recognition may differ until go-live.',
   fallbackParkrunName: 'parkrun',
   fallbackParkrunnerName: 'a parkrunner',
   // Pluralization helpers

@@ -18,16 +18,12 @@ export interface JuniorVolunteerCandidate {
   usedCreditFallback: boolean;
 }
 
-function isVolunteerLadderMilestone(
-  milestone: number,
-  useExtensions: boolean
-): boolean {
-  return fiveKVolunteerMilestoneNumbers(useExtensions).includes(milestone);
+function isVolunteerLadderMilestone(milestone: number): boolean {
+  return fiveKVolunteerMilestoneNumbers().includes(milestone);
 }
 
 export function juniorVolunteerMilestoneCandidates(
-  volunteers: VolunteerWithCount[],
-  useExtensions = false
+  volunteers: VolunteerWithCount[]
 ): JuniorVolunteerCandidate[] {
   const candidates: JuniorVolunteerCandidate[] = [];
 
@@ -37,10 +33,7 @@ export function juniorVolunteerMilestoneCandidates(
     }
     const milestone = volunteer.vols;
     const hasMatchingIcon = volunteer.vClub === milestone;
-    if (
-      hasMatchingIcon &&
-      isVolunteerLadderMilestone(milestone, useExtensions)
-    ) {
+    if (hasMatchingIcon && isVolunteerLadderMilestone(milestone)) {
       // Overlap totals with a volunteer-club icon are Volunteer milestones.
       continue;
     }
@@ -66,14 +59,9 @@ export async function twoKVolunteersToJuniorMilestones(
     fetchImpl?: FetchLike;
     storage?: ParkrunnerAgeStorage;
     now?: number;
-    useExtensions?: boolean;
   } = {}
 ): Promise<MilestoneCelebrations[]> {
-  const useExtensions = options.useExtensions ?? false;
-  const candidates = juniorVolunteerMilestoneCandidates(
-    volunteers,
-    useExtensions
-  );
+  const candidates = juniorVolunteerMilestoneCandidates(volunteers);
   const eligible: { milestone: number; name: string }[] = [];
 
   for (const candidate of candidates) {

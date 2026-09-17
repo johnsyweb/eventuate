@@ -40,7 +40,7 @@ function juniorDocument(options?: {
 describe(milestoneCelebrationsForEvent, () => {
   it('celebrates live junior finisher milestones for junior participants', () => {
     const extractor = new ResultsPageExtractor(juniorDocument());
-    const celebrations = milestoneCelebrationsForEvent(extractor, '');
+    const celebrations = milestoneCelebrationsForEvent(extractor);
 
     expect(celebrations).toEqual([
       {
@@ -59,7 +59,7 @@ describe(milestoneCelebrationsForEvent, () => {
         volunteerClubText: '100 volunteer milestone',
       })
     );
-    const celebrations = milestoneCelebrationsForEvent(extractor, '');
+    const celebrations = milestoneCelebrationsForEvent(extractor);
 
     expect(celebrations).toEqual([
       {
@@ -95,13 +95,9 @@ function fiveKDocument(runs: string): Document {
 }
 
 describe('milestoneCelebrationsForEvent on 5k events', () => {
-  it('adds the 200 club when extensions are enabled', () => {
+  it('adds the 200 club', () => {
     const extractor = new ResultsPageExtractor(fiveKDocument('200'));
-    const celebrations = milestoneCelebrationsForEvent(
-      extractor,
-      '?eventuate-preview-milestones=true',
-      new Date(2026, 7, 15)
-    );
+    const celebrations = milestoneCelebrationsForEvent(extractor);
 
     expect(celebrations).toEqual([
       { clubName: '200', icon: '&#x26AB;', names: ['Sam'] },

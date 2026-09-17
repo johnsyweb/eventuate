@@ -50,8 +50,6 @@ export const de = {
     'Wir sind nächste Woche wieder da für ein weiteres kostenloses, spaßiges und freundliches wöchentliches {courseLength}-km-Gemeinschaftsevent. Gehen, joggen, laufen, freiwillig helfen oder zuschauen – ganz wie Sie möchten.<br><br>&#x1f333; #liebeparkrun',
   staleResultsWarning:
     'Diese Ergebnisse sind älter als eine Woche. Seit diesem Event wurden möglicherweise weitere Meilensteine erreicht.',
-  previewMilestonesWarning:
-    'Vorschau: Meilenstein-Clubs nutzen die kommenden parkrun-Regeln. Die offizielle Anerkennung kann bis zum Start abweichen.',
   fallbackParkrunName: 'Parkrun',
   fallbackParkrunnerName: 'ein Parkrunner',
   // Pluralization helpers

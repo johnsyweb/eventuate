@@ -7,11 +7,10 @@ import { MilestoneCelebrations } from '../types/Milestones';
 import { VolunteerWithCount } from '../types/VolunteerWithCount';
 
 export function fiveKVolunteersToMilestones(
-  volunteers: VolunteerWithCount[],
-  useExtensions = false
+  volunteers: VolunteerWithCount[]
 ): MilestoneCelebrations[] {
   const milestones = Object.fromEntries(
-    fiveKVolunteerMilestoneNumbers(useExtensions).map((milestone) => [
+    fiveKVolunteerMilestoneNumbers().map((milestone) => [
       milestone,
       { icon: fiveKVolunteerIcon(milestone) },
     ])

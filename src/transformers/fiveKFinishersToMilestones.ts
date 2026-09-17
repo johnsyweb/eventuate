@@ -7,11 +7,10 @@ import { IFinisher } from '../types/Finisher';
 import { MilestoneCelebrations } from '../types/Milestones';
 
 export function fiveKFinishersToMilestones(
-  finishers: IFinisher[],
-  useExtensions = false
+  finishers: IFinisher[]
 ): MilestoneCelebrations[] {
   const milestones = Object.fromEntries(
-    fiveKFinisherMilestoneNumbers(useExtensions).map((milestone) => [
+    fiveKFinisherMilestoneNumbers().map((milestone) => [
       milestone,
       {
         icon: fiveKFinisherIcon(milestone),
