@@ -7,7 +7,7 @@ cd "$ROOT"
 
 BRANCH=chore/aube-deps-update
 TITLE='chore(deps): update npm dependencies'
-BODY=$'Weekly automated dependency update via aube.\n\nRequires manual review for allowBuilds changes and security advisories.'
+BODY=$'Weekly automated dependency update via aube.\n\nAuto-merges when CI is green. Check allowBuilds denials and the audit section below if reviewing before merge.'
 
 if [[ -n "${AUBE_AUDIT_LOG:-}" && -f "${AUBE_AUDIT_LOG}" ]]; then
   if [[ "${AUBE_AUDIT_OUTCOME:-}" == "failure" ]]; then
@@ -37,3 +37,5 @@ gh pr view "$BRANCH" >/dev/null 2>&1 || gh pr create \
   --body "$BODY" \
   --base main \
   --head "$BRANCH"
+# Enable auto-merge here: PRs opened with GITHUB_TOKEN do not trigger pull_request workflows.
+gh pr merge --auto --merge "$BRANCH"
