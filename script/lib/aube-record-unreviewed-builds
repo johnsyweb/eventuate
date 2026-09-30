@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+#MISE hide=true
+# Record unreviewed dependency build scripts as denied in aube-workspace.yaml.
+#
+# When paranoid mode's strictDepBuilds rejects an install, aube lists the
+# packages but does not write allowBuilds entries. This script parses that
+# error output and appends `false` denials so install can proceed; humans
+# review the denials in the weekly deps PR.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+LOG="${1:?usage: aube-record-unreviewed-builds <aube-log-file> [workspace-yaml]}"
+WORKSPACE="${2:-"$ROOT/aube-workspace.yaml"}"
+
+if [[ ! -f "$LOG" ]]; then
+  echo "error: log file not found: $LOG" >&2
+  exit 1
+fi
+if [[ ! -f "$WORKSPACE" ]]; then
+  echo "error: workspace file not found: $WORKSPACE" >&2
+  exit 1
+fi
+
+packages=()
+while IFS= read -r pkg; do
+  packages+=("$pkg")
+done < <(
+  rg -oN --pcre2 '(?<=-\s)(@?[\w./-]+)(?=@\d)' "$LOG" | sort -u
+)
+
+if [[ ${#packages[@]} -eq 0 ]]; then
+  echo "No unreviewed build packages found in $LOG" >&2
+  exit 1
+fi
+
+allow_builds_key_line() {
+  local pkg="$1"
+  if [[ "$pkg" == @* ]]; then
+    printf "  '%s': false\n" "$pkg"
+  else
+    printf "  %s: false\n" "$pkg"
+  fi
+}
+
+package_already_listed() {
+  local pkg="$1"
+  rg -F -q -- "$pkg:" "$WORKSPACE" || rg -F -q -- "'$pkg':" "$WORKSPACE"
+}
+
+inserted=0
+for pkg in "${packages[@]}"; do
+  if package_already_listed "$pkg"; then
+    echo "allowBuilds already lists $pkg"
+    continue
+  fi
+
+  line="$(allow_builds_key_line "$pkg")"
+  comment="  # Recorded automatically; review before enabling build scripts."
+
+  python3 - "$WORKSPACE" "$comment" "$line" <<'PY'
+from pathlib import Path
+import sys
+
+workspace = Path(sys.argv[1])
+comment = sys.argv[2].rstrip("\n")
+entry = sys.argv[3].rstrip("\n")
+lines = workspace.read_text().splitlines(keepends=True)
+
+try:
+    allow_idx = next(i for i, line in enumerate(lines) if line.startswith("allowBuilds:"))
+except StopIteration as exc:
+    raise SystemExit("allowBuilds section missing from workspace yaml") from exc
+
+last_entry_idx = None
+for i in range(allow_idx + 1, len(lines)):
+    raw = lines[i]
+    if raw.strip() == "":
+        continue
+    if raw[0] in (" ", "\t"):
+        last_entry_idx = i
+        continue
+    break
+
+if last_entry_idx is None:
+    raise SystemExit("allowBuilds section has no entries")
+
+insert_at = last_entry_idx + 1
+lines.insert(insert_at, comment + "\n")
+lines.insert(insert_at + 1, entry + "\n")
+workspace.write_text("".join(lines))
+PY
+
+  echo "Recorded deny for $pkg"
+  inserted=$((inserted + 1))
+done
+
+if [[ "$inserted" -eq 0 ]]; then
+  echo "All unreviewed packages were already listed in allowBuilds"
+fi
