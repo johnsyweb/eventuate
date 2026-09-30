@@ -19,6 +19,12 @@ Wrote aube-lock.yaml
   │ help: add the package(s) to \`allowBuilds\` with \`true\`/\`false\`
 `;
 
+/** Mimic GitHub-hosted runners that lack ripgrep on PATH. */
+const CI_LIKE_ENV = {
+  ...process.env,
+  PATH: '/usr/bin:/bin',
+};
+
 describe('aube-record-unreviewed-builds', () => {
   let dir: string;
 
@@ -48,7 +54,10 @@ jailBuildPermissions:
     );
     writeFileSync(log, FAILURE_LOG);
 
-    execFileSync('bash', [SCRIPT, log, workspace], { encoding: 'utf8' });
+    execFileSync('bash', [SCRIPT, log, workspace], {
+      encoding: 'utf8',
+      env: CI_LIKE_ENV,
+    });
 
     const updated = readFileSync(workspace, 'utf8');
     expect(updated).toContain("'@parcel/watcher': false");
@@ -80,6 +89,7 @@ jailBuildPermissions:
 
     const output = execFileSync('bash', [SCRIPT, log, workspace], {
       encoding: 'utf8',
+      env: CI_LIKE_ENV,
     });
 
     expect(output).toContain('allowBuilds already lists @parcel/watcher');

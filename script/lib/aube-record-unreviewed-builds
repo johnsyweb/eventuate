@@ -23,9 +23,14 @@ fi
 
 packages=()
 while IFS= read -r pkg; do
+  [[ -n "$pkg" ]] || continue
   packages+=("$pkg")
 done < <(
-  rg -oN --pcre2 '(?<=-\s)(@?[\w./-]+)(?=@\d)' "$LOG" | sort -u
+  # Portable across macOS/Linux CI images that do not ship ripgrep.
+  # Matches lines like: "  │   - @parcel/watcher@2.6.0"
+  grep -E -- '- (@?[[:alnum:]./_-]+)@[0-9]' "$LOG" |
+    sed -E 's/^.*- (@?[[:alnum:]./_-]+)@[0-9][^[:space:]]*.*$/\1/' |
+    sort -u
 )
 
 if [[ ${#packages[@]} -eq 0 ]]; then
@@ -44,7 +49,7 @@ allow_builds_key_line() {
 
 package_already_listed() {
   local pkg="$1"
-  rg -F -q -- "$pkg:" "$WORKSPACE" || rg -F -q -- "'$pkg':" "$WORKSPACE"
+  grep -Fq -- "$pkg:" "$WORKSPACE" || grep -Fq -- "'$pkg':" "$WORKSPACE"
 }
 
 inserted=0
