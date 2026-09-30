@@ -9,10 +9,23 @@ BRANCH=chore/aube-deps-update
 TITLE='chore(deps): update npm dependencies'
 BODY=$'Weekly automated dependency update via aube.\n\nRequires manual review for allowBuilds changes and security advisories.'
 
+if [[ -n "${AUBE_AUDIT_LOG:-}" && -f "${AUBE_AUDIT_LOG}" ]]; then
+  if [[ "${AUBE_AUDIT_OUTCOME:-}" == "failure" ]]; then
+    BODY+=$'\n\n## Audit\n\n`aube audit` reported findings (workflow continued so this PR can be reviewed):\n\n```\n'
+  else
+    BODY+=$'\n\n## Audit\n\n```\n'
+  fi
+  # Keep the PR body bounded; full log remains in the workflow run.
+  BODY+="$(tail -n 80 "$AUBE_AUDIT_LOG")"
+  BODY+=$'\n```'
+fi
+
 git config user.name "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 git checkout -B "$BRANCH"
 git add aube-lock.yaml package.json aube-workspace.yaml
+# Include Prettier reflows from the updated toolchain (tracked files only).
+git add -u
 if git diff --staged --quiet; then
   echo "No changes detected, skipping PR creation"
   exit 0

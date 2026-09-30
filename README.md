@@ -123,7 +123,9 @@ Version bumps follow conventional commits: `fix:` → patch, `feat:` → minor,
 ## Security
 
 See [`.github/SECURITY.md`](.github/SECURITY.md) for how to report
-vulnerabilities. Dependencies are updated via Dependabot and aube;
+vulnerabilities. Dependencies are updated via Dependabot and the weekly
+`aube-update` workflow (in-range `aube update`, with new build-script packages
+recorded as denied in [`aube-workspace.yaml`](aube-workspace.yaml) for review).
 `mise run cibuild` includes `aube audit`.
 
 ## License

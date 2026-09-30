@@ -33,10 +33,26 @@ jobs:
         run: mise run bootstrap
 
       - name: Update dependencies
-        run: aube update --latest
+        run: |
+          set -euo pipefail
+          # Stay within package.json ranges. --latest rewrites majors (e.g. TypeScript 7)
+          # that tooling such as typescript-eslint may not support yet.
+          if aube update --reporter append-only 2>&1 | tee /tmp/aube-update.log; then
+            exit 0
+          fi
+          if ! grep -q 'dependencies with build scripts must be reviewed' /tmp/aube-update.log; then
+            exit 1
+          fi
+          bash script/lib/aube-record-unreviewed-builds /tmp/aube-update.log
+          aube install --reporter append-only
 
       - name: Audit dependencies
-        run: aube audit
+        id: audit
+        continue-on-error: true
+        run: aube audit --reporter append-only 2>&1 | tee /tmp/aube-audit.log
+
+      - name: Apply formatting from updated Prettier
+        run: aube run format
 
       - name: Run tests
         run: mise run test
@@ -44,4 +60,6 @@ jobs:
       - name: Create pull request
         env:
           GH_TOKEN: ${{ github.token }}
+          AUBE_AUDIT_LOG: /tmp/aube-audit.log
+          AUBE_AUDIT_OUTCOME: ${{ steps.audit.outcome }}
         run: bash script/lib/create-aube-deps-pr
