@@ -33,6 +33,8 @@ allowBuilds:
   spawn-sync: true
   # Native module resolver used by eslint/typescript-eslint.
   unrs-resolver: true
+  # Optional native FS watcher from jest-haste-map; JS fallback is enough for CI.
+  '@parcel/watcher': false
 
 # Puppeteer downloads Chromium during postinstall; network required inside the jail.
 jailBuildPermissions:
