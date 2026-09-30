@@ -1,3 +1,16 @@
+# [1.20.0](https://github.com/johnsyweb/eventuate/compare/v1.19.0...v1.20.0) (2026-09-30)
+
+
+### Bug Fixes
+
+* **aube:** deny @parcel/watcher build scripts ([dc4881b](https://github.com/johnsyweb/eventuate/commit/dc4881b829075d1b4053d8a68d0d372cc6247c32))
+* **ci:** avoid ripgrep in aube-record-unreviewed-builds ([02b5ed8](https://github.com/johnsyweb/eventuate/commit/02b5ed8357f2a22eebf043ad40de231b8828bbbc))
+
+
+### Features
+
+* **ci:** record unreviewed aube builds as denied ([34c50df](https://github.com/johnsyweb/eventuate/commit/34c50df85ed1dbdee24adf8c5a798420503f884c))
+
 # [1.19.0](https://github.com/johnsyweb/eventuate/compare/v1.18.0...v1.19.0) (2026-09-17)
 
 
