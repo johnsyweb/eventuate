@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Audit dependencies for fixable advisories"
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+# --ignore-unfixable: fail only when an upgrade path exists on the registry.
+aube audit --audit-level moderate --ignore-unfixable

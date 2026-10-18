@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Show outdated packages; bump within package.json ranges"
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+export PUPPETEER_SKIP_DOWNLOAD=true
+
+echo "==> Outdated dependencies"
+aube outdated || true
+
+echo "==> Updating within package.json ranges"
+aube update

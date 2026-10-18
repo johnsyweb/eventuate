@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>johnsyweb/renovate-config"],
+  "packageRules": [
+    {
+      "description": "Stay on TypeScript 6 until ts-jest peers allow 7+",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ]
+}

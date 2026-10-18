@@ -123,11 +123,15 @@ Version bumps follow conventional commits: `fix:` → patch, `feat:` → minor,
 ## Security
 
 See [`.github/SECURITY.md`](.github/SECURITY.md) for how to report
-vulnerabilities. Dependencies are updated via Dependabot and the weekly
-`aube-update` workflow (in-range `aube update`, with new build-script packages
-recorded as denied in [`aube-workspace.yaml`](aube-workspace.yaml) for review).
-Both Dependabot and aube dependency PRs auto-merge when CI is green.
-`mise run cibuild` includes `aube audit`.
+vulnerabilities. Package management uses [aube](https://aube.en.dev/) with
+paranoid settings in [`aube-workspace.yaml`](aube-workspace.yaml). Automated
+updates use [Renovate](https://docs.renovatebot.com/) via
+[johnsyweb/renovate-config](https://github.com/johnsyweb/renovate-config);
+membership is managed in
+[johnsyweb/github-infra](https://github.com/johnsyweb/github-infra). See
+[ADR 0002](docs/adr/0002-renovate-for-dependency-updates.md). For a local
+within-range bump: `mise run update-deps`. `mise run cibuild` includes
+`./script/audit`.
 
 ## License
 
