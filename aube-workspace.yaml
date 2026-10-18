@@ -1,6 +1,9 @@
 # Security: paranoid mode enables jailBuilds, strictDepBuilds, strictStoreIntegrity,
 # advisoryCheck=required, trustPolicy=no-downgrade, and minimumReleaseAgeStrict.
 paranoid: true
+packageManagerStrictVersion: true
+# 7 days — aligned with Renovate minimumReleaseAge in johnsyweb/renovate-config
+minimumReleaseAge: 10080
 
 # Transitive dependency version pins for known security patches.
 # Migrated from package.json pnpm.overrides.
