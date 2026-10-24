@@ -132,21 +132,21 @@ export class ResultsPageExtractor {
   }
 
   private volunteerClubFromRow(row: HTMLTableRowElement): number | undefined {
-    const anchor = row.querySelector(
-      'a.Results-table--clubIcon[class*="milestone-v"]'
-    );
-    if (!anchor) {
-      return undefined;
-    }
-    for (const className of Array.from(anchor.classList)) {
-      const fromClass = /^milestone-v(\d+)$/.exec(className);
-      if (fromClass) {
-        return Number(fromClass[1]);
+    for (const anchor of row.querySelectorAll('a')) {
+      for (const className of Array.from(anchor.classList)) {
+        const fromClass =
+          /^milestone-v(\d+)$/.exec(className) ??
+          /^Results-table--v(\d+)$/.exec(className);
+        if (fromClass) {
+          return Number(fromClass[1]);
+        }
+      }
+      const fromText = /^v(\d+)$/.exec(anchor.textContent?.trim() ?? '');
+      if (fromText) {
+        return Number(fromText[1]);
       }
     }
-    const text = anchor.textContent?.trim() ?? '';
-    const fromText = /^v(\d+)$/.exec(text);
-    return fromText ? Number(fromText[1]) : undefined;
+    return undefined;
   }
 
   private parseNumericString(value?: string): number {
