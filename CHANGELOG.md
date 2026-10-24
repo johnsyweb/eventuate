@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/johnsyweb/eventuate/compare/v1.20.0...v1.20.1) (2026-10-24)
+
+
+### Bug Fixes
+
+* **milestones:** read the current volunteer club icon class ([5c25eff](https://github.com/johnsyweb/eventuate/commit/5c25effbf48e52608104cf55eb29707533f2c945))
+
 # [1.20.0](https://github.com/johnsyweb/eventuate/compare/v1.19.0...v1.20.0) (2026-09-30)
 
 
