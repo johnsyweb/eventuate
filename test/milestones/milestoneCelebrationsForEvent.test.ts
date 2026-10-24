@@ -94,6 +94,35 @@ function fiveKDocument(runs: string): Document {
   return new DOMParser().parseFromString(html, 'text/html');
 }
 
+function fiveKVolunteerDocument(): Document {
+  const html = `<!DOCTYPE html><html><body>
+    <div class="Results-header"><h1>Example parkrun</h1></div>
+    <table>
+      <tr class="Volunteers-table-row" data-name="Alex SMITH" data-volunteercredits="100">
+        <td class="Volunteers-table-td Volunteers-table-td--name">
+          <a href="/event/parkrunner/11">Alex SMITH</a>
+          <a class="Results-table--r300 Results-table--milestoneIcon">Member of the 300 Club</a>
+          <a class="Results-table--v100 Results-table--milestoneIcon">Member of the Volunteer 100 Club</a>
+        </td>
+      </tr>
+      <tr class="Volunteers-table-row" data-name="Sam JONES" data-volunteercredits="100">
+        <td class="Volunteers-table-td Volunteers-table-td--name">
+          <a href="/event/parkrunner/12">Sam JONES</a>
+          <a class="Results-table--r300 Results-table--milestoneIcon">Member of the 300 Club</a>
+          <a class="Results-table--v100 Results-table--milestoneIcon">Member of the Volunteer 100 Club</a>
+        </td>
+      </tr>
+      <tr class="Volunteers-table-row" data-name="Jordan LEE" data-volunteercredits="11">
+        <td class="Volunteers-table-td Volunteers-table-td--name">
+          <a href="/event/parkrunner/13">Jordan LEE</a>
+          <a class="Results-table--v10 Results-table--milestoneIcon">Member of the Volunteer 10 Club</a>
+        </td>
+      </tr>
+    </table>
+  </body></html>`;
+  return new DOMParser().parseFromString(html, 'text/html');
+}
+
 describe('milestoneCelebrationsForEvent on 5k events', () => {
   it('adds the 200 club', () => {
     const extractor = new ResultsPageExtractor(fiveKDocument('200'));
@@ -101,6 +130,20 @@ describe('milestoneCelebrationsForEvent on 5k events', () => {
 
     expect(celebrations).toEqual([
       { clubName: '200', icon: '&#x1F535;', names: ['Sam'] },
+    ]);
+  });
+
+  it('celebrates volunteers whose current club icon uses Results-table--vN', () => {
+    const celebrations = milestoneCelebrationsForEvent(
+      new ResultsPageExtractor(fiveKVolunteerDocument())
+    );
+
+    expect(celebrations).toEqual([
+      {
+        clubName: 'Volunteer 100',
+        icon: '&#x1F5A4;',
+        names: ['Alex', 'Sam'],
+      },
     ]);
   });
 });
