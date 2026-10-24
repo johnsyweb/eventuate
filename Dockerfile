@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS build-stage
+FROM debian:bookworm-slim@sha256:7ff6ba31527b9e336162fa061746c366c4b2032f4d2cff2078bea43f78efe3f8 AS build-stage
 RUN apt-get update && apt-get -y install jq zip curl ca-certificates git
 RUN curl https://mise.run | sh
 ENV PATH="/root/.local/bin:${PATH}"
