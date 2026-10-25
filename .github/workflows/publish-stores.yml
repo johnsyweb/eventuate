@@ -1,0 +1,152 @@
+name: Publish stores
+
+# Publishes a GitHub Release build to AMO, Chrome Web Store, and/or Edge Add-ons.
+# Jobs are independent — one store failing does not skip the others.
+#
+# Automatic: called from CI/CD after a version bump.
+# Manual: Actions → Publish stores → Run workflow (pick store + optional version).
+
+on:
+  workflow_dispatch:
+    inputs:
+      store:
+        description: Which store(s) to publish
+        type: choice
+        options:
+          - all
+          - amo
+          - chrome
+          - edge
+        default: all
+      version:
+        description:
+          Release version or tag (e.g. 1.22.0 or v1.22.0). Empty = latest GitHub
+          Release.
+        type: string
+        required: false
+  workflow_call:
+    inputs:
+      store:
+        description: Which store(s) to publish
+        type: string
+        default: all
+      version:
+        description: Release version or tag (required for CI/CD calls)
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  PUPPETEER_SKIP_DOWNLOAD: true
+
+jobs:
+  resolve-version:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - name: Resolve release tag
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -n "${INPUT_VERSION}" ]; then
+            raw="${INPUT_VERSION}"
+          else
+            raw=$(gh release view -R "${{ github.repository }}" --json tagName -q .tagName)
+          fi
+          case "$raw" in
+            v*) tag="$raw"; version="${raw#v}" ;;
+            *) tag="v${raw}"; version="$raw" ;;
+          esac
+          gh release view -R "${{ github.repository }}" "$tag" >/dev/null
+          echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+          echo "Publishing ${tag} (version ${version})"
+
+  publish-amo:
+    needs: resolve-version
+    if: inputs.store == 'all' || inputs.store == 'amo'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.resolve-version.outputs.tag }}
+
+      - name: Setup mise
+        uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        with:
+          install: true
+
+      - name: Cache aube store
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/.local/share/aube/store/v1
+          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-aube-
+
+      - name: Bootstrap dependencies
+        run: mise run bootstrap
+
+      - name: Build and submit to AMO
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
+        run: |
+          set -euo pipefail
+          echo "Signing and submitting v${{ needs.resolve-version.outputs.version }} to AMO"
+          aube run build
+          aube run web-ext:build
+          aube exec web-ext sign
+
+  publish-chrome:
+    needs: resolve-version
+    if: inputs.store == 'all' || inputs.store == 'chrome'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Chromium zip from GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download "${{ needs.resolve-version.outputs.tag }}" \
+            -R "${{ github.repository }}" \
+            -p eventuate-chromium.zip
+
+      - name: Upload and publish to the Chrome Web Store
+        uses: cssnr/webstore-publish-action@9c4e7ae29beb517bf2d22f32d849455d178cbca6 # v1.2.1
+        with:
+          extension_id: dgkpaaeifngfeelldljpdlnmacdpceba
+          publisher_id: ${{ vars.CHROME_WEBSTORE_PUBLISHER_ID }}
+          zip_file: eventuate-chromium.zip
+          publish: default
+          json_data: ${{ secrets.CHROME_WEBSTORE_SERVICE_ACCOUNT_JSON }}
+
+  publish-edge:
+    needs: resolve-version
+    if: inputs.store == 'all' || inputs.store == 'edge'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Chromium zip from GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download "${{ needs.resolve-version.outputs.tag }}" \
+            -R "${{ github.repository }}" \
+            -p eventuate-chromium.zip
+
+      - name: Upload and publish to Microsoft Edge Add-ons
+        uses: wdzeng/edge-addon@9881f57720358040d079eaa06a4596dc9c273eb6 # v2.1.1
+        with:
+          product-id: ${{ vars.EDGE_ADDONS_PRODUCT_ID }}
+          zip-path: eventuate-chromium.zip
+          api-key: ${{ secrets.EDGE_ADDONS_API_KEY }}
+          client-id: ${{ secrets.EDGE_ADDONS_CLIENT_ID }}
