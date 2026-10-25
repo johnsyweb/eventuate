@@ -1,0 +1,26 @@
+name: Edge Add-ons API key expiry
+
+# Partner Center API keys cannot be rotated by API; this only opens a reminder
+# issue when vars.EDGE_ADDONS_API_KEY_EXPIRES_ON is within 14 days.
+
+on:
+  schedule:
+    - cron: '0 7 * * 1' # Mondays 07:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Remind if the Publish API key is near expiry
+        env:
+          EDGE_ADDONS_API_KEY_EXPIRES_ON:
+            ${{ vars.EDGE_ADDONS_API_KEY_EXPIRES_ON }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./script/check-edge-addons-key-expiry

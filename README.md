@@ -125,7 +125,9 @@ Edge Add-ons credentials (Partner Center product GUID + Publish API key):
 ./script/setup-edge-addons-auth.sh
 ```
 
-Edge API keys expire after about 72 days — re-run that wizard before they lapse.
+Edge API keys expire after about 72 days (Microsoft offers no programmatic
+renewal). The wizard records the expiry date; a weekly workflow opens a GitHub
+issue when rotation is due — re-run the wizard to roll the key.
 
 Dry-run locally:
 

@@ -184,7 +184,7 @@ finish() {
 # Replace the example below. Set TOTAL_STAGES to match the stages you write.
 # ──────────────────────────────────────────────────────────────────────────
 
-TOTAL_STAGES=4
+TOTAL_STAGES=5
 ENV_FILE=".edge-addons.env"
 STORE_LISTING_ID="blnflnokjepbaajpnieppldmahcbckcc"
 
@@ -249,23 +249,41 @@ fi
 write_env EDGE_ADDONS_API_KEY "$EDGE_ADDONS_API_KEY"
 
 # ── Stage 4 ───────────────────────────────────────────────────────────────
+stage "Record API key expiry"
+say "Microsoft keys last about 72 days. CI opens a reminder issue before that."
+DEFAULT_EXPIRES=$(python3 -c 'from datetime import date, timedelta; print((date.today()+timedelta(days=72)).isoformat())')
+note "Partner Center shows the exact expiry next to each key — prefer that date."
+note "Default if you press Enter: $DEFAULT_EXPIRES (today + 72 days)."
+ask EDGE_ADDONS_API_KEY_EXPIRES_ON "Expiry date (YYYY-MM-DD):"
+EDGE_ADDONS_API_KEY_EXPIRES_ON="${EDGE_ADDONS_API_KEY_EXPIRES_ON:-$DEFAULT_EXPIRES}"
+if ! python3 -c "from datetime import datetime; datetime.strptime('${EDGE_ADDONS_API_KEY_EXPIRES_ON}', '%Y-%m-%d')" 2>/dev/null; then
+  warn "Expected YYYY-MM-DD, got: $EDGE_ADDONS_API_KEY_EXPIRES_ON"
+  exit 1
+fi
+write_env EDGE_ADDONS_API_KEY_EXPIRES_ON "$EDGE_ADDONS_API_KEY_EXPIRES_ON"
+
+# ── Stage 5 ───────────────────────────────────────────────────────────────
 stage "Write GitHub secrets and variables"
 say "CI will read these from the johnsyweb/eventuate repository."
-if confirm "Set GitHub secret and variable now with gh"; then
+if confirm "Set GitHub secrets and variables now with gh"; then
   set_secret EDGE_ADDONS_CLIENT_ID "$EDGE_ADDONS_CLIENT_ID"
   set_secret EDGE_ADDONS_API_KEY "$EDGE_ADDONS_API_KEY"
   set_var EDGE_ADDONS_PRODUCT_ID "$EDGE_ADDONS_PRODUCT_ID"
+  set_var EDGE_ADDONS_API_KEY_EXPIRES_ON "$EDGE_ADDONS_API_KEY_EXPIRES_ON"
 else
   SKIPPED+=("GitHub secret EDGE_ADDONS_CLIENT_ID")
   SKIPPED+=("GitHub secret EDGE_ADDONS_API_KEY")
   SKIPPED+=("GitHub variable EDGE_ADDONS_PRODUCT_ID")
+  SKIPPED+=("GitHub variable EDGE_ADDONS_API_KEY_EXPIRES_ON")
   note "Later:"
   note "  gh secret set EDGE_ADDONS_CLIENT_ID --body \"$EDGE_ADDONS_CLIENT_ID\""
   note "  gh secret set EDGE_ADDONS_API_KEY --body \"…\""
   note "  gh variable set EDGE_ADDONS_PRODUCT_ID --body \"$EDGE_ADDONS_PRODUCT_ID\""
+  note "  gh variable set EDGE_ADDONS_API_KEY_EXPIRES_ON --body \"$EDGE_ADDONS_API_KEY_EXPIRES_ON\""
 fi
 
 finish
 
 say "On the next version bump, CI uploads eventuate-chromium.zip to Edge Add-ons"
 say "after AMO and the Chrome Web Store."
+say "A Monday workflow reminds you before $EDGE_ADDONS_API_KEY_EXPIRES_ON."

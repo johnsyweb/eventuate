@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+#MISE description="Open a GitHub issue if the Edge Add-ons API key is near expiry"
+set -euo pipefail
+
+# Partner Center cannot mint keys via API; this only reminds before a stored
+# expiry date so a human can re-run ./script/setup-edge-addons-auth.sh.
+
+EXPIRES_ON="${EDGE_ADDONS_API_KEY_EXPIRES_ON:-}"
+WARN_DAYS="${EDGE_ADDONS_KEY_WARN_DAYS:-14}"
+TITLE="Rotate Microsoft Edge Add-ons API key"
+
+if [[ -z "$EXPIRES_ON" ]]; then
+  echo "EDGE_ADDONS_API_KEY_EXPIRES_ON is unset; nothing to check."
+  exit 0
+fi
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "gh is required to open or update the reminder issue." >&2
+  exit 1
+fi
+
+eval "$(
+  python3 - "$EXPIRES_ON" "$WARN_DAYS" <<'PY'
+import sys
+from datetime import date, datetime
+
+expires = datetime.strptime(sys.argv[1], "%Y-%m-%d").date()
+warn_days = int(sys.argv[2])
+days_left = (expires - date.today()).days
+print(f"DAYS_LEFT={days_left}")
+print(f"SHOULD_WARN={'1' if days_left <= warn_days else '0'}")
+PY
+)"
+
+if [[ "$SHOULD_WARN" != "1" ]]; then
+  echo "Edge Add-ons API key expires in ${DAYS_LEFT} day(s); no reminder needed."
+  exit 0
+fi
+
+BODY=$(
+  cat <<EOF
+The Partner Center Publish API key for Edge Add-ons expires on **${EXPIRES_ON}** (${DAYS_LEFT} day(s) from today).
+
+Microsoft does not offer programmatic key renewal — create a new key in Partner Center, then rotate the GitHub secret:
+
+\`\`\`sh
+./script/setup-edge-addons-auth.sh
+\`\`\`
+
+Prefer creating the new key before deleting the old one so releases keep working during overlap.
+EOF
+)
+
+EXISTING=$(
+  gh issue list \
+    --state open \
+    --search "in:title \"${TITLE}\"" \
+    --json number \
+    --jq '.[0].number // empty'
+)
+
+if [[ -n "$EXISTING" ]]; then
+  echo "Reminder issue already open: #${EXISTING}"
+  gh issue comment "$EXISTING" --body "Still outstanding: key expires **${EXPIRES_ON}** (${DAYS_LEFT} day(s) left)."
+  exit 0
+fi
+
+URL=$(
+  gh issue create \
+    --title "$TITLE" \
+    --body "$BODY"
+)
+echo "Opened reminder: $URL"
