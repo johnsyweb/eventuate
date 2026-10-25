@@ -1,8 +1,8 @@
 [tools]
 node = "latest"
-"aube" = "1.25.1"
-ruby = "3.4.7"
-hk = { version = "1.48.0", postinstall = "hk install --mise" }
+"aube" = "1.41.0"
+ruby = "3.4.11"
+hk = { version = "1.58.1", postinstall = "hk install --mise" }
 
 [env]
 HK_MISE = "1"
