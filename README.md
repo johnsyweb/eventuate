@@ -67,14 +67,14 @@ Git hooks are managed by [hk](https://hk.jdx.dev/) and installed with
 
 Useful tasks:
 
-| Task                  | Description                                |
-| --------------------- | ------------------------------------------ |
-| `mise run build`      | Extension, userscript, and bookmarklet     |
-| `mise run watch`      | Rebuild bundles while developing           |
-| `mise run server`     | Run the extension in Firefox               |
-| `mise run package`    | Package Firefox and Chromium zips          |
-| `mise run docs:serve` | Jekyll docs at `localhost:4000/eventuate/` |
-| `mise run cibuild`    | Full CI checks locally (includes audit)    |
+| Task                  | Description                                                    |
+| --------------------- | -------------------------------------------------------------- |
+| `mise run build`      | Extension, userscript, and bookmarklet                         |
+| `mise run watch`      | Rebuild bundles while developing                               |
+| `mise run server`     | Run the extension in Firefox                                   |
+| `mise run package`    | Package Firefox and Chromium zips                              |
+| `mise run docs:serve` | Jekyll docs at `localhost:4000/eventuate/`                     |
+| `mise run cibuild`    | Full CI checks locally (lint, tests, build, audit, Lighthouse) |
 
 `mise run build` writes artefacts that are not checked into git:
 
@@ -139,8 +139,9 @@ updates use [Renovate](https://docs.renovatebot.com/) via
 membership is managed in
 [johnsyweb/github-infra](https://github.com/johnsyweb/github-infra). See
 [ADR 0002](docs/adr/0002-renovate-for-dependency-updates.md). For a local
-within-range bump: `mise run update-deps`. `mise run cibuild` includes
-`./script/audit`.
+within-range bump: `mise run update-deps`. Renovate PRs are verified by
+`aube-lock` (`./script/cibuild`); human PRs use the parallel CI/CD jobs.
+`mise run cibuild` includes `./script/audit`.
 
 ## License
 

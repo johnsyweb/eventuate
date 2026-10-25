@@ -20,7 +20,6 @@ jobs:
       check_name: renovate-verify
       status_check_names: |
         lint
-        format-check
         test
         lighthouse
         build

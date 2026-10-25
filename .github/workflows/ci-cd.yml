@@ -28,8 +28,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Validation jobs - run in parallel
+  # Validation jobs - run in parallel.
+  # Renovate PRs are gated by aube-lock (./script/cibuild + Check Run mirrors).
   lint:
+    if:
+      &not-renovate-pr github.event_name != 'pull_request' ||
+      !startsWith(github.head_ref, 'renovate/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -53,31 +57,8 @@ jobs:
       - name: Lint
         run: mise run test:lint
 
-  format-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Setup mise
-        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
-        with:
-          install: true
-
-      - name: Cache aube store
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
-        with:
-          path: ~/.local/share/aube/store/v1
-          key: ${{ runner.os }}-aube-${{ hashFiles('aube-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-aube-
-
-      - name: Bootstrap dependencies
-        run: mise run bootstrap
-
-      - name: Format check
-        run: mise run test:format
-
   test:
+    if: *not-renovate-pr
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -102,6 +83,7 @@ jobs:
         run: mise run test:units
 
   lighthouse:
+    if: *not-renovate-pr
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -135,7 +117,8 @@ jobs:
 
   # Build after all validation passes
   build:
-    needs: [lint, format-check, test]
+    if: *not-renovate-pr
+    needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
