@@ -292,6 +292,17 @@ jobs:
           publish: default
           json_data: ${{ secrets.CHROME_WEBSTORE_SERVICE_ACCOUNT_JSON }}
 
+      - name: Upload and publish to Microsoft Edge Add-ons
+        if:
+          steps.version-before.outputs.version !=
+          steps.version-after.outputs.version
+        uses: wdzeng/edge-addon@9881f57720358040d079eaa06a4596dc9c273eb6 # v2.1.1
+        with:
+          product-id: ${{ vars.EDGE_ADDONS_PRODUCT_ID }}
+          zip-path: eventuate-chromium.zip
+          api-key: ${{ secrets.EDGE_ADDONS_API_KEY }}
+          client-id: ${{ secrets.EDGE_ADDONS_CLIENT_ID }}
+
       - name: Upload release build artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:

@@ -53,7 +53,9 @@ Apple charge a fee to distribute software through their App Store, so Eventuate 
 
 Grab your [Eventuate bookmarklet][bookmarklet] or [Eventuate userscript][userscript]!
 
-The [Chrome extension][chrome] is compatible with other Chromium-based browsers including Microsoft Edge and Opera. Please [report any issues][issues] you encounter using this on other browsers.
+Prefer the native [Edge Add-ons][edge] listing on Microsoft Edge. The [Chrome
+extension][chrome] also works in other Chromium browsers (including Opera).
+Please [report any issues][issues] you encounter.
 
 <!-- Links -->
 [brimbank]: https://www.parkrun.com.au/brimbank/
@@ -61,6 +63,7 @@ The [Chrome extension][chrome] is compatible with other Chromium-based browsers 
 [github]: https://github.com/johnsyweb/eventuate
 [releases]: https://github.com/johnsyweb/eventuate/releases/
 [chrome]: https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
+[edge]: https://microsoftedge.microsoft.com/addons/detail/eventuate/blnflnokjepbaajpnieppldmahcbckcc
 [amo]: https://addons.mozilla.org/firefox/addon/eventuate/
 [firefox-android]: https://www.mozilla.org/firefox/browsers/mobile/android/
 [bookmarklet-wiki]: https://en.wikipedia.org/wiki/Bookmarklet

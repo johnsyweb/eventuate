@@ -3,7 +3,7 @@
 Extracts information from parkrun event result pages for inclusion in reports.
 
 [![CI][ci-badge]][ci] [![Mozilla Add-ons][mozilla-badge]][mozilla]
-[![Chrome Web Store][chrome-badge]][chrome]
+[![Chrome Web Store][chrome-badge]][chrome] [![Edge Add-ons][edge-badge]][edge]
 [![License: MIT][license-badge]][license]
 
 It is not a run report generator, but it helps you write a weekly parkrun event
@@ -18,9 +18,9 @@ iOS).
 
 ## Getting started
 
-1. Install Eventuate from the [Firefox Add-ons][mozilla] site or the [Chrome Web
-   Store][chrome] (Safari and iOS: use the [userscript][userscript] or
-   [bookmarklet][bookmarklet] instead).
+1. Install Eventuate from [Firefox Add-ons][mozilla], the [Chrome Web
+   Store][chrome], or [Edge Add-ons][edge] (Safari and iOS: use the
+   [userscript][userscript] or [bookmarklet][bookmarklet] instead).
 2. Open a parkrun **latest results** page, for example
    <https://www.parkrun.com.au/timboon/results/latestresults/>.
 3. Read the Eventuate summary inserted above the results table — ready to paste
@@ -110,15 +110,24 @@ Releases are automated with [semantic-release][semantic-release] on pushes to
 `main`. The pipeline analyses commits, updates `CHANGELOG.md`, creates a GitHub
 release, attaches Firefox and Chromium zips plus the userscript and bookmarklet
 page, signs the Firefox build for [AMO][amo], and uploads the Chromium build to
-the [Chrome Web Store][chrome] for review. Store listing screenshots stay
-manual.
+the [Chrome Web Store][chrome] and [Edge Add-ons][edge] for review. Store
+listing screenshots stay manual.
 
-Chrome Web Store credentials (service account JSON + publisher ID) are set up
-with:
+Chrome Web Store credentials (service account JSON + publisher ID):
 
 ```sh
 ./script/setup-chrome-webstore-auth.sh
 ```
+
+Edge Add-ons credentials (Partner Center product GUID + Publish API key):
+
+```sh
+./script/setup-edge-addons-auth.sh
+```
+
+Edge API keys expire after about 72 days (Microsoft offers no programmatic
+renewal). The wizard records the expiry date; a weekly workflow opens a GitHub
+issue when rotation is due — re-run the wizard to roll the key.
 
 Dry-run locally:
 
@@ -159,6 +168,10 @@ Available under the [MIT License](LICENSE.txt).
   https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
 [chrome]:
   https://chromewebstore.google.com/detail/eventuate/dgkpaaeifngfeelldljpdlnmacdpceba
+[edge-badge]:
+  https://img.shields.io/badge/Edge%20Add--ons-Eventuate-0078D4?logo=microsoftedge&logoColor=white
+[edge]:
+  https://microsoftedge.microsoft.com/addons/detail/eventuate/blnflnokjepbaajpnieppldmahcbckcc
 [license-badge]: https://img.shields.io/github/license/johnsyweb/eventuate
 [license]: LICENSE.txt
 [github]: https://github.com/johnsyweb/eventuate/

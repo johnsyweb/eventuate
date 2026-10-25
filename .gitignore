@@ -1,5 +1,6 @@
 /.amo-upload-uuid
 /.chrome-webstore.env
+/.edge-addons.env
 /.web-extension-id
 /chromium*
 /dist/
