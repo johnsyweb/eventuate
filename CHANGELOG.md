@@ -1,3 +1,11 @@
+## [1.20.2](https://github.com/johnsyweb/eventuate/compare/v1.20.1...v1.20.2) (2026-10-25)
+
+
+### Bug Fixes
+
+* **aube:** allow chromium-bidi Chrome-for-Testing releases ([fa13bb9](https://github.com/johnsyweb/eventuate/commit/fa13bb9313e4bbfdb1955bbe432a95da2cc93ce1))
+* **aube:** drop legacy-javascript override that broke the lockfile ([5258297](https://github.com/johnsyweb/eventuate/commit/525829762a2a45a3437a3b39d9eced06a03dc089))
+
 ## [1.20.1](https://github.com/johnsyweb/eventuate/compare/v1.20.0...v1.20.1) (2026-10-24)
 
 
