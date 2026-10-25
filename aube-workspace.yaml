@@ -5,6 +5,11 @@ packageManagerStrictVersion: true
 # 7 days — aligned with Renovate minimumReleaseAge in johnsyweb/renovate-config
 minimumReleaseAge: 10080
 
+# chromium-bidi ≤17.x used GitHub Actions OIDC trusted publishing; Chrome-for-Testing
+# releases (15x.x) publish as chrome-devtools-npm without that provenance evidence.
+trustPolicyExclude:
+  - chromium-bidi
+
 # Transitive dependency version pins for known security patches.
 # Migrated from package.json pnpm.overrides.
 overrides:
@@ -25,6 +30,8 @@ overrides:
   uuid: 11.1.1
   '@babel/core': 7.29.7
   esbuild: 0.28.1
+  # 0.0.4 is still inside minimumReleaseAge; pin mature 0.0.3 for lock refresh.
+  legacy-javascript: 0.0.3
 
 # Curated build-script approvals. Run `aube approve-builds` after dependency changes.
 allowBuilds:
