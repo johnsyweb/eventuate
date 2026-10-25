@@ -297,6 +297,18 @@ jobs:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
 
+      - name: Upload and publish to the Chrome Web Store
+        if:
+          steps.version-before.outputs.version !=
+          steps.version-after.outputs.version
+        uses: cssnr/webstore-publish-action@30faab8c46f47fee995914de4324d0617f0fd52f # v1.2.0
+        with:
+          extension_id: dgkpaaeifngfeelldljpdlnmacdpceba
+          publisher_id: ${{ vars.CHROME_WEBSTORE_PUBLISHER_ID }}
+          zip_file: eventuate-chromium.zip
+          publish: default
+          json_data: ${{ secrets.CHROME_WEBSTORE_SERVICE_ACCOUNT_JSON }}
+
       - name: Upload release build artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
