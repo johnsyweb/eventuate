@@ -1,3 +1,11 @@
+## [1.21.1](https://github.com/johnsyweb/eventuate/compare/v1.21.0...v1.21.1) (2026-10-25)
+
+
+### Bug Fixes
+
+* **ci:** gate Renovate CI skip on actor, not branch name ([eb492fd](https://github.com/johnsyweb/eventuate/commit/eb492fdfe3d7b786c2ee96ef76c2cc884bf77b01))
+* **docs:** install gems before jekyll so cibuild works on Ruby bumps ([06b4cff](https://github.com/johnsyweb/eventuate/commit/06b4cff7e20795a105ab0886cca8b4ec4b5fbd3e))
+
 # [1.21.0](https://github.com/johnsyweb/eventuate/compare/v1.20.2...v1.21.0) (2026-10-25)
 
 
