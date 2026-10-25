@@ -1,3 +1,15 @@
+# [1.21.0](https://github.com/johnsyweb/eventuate/compare/v1.20.2...v1.21.0) (2026-10-25)
+
+
+### Bug Fixes
+
+* **aube:** bump advisory overrides so cibuild audit passes ([be507df](https://github.com/johnsyweb/eventuate/commit/be507df25c9c817dadbf05ad384a8d520ab310a2))
+
+
+### Features
+
+* **ci:** publish Chromium builds to the Chrome Web Store ([22ce74f](https://github.com/johnsyweb/eventuate/commit/22ce74f1b9271d9e2eb1aac421f645b9d91bd147))
+
 ## [1.20.2](https://github.com/johnsyweb/eventuate/compare/v1.20.1...v1.20.2) (2026-10-25)
 
 
