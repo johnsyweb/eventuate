@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/johnsyweb/eventuate/compare/v1.22.0...v1.22.1) (2026-10-25)
+
+
+### Bug Fixes
+
+* **ci:** publish to AMO, Chrome, and Edge independently ([2da798d](https://github.com/johnsyweb/eventuate/commit/2da798d80da77e9282cf983076295f9dc7185e08))
+
 # [1.22.0](https://github.com/johnsyweb/eventuate/compare/v1.21.1...v1.22.0) (2026-10-25)
 
 
