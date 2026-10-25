@@ -1,3 +1,11 @@
+# [1.22.0](https://github.com/johnsyweb/eventuate/compare/v1.21.1...v1.22.0) (2026-10-25)
+
+
+### Features
+
+* **ci:** publish Chromium builds to Microsoft Edge Add-ons ([99426ad](https://github.com/johnsyweb/eventuate/commit/99426ad38a94b1c1201241a1fcdba1b9b0c445ca))
+* **ci:** remind before Edge Add-ons API key expiry ([7d26add](https://github.com/johnsyweb/eventuate/commit/7d26add0caf7e5b5a9eefdd32bbeecaf3196bd81))
+
 ## [1.21.1](https://github.com/johnsyweb/eventuate/compare/v1.21.0...v1.21.1) (2026-10-25)
 
 
