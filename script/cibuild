@@ -10,3 +10,4 @@ cd "$ROOT"
 aube run build
 aube run web-ext:lint
 "$DIR/audit"
+"$DIR/lighthouse"
