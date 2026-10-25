@@ -1,6 +1,6 @@
 [tools]
 node = "latest"
-"aube" = "1.41.0"
+"aube" = "2.7.2"
 ruby = "4.0.7"
 hk = { version = "1.58.1", postinstall = "hk install --mise" }
 
