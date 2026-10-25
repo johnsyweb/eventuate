@@ -2,7 +2,7 @@
 node = "latest"
 "aube" = "2.7.2"
 ruby = "4.0.7"
-hk = { version = "1.58.1", postinstall = "hk install --mise" }
+hk = { version = "2.8.1", postinstall = "hk install --mise" }
 
 [env]
 HK_MISE = "1"
