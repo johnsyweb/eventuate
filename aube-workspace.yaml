@@ -4,9 +4,10 @@ paranoid: true
 packageManagerStrictVersion: true
 # 7 days — aligned with Renovate minimumReleaseAge in johnsyweb/renovate-config
 minimumReleaseAge: 10080
-# lighthouse → @paulirish/trace_engine requests dist-tag latest (0.0.4 still young).
+# Packages whose only advisory-patched releases are still inside minimumReleaseAge.
 minimumReleaseAgeExclude:
   - legacy-javascript
+  - fast-uri
 
 # chromium-bidi ≤17.x used GitHub Actions OIDC trusted publishing; Chrome-for-Testing
 # releases (15x.x) publish as chrome-devtools-npm without that provenance evidence.
@@ -19,20 +20,22 @@ overrides:
   basic-ftp: 6.0.1
   lodash: 4.18.1
   lodash-es: 4.18.1
-  '@actions/http-client>undici': 6.27.0
-  '@semantic-release/github>undici': 7.28.0
-  cheerio>undici: 7.28.0
+  '@actions/http-client>undici': 6.29.1
+  '@semantic-release/github>undici': 7.30.1
+  cheerio>undici: 7.30.1
   tinyglobby>picomatch: 4.0.4
   fdir>picomatch: 4.0.4
   external-editor>tmp: 0.2.7
   tmp: 0.2.7
-  shell-quote: 1.8.4
+  shell-quote: 1.12.0
   ws: 8.21.0
   '@opentelemetry/core': 2.8.0
-  js-yaml: 4.3.0
+  js-yaml: 4.3.2
   uuid: 11.1.1
   '@babel/core': 7.29.7
   esbuild: 0.28.1
+  compression: 1.8.2
+  fast-uri: 3.1.9
 
 # Curated build-script approvals. Run `aube approve-builds` after dependency changes.
 allowBuilds:
