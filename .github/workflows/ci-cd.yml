@@ -214,6 +214,9 @@ jobs:
       github.ref == 'refs/heads/main' &&
       needs.check-docs-only.outputs.skip-release != 'true'
     runs-on: ubuntu-latest
+    outputs:
+      version_bumped: ${{ steps.detect-bump.outputs.bumped }}
+      version: ${{ steps.version-after.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -269,39 +272,14 @@ jobs:
         id: version-after
         run: echo "version=$(jq -r .version amo.json)" >> ${GITHUB_OUTPUT}
 
-      - name: Sign and submit to AMO
-        if:
-          steps.version-before.outputs.version !=
-          steps.version-after.outputs.version
+      - name: Detect version bump
+        id: detect-bump
         run: |
-          echo "Signing and submitting v${{steps.version-after.outputs.version}} to AMO [was v${{steps.version-before.outputs.version}}]"
-          aube exec web-ext sign
-        env:
-          WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
-
-      - name: Upload and publish to the Chrome Web Store
-        if:
-          steps.version-before.outputs.version !=
-          steps.version-after.outputs.version
-        uses: cssnr/webstore-publish-action@9c4e7ae29beb517bf2d22f32d849455d178cbca6 # v1.2.1
-        with:
-          extension_id: dgkpaaeifngfeelldljpdlnmacdpceba
-          publisher_id: ${{ vars.CHROME_WEBSTORE_PUBLISHER_ID }}
-          zip_file: eventuate-chromium.zip
-          publish: default
-          json_data: ${{ secrets.CHROME_WEBSTORE_SERVICE_ACCOUNT_JSON }}
-
-      - name: Upload and publish to Microsoft Edge Add-ons
-        if:
-          steps.version-before.outputs.version !=
-          steps.version-after.outputs.version
-        uses: wdzeng/edge-addon@9881f57720358040d079eaa06a4596dc9c273eb6 # v2.1.1
-        with:
-          product-id: ${{ vars.EDGE_ADDONS_PRODUCT_ID }}
-          zip-path: eventuate-chromium.zip
-          api-key: ${{ secrets.EDGE_ADDONS_API_KEY }}
-          client-id: ${{ secrets.EDGE_ADDONS_CLIENT_ID }}
+          if [ "${{ steps.version-before.outputs.version }}" != "${{ steps.version-after.outputs.version }}" ]; then
+            echo "bumped=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "bumped=false" >> "${GITHUB_OUTPUT}"
+          fi
 
       - name: Upload release build artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -309,6 +287,16 @@ jobs:
           name: dist-release
           path: *build-artefact-paths
           retention-days: 1
+
+  # Store publishes run in parallel and fail independently (see publish-stores.yml).
+  publish-stores:
+    needs: release
+    if: needs.release.outputs.version_bumped == 'true'
+    uses: ./.github/workflows/publish-stores.yml
+    with:
+      store: all
+      version: ${{ needs.release.outputs.version }}
+    secrets: inherit
 
   # Deploy Pages after release (when we are releasing)
   deploy-pages-after-release:

@@ -109,9 +109,13 @@ Everyone interacting in this project is expected to follow the
 Releases are automated with [semantic-release][semantic-release] on pushes to
 `main`. The pipeline analyses commits, updates `CHANGELOG.md`, creates a GitHub
 release, attaches Firefox and Chromium zips plus the userscript and bookmarklet
-page, signs the Firefox build for [AMO][amo], and uploads the Chromium build to
-the [Chrome Web Store][chrome] and [Edge Add-ons][edge] for review. Store
+page, then publishes to [AMO][amo], the [Chrome Web Store][chrome], and [Edge
+Add-ons][edge] in parallel (one store failing does not block the others). Store
 listing screenshots stay manual.
+
+To re-publish the latest (or a chosen) GitHub Release to any store: **Actions →
+Publish stores → Run workflow**, pick `amo` / `chrome` / `edge` / `all`, and
+optionally a version tag.
 
 Chrome Web Store credentials (service account JSON + publisher ID):
 
