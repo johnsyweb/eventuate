@@ -108,8 +108,17 @@ Everyone interacting in this project is expected to follow the
 
 Releases are automated with [semantic-release][semantic-release] on pushes to
 `main`. The pipeline analyses commits, updates `CHANGELOG.md`, creates a GitHub
-release, and attaches Firefox and Chromium zips plus the userscript and
-bookmarklet page.
+release, attaches Firefox and Chromium zips plus the userscript and bookmarklet
+page, signs the Firefox build for [AMO][amo], and uploads the Chromium build to
+the [Chrome Web Store][chrome] for review. Store listing screenshots stay
+manual.
+
+Chrome Web Store credentials (service account JSON + publisher ID) are set up
+with:
+
+```sh
+./script/setup-chrome-webstore-auth.sh
+```
 
 Dry-run locally:
 
@@ -144,6 +153,7 @@ Available under the [MIT License](LICENSE.txt).
 [ci]: https://github.com/johnsyweb/eventuate/actions/workflows/ci-cd.yml
 [mozilla-badge]: https://img.shields.io/amo/v/eventuate?logo=mozilla
 [mozilla]: https://addons.mozilla.org/firefox/addon/eventuate/
+[amo]: https://addons.mozilla.org/firefox/addon/eventuate/
 [chrome-badge]:
   https://img.shields.io/chrome-web-store/v/dgkpaaeifngfeelldljpdlnmacdpceba?logo=chromewebstore
 [chrome]:

@@ -1,4 +1,5 @@
 /.amo-upload-uuid
+/.chrome-webstore.env
 /.web-extension-id
 /chromium*
 /dist/
