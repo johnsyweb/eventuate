@@ -32,8 +32,8 @@ jobs:
   # Renovate PRs are gated by aube-lock (./script/cibuild + Check Run mirrors).
   lint:
     if:
-      &not-renovate-pr github.event_name != 'pull_request' ||
-      !startsWith(github.head_ref, 'renovate/')
+      &not-renovate-pr github.event_name != 'pull_request' || github.actor !=
+      'renovate[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
