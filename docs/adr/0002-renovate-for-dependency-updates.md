@@ -9,7 +9,7 @@ Dependabot does not refresh `aube-lock.yaml`, and the Monday `aube-update` workf
 ## Decision
 
 1. **Mend Renovate (hosted)** owns npm, Bundler, Docker, and GitHub Actions updates via [johnsyweb/renovate-config](https://github.com/johnsyweb/renovate-config).
-2. **aube-lock workflow** on `renovate/**` regenerates `aube-lock.yaml`, runs `./script/cibuild` (lint, units, build, web-ext lint, audit, Lighthouse), and publishes Check Runs on the final HEAD (mirrors of `lint`, `test`, `lighthouse`, and `build`). CI/CD validation jobs skip Renovate PRs so the suite is not run twice.
+2. **aube-lock workflow** on `renovate/**` regenerates `aube-lock.yaml`, runs `./script/cibuild` (lint, units, build, web-ext lint, audit, Lighthouse), and publishes Check Runs on the final HEAD (mirrors of `lint`, `test`, `lighthouse`, and `build`). CI/CD validation jobs skip PRs opened by `renovate[bot]` so the suite is not run twice.
 3. **Renovate membership** is declared in [johnsyweb/github-infra](https://github.com/johnsyweb/github-infra).
 4. **Atomic cutover** — remove `.github/dependabot.yml`, `dependabot-auto-merge.yml`, and `aube-update.yml` in the same change as Renovate lands.
 5. **Cooling** — Renovate `minimumReleaseAge: 7 days`; aube `minimumReleaseAge: 10080` (minutes).
