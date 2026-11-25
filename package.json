@@ -63,7 +63,7 @@
     "playwright": "^1.63.0",
     "prettier": "^3.9.9",
     "puppeteer": "^25.12.0",
-    "semantic-release": "^25.0.9",
+    "semantic-release": "^26.0.0",
     "serve": "^14.2.6",
     "terser-webpack-plugin": "^5.6.1",
     "ts-jest": "^29.4.14",
